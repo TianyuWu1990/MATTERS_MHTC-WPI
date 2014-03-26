@@ -1,12 +1,17 @@
 package edu.wpi.mhtc.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.wpi.mhtc.model.StatsItem;
+import edu.wpi.mhtc.model.StatsMeta;
 import edu.wpi.mhtc.service.StatsService;
 
 @Controller
@@ -28,21 +33,21 @@ public class StatsController {
 	}
 	
 	@RequestMapping(value = AVAILABLE_ENDPOINT, method = RequestMethod.GET)
-	public String availableEndpoint(Model model) {
+	public @ResponseBody List<StatsMeta> availableEndpoint(Model model) {
 		
-		return AVAILIBLE_VIEW;
+		return service.getAvailibleStatistics();
 	}
 	
 	@RequestMapping(value = STAT_ENDPOINT, method = RequestMethod.GET)
-	public String statEndpoint(Model model, @PathVariable String state, @PathVariable String stat) {
+	public @ResponseBody List<StatsItem> statEndpoint(Model model, @PathVariable String state, @PathVariable String stat) {
 		
-		return STAT_VIEW;
+		return service.getStatistics(stat, state);
 	}
 	
 	@RequestMapping(value = STAT_ENDPOINT, method = RequestMethod.POST)
-	public String statPostEndpoint(Model model, @PathVariable String state, @PathVariable String stat) {
+	public @ResponseBody List<StatsItem> statPostEndpoint(Model model, @PathVariable String state, @PathVariable String stat) {
 	
-		return STAT_VIEW;
+		return service.getStatistics(state);
 	}
 	
 }
