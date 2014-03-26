@@ -18,7 +18,7 @@ import edu.wpi.mhtc.service.StatsService;
 public class StatsController {
 
 	public static final String AVAILABLE_ENDPOINT = "/data/stats/available";
-	public static final String STAT_ENDPOINT = "/data/stats/{state}/{stat}";
+	public static final String STAT_ENDPOINT = "/data/stats/{stat}/{state}";
 
 	// TODO proper view naming scheme
 	public static final String AVAILIBLE_VIEW = "data_stats_available";
@@ -39,7 +39,7 @@ public class StatsController {
 	}
 	
 	@RequestMapping(value = STAT_ENDPOINT, method = RequestMethod.GET)
-	public @ResponseBody List<StatsItem> statEndpoint(Model model, @PathVariable String state, @PathVariable String stat) {
+	public @ResponseBody List<StatsItem> statEndpoint(Model model, @PathVariable String stat, @PathVariable String state ) {
 		
 		return service.getStatistics(stat, state);
 	}
