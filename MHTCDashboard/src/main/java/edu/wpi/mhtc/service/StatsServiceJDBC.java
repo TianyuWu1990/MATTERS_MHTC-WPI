@@ -2,17 +2,15 @@ package edu.wpi.mhtc.service;
 
 import java.util.List;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-
 import edu.wpi.mhtc.model.StatsItem;
 import edu.wpi.mhtc.model.StatsMeta;
+import edu.wpi.mhtc.persistence.ProcedureTemplate;
 
 public class StatsServiceJDBC implements StatsService {
 
-	private JdbcTemplate template;
+	private ProcedureTemplate template;
 
-	public StatsServiceJDBC(JdbcTemplate template) {
+	public StatsServiceJDBC(ProcedureTemplate template) {
 		this.template = template;
 
 	}
