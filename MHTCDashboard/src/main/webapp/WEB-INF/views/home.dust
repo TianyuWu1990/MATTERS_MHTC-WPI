@@ -1,12 +1,568 @@
 <html>
-<head>
-	<title>Home</title>
-</head>
-<body>
-<h1>
-	Hello world!  
-</h1>
+	<head>
+		<link href="css/nv.d3.css" rel="stylesheet">
+		<script src="js/d3.v3.min.js"></script>
+		<script src="js/nv.d3.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<script src="js/raphael.js"></script>
+		<script src="js/color.jquery.js"></script>
+		<script src="js/jquery.usmap.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+		<style>
+			.trend_icon
+			{
+			display: block;
+			width: 25px;
+			height: 25px;
+			background-image: url(img/trend_meter.png);
+			background-repeat: no-repeat;
+			}
 
-<P>  The time on the server is {serverTime}. </P>
-</body>
+			.trend_down
+			{
+			background-position: 0px 0px;
+			}
+
+			.trend_no_change
+			{
+			background-position: 0px -150px;
+			}
+
+			.trend_up
+			{
+			background-position: 0px -210px;
+			}
+			#sidebar
+			{
+				border-color: #ABC;
+				
+				border-style: solid;
+				border-top-style: none;
+				border-left-style: none;
+				border-radius: 20px;
+				border-radius: 20px;
+			}
+
+		</style>
+		<script>
+			function loadFunction(){
+				$('#sidebar li:eq(0) a').tab('show');
+			}
+			
+			function addGraph(){
+				setTimeout(function(){
+					d3.json('data/cumulativeLineData.json', function(data) {
+						nv.addGraph(function() {
+							var chart = nv.models
+										  .cumulativeLineChart()
+										  .x(function(d) { return d[0] })
+										  .y(function(d) { return d[1]/100 })
+										  .color(d3.scale.category10().range())
+										  .useInteractiveGuideline(true);
+							 
+							chart.xAxis
+								.tickValues([1078030800000,1122782400000,1167541200000,1251691200000])
+								.tickFormat(function(d) {
+									return d3.time.format('%x')(new Date(d))
+								});
+						 
+							chart.yAxis
+								 .tickFormat(d3.format(',.1%'));
+							 
+							d3.select('#mbody svg')
+							  .datum(data)
+							  .transition()
+							  .duration(500)
+							  .call(chart);
+							 
+							//TODO: Figure out a good way to do this automatically
+							nv.utils.windowResize(chart.update);
+						 
+							return chart;
+						});
+					});
+				}, 500);
+			}
+		</script>
+	</head>
+	<body onLoad="loadFunction()">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title" id="myModalLabel">State Science and Technology Graph</h4>
+		  </div>
+		  <div class="modal-body" id="mbody">
+			<svg style="height: 50%;"></svg>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h4 class="modal-title" id="myModalLabel">About The Massachusetts High Technology Council</h4>
+		  </div>
+		  <div class="modal-body" id="mbody">
+		  	<p>State government plays a vital role in sustaining the competitiveness of industry and the well-being of its citizens. The High Tech Council believes that when the leadership of the state's high tech companies work together, we can be far more effective in building constructive relations with State government and in enacting policies that are conducive to economic growth. We believe in the power of collaboration and continue to work with other like-minded organizations in shaping and delivering our recommendations and advocacy.</p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+		<nav class="navbar navbar-default" role="navigation">
+		  <div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand" href="#">MHTC Dashboard</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			  <ul class="nav navbar-nav">
+				<li class="active"><a href="#">Explore</a></li>
+				<li><a href="#">Analyze</a></li>
+				<li><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
+			  </ul>
+			  <ul class="nav navbar-nav navbar-right">
+					<form class="navbar-form navbar-left" role="search">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Username">
+							<input type="text" class="form-control" placeholder="Password">
+							</div>
+						<button type="submit" class="btn btn-default">Login</button>
+					</form>
+			  </ul>
+			</div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+		</nav>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-7" id="sidebar">
+				<ul class="nav nav-tabs">
+
+				  <li><a href="#home" data-toggle="tab">Talent</a></li>
+				  <li><a href="#profile" data-toggle="tab">National</a></li>
+				  <li><a href="#messages" data-toggle="tab">Cost</a></li>
+				  <li><a href="#settings" data-toggle="tab">Economy</a></li>
+				</ul>
+
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane fade" id="home">
+				  <table class="table table-hover"  style="font-size: 13px;">
+				  <thead>
+					  <th>Index / Survery</th>
+					  <th>Trend</th>
+					  <th>Ranking</th>
+					  <th>Source</th>
+					  <th></th>
+				  </thead>
+				  <tbody>
+				  <tr>
+				  	<td>State Science and Technology Index</td>
+				  	<td><span class="trend_icon trend_down"></span></td>
+				  	<td>1<sup>st</sup></td>
+				  	<td>Melkin Institute</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+					</td>
+			  	  </tr>
+			  	  <tr>
+				  	<td>Fourth and Eighth Grade Math and Reading</td>
+				  	<td><span class="trend_icon trend_up"></span></td>
+				  	<td>1<sup>st</sup></td>
+				  	<td>NAEP</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+						</td>
+			  	  </tr>
+			  	  <tr>
+				  	<td>Science and Engineering Indicators</td>
+				  	<td><span class="trend_icon trend_no_change"></span></td>
+				  	<td>1<sup>st</sup></td>
+				  	<td>MTC</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+						</td>
+			  	  </tr>
+			  	  <tr>
+				  	<td>Percent High Tech Workers in Workforce</td>
+				  	<td><span class="trend_icon trend_up"></span></td>
+				  	<td>1<sup>st</sup></td>
+				  	<td>National Science Board</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+						</td>
+			  	  </tr>
+  			  	  <tr>
+				  	<td>State Tax Cost on Business</td>
+				  	<td><span class="trend_icon trend_up"></span></td>
+				  	<td>44<sup>th</sup></td>
+				  	<td>KPMG / Tax Foundation</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+						</td>
+			  	  </tr>
+  			  	  <tr>
+				  	<td>State Tax Business Climate</td>
+				  	<td><span class="trend_icon trend_no_change"></span></td>
+				  	<td>25<sup>th</sup></td>
+				  	<td>Tax Foundation</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+						</td>
+			  	  </tr>
+  			  	  <tr>
+				  	<td>Top States for Business</td>
+				  	<td><span class="trend_icon trend_down"></span></td>
+				  	<td>16<sup>th</sup></td>
+				  	<td>CNBC</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+						</td>
+			  	  </tr>
+  			  	  <tr>
+				  	<td>Cost of Doing Business</td>
+				  	<td><span class="trend_icon trend_down"></span></td>
+				  	<td>47<sup>th</sup></td>
+				  	<td>CNBC</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+						</td>
+			  	  </tr>
+  			  	  <tr>
+				  	<td>Unemployment Insurance Payroll Cost</td>
+				  	<td><span class="trend_icon trend_up"></span></td>
+				  	<td>49<sup>th</sup></td>
+				  	<td>Tax Foundation</td>
+				  	<td>
+						<div class="btn-group btn-group-sm">
+							<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+							<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Compare to Peer States</a></li>
+								<li><a href="#">Compare to Top Ten</a></li>
+								<li><a href="#">Compare to Bottom Ten</a></li>
+								<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Open Source</a></li>
+							</ul>
+						</div>
+					</td>
+			  	  </tr>
+				  </tbody>
+				  </table>
+				  </div>
+				  <div class="tab-pane fade" id="profile">
+					  <table class="table"  style="font-size: 13px;">
+						  <thead>
+							  <th>Index / Survey</th>
+							  <th>Ranking / Data</th>
+							  <th>Source</th>
+							  <th></th>
+						  </thead>
+						  <tbody>
+							  <tr>
+								  <td>State Science and Technology</td>
+  								  <td>
+									  <table class="table table-condensed"  style="font-size: 13px;">
+										  <tr>
+											  <td>Rank</td>
+											  <td>2</td>
+											  <td>4</td>
+											  <td>3</td>
+											  <td>1</td>
+										  </tr>
+										  <tr>
+											  <td>Year</td>
+											  <td>'12</td>
+											  <td>'10</td>
+											  <td>'08</td>
+											  <td>'04</td>
+										  </tr>
+									  </table>
+								  </td>
+								  <td>Melkin Institute</td>
+				  				  	<td>
+									<div class="btn-group btn-group-sm">
+										<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+										<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-chevron-down"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">Compare to Peer States</a></li>
+											<li><a href="#">Compare to Top Ten</a></li>
+											<li><a href="#">Compare to Bottom Ten</a></li>
+											<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+											<li class="divider"></li>
+											<li><a href="#">Open Source</a></li>
+										</ul>
+									</div>
+									</td>
+							  </tr>
+							  <tr>
+								  <td>4<sup>th</sup> &amp; 8<sup>th</sup> Grade Math &amp; Reading</td>
+  								  <td>
+									  <table class="table table-condensed"  style="font-size: 13px;">
+										  <tr>
+											  <td>Rank</td>
+											  <td>1</td>
+											  <td>3</td>
+											  <td>1</td>
+											  <td>2</td>
+										  </tr>
+										  <tr>
+											  <td>Year</td>
+											  <td>'12</td>
+											  <td>'10</td>
+											  <td>'08</td>
+											  <td>'04</td>
+										  </tr>
+									  </table>
+								  </td>
+								  <td>NAEP</td>
+				  				  	<td>
+									<div class="btn-group btn-group-sm">
+										<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+										<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-chevron-down"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">Compare to Peer States</a></li>
+											<li><a href="#">Compare to Top Ten</a></li>
+											<li><a href="#">Compare to Bottom Ten</a></li>
+											<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+											<li class="divider"></li>
+											<li><a href="#">Open Source</a></li>
+										</ul>
+									</div>
+									</td>
+							  </tr>
+							  <tr>
+								  <td>Science &amp; Engineering Indicators</td>
+  								  <td>
+									  <table class="table table-condensed"  style="font-size: 13px;">
+										  <tr>
+											  <td>Rank</td>
+											  <td>1</td>
+											  <td>3</td>
+											  <td>2</td>
+											  <td>2</td>
+										  </tr>
+										  <tr>
+											  <td>Year</td>
+											  <td>'12</td>
+											  <td>'10</td>
+											  <td>'08</td>
+											  <td>'04</td>
+										  </tr>
+									  </table>
+								  </td>
+								  <td>Nat'l Science Board</td>
+				  				  	<td>
+									<div class="btn-group btn-group-sm">
+										<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+										<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-chevron-down"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">Compare to Peer States</a></li>
+											<li><a href="#">Compare to Top Ten</a></li>
+											<li><a href="#">Compare to Bottom Ten</a></li>
+											<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+											<li class="divider"></li>
+											<li><a href="#">Open Source</a></li>
+										</ul>
+									</div>
+									</td>
+							  </tr>
+							  <tr>
+								  <td>Percent of High Tech Workers in Workforce</td>
+  								  <td>
+									  <table class="table table-condensed"  style="font-size: 13px;">
+										  <tr>
+											  <td>Rank</td>
+											  <td>18</td>
+											  <td>14</td>
+											  <td>8</td>
+											  <td>3</td>
+										  </tr>
+										  <tr>
+											  <td>Year</td>
+											  <td>'12</td>
+											  <td>'10</td>
+											  <td>'08</td>
+											  <td>'04</td>
+										  </tr>
+									  </table>
+								  </td>
+								  <td>Melkin Institute</td>
+				  				  	<td>
+									<div class="btn-group btn-group-sm">
+										<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-share-alt"></span> </button>
+										<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-chevron-down"></span>
+										</button>
+										<ul class="dropdown-menu" role="menu">
+											<li><a href="#">Compare to Peer States</a></li>
+											<li><a href="#">Compare to Top Ten</a></li>
+											<li><a href="#">Compare to Bottom Ten</a></li>
+											<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+											<li class="divider"></li>
+											<li><a href="#">Open Source</a></li>
+										</ul>
+									</div>
+									</td>
+							  </tr>
+						  </tbody>
+					  </table>
+				  </div>
+				  <div class="tab-pane fade" id="messages">...</div>
+				  <div class="tab-pane fade" id="settings">...</div>
+				</div>
+				</div>
+				<div class="col-md-5">
+					<br /><br />
+					<div id="map" style="width: 600px; height: 375px;"></div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+		<script type="text/javascript">
+		$('#map').usmap({
+		  // The click action
+
+		  click: function(event, data) {
+			$('#clicked-state')
+			  .text('You clicked: '+data.name)
+			  .parent().effect('highlight', {color: '#C7F464'}, 2000);
+		  }
+		});
+		</script>
 </html>
