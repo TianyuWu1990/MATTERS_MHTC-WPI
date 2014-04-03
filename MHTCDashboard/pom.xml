@@ -89,7 +89,7 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-		
+
 		<!-- JSON Mapping -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -151,6 +151,13 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.0.2.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.8.0.10</version>
+		</dependency>
+
 
 
 		<!-- Test -->
