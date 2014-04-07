@@ -11,9 +11,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+/**
+ * 
+ * @author ted
+ *
+ * please do not scroll
+ */
 public class RSON
-{
-	
+{	
 	@SuppressWarnings("unchecked")
 	public static <T extends Object> StringBuilder parse(Object obj, Class<?> clazz, int... depth) throws IllegalArgumentException, IllegalAccessException
 	{
@@ -81,7 +86,7 @@ public class RSON
 		if (isMap)
 		{
 			Map<String,T> map = (Map<String,T>)obj;
-			List<ImmutableSortableEntry<String, T>> entries = asSortedList(map);
+			List<ImmutableComparableEntry<String, T>> entries = asSortedList(map);
 			int counter = entries.size();
 			for(Object o : entries)
 			{
@@ -159,23 +164,23 @@ public class RSON
 	 * @param c the map to convert
 	 * @return the map as a sorted list of entries
 	 */
-	public static <T> List<ImmutableSortableEntry<String, T>> asSortedList(Map<String, T> c)
+	public static <T> List<ImmutableComparableEntry<String, T>> asSortedList(Map<String, T> c)
 	{
 		Set<Entry<String, T>> entries = c.entrySet();
 		
 		List<Entry<String, T>> list = new ArrayList<>(entries);
-		List<ImmutableSortableEntry<String, T>> result = new LinkedList<>();
+		List<ImmutableComparableEntry<String, T>> result = new LinkedList<>();
 		
 		for(Entry<String, T> e : list)
 		{
-			result.add(new ImmutableSortableEntry<String, T>(e));
+			result.add(new ImmutableComparableEntry<String, T>(e));
 		}
 		
-		Collections.sort(result, new Comparator<ImmutableSortableEntry<String, T>>(){
+		Collections.sort(result, new Comparator<ImmutableComparableEntry<String, T>>(){
 
 			@Override
-			public int compare(ImmutableSortableEntry<String, T> arg0,
-					ImmutableSortableEntry<String, T> arg1) {
+			public int compare(ImmutableComparableEntry<String, T> arg0,
+					ImmutableComparableEntry<String, T> arg1) {
 				return arg0.compareTo(arg1);
 			}
 			
@@ -193,7 +198,7 @@ public class RSON
 	 * @param <X> something comparable
 	 * @param <T> anything
 	 */
-	private static class ImmutableSortableEntry<X extends Comparable<? super X>, T> implements Entry<X, T>, Comparable<ImmutableSortableEntry<X, T>>
+	private static class ImmutableComparableEntry<X extends Comparable<? super X>, T> implements Entry<X, T>, Comparable<ImmutableComparableEntry<X, T>>
 	{
 		private final X x;
 		private final T t;
@@ -203,14 +208,14 @@ public class RSON
 		 * 
 		 * @param entry the entry to convert to comparable
 		 */
-		public ImmutableSortableEntry(Entry<X, T> entry)
+		public ImmutableComparableEntry(Entry<X, T> entry)
 		{
 			x = entry.getKey();
 			t = entry.getValue();
 		}
 		
 		@Override
-		public int compareTo(ImmutableSortableEntry<X, T> o) {
+		public int compareTo(ImmutableComparableEntry<X, T> o) {
 			return this.x.compareTo(o.getKey());
 		}
 
