@@ -7,15 +7,9 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.jdbc.JdbcTestUtils;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
-// TODO restore profile once that is working
+// TODO add profile 
 @Configuration
-@Profile("local")
 public class LocalConfiguration {
 
 	@Bean 

@@ -1,0 +1,44 @@
+.modal-dialog
+{
+  width: 60%;
+}
+.trend_icon
+{
+display: block;
+width: 25px;
+height: 25px;
+background-image: url(img/trend_meter.png);
+background-repeat: no-repeat;
+}
+
+.trend_down
+{
+background-position: 0px 0px;
+}
+
+.trend_no_change
+{
+background-position: 0px -150px;
+}
+
+.trend_up
+{
+background-position: 0px -210px;
+}
+#sidebar,#multiSelecter
+{
+	border-color: #ABC;
+	
+	border-style: solid;
+	border-top-style: none;
+	border-left-style: none;
+	border-radius: 20px;
+	border-radius: 20px;
+}
+.stateButton
+{
+	width: 125;
+}
+input[type="checkbox"]{
+	display:none;
+}
