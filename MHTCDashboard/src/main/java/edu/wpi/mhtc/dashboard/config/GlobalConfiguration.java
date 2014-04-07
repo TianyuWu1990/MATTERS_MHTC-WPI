@@ -3,10 +3,12 @@ package edu.wpi.mhtc.dashboard.config;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -35,6 +37,14 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations(
 				"/resources/");
+	}
+	
+	@Bean
+	public PropertyPlaceholderConfigurer properties() {
+		PropertyPlaceholderConfigurer props = new PropertyPlaceholderConfigurer();
+		props.setLocation(new ClassPathResource("config.properties"));
+		
+		return props;
 	}
 
 	@Bean

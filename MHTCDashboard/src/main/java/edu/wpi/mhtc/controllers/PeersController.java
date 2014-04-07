@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import edu.wpi.mhtc.model.StateMeta;
 import edu.wpi.mhtc.service.PeersService;
 
 @Controller
@@ -31,7 +32,7 @@ public class PeersController {
 	}
 	
 	@RequestMapping(value = FULLNAME_ENDPOINT, method = RequestMethod.GET)
-	public @ResponseBody List<String> fullnameEndpoint(Model model) {
+	public @ResponseBody List<StateMeta> fullnameEndpoint(Model model) {
 		
 		return service.getPeersByFullName();
 	}

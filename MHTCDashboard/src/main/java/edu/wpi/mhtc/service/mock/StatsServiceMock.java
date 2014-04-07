@@ -10,7 +10,6 @@ import edu.wpi.mhtc.model.StatsItem;
 import edu.wpi.mhtc.model.StatsMeta;
 import edu.wpi.mhtc.service.StatsService;
 
-@Service
 public class StatsServiceMock implements StatsService {
 
 	private static final StatsMeta local = new StatsMeta("localtaxburden", "Local Tax Burden");

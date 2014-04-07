@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import edu.wpi.mhtc.model.StateMeta;
 import edu.wpi.mhtc.service.PeersService;
 
-@Service
 public class PeersServiceMock implements PeersService {
 
 	@Override
@@ -33,9 +33,9 @@ public class PeersServiceMock implements PeersService {
 	}
 
 	@Override
-	public List<String> getPeersByFullName() {
-		List<String> peers = new ArrayList<String>();
-		peers.add("California");
+	public List<StateMeta> getPeersByFullName() {
+		List<StateMeta> peers = new ArrayList<StateMeta>();
+		/*peers.add("California");
 		peers.add("Colorado");
 		peers.add("Connecticut");
 		peers.add("Georgia");
@@ -49,7 +49,7 @@ public class PeersServiceMock implements PeersService {
 		peers.add("Texas");
 		peers.add("Utah");
 		peers.add("Virginia");
-		peers.add("Washington");
+		peers.add("Washington");*/
 		
 		return peers;
 	}
