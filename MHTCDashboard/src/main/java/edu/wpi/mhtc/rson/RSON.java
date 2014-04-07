@@ -2,6 +2,10 @@ package edu.wpi.mhtc.rson;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,8 +13,9 @@ import java.util.Set;
 
 public class RSON
 {
+	
 	@SuppressWarnings("unchecked")
-	public static StringBuilder parse(Object obj, Class<?> clazz, int... depth) throws IllegalArgumentException, IllegalAccessException
+	public static <T extends Object> StringBuilder parse(Object obj, Class<?> clazz, int... depth) throws IllegalArgumentException, IllegalAccessException
 	{
 		Field[] allFields = clazz.getDeclaredFields();
 		Class<?>[] interfaces = clazz.getInterfaces();
@@ -42,7 +47,6 @@ public class RSON
 		// determine whether this is a list;
 		for(int i=0; i<interfaces.length; i++)
 		{
-			System.out.println(interfaces[i].toString());
 			if (interfaces[i] == java.util.List.class)
 			{
 				isArray = true;
@@ -76,8 +80,8 @@ public class RSON
 		
 		if (isMap)
 		{
-			Map<String,?> map = (Map<String,?>)obj;
-			Set<?> entries = map.entrySet();
+			Map<String,T> map = (Map<String,T>)obj;
+			List<ImmutableSortableEntry<String, T>> entries = asSortedList(map);
 			int counter = entries.size();
 			for(Object o : entries)
 			{
@@ -93,8 +97,10 @@ public class RSON
 		}
 		else
 		{
+			List<String> non_transient_vars = new LinkedList<String>();
 			for(Field f : allFields)
 			{
+				StringBuilder tem = new StringBuilder();
 				if (Modifier.isPrivate(f.getModifiers()))
 				{
 					f.setAccessible(true);
@@ -102,29 +108,35 @@ public class RSON
 				// dont copy transient fields (duh)
 				if (!Modifier.isTransient(f.getModifiers()))
 				{
-					result.append(isArray ? "":f.getName()+":");
-					result.append(parse(f.get(clazz.cast(obj)), f.getType(), depth[0]+1));
-					
-					if (f != allFields[allFields.length-1]) // everything but last item
-					{
-						result.append(',').append(' ');
-					}
+					tem.append(isArray ? "":f.getName()+":");
+					tem.append(parse(f.get(clazz.cast(obj)), f.getType(), depth[0]+1));
+					non_transient_vars.add(tem.toString());
+				}
+			}
+			
+			String last = non_transient_vars.get(non_transient_vars.size()-1);
+			for(String s : non_transient_vars)
+			{
+				result.append(s);
+				if (s != last)
+				{
+					result.append(", ");
 				}
 			}
 		}
 		
-		
-		
-		result = result.append('}');
-		
-		
-		
-		
-		
-		return result;
+		return result.append('}');
 	}
 	
 	
+	/**
+	 * 
+	 * @param o any object, however it cannot contain any native types, or any autoboxed classes excluding
+	 * 			Integer and Boolean
+	 * @return the JSON string serialization of the class (5 levels deep)
+	 * @throws ParseException if something goes wrong. shouldn't happen if you refrain from using native types
+	 * 							and autoboxed types excluding Integer and Boolean
+	 */
 	public static String parse(Object o) throws ParseException
 	{
 		try
@@ -139,5 +151,83 @@ public class RSON
 		{
 			throw new ParseException(e.getStackTrace());
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param c the map to convert
+	 * @return the map as a sorted list of entries
+	 */
+	public static <T> List<ImmutableSortableEntry<String, T>> asSortedList(Map<String, T> c)
+	{
+		Set<Entry<String, T>> entries = c.entrySet();
+		
+		List<Entry<String, T>> list = new ArrayList<>(entries);
+		List<ImmutableSortableEntry<String, T>> result = new LinkedList<>();
+		
+		for(Entry<String, T> e : list)
+		{
+			result.add(new ImmutableSortableEntry<String, T>(e));
+		}
+		
+		Collections.sort(result, new Comparator<ImmutableSortableEntry<String, T>>(){
+
+			@Override
+			public int compare(ImmutableSortableEntry<String, T> arg0,
+					ImmutableSortableEntry<String, T> arg1) {
+				return arg0.compareTo(arg1);
+			}
+			
+		});
+		
+		return result;
+	}
+	
+	
+	
+	/**
+	 * all muh <?>
+	 * @author ted... I am so sorry
+	 *
+	 * @param <X> something comparable
+	 * @param <T> anything
+	 */
+	private static class ImmutableSortableEntry<X extends Comparable<? super X>, T> implements Entry<X, T>, Comparable<ImmutableSortableEntry<X, T>>
+	{
+		private final X x;
+		private final T t;
+		
+		/**
+		 * default copy constructor for ISE
+		 * 
+		 * @param entry the entry to convert to comparable
+		 */
+		public ImmutableSortableEntry(Entry<X, T> entry)
+		{
+			x = entry.getKey();
+			t = entry.getValue();
+		}
+		
+		@Override
+		public int compareTo(ImmutableSortableEntry<X, T> o) {
+			return this.x.compareTo(o.getKey());
+		}
+
+		@Override
+		public X getKey() {
+			return x;
+		}
+
+		@Override
+		public T getValue() {
+			return t;
+		}
+
+		@Override
+		public T setValue(T value) {
+			throw new RuntimeException("no.");
+		}
+		
 	}
 }
