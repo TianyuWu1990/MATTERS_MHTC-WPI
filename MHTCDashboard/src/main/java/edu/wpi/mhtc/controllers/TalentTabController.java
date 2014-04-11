@@ -45,23 +45,7 @@ public class TalentTabController
 		t6.setDatasourceURL("taxfoundation.org");
 		t6.setDatasource("Tax Foundation");
 		
-		TalentTab t7 = new TalentTab();
-		t7.setName("Top States for Business");
-		t7.setMass_rank(16);
-		t7.setDatasourceURL("cnbc.com");
-		t7.setDatasource("CNBC");
-
-		TalentTab t8 = new TalentTab();
-		t8.setName("Cost of Doing Business");
-		t8.setMass_rank(47);
-		t8.setDatasourceURL("cnbc.com");
-		t8.setDatasource("CNBC");
-
-		TalentTab t9 = new TalentTab();
-		t9.setName("Unemployment Insurance Payroll Cost");
-		t9.setMass_rank(49);
-		t9.setDatasourceURL("taxfoundation.org");
-		t9.setDatasource("Tax Foundation");
+		
 		
 		List<TalentTab> talents = new LinkedList<TalentTab>();
 		talents.add(t1);
@@ -70,9 +54,6 @@ public class TalentTabController
 		talents.add(t4);
 		talents.add(t5);
 		talents.add(t6);
-		talents.add(t7);
-		talents.add(t8);
-		talents.add(t9);
 		
 		return talents;
 	}
