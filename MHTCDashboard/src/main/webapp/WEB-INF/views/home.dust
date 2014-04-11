@@ -14,58 +14,65 @@
 		<link rel="stylesheet" href="css/local_style.css">
 		
 		<title>
-		w
+			METIS
 		</title>
 	</head>
 	<body onLoad="loadFunction()">
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">State Science and Technology Graph</h4><h4 class="small">Selected States: Massachusetts, California, Texas</h4>
-				</div>
-				<div class="modal-body" id="mbody">
-					<svg style="height: 50%;"></svg>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="myMultiModal" tabindex="-1" role="dialog" aria-labelledby="myMultiModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">State Science and Technology Graph</h4>
-				</div>
-				<div class="modal-body" id="mmbody">
-					<svg style="height: 70%;"></svg>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+		<!-- a graph -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">State Science and Technology Graph</h4><h4 class="small">Selected States: Massachusetts, California, Texas</h4>
+					</div>
+					<div class="modal-body" id="mbody">
+						<svg style="height: 50%;"></svg>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="myModalLabel">About The Massachusetts High Technology Council</h4>
-				</div>
-				<div class="modal-body" id="mbody">
-					<p>State government plays a vital role in sustaining the competitiveness of industry and the well-being of its citizens. The High Tech Council believes that when the leadership of the state's high tech companies work together, we can be far more effective in building constructive relations with State government and in enacting policies that are conducive to economic growth. We believe in the power of collaboration and continue to work with other like-minded organizations in shaping and delivering our recommendations and advocacy.</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+		<!-- another graph -->
+		<div class="modal fade" id="myMultiModal" tabindex="-1" role="dialog" aria-labelledby="myMultiModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">State Science and Technology Graph</h4>
+					</div>
+					<div class="modal-body" id="mmbody">
+						<svg style="height: 70%;"></svg>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+
+		<!-- a third graph -->
+		<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">About The Massachusetts High Technology Council</h4>
+					</div>
+					<div class="modal-body" id="mbody">
+						<p>State government plays a vital role in sustaining the competitiveness of industry and the well-being of its citizens. The High Tech Council believes that when the leadership of the state's high tech companies work together, we can be far more effective in building constructive relations with State government and in enacting policies that are conducive to economic growth. We believe in the power of collaboration and continue to work with other like-minded organizations in shaping and delivering our recommendations and advocacy.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<nav class="navbar navbar-default" role="navigation">
 			<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->
@@ -83,74 +90,98 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="#">Explore</a></li>
-						<li><a href="#">Analyze</a></li>
-						<li><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
+							<li>
+								<a href="#">Analyze</a>
+							</li>
+						<li>
+							<a href="#" data-toggle="modal" data-target="#aboutModal">About</a>
+						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-					<form class="navbar-form navbar-left" role="search">
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Username">
-							<input type="text" class="form-control" placeholder="Password">
+						<form class="navbar-form navbar-left" role="search">
+							<div class="form-group">
+								<input type="text" class="form-control" placeholder="Username">
+								<input type="text" class="form-control" placeholder="Password">
 							</div>
-						<button type="submit" class="btn btn-default">Login</button>
-					</form>
+							<button type="submit" class="btn btn-default">Login</button>
+						</form>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</div><!-- /.container-fluid -->
 		</nav>
+
 		<div class="container">
 			<div class="row">
 				<div class="col-md-7">
 				<div id="sidebar" class="col-md-12">
 				<ul class="nav nav-tabs">
-
-					<li><a href="#home" data-toggle="tab">Talent</a></li>
-					<li><a href="#profile" data-toggle="tab">National</a></li>
-					<li><a href="#messages" data-toggle="tab">Cost</a></li>
-					<li><a href="#settings" data-toggle="tab">Economy</a></li>
+					<li>
+						<a href="#home" data-toggle="tab">Talent</a>
+					</li>
+					<li>
+						<a href="#profile" data-toggle="tab">National</a>
+					</li>
+					<li>
+						<a href="#messages" data-toggle="tab">Cost</a>
+					</li>
+					<li>
+						<a href="#settings" data-toggle="tab">Economy</a>
+					</li>
 				</ul>
 
 				<!-- Tab panes -->
 				<div class="tab-content">
 					<div class="tab-pane fade" id="home">
-					<table class="table table-hover"	style="font-size: 13px;">
-					<thead>
-						<th>Index / Survery</th>
-						<th>Trend</th>
-						<th>Ranking</th>
-						<th>Source</th>
-						<th></th>
-					</thead>
-					<tbody>
-						{#jv_rankings}
-						<tr>
-						<td>{name}</td>
-						<td><span class="trend_icon trend_{trend}"></span></td>
-							<td>{dataAverage}</td>
-							<td><a href="{urlFrom}">{sourceName}</a></td>
-							<td>
-							<div class="btn-group btn-group-sm">
-								<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-								<span class="glyphicon glyphicon-chevron-down"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="#">Compare to Peer States</a></li>
-									<li><a href="#" onClick="toggleMultiselect()">Compare to Select States</a></li>
-									<li><a href="#">Compare to Top Ten</a></li>
-									<li><a href="#">Compare to Bottom Ten</a></li>
-									<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
-									<li class="divider"></li>
-									<li><a href="#">Open Source</a></li>
-								</ul>
-							</div>
-						</td>
-							</tr>
-						{/jv_rankings}
-					</tbody>
-					</table>
+						<table class="table table-hover" style="font-size: 13px;">
+							<thead>
+								<th>Index / Survery</th>
+								<th>Trend</th>
+								<th>Ranking</th>
+								<th>Source</th>
+								<th></th>
+							</thead>
+							<tbody>
+								{#jv_rankings}
+									<tr>
+										<td>{name}</td>
+										<td><span class="trend_icon trend_{trend}"></span></td>
+											<td>{dataAverage}</td>
+											<td><a href="{urlFrom}">{sourceName}</a></td>
+											<td>
+											<div class="btn-group btn-group-sm">
+												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+													<span class="glyphicon glyphicon-chevron-down"></span>
+												</button>
+												<ul class="dropdown-menu" role="menu">
+													<li>
+														<a href="#">Compare to Peer States</a>
+													</li>
+													<li>
+														<a href="#" onClick="toggleMultiselect()">Compare to Select States</a>
+													</li>
+													<li>
+														<a href="#">Compare to Top Ten</a>
+													</li>
+													<li>
+														<a href="#">Compare to Bottom Ten</a>
+													</li>
+													<li>
+														<a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a>
+													</li>
+													<li class="divider"></li>
+													<li>
+														<a href="#">Open Source</a>
+													</li>
+												</ul>
+											</div>
+										</td>
+									</tr>
+								{/jv_rankings}
+							</tbody>
+						</table>
 					</div>
 					<div class="tab-pane fade" id="profile">
-						<table class="table"	style="font-size: 13px;">
+						<table class="table" style="font-size: 13px;">
 							<thead>
 								<th>Index / Survey</th>
 								<th>Ranking / Data</th>
@@ -161,7 +192,7 @@
 								{#jv_rankings}
 									<tr>
 										<td>{name}</td>
-											<td>
+										<td>
 											<table class="table table-condensed"	style="font-size: 13px;">
 												<tr>
 													<td>Rank</td>
@@ -172,28 +203,29 @@
 												<tr>
 													<td>Year</td>
 													{#data}
-														<td>{year}</td>
+														<td>'{year}</td>
 													{/data}
 												</tr>
 											</table>
 										</td>
-										<td><a href="{urlFrom}">{sourceName}</a></td>
-												<td>
-										<div class="btn-group btn-group-sm">
-			
-											<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-											<span class="glyphicon glyphicon-chevron-down"></span>
-											</button>
-											<ul class="dropdown-menu" role="menu">
-												<li><a href="#">Compare to Peer States</a></li>
-												<li><a href="#">Compare to Select States</a></li>
-												<li><a href="#">Compare to Top Ten</a></li>
-												<li><a href="#">Compare to Bottom Ten</a></li>
-												<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
-												<li class="divider"></li>
-												<li><a href="#">Open Source</a></li>
-											</ul>
-										</div>
+										<td>
+											<a href="{urlFrom}">{sourceName}</a>
+										</td>
+										<td>
+											<div class="btn-group btn-group-sm">
+												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+												<span class="glyphicon glyphicon-chevron-down"></span>
+												</button>
+												<ul class="dropdown-menu" role="menu">
+													<li><a href="#">Compare to Peer States</a></li>
+													<li><a href="#">Compare to Select States</a></li>
+													<li><a href="#">Compare to Top Ten</a></li>
+													<li><a href="#">Compare to Bottom Ten</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+													<li class="divider"></li>
+													<li><a href="#">Open Source</a></li>
+												</ul>
+											</div>
 										</td>
 									</tr>
 								{/jv_rankings}
@@ -203,36 +235,43 @@
 					<div class="tab-pane fade" id="messages">...</div>
 					<div class="tab-pane fade" id="settings">...</div>
 				</div>
-				</div>
-				<div id="multiSelecter" style="position:absolute;left:0px;top:0px;display:none;" class="col-md-12">
-				<p class="lead">
-				<button class="btn btn-info" onclick="toggleMultiselect();"><h6><span class="glyphicon glyphicon-circle-arrow-left"></span> Back</h6></button>
-				Select States to Compare</p>
-				<div class="btn-group" data-toggle="buttons">
-				<table class="table" align="center">
-				{#jv_peer_states}
-					<tr>
-						{#row}
-							<td>
-								<label class="btn btn-default stateButton" onClick="selectState('{abbr}');">
-									<input type="checkbox" id="chk{abbr}"> {name}
-								</label>
-							</td>
-						{/row}
-					</tr>
-				{/jv_peer_states}
-				</table>
-				</div>
-					<button data-toggle="modal" data-target="#myMultiModal" class="btn btn-primary" onClick="addMultiGraph()">Compare</button>
-				</div>
+			</div>
+					<div id="multiSelecter" style="position:absolute;left:0px;top:0px;display:none;" class="col-md-12">
+						<p class="lead">
+							<button class="btn btn-info" onclick="toggleMultiselect();">
+								<h6>
+									<span class="glyphicon glyphicon-circle-arrow-left"></span>
+									Back
+								</h6>
+							</button>
+							Select States to Compare
+						</p>
+						<div class="btn-group" data-toggle="buttons">
+							<table class="table" align="center">
+								{#jv_peer_states}
+									<tr>
+										{#row}
+											<td>
+												<label class="btn btn-default stateButton" onClick="selectState('{abbr}');">
+													<input type="checkbox" id="chk{abbr}"> {name}
+												</label>
+											</td>
+										{/row}
+									</tr>
+								{/jv_peer_states}
+							</table>
+						</div>
+						<button data-toggle="modal" data-target="#myMultiModal" class="btn btn-primary" onClick="addMultiGraph()">Compare</button>
+					</div>
 				</div>
 				<div class="col-md-5">
-					<h2 class="text-center"><div id="stateTitle">Massachusetts</div></h2>
+					<h2 class="text-center">
+						<div id="stateTitle">Massachusetts</div>
+					</h2>
 					<div id="map" style="width: 600px; height: 375px;"></div>
 				</div>
 			</div>
 		</div>
-
 		<script src="js/load.js"></script>
 	</body>
 </html>
