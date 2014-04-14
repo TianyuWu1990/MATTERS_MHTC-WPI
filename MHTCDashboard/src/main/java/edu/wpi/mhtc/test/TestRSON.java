@@ -31,7 +31,7 @@ public class TestRSON {
 	@Test
 	public void testMap() throws ParseException
 	{
-		Map<String, TestRSONHelperClass> map = new HashMap<>();
+		Map<String, TestRSONHelperClass> map = new HashMap<String, TestRSONHelperClass>();
 		for(TestRSONHelperClass trhc : list)
 		{
 			if (trhc.getName() == null)

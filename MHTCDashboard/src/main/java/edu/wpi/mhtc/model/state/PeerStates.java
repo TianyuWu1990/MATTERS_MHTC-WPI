@@ -13,7 +13,7 @@ public class PeerStates
 	
 	private PeerStates()
 	{
-		states = new LinkedList<>();
+		states = new LinkedList<State>();
 		states.add(new State("Massachusetts", "MA"));
 		states.add(new State("New Hampshire", "NH"));
 		states.add(new State("New York", "NY"));
@@ -44,7 +44,7 @@ public class PeerStates
 	public LinkedList<HashMap<String, LinkedList<State>>> getAsGrid(int rows) throws ParseException
 	{
 		LinkedList<State> queue = (LinkedList<State>) states.clone();
-		LinkedList<HashMap<String, LinkedList<State>>> result = new LinkedList<>();
+		LinkedList<HashMap<String, LinkedList<State>>> result = new LinkedList<HashMap<String, LinkedList<State>>>();
 		for(int i = 0; i < rows; i++)
 		{
 			LinkedList<State> partial = new LinkedList<>();

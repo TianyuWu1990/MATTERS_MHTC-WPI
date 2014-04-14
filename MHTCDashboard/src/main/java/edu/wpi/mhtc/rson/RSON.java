@@ -168,8 +168,8 @@ public class RSON
 	{
 		Set<Entry<String, T>> entries = c.entrySet();
 		
-		List<Entry<String, T>> list = new ArrayList<>(entries);
-		List<ImmutableComparableEntry<String, T>> result = new LinkedList<>();
+		List<Entry<String, T>> list = new ArrayList<Entry<String, T>>(entries);
+		List<ImmutableComparableEntry<String, T>> result = new LinkedList<ImmutableComparableEntry<String, T>>();
 		
 		for(Entry<String, T> e : list)
 		{
