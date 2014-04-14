@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -30,7 +29,6 @@ import com.fergiggles.giggledust.dust.DustViewResolver;
 @EnableWebMvc
 @ComponentScan("edu.wpi.mhtc")
 @Configuration
-@ImportResource("classpath:spring-security.xml")
 @Import({ DevelopmentConfiguration.class, LocalConfiguration.class,
 		ProductionConfiguration.class })
 public class GlobalConfiguration extends WebMvcConfigurerAdapter {
