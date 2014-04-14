@@ -52,7 +52,7 @@ public class PeerStates
 			{
 				partial.add(queue.pop());
 			}
-			HashMap<String, LinkedList<State>> tem = new HashMap<>();
+			HashMap<String, LinkedList<State>> tem = new HashMap<String, LinkedList<State>>();
 			tem.put("row", partial);
 			result.add(tem);
 		}
