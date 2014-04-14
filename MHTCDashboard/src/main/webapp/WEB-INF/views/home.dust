@@ -12,9 +12,8 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="css/local_style.css">
-		
 		<title>
-		w
+		    METIS Dashboard
 		</title>
 	</head>
 	<body onLoad="loadFunction()">
@@ -76,7 +75,9 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">MHTC Dashboard</a>
+					<a class="navbar-brand" href="#">
+                        <img src="css/img/logo.png" height="50px" style="position:relative;top:-13px">
+                    </a>
 				</div>
 
 				<!-- Collect the nav links, forms, and other content for toggling -->
