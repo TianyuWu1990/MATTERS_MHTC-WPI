@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Admin Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="js/libs/jquery/jquery.js"></script>
+        <script src="js/libs/jqueryui/jquery-ui.js"></script>
+        <script src="js/libs/jquery-treeview/tree.jquery.js"></script>
+        <link rel="stylesheet" href="js/libs/jqueryui/css/base/jquery-ui.css"/>
+        <link rel="stylesheet" href="js/libs/jquery-treeview/jqtree.css"/>
+        <link rel="stylesheet" href="css/admin.css"/>
+        <script src="js/admin_functions.js"></script>
+    </head>
+    <body>
+        <div id="top-div" class="outer-div"><label class="title">Administrator's Page</label></div>
+        <div id="mainDiv" class="outer-div">
+            <div id="toolbar-div">
+                <a id="addNewCategBtn" href="#" class="ui-button">Add New Category</a>
+                <a id="editCategBtn" href="#" class="ui-button">Edit Category</a>
+                |
+                <a id="addNewMetricBtn" href="#" class="ui-button">Add New Metric</a>
+            </div>
+            <hr>
+            <label id="selectedItem"></label>
+            
+            <div id="metrics_div"></div>
+        </div>
+        <div id="categDiv" class="outer-div"><h4>Categories</h4>
+            <div id="tview-div">
+            </div>
+        </div>
+        <div id="err_msg" class="msg ui-state-error ui-corner-all"></div>
+        <div id="info_msg" class="msg ui-state-highlight ui-corner-all"></div>
+    </body>
+</html>
