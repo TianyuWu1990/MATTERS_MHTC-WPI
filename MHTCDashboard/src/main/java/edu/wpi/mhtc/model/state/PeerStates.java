@@ -47,7 +47,7 @@ public class PeerStates
 		LinkedList<HashMap<String, LinkedList<State>>> result = new LinkedList<HashMap<String, LinkedList<State>>>();
 		for(int i = 0; i < rows; i++)
 		{
-			LinkedList<State> partial = new LinkedList<>();
+			LinkedList<State> partial = new LinkedList<State>();
 			for(int j = 0; j < states.size()/rows; j++)
 			{
 				partial.add(queue.pop());
