@@ -1,15 +1,20 @@
 package edu.wpi.mhtc.service;
 
-import java.util.LinkedList;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
-import edu.wpi.mhtc.model.StateMeta;
-import edu.wpi.mhtc.persistence.HashMapRowMapper;
+import edu.wpi.mhtc.model.state.State;
+import edu.wpi.mhtc.persistence.DBState;
+import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
 @Service
@@ -22,65 +27,57 @@ public class PeersServiceJDBC implements PeersService {
 		this.template = template;
 	}
 
-	public List<String> getPeersByInitials() {
+	public List<State> getPeers() {
 
-		PSqlStringMappedJdbcCall<Map<String, String>> call = 
-				new PSqlStringMappedJdbcCall<Map<String, String>>(template)
-				.withSchemaName("mhtc_sch")
-				.withProcedureName("getstates");
-		
-		List<String> columns = new LinkedList<String>(); 
-		columns.add("Id");
-		columns.add("Abbreviation"); 
-		columns.add("Name");
-		columns.add("IsPeerState");
+		PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(
+				template).withSchemaName("mhtc_sch").withProcedureName(
+				"getstates");
 
-		call.addDeclaredRowMapper(new HashMapRowMapper(columns));
+		call.addDeclaredRowMapper(new PSqlRowMapper<State>() {
 
-		List<Object> params = new LinkedList<Object>();
+			@Override
+			public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
+				return new State(rs.getString("Name"), rs
+						.getString("Abbreviation"));
+			}
 
-		params.add(true);
-		
-		List<Map<String, String>> results = call.execute(params);
-		
-		List<String> initials = new LinkedList<String>();
-		
-		for (Map<String, String> row : results) {
-			initials.add(row.get("Abbreviation"));
-		}
-		
-		return initials;
+		});
+
+		call.addDeclaredParameter(new SqlParameter("showonlypeerstates",
+				Types.BOOLEAN));
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("showonlypeerstates", true);
+
+		return call.execute(params);
 
 	}
 
-	public List<StateMeta> getPeersByFullName() {
+	public List<DBState> getPeersFull() {
 
-		PSqlStringMappedJdbcCall<Map<String, String>> call = 
-				new PSqlStringMappedJdbcCall<Map<String, String>>(template)
-				.withSchemaName("mhtc_sch")
-				.withProcedureName("getstates");
-		
-		List<String> columns = new LinkedList<String>(); 
-		columns.add("Id");
-		columns.add("Abbreviation"); 
-		columns.add("Name");
-		columns.add("IsPeerState");
+		PSqlStringMappedJdbcCall<DBState> call = new PSqlStringMappedJdbcCall<DBState>(
+				template).withSchemaName("mhtc_sch").withProcedureName(
+				"getstates");
 
-		call.addDeclaredRowMapper(new HashMapRowMapper(columns));
+		call.addDeclaredRowMapper(new PSqlRowMapper<DBState>() {
 
-		List<Object> params = new LinkedList<Object>();
+			@Override
+			public DBState mapRow(SqlRowSet rs, int rowNum) throws SQLException {
+				return new DBState(rs.getInt("Id"), rs.getString("Name"), rs
+						.getString("Abbreviation"), rs
+						.getBoolean("IsPeerState"));
+			}
 
-		params.add(true);
-		
-		List<Map<String, String>> results = call.execute(params);
-		
-		List<StateMeta> names = new LinkedList<StateMeta>();
-		
-		for (Map<String, String> row : results) {
-			names.add(new StateMeta(Integer.parseInt(row.get("Id")), row.get("Abbreviation"), row.get("Name")));
-		}
-		
-		return names;
+		});
+
+		call.addDeclaredParameter(new SqlParameter("showonlypeerstates",
+				Types.BOOLEAN));
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("showonlypeerstates", false);
+
+		return call.execute(params);
+
 	}
 
 }

@@ -25,7 +25,8 @@ public class DataSource
 		{
 			this.data.add(datas[i]);
 		}
-		this.addData(datas[i]);
+		if (datas.length > 0)
+			this.addData(datas[i]);
 		
 	}
 	
@@ -44,5 +45,29 @@ public class DataSource
 			dataAverage /= count;
 		}
 		return this;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getUrlFrom() {
+		return urlFrom;
+	}
+
+	public String getSourceName() {
+		return sourceName;
+	}
+
+	public String getTrend() {
+		return trend;
+	}
+
+	public LinkedList<Data> getData() {
+		return data;
+	}
+
+	public Integer getDataAverage() {
+		return dataAverage;
 	}
 }
