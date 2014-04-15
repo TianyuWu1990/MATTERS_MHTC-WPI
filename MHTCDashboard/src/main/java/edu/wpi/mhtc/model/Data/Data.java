@@ -14,4 +14,8 @@ public class Data
 	public Integer getValue() {
 		return value;
 	}
+	
+	public Integer getYear() {
+		return year;
+	}
 }

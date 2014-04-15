@@ -7,9 +7,11 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 // TODO add profile 
 @Configuration
+@Profile("local")
 public class LocalConfiguration {
 
 	@Bean 

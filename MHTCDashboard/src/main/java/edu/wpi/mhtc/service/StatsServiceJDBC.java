@@ -1,172 +1,107 @@
 package edu.wpi.mhtc.service;
 
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
-import edu.wpi.mhtc.model.StatsItem;
-import edu.wpi.mhtc.model.StatsMeta;
-import edu.wpi.mhtc.persistence.HashMapRowMapper;
+import edu.wpi.mhtc.model.Data.Data;
+import edu.wpi.mhtc.model.Data.DataSource;
+import edu.wpi.mhtc.model.state.State;
+import edu.wpi.mhtc.persistence.DBMetric;
+import edu.wpi.mhtc.persistence.DBState;
+import edu.wpi.mhtc.persistence.MetricMapper;
+import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
+import edu.wpi.mhtc.persistence.StateMapper;
 
 @Service
 public class StatsServiceJDBC implements StatsService {
 
 	private JdbcTemplate template;
+	private StateMapper stateMapper;
+	private MetricMapper metricMapper;
 
 	@Autowired
-	public StatsServiceJDBC(JdbcTemplate template) {
+	public StatsServiceJDBC(JdbcTemplate template, StateMapper stateMapper, MetricMapper metricMapper) {
 		this.template = template;
-
+		this.stateMapper = stateMapper;
+		this.metricMapper = metricMapper;
 	}
 
 	@Override
-	public List<StatsMeta> getAvailibleStatistics() {
-		// TODO Auto-generated method stub
-
-		PSqlStringMappedJdbcCall<Map<String, String>> call = 
-				new PSqlStringMappedJdbcCall<Map<String, String>>(template)
-				.withSchemaName("mhtc_sch")
-				.withProcedureName("getcategories");
+	public State getDataForState(String state, String metrics) {
 		
-		List<String> columns = new LinkedList<String>(); 
-		columns.add("Id");
-		columns.add("Name"); 
-		columns.add("ParentId");
-		columns.add("Visible");
-		columns.add("Source");
-
-		call.addDeclaredRowMapper(new HashMapRowMapper(columns));
-
-		List<Object> params = new LinkedList<Object>();
-
-		params.add(false);
-		params.add(null);
+		final DBState dbState = stateMapper.getStateFromString(state);
+		List<DBMetric> dbMetrics = getListOfMetricsFromCommaSeparatedString(metrics);
 		
-		List<Map<String, String>> results = call.execute(params);
 		
-		List<String> categoryIds = new LinkedList<String>();
+		PSqlStringMappedJdbcCall<DataPoint> call = new PSqlStringMappedJdbcCall<DataPoint>(
+				template).withSchemaName("mhtc_sch").withProcedureName(
+				"getdatabystate");
+
+		call.addDeclaredRowMapper(new PSqlRowMapper<DataPoint>() {
+
+			@Override
+			public DataPoint mapRow(SqlRowSet rs, int rowNum)
+					throws SQLException {
+				return new DataPoint(dbState, metricMapper.getMetricByID(rs.getInt("MetricId")), rs
+						.getInt("Year"), rs.getDouble("Value"));
+			}
+
+		});
+
+		call.addDeclaredParameter(new SqlParameter("stateid", Types.INTEGER));
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("stateid", dbState.getId());
+
+		List<DataPoint> datapoints = call.execute(params);
 		
-		for (Map<String, String> row : results) {
-			categoryIds.add(row.get("Id"));
+		
+		List<DataSource> datasources = new LinkedList<DataSource>();
+
+		for (DBMetric metric : dbMetrics) {
+			int id = metric.getId();
+			DataSource source = new DataSource(metric.getName(), "", "NA", "");
+			for (DataPoint datapoint : datapoints) {
+				if (datapoint.getMetricid().getId() == id) {
+					source.addData(new Data(datapoint.getYear(), (int)datapoint.getValue()));
+				}
+			}
+			datasources.add(source);
 		}
 		
-		List<StatsMeta> metrics = new LinkedList<StatsMeta>();
 		
-		for (String categoryId : categoryIds) {
+		return new State(dbState.getName(), dbState.getInitial(), datasources);
+
+	}
+
+	private List<DBMetric> getListOfMetricsFromCommaSeparatedString(String metric) {
 		
-			PSqlStringMappedJdbcCall<Map<String, String>> call2 = 
-					new PSqlStringMappedJdbcCall<Map<String, String>>(template)
-					.withSchemaName("mhtc_sch")
-					.withProcedureName("getmetrics");
+		if (metric.equals("all"))
+			return metricMapper.getAll();
+		
+		String[] splits = metric.split(",");
+		
+		List<DBMetric> metrics = new LinkedList<DBMetric>();
+		
+		for (String split : splits) {
 			
-			List<String> columns2 = new LinkedList<String>(); 
-			columns2.add("Id");
-			columns2.add("Name"); 
-			columns2.add("Visible");
-			columns2.add("IsCalculated");
-	
-			call2.addDeclaredRowMapper(new HashMapRowMapper(columns2));
-	
-			List<Object> params2 = new LinkedList<Object>();
-	
-			params2.add(categoryId);
-			params2.add(false);
-			
-			List<Map<String, String>> results2 = call2.execute(params2);
-			
-			for (Map<String, String> row : results2) {
-				metrics.add(new StatsMeta(row.get("Id"), row.get("Name")));
-			}
+			metrics.add(metricMapper.getMetricFromString(split));
 		}
 		
 		return metrics;
 	}
-
-	@Override
-	public List<StatsItem> getStatistics(String statistic, String state) {
-		if (state.equals("all")) {
-		
-			PSqlStringMappedJdbcCall<Map<String, String>> call = 
-					new PSqlStringMappedJdbcCall<Map<String, String>>(template)
-					.withSchemaName("mhtc_sch")
-					.withProcedureName("getdatabymetric");
-			
-			List<String> columns = new LinkedList<String>(); 
-			columns.add("Stateid");
-			columns.add("StateName"); 
-			columns.add("Abbreviation");
-			columns.add("Year");
-			columns.add("Value");
 	
-			call.addDeclaredRowMapper(new HashMapRowMapper(columns));
 	
-			List<Object> params = new LinkedList<Object>();
-	
-			params.add(statistic);
-			
-			List<Map<String, String>> results = call.execute(params);
-			
-			List<StatsItem> values = new LinkedList<StatsItem>();
-			StatsMeta meta = findMeta(statistic);
-			
-			for (Map<String, String> row : results) {
-				values.add(new StatsItem(meta, row.get("StateName"),Integer.parseInt(row.get("Year")), Double.parseDouble(row.get("Value"))));
-			}
-			
-			return values;
-		} else {
-			PSqlStringMappedJdbcCall<Map<String, String>> call = 
-					new PSqlStringMappedJdbcCall<Map<String, String>>(template)
-					.withSchemaName("mhtc_sch")
-					.withProcedureName("getdatabystate");
-			
-			List<String> columns = new LinkedList<String>(); 
-			columns.add("MetricId");
-			columns.add("MetricName"); 
-			columns.add("Year");
-			columns.add("Value");
-	
-			call.addDeclaredRowMapper(new HashMapRowMapper(columns));
-	
-			List<Object> params = new LinkedList<Object>();
-	
-			params.add(state);
-			
-			List<Map<String, String>> results = call.execute(params);
-			
-			List<StatsItem> values = new LinkedList<StatsItem>();
-			StatsMeta meta = findMeta(statistic);
-			
-			for (Map<String, String> row : results) {
-				if (row.get("MetricId").equals(statistic))
-					values.add(new StatsItem(meta, state,Integer.parseInt(row.get("Year")), Double.parseDouble(row.get("Value"))));
-			}
-			
-			return values;
-		}
-	}
-	
-	private StatsMeta findMeta(String stat) {
-		List<StatsMeta> allMeta = getAvailibleStatistics();
-		
-		for (StatsMeta meta : allMeta) {
-			if (meta.getName().equals(stat))
-				return meta;
-		}
-		
-		return null;
-		
-	}
-
-	@Override
-	public List<StatsItem> getStatistics(String state) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
