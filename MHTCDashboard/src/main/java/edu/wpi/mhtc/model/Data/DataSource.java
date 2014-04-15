@@ -17,7 +17,7 @@ public class DataSource
 	{
 		this.name = name;
 		this.urlFrom = urlFrom;
-		this.trend = trend;
+		this.trend = trend==null?"?":trend;
 		this.data = new LinkedList<Data>();
 		this.sourceName = sourceName;
 		int i;

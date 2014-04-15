@@ -40,7 +40,8 @@ public class RSON
 		{
 			return result;
 		}
-		else if (clazz == Integer.class || clazz == Boolean.class)
+		else if (clazz == Integer.class || clazz == Boolean.class ||
+				 clazz == Float.class   || clazz == Double.class)
 		{
 			return result.append(obj);
 		}
