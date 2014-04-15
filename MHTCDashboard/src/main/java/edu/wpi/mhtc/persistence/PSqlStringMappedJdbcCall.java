@@ -96,13 +96,14 @@ public class PSqlStringMappedJdbcCall<T> {
 	 * @return A list of T as mapped by the row mapper
 	 */
 	public List<T> execute(Map<String, Object> params) {
-		try {
+
+		List<T> returnValues = new LinkedList<T>();
+        
+        try {
 
 			String statement = buildQuery(params);
 
 			SqlRowSet result = template.queryForRowSet(statement);
-
-			List<T> returnValues = new LinkedList<T>();
 
 			// Get the column names out of the first row
 			int i = 0;
@@ -111,11 +112,19 @@ public class PSqlStringMappedJdbcCall<T> {
 				i++;
 			}
 
-			return returnValues;
-
-		} catch (InvalidResultSetAccessException | SQLException e) {
-			throw new RuntimeException("Error mapping SQL result set to object", e);
+		} catch (InvalidResultSetAccessException e){
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //a runtime exception?!?!?
+            //this is a webserver, not a desktop app. it cant throw one of these.
+			//throw new RuntimeException("Error mapping SQL result set to object", e);
 		}
+        finally
+        {
+            //whether populated or not.
+            return returnValues;
+        }
 	}
 
 	private String buildQuery(Map<String, Object> params) {
