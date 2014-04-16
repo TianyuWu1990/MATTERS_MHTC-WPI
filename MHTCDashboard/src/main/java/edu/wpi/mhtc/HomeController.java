@@ -48,4 +48,15 @@ public class HomeController {
 		
 		return "home";
 	}
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public String admin(Locale locale, Model model) throws ParseException {
+		logger.info("Welcome home! The client locale is {}.", locale);
+	
+		return "admin_tool";
+	}
 }
