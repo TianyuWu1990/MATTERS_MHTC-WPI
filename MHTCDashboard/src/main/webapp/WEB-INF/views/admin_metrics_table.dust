@@ -1,0 +1,13 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<table class="tbl>
+{#metrics}
+	<tr>
+		<td>{id}</td>
+		<td>{name}></td>
+		<td>{visible}</td>
+		<td>{calculated}</td>
+		<td>{type}</td>
+		<td><a href="#" class="editCategCLS">Edit</a></td>
+	</tr>
+{/metrics}
+</table>

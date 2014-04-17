@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.fergiggles.giggledust.dust.DustViewResolver;
 
@@ -56,6 +57,7 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 		DustViewResolver resolver = new DustViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".dust");
+		resolver.setOrder(0);
 		return resolver;
 	}
 

@@ -17,22 +17,20 @@ $(document).ready(function() {
             ]
         }];
 
-    /**
-     * Populate treeview from some_url with JSON data.
-     
+    
      $.getJSON(
-     '/some_url/',
-     function(data) {
-     $('#tview-div').tree({
-     data: data
-     });
-     }
+    		 'admin/categories/',
+    		 function(data) {
+    			 $('#tview-div').tree({
+    				 data: data
+    			 });
+    		 }
      );
-     */
+     
 
-    $('#tview-div').tree({
+    /*$('#tview-div').tree({
         data: data
-    });
+    });*/
 
     $('#tview-div').bind(
             'tree.click',
