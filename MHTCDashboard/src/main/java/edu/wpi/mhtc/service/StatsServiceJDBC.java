@@ -81,7 +81,7 @@ public class StatsServiceJDBC implements StatsService {
 		}
 		
 		
-		return new State(dbState.getName(), dbState.getInitial(), (DataSource[]) datasources.toArray());
+		return new State(dbState.getName(), dbState.getInitial(), datasources.toArray(new DataSource[1]));
 
 	}
 
