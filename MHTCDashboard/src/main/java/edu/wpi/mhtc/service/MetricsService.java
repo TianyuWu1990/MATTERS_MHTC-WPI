@@ -8,7 +8,8 @@ import edu.wpi.mhtc.persistence.DBMetric;
 
 public interface MetricsService {
 
-	public List<DBMetric> getAvailibleStatistics();
-	public List<AdminMetric> getMetricsForCategory(int categoryID);
-	public TreeViewNode getCategoriesAsTree();
+	List<DBMetric> getAvailibleStatistics();
+	List<AdminMetric> getMetricsForCategory(int categoryID);
+	TreeViewNode getCategoriesAsTree();
+	void storeCategory(String name, int parentId, String source);
 }

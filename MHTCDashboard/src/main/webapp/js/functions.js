@@ -2,31 +2,16 @@
 
 $(document).ready(function() {
 
-    var data = [
-        {
-            label: 'node1', id: 1,
-            children: [
-                {label: 'child1', id: 2},
-                {label: 'child2', id: 3}
-            ]
-        },
-        {
-            label: 'node2', id: 4,
-            children: [
-                {label: 'child3', id: 5, children: [{label: 'test1', id: 6}, {label: 'test2', id: 7}]}, {label: 'child4', id: 8}
-            ]
-        }];
 
-    
-     $.getJSON(
-    		 'admin/categories/',
-    		 function(data) {
-    			 $('#tview-div').tree({
-    				 data: data
-    			 });
-    		 }
-     );
-     
+
+    $.getJSON(
+            'admin/categories/',
+            function(data) {
+                $('#tview-div').tree({
+                    data: data
+                });
+            }
+    );
 
     /*$('#tview-div').tree({
         data: data
@@ -63,6 +48,7 @@ $(document).ready(function() {
             title: 'Add New Category',
             modal: true,
             buttons: {"Save": function() {
+                    storeCategory(node.id, $("#newCategName").val(), $("#newSourceName").val());
                     $(this).dialog("close");
                 }, "Cancel": function() {
                     $(this).dialog("close");
@@ -136,36 +122,63 @@ $(document).ready(function() {
     });
 
 
-    function getMetrics(categoryId) {
-        $.ajax({
-            type: "POST",
-            url: '#',
-            dataType: "html",
-            success: function(data) {
-                //to do
-                $('#metrics_div').html(
-                        '<table class="tbl"> <tr><th>Id</th><th>Metric Name</th><th>Visible</th><th>Calculated</th><th></th></tr> ' +
-                        '<tr> <td>1</td><td>Total Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td> </tr>' +
-                        '<tr> <td>2</td><td>Sales and Gross Receipts Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td></tr>' +
-                        '<tr> <td>3</td><td>Income Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td></tr>' +
-                        '</table>'
-                        );
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $('#metrics_div').html(
-                        '<table class="tbl"> <tr><th>Id</th><th>Metric Name</th><th>Visible</th><th>Calculated</th><th></th></tr> ' +
-                        '<tr> <td>1</td><td>Total Taxes</td><td>True </td><td>False</td> <td><a href="#" class="editCategCLS">Edit</a></td> </tr>' +
-                        '<tr> <td>2</td><td>Sales and Gross Receipts Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td></tr>' +
-                        '<tr> <td>3</td><td>Income Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td></tr>' +
-                        '</table>'
-                        );
-                $('.editCategCLS').click(function() {
-                    alert('yes');
-                });
-            }
-        });
-    }
+    
 
 
 
 });
+
+
+function storeCategory(parentId, name, source) {
+    $.ajax({
+        type: "POST",
+        url: 'admin/categories/new',
+        data: { parentid: parentId, name: name, source: source},
+        dataType: "html",
+        success: function(data) {
+            refreshTree();
+        }
+        
+    });
+}
+
+function refreshTree() {
+    $.getJSON(
+            'admin/categories/',
+            function(data) {
+                $('#tview-div').tree('loadData', data);
+            }
+    );
+}
+
+
+function getMetrics(categoryId) {
+    $.ajax({
+        type: "POST",
+        url: '#',
+        dataType: "html",
+        success: function(data) {
+            //to do
+            $('#metrics_div').html(
+                    '<table class="tbl"> <tr><th>Id</th><th>Metric Name</th><th>Visible</th><th>Calculated</th><th></th></tr> ' +
+                    '<tr> <td>1</td><td>Total Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td> </tr>' +
+                    '<tr> <td>2</td><td>Sales and Gross Receipts Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td></tr>' +
+                    '<tr> <td>3</td><td>Income Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td></tr>' +
+                    '</table>'
+                    );
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            $('#metrics_div').html(
+                    '<table class="tbl"> <tr><th>Id</th><th>Metric Name</th><th>Visible</th><th>Calculated</th><th></th></tr> ' +
+                    '<tr> <td>1</td><td>Total Taxes</td><td>True </td><td>False</td> <td><a href="#" class="editCategCLS">Edit</a></td> </tr>' +
+                    '<tr> <td>2</td><td>Sales and Gross Receipts Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td></tr>' +
+                    '<tr> <td>3</td><td>Income Taxes</td><td>True </td><td> False</td> <td><a href="#" class="editCategCLS">Edit</a></td></tr>' +
+                    '</table>'
+                    );
+            $('.editCategCLS').click(function() {
+                alert('yes');
+            });
+        }
+    });
+    
+}

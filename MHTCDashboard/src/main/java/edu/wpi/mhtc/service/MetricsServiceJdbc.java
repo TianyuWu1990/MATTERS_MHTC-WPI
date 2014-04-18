@@ -155,4 +155,26 @@ public class MetricsServiceJdbc implements MetricsService {
         return metricCall.execute(metricParams);
 
     }
+
+    @Override
+    public void storeCategory(String name, int parentId, String source) {
+        PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(template)
+                .withSchemaName("mhtc_sch").withProcedureName("insertcategory");
+        
+        call.addDeclaredParameter(new SqlParameter("categname", Types.VARCHAR));
+        call.addDeclaredParameter(new SqlParameter("parentid", Types.INTEGER));
+        call.addDeclaredParameter(new SqlParameter("source", Types.VARCHAR));
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("categname", name);
+        if (parentId == -1) {
+            params.put("parentid", null);
+        } else {
+            params.put("parentid", parentId);
+        }
+        
+        params.put("source", source);
+        
+        call.execute(params);
+    }
 }

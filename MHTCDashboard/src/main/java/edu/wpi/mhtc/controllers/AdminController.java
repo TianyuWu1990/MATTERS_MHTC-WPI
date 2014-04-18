@@ -9,12 +9,15 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import edu.wpi.mhtc.model.admin.TreeViewNode;
 import edu.wpi.mhtc.rson.ParseException;
@@ -43,12 +46,20 @@ public class AdminController {
         return returnList;
     }
     
-    @RequestMapping(value = "/admin/metrictable", method=RequestMethod.GET, params = { "category" })
-    public String metricTable(Model model, @RequestParam("category") int categoryId) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
+    @RequestMapping(value = "/admin/categories/{categoryid}/metrictable", method=RequestMethod.GET, params = { "category" })
+    public String metricTable(Model model, @PathVariable("categoryid") int categoryId) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
         
         model.addAttribute("metrics", new ObjectMapper().writeValueAsString(service.getMetricsForCategory(categoryId)));
         
         return "admin_metrics_table";
+    }
+    
+    @RequestMapping(value = "/admin/categories/new", method=RequestMethod.POST, params = { "parentid", "name", "source"})
+    @ResponseStatus(value = HttpStatus.OK)
+    public void addCategory(@RequestParam("parentid") int parentId, @RequestParam("name") String name, @RequestParam("source") String source) {
+        
+        service.storeCategory(name, parentId, source);
+        
     }
     
 }

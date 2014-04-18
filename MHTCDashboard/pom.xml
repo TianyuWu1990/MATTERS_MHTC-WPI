@@ -120,8 +120,8 @@
 		<!-- Rhino -->
 		<dependency>
 			<groupId>org.mozilla</groupId>
-            <artifactId>rhino</artifactId>
-            <version>1.7R4</version>
+			<artifactId>rhino</artifactId>
+			<version>1.7R4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -177,6 +177,12 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+
 
 
 		<!-- Test -->
@@ -186,6 +192,13 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
