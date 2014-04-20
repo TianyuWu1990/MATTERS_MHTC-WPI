@@ -1,5 +1,47 @@
+var currentState = "Massachusetts";
+var currentStateAbbr = "MA";
+var lastToggle = 0;
+var selected = new Array('MA');
+multiMode = false;
 (function($, document, window, Raphael, undefined) {
   // jQuery Plugin Factory
+  function toFullName(sname){
+      switch(sname){
+        case "MA":
+          return "Massachusetts";
+        case "WA":
+          return "Washington";
+        case "CA":
+          return "California";
+        case "UT":
+          return "Utah";
+        case "CO":
+          return "Colorado";
+        case "TX":
+          return "Texas";
+        case "MN":
+          return "Minnesota";
+        case "GA":
+          return "Georgia";
+        case "NC":
+          return "North Carolina";
+        case "VA":
+          return "Virginia";
+        case "MD":
+          return "Maryland";
+        case "PA":
+          return "Pennsylvania";
+        case "NY":
+          return "New York";
+        case "CT":
+          return "Connecticut";
+        case "NH":
+          return "New Hampshire";
+        default:
+          return false;
+      }
+  }
+
   function jQueryPluginFactory( $, name, methods, getters ){
     getters = getters instanceof Array ? getters : [];
     var getters_obj = {};
@@ -65,43 +107,53 @@
     
     // The styles for the hover
     'stateHoverStyles': {
-      fill: "#33c",
+      fill: "#666",
       stroke: "#FFF",
       scale: [1.1, 1.1]
     },
     
     // The time for the animation, set to false to remove the animation
-    'stateHoverAnimation': 500,
+    'stateHoverAnimation': 300,
     
     // State specific styles. 'ST': {}
-    'stateSpecificStyles': {
-        'WA': {fill: 'MidnightBlue'},
-        'CA': {fill: 'MidnightBlue'},
-        'UT': {fill: 'MidnightBlue'},
-        'CO': {fill: 'MidnightBlue'},
-        'TX': {fill: 'MidnightBlue'},
-        'MN': {fill: 'MidnightBlue'},
-        'GA': {fill: 'MidnightBlue'},
-        'NC': {fill: 'MidnightBlue'},
-        'VA': {fill: 'MidnightBlue'},
-        'MD': {fill: 'MidnightBlue'},
-        'PA': {fill: 'MidnightBlue'},
-        'NY': {fill: 'MidnightBlue'},
-        'CT': {fill: 'MidnightBlue'},
-        'NH': {fill: 'MidnightBlue'},
-        'MA': {fill: 'green'}
-    },
+    
     
     // State specific hover styles
-    'stateSpecificHoverStyles': {},
-    
+    'stateSpecificHoverStyles': {
+        'WA': {fill: '#F90'},
+        'CA': {fill: '#F90'},
+        'UT': {fill: '#F90'},
+        'CO': {fill: '#F90'},
+        'TX': {fill: '#F90'},
+        'MN': {fill: '#F90'},
+        'GA': {fill: '#F90'},
+        'NC': {fill: '#F90'},
+        'VA': {fill: '#F90'},
+        'MD': {fill: '#F90'},
+        'PA': {fill: '#F90'},
+        'NY': {fill: '#F90'},
+        'CT': {fill: '#F90'},
+        'NH': {fill: '#F90'},
+        'MA': {fill: '#F90'}
+    },
     
     // Events
-    'click': null,
     
-    'mouseover': null,
+    click: function(event, data) {
+      $("#map").usmap('select',data.name, true);
+      if(!multiMode && toFullName(data.name)){
+        currentState = toFullName(data.name);
+        currentStateAbbr = data.name;
+      }
+    },
     
-    'mouseout': null,
+    'mouseover': function(event, data){
+      $("#stateTitle").text(toFullName(data.name) || currentState);
+    },
+    
+    'mouseout': function(event, data){
+      $("#stateTitle").text(currentState);
+    },
     
     'clickState': {},
     
@@ -111,7 +163,7 @@
     
     
     // Labels
-    'showLabels' : true,
+    'showLabels' : false,
     
     'labelWidth': 30,
     
@@ -288,13 +340,11 @@
       this._onClickProxy = $.proxy(this, '_onClick');
       this._onMouseOverProxy = $.proxy(this, '_onMouseOver'),
       this._onMouseOutProxy = $.proxy(this, '_onMouseOut');
-        
       for(var state in this.stateHitAreas) {
         this.stateHitAreas[state].toFront();
         $(this.stateHitAreas[state].node).bind('mouseout', this._onMouseOutProxy);
         $(this.stateHitAreas[state].node).bind('click', this._onClickProxy);
-        $(this.stateHitAreas[state].node).bind('mouseover', this._onMouseOverProxy);
-        
+        $(this.stateHitAreas[state].node).bind('mouseover', this._onMouseOverProxy);        
       }
     },
     
@@ -381,6 +431,7 @@
         $(this.labelHitAreas[state].node).bind('mouseout', this._onMouseOutProxy);
         $(this.labelHitAreas[state].node).bind('click', this._onClickProxy);
         $(this.labelHitAreas[state].node).bind('mouseover', this._onMouseOverProxy);
+
       }
     },
     
@@ -415,7 +466,6 @@
         labelHitArea: labelHitArea
       };
     },
-    
     
     
     /**
@@ -478,7 +528,6 @@
       
       return !this._triggerEvent('click', event, stateData);
     },
-    
     
     
     /**
@@ -609,7 +658,69 @@
       
       this._triggerEvent(type, event, stateData);
     },
-    
+    select: function(state, check) {
+      if(!document.getElementById('chk'+state))
+          return;
+      thisTime = new Date().getTime();
+      if(thisTime - lastToggle < 100)
+        return;
+      lastToggle = thisTime;
+      state = state.toUpperCase(); // ensure state is uppercase to match
+      var attrs = {fill: 'green'};
+      if(multiMode === true){
+        ind = selected.indexOf(state);
+        if(ind === -1){
+          selected.push(state);
+        }else{
+          selected.splice(ind, 1);
+          console.log("hit");
+          attrs = {fill: 'MidnightBlue'};
+        }
+      }else{ 
+        var stateData = this._getState(currentStateAbbr);
+        var attr = {fill: 'MidnightBlue'};
+        this.options.stateSpecificStyles[stateData.name] = attr;
+        stateData.shape.animate(attr, this.options.stateHoverAnimation);  
+      }
+      if(check){
+      //TODO: Get Mirroring of the two working both ways
+      // Note: Calling click calls this method again, and breaks the functionality...
+      //var clickAction = document.getElementById('chk'+state).parentElement.getAttribute('onClick');
+      //document.getElementById('chk'+state).parentElement.setAttribute('onClick','');
+        $("#chk"+state).click();
+        if(!multiMode)
+          $("#chk"+state).disabled = true;
+      //document.getElementById('chk'+state).setAttribute.onclick = clickAction;
+      //console.log(clickAction);
+      }
+      console.log("hit3");
+      var stateData = this._getState(state);
+      // hover effect
+      this.bringShapeToFront(stateData.shape);
+      this.paper.safari();
+      
+      this.options.stateSpecificStyles[stateData.name] = attrs;
+      stateData.shape.animate(attrs, this.options.stateHoverAnimation);
+    },
+    toggleMultiselect: function(){
+      this.reset();
+      multiMode = !multiMode;
+      if(multiMode){
+        var stateData = this._getState(currentStateAbbr);
+        var attrs = {fill: 'orange'};
+        this.options.stateSpecificStyles[stateData.name] = attrs;
+        stateData.shape.animate(attrs, this.options.stateHoverAnimation);
+      }
+    },
+    reset: function(options){
+      selected.forEach(function(val, ind, arr){
+        var stateData = this._getState(val);
+        var attrs = {fill: 'MidnightBlue'};
+        this.options.stateSpecificStyles[stateData.name] = attrs;
+        stateData.shape.animate(attrs, this.options.stateHoverAnimation);
+      }, this);
+      this.select(currentStateAbbr, true);
+    },
     
     /**
      * Bring a state shape to the top of the state shapes, but not above the hit areas

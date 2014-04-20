@@ -4,6 +4,7 @@ toggleMultiselect = function(){
 }
 selectState = function(state){
 	$('#map').usmap('select',state, false);
+	loadState(state);
 }
 loadFunction = function(){
 		$('#sidebar li:eq(0) a').tab('show');
