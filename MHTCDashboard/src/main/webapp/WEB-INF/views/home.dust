@@ -36,24 +36,6 @@
 			</div>
 		</div>
 
-		<!-- another graph -->
-		<div class="modal fade" id="myMultiModal" tabindex="-1" role="dialog" aria-labelledby="myMultiModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">State Science and Technology Graph</h4>
-					</div>
-					<div class="modal-body" id="mmbody">
-						<svg style="height: 70%;"></svg>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<!-- a third graph -->
 		<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -141,44 +123,44 @@
 								<th>Source</th>
 								<th></th>
 							</thead>
-							<tbody>
-								{#jv_rankings}
-									<tr>
-										<td>{name}</td>
-										<td><span class="trend_icon trend_{trend}"></span></td>
-											<td>{dataAverage}</td>
-											<td><a href="{urlFrom}">{sourceName}</a></td>
-											<td>
-											<div class="btn-group btn-group-sm">
-												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-													<span class="glyphicon glyphicon-chevron-down"></span>
-												</button>
-												<ul class="dropdown-menu" role="menu">
-													<li>
-														<a href="#">Compare to Peer States</a>
-													</li>
-													<li>
-														<a href="#" onClick="toggleMultiselect()">Compare to Select States</a>
-													</li>
-													<li>
-														<a href="#">Compare to Top Ten</a>
-													</li>
-													<li>
-														<a href="#">Compare to Bottom Ten</a>
-													</li>
-													<li>
-														<a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a>
-													</li>
-													<li class="divider"></li>
-													<li>
-														<a href="#">Open Source</a>
-													</li>
-												</ul>
-											</div>
-										</td>
-									</tr>
-								{/jv_rankings}
-							</tbody>
+								<tbody id="national_table_body">
+									{#jv_rankings}
+										<tr>
+											<td>{name}</td>
+											<td><span class="trend_icon trend_{trend}"></span></td>
+												<td>{dataAverage}</td>
+												<td><a href="{urlFrom}">{sourceName}</a></td>
+												<td>
+												<div class="btn-group btn-group-sm">
+													<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+														<span class="glyphicon glyphicon-chevron-down"></span>
+													</button>
+													<ul class="dropdown-menu" role="menu">
+														<li>
+															<a href="#">Compare to Peer States</a>
+														</li>
+														<li>
+															<a href="#" onClick="toggleMultiselect()">Compare to Select States</a>
+														</li>
+														<li>
+															<a href="#">Compare to Top Ten</a>
+														</li>
+														<li>
+															<a href="#">Compare to Bottom Ten</a>
+														</li>
+														<li>
+															<a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a>
+														</li>
+														<li class="divider"></li>
+														<li>
+															<a href="#">Open Source</a>
+														</li>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									{/jv_rankings}
+								</tbody>
 						</table>
 					</div>
 					<div class="tab-pane fade" id="profile">

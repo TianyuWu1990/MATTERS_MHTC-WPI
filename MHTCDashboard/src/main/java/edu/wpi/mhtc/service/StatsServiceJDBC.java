@@ -73,8 +73,12 @@ public class StatsServiceJDBC implements StatsService {
 			int id = metric.getId();
 			DataSource source = new DataSource(metric.getName(), "", "NA", "");
 			for (DataPoint datapoint : datapoints) {
-				if (datapoint.getMetricid().getId() == id) {
-					source.addData(new Data(datapoint.getYear(), (int)datapoint.getValue()));
+				try{
+					if (datapoint.getMetricid().getId() == id) {
+						source.addData(new Data(datapoint.getYear(), (int)datapoint.getValue()));
+					}
+				}catch(Exception e){
+
 				}
 			}
 			datasources.add(source);
