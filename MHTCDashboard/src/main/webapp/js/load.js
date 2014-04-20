@@ -34,6 +34,8 @@ loadFunction = function(){
 var dataIndex = 0;
 showGraph = function(ind){
 	dataIndex = ind;
+	document.getElementById("graphTitle").innerHTML = currData.params[ind].name;
+	document.getElementById("graphStates").innerHTML = currData.name;
 	setTimeout(function(){
 			nv.addGraph(function() {
 				var chart = nv.models.cumulativeLineChart()
@@ -58,6 +60,7 @@ showGraph = function(ind){
 				.tickFormat(d3.format(',.1%'));
 				 console.log("Data Index: " + dataIndex);
 				 console.log("CurrData: " + currData);
+				 console.log(data);
 				d3.select('#mbody svg')
 				.datum(data)
 				.transition().
@@ -91,7 +94,7 @@ addMultiGraph = function(){
 		 
 		chart.yAxis
 		.tickFormat(d3.format(',.1%'));
-		 
+		 console.log(data);
 		d3.select('#mmbody svg')
 		.datum(data)
 		.transition().
@@ -142,7 +145,7 @@ function loadData(stateData){
                 srcLink.href = metrics[i].urlFrom;
                 srcLink.appendChild(document.createTextNode(metrics[i].sourceName));
                 var dropDown = document.createElement('tr');
-                dropDown.innerHTML = "<div class=\"btn-group btn-group-sm\"><button type=\"button\" class=\btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\"><span class=\"glyphicon glyphicon-chevron-down\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li><a href=\"#\">Compare to Peer States</a></li><li><a href=\"#\" onClick=\"toggleMultiselect()\">Compare to Select States</a></li><li><a href=\"#\">Compare to Top Ten</a></li><li><a href=\"#\">Compare to Bottom Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showGraph("+i+")\">View Graph</a></li><li class=\"divider\"></li><li><a href=\"#\">Open Source</a></li></ul></div>";
+                dropDown.innerHTML = "<div class=\"btn-group btn-group-sm\"><button type=\"button\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\"><span class=\"glyphicon glyphicon-chevron-down\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li><a href=\"#\">Compare to Peer States</a></li><li><a href=\"#\" onClick=\"toggleMultiselect()\">Compare to Select States</a></li><li><a href=\"#\">Compare to Top Ten</a></li><li><a href=\"#\">Compare to Bottom Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showGraph("+i+")\">View Graph</a></li><li class=\"divider\"></li><li><a href=\"#\">Open Source</a></li></ul></div>";
                 src.appendChild(srcLink);
                 tr.appendChild(name);
                 tr.appendChild(trend);

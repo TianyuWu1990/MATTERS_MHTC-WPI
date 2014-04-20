@@ -24,7 +24,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="myModalLabel">State Science and Technology Graph</h4><h4 class="small">Selected States: Massachusetts, California, Texas</h4>
+						<h4 class="modal-title" id="graphTitle">State Science and Technology Graph</h4><h4 class="small" id="graphStates">Selected States: Massachusetts, California, Texas</h4>
 					</div>
 					<div class="modal-body" id="mbody">
 						<svg style="height: 50%;"></svg>
@@ -36,7 +36,6 @@
 			</div>
 		</div>
 
-		<!-- a third graph -->
 		<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
