@@ -31,6 +31,7 @@ loadFunction = function(){
 				'MA': {fill: 'green'}
 			}
 		});
+		getData("data/stats/query?states=MA&metrics=all", function(data) { currData = data[0]; }); 
 }
 var dataIndex = 0;
 showGraph = function(ind){

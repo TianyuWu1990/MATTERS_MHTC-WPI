@@ -693,7 +693,6 @@ multiMode = false;
       //document.getElementById('chk'+state).setAttribute.onclick = clickAction;
       //console.log(clickAction);
       }
-      console.log("hit3");
       var stateData = this._getState(state);
       // hover effect
       this.bringShapeToFront(stateData.shape);
