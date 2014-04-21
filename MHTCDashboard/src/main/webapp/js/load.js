@@ -52,11 +52,9 @@ showGraph = function(ind){
 				.tickFormat(function(d) {
 				return d3.time.format('%x')(new Date(d))
 				});
-				 var data = currData.params[dataIndex].data.map(function(d){
-				 	return {
-				 		year: d["year"],
-				 		value: d["value"]
-				 	};
+				 var data = {key:currData.abbr};
+				 data["values"] = currData.params[dataIndex].data.map(function(d){
+				 	return [d["year"], d["value"]];
 				 });
 				chart.yAxis
 				.tickFormat(d3.format(',.1%'));
@@ -64,7 +62,7 @@ showGraph = function(ind){
 				 console.log("CurrData: " + currData);
 				 console.log(data);
 				d3.select('#mbody svg')
-				.datum(data)
+				.datum([data])
 				.transition().
 				duration(500)
 				.call(chart);
