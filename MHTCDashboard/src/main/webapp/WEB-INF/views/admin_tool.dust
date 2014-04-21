@@ -9,12 +9,12 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js" ></script>
         
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-        <script src="js/libs/jquery-treeview/tree.jquery.js"></script>
+        <script src="../js/libs/jquery-treeview/tree.jquery.js"></script>
         
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css"/>
-        <link rel="stylesheet" href="js/libs/jquery-treeview/jqtree.css"/>
-        <link rel="stylesheet" href="css/admin_css.css"/>
-        <script src="js/functions.js"></script>
+        <link rel="stylesheet" href="../js/libs/jquery-treeview/jqtree.css"/>
+        <link rel="stylesheet" href="../css/admin_css.css"/>
+        <script src="../js/functions.js"></script>
     </head>
     <body>
         <div id="top-div" class="outer-div"><label class="title">Administrator's Page</label></div>

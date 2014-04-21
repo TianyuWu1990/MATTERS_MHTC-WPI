@@ -177,4 +177,26 @@ public class MetricsServiceJdbc implements MetricsService {
         
         call.execute(params);
     }
+
+    @Override
+    public void storeMetric(int categoryId, String name, boolean isCalculated, String type) {
+        if (categoryId <= 0) {
+            return;
+        } 
+        PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(template)
+                .withSchemaName("mhtc_sch").withProcedureName("insertmetric");
+        
+        call.addDeclaredParameter(new SqlParameter("metricname", Types.VARCHAR));
+        call.addDeclaredParameter(new SqlParameter("iscaclucated", Types.BOOLEAN)); // TODO update misnamed variable on db
+        call.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
+        call.addDeclaredParameter(new SqlParameter("datatype", Types.VARCHAR));
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("metricname", name);
+        params.put("iscaclucated", isCalculated);
+        params.put("categoryid", categoryId);
+        params.put("datatype", type);
+        
+        call.execute(params);
+    }
 }

@@ -12,4 +12,5 @@ public interface MetricsService {
 	List<AdminMetric> getMetricsForCategory(int categoryID);
 	TreeViewNode getCategoriesAsTree();
 	void storeCategory(String name, int parentId, String source);
+    void storeMetric(int categoryId, String name, boolean isCalculated, String type);
 }

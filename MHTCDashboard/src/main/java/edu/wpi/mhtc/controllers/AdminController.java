@@ -46,10 +46,10 @@ public class AdminController {
         return returnList;
     }
     
-    @RequestMapping(value = "/admin/categories/{categoryid}/metrictable", method=RequestMethod.GET, params = { "category" })
+    @RequestMapping(value = "/admin/categories/{categoryid}/metrics/table")
     public String metricTable(Model model, @PathVariable("categoryid") int categoryId) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
         
-        model.addAttribute("metrics", new ObjectMapper().writeValueAsString(service.getMetricsForCategory(categoryId)));
+        model.addAttribute("jv_metrics", new ObjectMapper().writeValueAsString(service.getMetricsForCategory(categoryId)));
         
         return "admin_metrics_table";
     }
@@ -59,6 +59,14 @@ public class AdminController {
     public void addCategory(@RequestParam("parentid") int parentId, @RequestParam("name") String name, @RequestParam("source") String source) {
         
         service.storeCategory(name, parentId, source);
+        
+    }
+    
+    @RequestMapping(value = "/admin/categories/{categoryid}/metrics/new", method=RequestMethod.POST, params = { "name", "iscalculated", "type"})
+    @ResponseStatus(value = HttpStatus.OK)
+    public void addMetric(@PathVariable("categoryid") int categoryId, @RequestParam("name") String name, @RequestParam("iscalculated") boolean isCalculated, @RequestParam("type") String type) {
+        
+        service.storeMetric(categoryId, name, isCalculated, type);
         
     }
     
