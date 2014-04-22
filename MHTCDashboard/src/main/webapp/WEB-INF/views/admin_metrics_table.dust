@@ -10,11 +10,11 @@
 {#jv_metrics}
 	<tr>
 		<td>{id}</td>
-		<td>{name}</td>
-		<td>{visible}</td>
-		<td>{calculated}</td>
-		<td>{type}</td>
-		<td><a href="#" class="editCategCLS">Edit</a></td>
+		<td id="editmetricname_{id}">{name}</td>
+		<td id="editmetricvisible_{id}">{visible}</td>
+		<td id="editmetriccalculated_{id}">{calculated}</td>
+		<td id="editmetrictype_{id}">{type}</td>
+		<td><a href="#" id="editmetric_{id}" class="editCategCLS">Edit</a></td>
 	</tr>
 {/jv_metrics}
 </table>

@@ -13,4 +13,6 @@ public interface MetricsService {
 	TreeViewNode getCategoriesAsTree();
 	void storeCategory(String name, int parentId, String source);
     void storeMetric(int categoryId, String name, boolean isCalculated, String type);
+    void updateCategory(int categoryId, String name, boolean visible, String source);
+    void updateMetric(int metricId, String name, boolean visible, boolean isCalculated, String type);
 }

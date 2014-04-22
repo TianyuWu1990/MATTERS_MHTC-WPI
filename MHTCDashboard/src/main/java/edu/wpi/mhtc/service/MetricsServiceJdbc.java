@@ -179,6 +179,26 @@ public class MetricsServiceJdbc implements MetricsService {
     }
 
     @Override
+    public void updateCategory(int categoryId, String name, boolean visible, String source) {
+        PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(template)
+                .withSchemaName("mhtc_sch").withProcedureName("updatecategory");
+
+        call.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
+        call.addDeclaredParameter(new SqlParameter("cname", Types.VARCHAR));
+        call.addDeclaredParameter(new SqlParameter("visible", Types.BOOLEAN));
+        call.addDeclaredParameter(new SqlParameter("source", Types.VARCHAR));
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put("categoryid", categoryId);
+        params.put("cname", name);
+        params.put("visible", visible);
+        params.put("source", source);
+        
+        call.execute(params);
+    }
+
+    @Override
     public void storeMetric(int categoryId, String name, boolean isCalculated, String type) {
         if (categoryId <= 0) {
             return;
@@ -199,4 +219,29 @@ public class MetricsServiceJdbc implements MetricsService {
         
         call.execute(params);
     }
+
+
+    @Override
+    public void updateMetric(int metricId, String name, boolean visible, boolean isCalculated, String type) {
+        
+        PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(template)
+                .withSchemaName("mhtc_sch").withProcedureName("updatemetric");
+
+        call.addDeclaredParameter(new SqlParameter("metricid", Types.INTEGER));
+        call.addDeclaredParameter(new SqlParameter("mname", Types.VARCHAR));
+        call.addDeclaredParameter(new SqlParameter("visible", Types.BOOLEAN));
+        call.addDeclaredParameter(new SqlParameter("iscalculated", Types.BOOLEAN));
+        call.addDeclaredParameter(new SqlParameter("datatype", Types.VARCHAR));
+        
+        Map<String, Object> params = new HashMap<String, Object>();
+
+        params.put("metricid", metricId);
+        params.put("mname", name);
+        params.put("visible", visible);
+        params.put("iscalculated", isCalculated);
+        params.put("datatype", type);
+        
+        call.execute(params);
+    }
+
 }

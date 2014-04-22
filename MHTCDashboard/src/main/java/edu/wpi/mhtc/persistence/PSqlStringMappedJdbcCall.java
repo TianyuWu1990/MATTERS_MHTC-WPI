@@ -107,18 +107,20 @@ public class PSqlStringMappedJdbcCall<T> {
 
 			// Get the column names out of the first row
 			int i = 0;
-			while (result.next()) {
+			while (mapper != null && result.next()) {
 				returnValues.add(mapper.mapRow(result, i));
 				i++;
 			}
 
 		} catch (InvalidResultSetAccessException e){
             e.printStackTrace();
+            throw new RuntimeException("Error mapping SQL result set to object", e);
         } catch (SQLException e) {
             e.printStackTrace();
             //a runtime exception?!?!?
             //this is a webserver, not a desktop app. it cant throw one of these.
-			//throw new RuntimeException("Error mapping SQL result set to object", e);
+            //actually yes it can, your stupid swallowing of this exception made debugging this thing really difficult
+			throw new RuntimeException("Error mapping SQL result set to object", e);
 		}
         finally
         {

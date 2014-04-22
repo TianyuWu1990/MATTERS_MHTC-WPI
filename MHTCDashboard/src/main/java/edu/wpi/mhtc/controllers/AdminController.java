@@ -62,11 +62,26 @@ public class AdminController {
         
     }
     
+    @RequestMapping(value = "/admin/categories/{categoryid}/update", method=RequestMethod.POST, params = { "name", "visible", "source"})
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateCategory(Model model, @PathVariable("categoryid") int categoryId, @RequestParam("visible") boolean visible, @RequestParam("name") String name, @RequestParam("source") String source) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
+
+        service.updateCategory(categoryId, name, visible, source);
+    }
+    
     @RequestMapping(value = "/admin/categories/{categoryid}/metrics/new", method=RequestMethod.POST, params = { "name", "iscalculated", "type"})
     @ResponseStatus(value = HttpStatus.OK)
     public void addMetric(@PathVariable("categoryid") int categoryId, @RequestParam("name") String name, @RequestParam("iscalculated") boolean isCalculated, @RequestParam("type") String type) {
         
         service.storeMetric(categoryId, name, isCalculated, type);
+        
+    }
+    
+    @RequestMapping(value = "/admin/metrics/{metricid}/update", method=RequestMethod.POST, params = { "name", "visible", "iscalculated", "type"})
+    @ResponseStatus(value = HttpStatus.OK)
+    public void updateMetric(@PathVariable("metricid") int metricId, @RequestParam("name") String name, @RequestParam("visible") boolean visible, @RequestParam("iscalculated") boolean isCalculated, @RequestParam("type") String type) {
+        
+        service.updateMetric(metricId, name, visible, isCalculated, type);
         
     }
     
