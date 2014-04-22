@@ -4,5 +4,7 @@ import edu.wpi.mhtc.model.state.State;
 
 public interface StatsService {
 
-	public State getDataForState(String state, String metrics);
+	State getDataForState(String state, String metrics);
+
+	State getStateBinData(String state, int binId);
 }

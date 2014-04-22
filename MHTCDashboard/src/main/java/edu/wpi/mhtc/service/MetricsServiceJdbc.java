@@ -27,61 +27,56 @@ public class MetricsServiceJdbc implements MetricsService {
 		this.template = template;
 
 	}
-
+	
 	@Override
-	public List<DBMetric> getAvailibleStatistics() {
+	public List<DBMetric> getMetricsInCategory(final int categoryId) {
+		PSqlStringMappedJdbcCall<DBMetric> metricCall = new PSqlStringMappedJdbcCall<DBMetric>(template)
+                .withSchemaName("mhtc_sch").withProcedureName("getmetrics");
 
-		PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(
-				template).withSchemaName("mhtc_sch").withProcedureName(
-				"getcategories");
-
-		call.addDeclaredRowMapper(new PSqlRowMapper<Integer>() {
-
-			@Override
-			public Integer mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-				return rs.getInt("Id");
-			}
-
-		});
-
-		call.addDeclaredParameter(new SqlParameter("showall", Types.BOOLEAN));
-		call.addDeclaredParameter(new SqlParameter("parentid", Types.INTEGER));
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("showall", false);
-		params.put("parentid", null);
-
-		List<Integer> categories = call.execute(params);
-		List<DBMetric> metrics = new LinkedList<DBMetric>();
-
-		for (int i : categories) {
-			PSqlStringMappedJdbcCall<DBMetric> metricCall = new PSqlStringMappedJdbcCall<DBMetric>(
-					template).withSchemaName("mhtc_sch").withProcedureName(
-					"getmetrics");
-
-			metricCall.addDeclaredRowMapper(new PSqlRowMapper<DBMetric>() {
-
-				@Override
-				public DBMetric mapRow(SqlRowSet rs, int rowNum)
-						throws SQLException {
-					return new DBMetric(rs.getInt("Id"), rs.getString("Name"), rs.getString("DataType"));
-				}
-
-			});
-
-			metricCall.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
-			metricCall.addDeclaredParameter(new SqlParameter("showall", Types.BOOLEAN));
-
-			Map<String, Object> metricParams = new HashMap<String, Object>();
-			metricParams.put("categoryid", i);
-			metricParams.put("showall", false);
-
-			List<DBMetric> categorymetrics = metricCall.execute(metricParams);
-			
-			metrics.addAll(categorymetrics);
+		String name = "";
+		// TODO get rid of these terrible hard coded ids
+		if (categoryId == 21) {
+			name = "National";
+		} else if (categoryId == 22) {
+			name = "Talent";
+		} else if (categoryId == 23) {
+			name = "Cost";
+		} else if (categoryId == 24) {
+			name = "Economy";
 		}
 		
-		return metrics;
+		final String finalName = name;
+		
+        metricCall.addDeclaredRowMapper(new PSqlRowMapper<DBMetric>() {
 
+            @Override
+            public DBMetric mapRow(SqlRowSet rs, int rowNum) throws SQLException {
+                return new DBMetric(rs.getInt("Id"), rs.getString("Name"), rs.getString("DataType"), categoryId, finalName);
+            }
+
+        });
+
+        metricCall.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
+        metricCall.addDeclaredParameter(new SqlParameter("showall", Types.BOOLEAN));
+
+        Map<String, Object> metricParams = new HashMap<String, Object>();
+        metricParams.put("categoryid", categoryId);
+        metricParams.put("showall", false);
+
+        return metricCall.execute(metricParams);
+		
 	}
+	
+    @Override
+    public List<DBMetric> getAvailibleStatistics() {
+
+    	// TODO pull bin ids into a property or something
+    	List<DBMetric> metrics = new LinkedList<DBMetric>();
+    	metrics.addAll(getMetricsInCategory(21));
+    	metrics.addAll(getMetricsInCategory(22));
+    	metrics.addAll(getMetricsInCategory(23));
+    	metrics.addAll(getMetricsInCategory(24)); 
+
+    	return metrics;
+    }
 }

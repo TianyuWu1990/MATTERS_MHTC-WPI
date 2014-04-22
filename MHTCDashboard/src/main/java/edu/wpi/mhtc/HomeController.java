@@ -46,6 +46,13 @@ public class HomeController {
 		model.addAttribute("jv_peer_states", RSON.parse(peerStates.getAsGrid(4)));
 		model.addAttribute("jv_rankings", RSON.parse(service.getDataForState("MA", "all").getParams()));
 		
+		// TODO unhard code these bin ids
+		model.addAttribute("jv_stats_national", RSON.parse(service.getStateBinData("MA", 21)));
+		model.addAttribute("jv_stats_talent", RSON.parse(service.getStateBinData("MA", 22)));
+		model.addAttribute("jv_stats_cost", RSON.parse(service.getStateBinData("MA", 23)));
+		model.addAttribute("jv_stats_economy", RSON.parse(service.getStateBinData("MA", 24)));
+		
+		
 		return "home";
 	}
 }
