@@ -117,11 +117,41 @@
 			<version>1.2</version>
 		</dependency>
 
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.10-FINAL</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>openxml4j</artifactId>
+			<version>1.0-beta</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.10-FINAL</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.jazzy</groupId>
+			<artifactId>jazzy</artifactId>
+			<version>0.5.2-rtext-1.4.1-2</version>
+		</dependency>
+
 		<!-- Rhino -->
 		<dependency>
 			<groupId>org.mozilla</groupId>
-            <artifactId>rhino</artifactId>
-            <version>1.7R4</version>
+			<artifactId>rhino</artifactId>
+			<version>1.7R4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
