@@ -51,10 +51,11 @@ public class HomeController {
 		
 		model.addAttribute("jv_talent_tab", RSON.parse(new TalentTabController().getTalents()));
 		model.addAttribute("jv_peer_states", RSON.parse(peerStates.getAsGrid(4)));
-		model.addAttribute("jv_rankings", RSON.parse(service.getDataForState("MA", "all").getParams()));
+		//model.addAttribute("jv_rankings", RSON.parse(service.getDataForState("MA", "all").getParams()));
 		
-		// TODO unhard code these bin ids
-		model.addAttribute("jv_stats_national", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 21)));
+		// TODO un-hardcode these bin ids
+		logger.info("datatest: {}", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 21).getParams()));
+		model.addAttribute("jv_rankings", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 21).getParams()));
 		model.addAttribute("jv_stats_talent", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 20)));
 		model.addAttribute("jv_stats_cost", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 37)));
 		model.addAttribute("jv_stats_economy", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 29)));
