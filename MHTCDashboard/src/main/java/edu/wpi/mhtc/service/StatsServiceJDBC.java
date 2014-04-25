@@ -24,88 +24,117 @@ import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 import edu.wpi.mhtc.persistence.StateMapper;
 
 @Service
-public class StatsServiceJDBC implements StatsService {
+public class StatsServiceJDBC implements StatsService
+{
 
 	private JdbcTemplate template;
 	private StateMapper stateMapper;
 	private MetricMapper metricMapper;
+	private MetricsService metricsService;
 
 	@Autowired
-	public StatsServiceJDBC(JdbcTemplate template, StateMapper stateMapper, MetricMapper metricMapper) {
+	public StatsServiceJDBC(JdbcTemplate template, StateMapper stateMapper, MetricMapper metricMapper, MetricsService metricsService)
+	{
 		this.template = template;
 		this.stateMapper = stateMapper;
 		this.metricMapper = metricMapper;
+		this.metricsService = metricsService;
+	}
+
+	private List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric)
+	{
+
+		PSqlStringMappedJdbcCall<DataPoint> call = new PSqlStringMappedJdbcCall<DataPoint>(template).withSchemaName(
+				"mhtc_sch").withProcedureName("getdatabymetricandstate");
+
+		call.addDeclaredRowMapper(new PSqlRowMapper<DataPoint>()
+			{
+				@Override
+				public DataPoint mapRow(SqlRowSet rs, int rowNum) throws SQLException
+				{
+					return new DataPoint(state, metric, rs.getInt("Year"), rs.getDouble("Value"));
+				}
+			});
+
+		call.addDeclaredParameter(new SqlParameter("stateid", Types.INTEGER));
+		call.addDeclaredParameter(new SqlParameter("metricid", Types.INTEGER));
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("stateid", state.getId());
+		params.put("metricid", metric.getId());
+
+		return call.execute(params);
+
+	}
+
+	private List<DataSource> getDataForState(DBState state, List<DBMetric> metrics)
+	{
+		List<DataSource> sources = new LinkedList<DataSource>();
+
+		for (DBMetric metric : metrics)
+		{
+			// TODO get proper values for the datasources
+			DataSource source = new DataSource(metric.getName(), "", "NA", "");
+			List<DataPoint> points = getAllYearsForStateAndMetric(state, metric);
+
+			for (DataPoint datapoint : points)
+			{
+				try
+				{
+					source.addData(new Data(datapoint.getYear(), (int) datapoint.getValue()));
+				}
+				catch (Exception e)
+				{
+					//TODO log it!
+				}
+			}
+			sources.add(source);
+		}
+
+		return sources;
 	}
 
 	@Override
-	public State getDataForState(String state, String metrics) {
-		
-		final DBState dbState = stateMapper.getStateFromString(state);
+	public State getDataForState(String state, String metrics)
+	{
+
+		DBState dbState = stateMapper.getStateFromString(state);
 		List<DBMetric> dbMetrics = getListOfMetricsFromCommaSeparatedString(metrics);
-		
-		
-		PSqlStringMappedJdbcCall<DataPoint> call = new PSqlStringMappedJdbcCall<DataPoint>(
-				template).withSchemaName("mhtc_sch").withProcedureName(
-				"getdatabystate");
 
-		call.addDeclaredRowMapper(new PSqlRowMapper<DataPoint>() {
+		List<DataSource> sources = getDataForState(dbState, dbMetrics);
 
-			@Override
-			public DataPoint mapRow(SqlRowSet rs, int rowNum)
-					throws SQLException {
-				return new DataPoint(dbState, metricMapper.getMetricByID(rs.getInt("MetricId")), rs
-						.getInt("Year"), rs.getDouble("Value"));
-			}
-
-		});
-
-		call.addDeclaredParameter(new SqlParameter("stateid", Types.INTEGER));
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("stateid", dbState.getId());
-
-		List<DataPoint> datapoints = call.execute(params);
-		
-		
-		List<DataSource> datasources = new LinkedList<DataSource>();
-
-		for (DBMetric metric : dbMetrics) {
-			int id = metric.getId();
-			DataSource source = new DataSource(metric.getName(), "", "NA", "");
-			for (DataPoint datapoint : datapoints) {
-				try{
-					if (datapoint.getMetricid().getId() == id) {
-						source.addData(new Data(datapoint.getYear(), (int)datapoint.getValue()));
-					}
-				}catch(Exception e){
-
-				}
-			}
-			datasources.add(source);
-		}
-		
-		
-		return new State(dbState.getName(), dbState.getInitial(), datasources.toArray(new DataSource[1]));
+		return new State(dbState.getName(), dbState.getInitial(), sources.toArray(new DataSource[1]));
 
 	}
 
-	private List<DBMetric> getListOfMetricsFromCommaSeparatedString(String metric) {
+	@Override
+	public State getStateBinData(String state, int binId)
+	{
+
+		DBState dbState = stateMapper.getStateFromString(state);
+		List<DBMetric> dbMetrics = metricsService.getMetricsInCategory(binId);
 		
+		List<DataSource> sources = getDataForState(dbState, dbMetrics);
+
+		return new State(dbState.getName(), dbState.getInitial(), sources.toArray(new DataSource[1]));		
+	}
+
+	private List<DBMetric> getListOfMetricsFromCommaSeparatedString(String metric)
+	{
+
 		if (metric.equals("all"))
 			return metricMapper.getAll();
-		
+
 		String[] splits = metric.split(",");
-		
+
 		List<DBMetric> metrics = new LinkedList<DBMetric>();
-		
-		for (String split : splits) {
-			
+
+		for (String split : splits)
+		{
 			metrics.add(metricMapper.getMetricFromString(split));
 		}
-		
+
 		return metrics;
 	}
-	
-	
 
 }

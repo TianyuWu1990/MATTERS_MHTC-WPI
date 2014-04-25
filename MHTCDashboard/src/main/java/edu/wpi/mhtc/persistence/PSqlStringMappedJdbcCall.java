@@ -113,18 +113,12 @@ public class PSqlStringMappedJdbcCall<T> {
 			}
 
 		} catch (InvalidResultSetAccessException e){
-            e.printStackTrace();
+            throw new RuntimeException("Error mapping SQL result set to object", e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            //a runtime exception?!?!?
-            //this is a webserver, not a desktop app. it cant throw one of these.
-			//throw new RuntimeException("Error mapping SQL result set to object", e);
+            throw new RuntimeException("Error mapping SQL result set to object", e);
+            
 		}
-        finally
-        {
-            //whether populated or not.
-            return returnValues;
-        }
+        return returnValues;
 	}
 
 	private String buildQuery(Map<String, Object> params) {
