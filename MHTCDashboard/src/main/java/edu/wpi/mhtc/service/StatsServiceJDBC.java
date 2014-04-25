@@ -79,7 +79,14 @@ public class StatsServiceJDBC implements StatsService
 
 			for (DataPoint datapoint : points)
 			{
-				source.addData(new Data(datapoint.getYear(), (int) datapoint.getValue()));
+				try
+				{
+					source.addData(new Data(datapoint.getYear(), (int) datapoint.getValue()));
+				}
+				catch (Exception e)
+				{
+					//TODO log it!
+				}
 			}
 			sources.add(source);
 		}
