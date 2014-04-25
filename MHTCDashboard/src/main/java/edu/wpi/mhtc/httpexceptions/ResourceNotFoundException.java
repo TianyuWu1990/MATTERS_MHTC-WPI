@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * 
  * @author Stokes
  */
+@SuppressWarnings("serial")
 @ResponseStatus(value=HttpStatus.NOT_FOUND, reason="No such resource.")
-public class ResourceNotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException
+{
 	
 }

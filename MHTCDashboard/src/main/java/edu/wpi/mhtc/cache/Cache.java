@@ -194,7 +194,14 @@ public class Cache<K, V>
 		{
 			if (o instanceof CacheList)
 			{
-				return ((CacheList)o).v.equals(this.v);
+				if (v == null)
+				{
+					return (((CacheList)o).v)==null;
+				}
+				else
+				{
+					return v.equals(((CacheList)o).v);
+				}
 			}
 			return false;
 		}

@@ -25,8 +25,8 @@ public class PeersController {
 	}
 	
 	@RequestMapping(value = ENDPOINT, method = RequestMethod.GET)
-	public @ResponseBody List<State> initialsEndpoint(Model model) {
-		
-		return service.getPeers();
+	public @ResponseBody List<State> initialsEndpoint(Model model)
+	{
+		return service.getAvailible("getPeers").getStates();
 	}
 }

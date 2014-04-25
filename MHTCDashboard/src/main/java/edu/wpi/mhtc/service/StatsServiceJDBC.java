@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.service;
 
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -94,7 +95,7 @@ public class StatsServiceJDBC implements StatsService
 		return sources;
 	}
 
-	@Override
+	
 	public State getDataForState(String state, String metrics)
 	{
 
@@ -106,9 +107,12 @@ public class StatsServiceJDBC implements StatsService
 		return new State(dbState.getName(), dbState.getInitial(), sources.toArray(new DataSource[1]));
 
 	}
+	
+	
+	
 
 	@Override
-	public State getStateBinData(String state, int binId)
+	public State getStateBinData(String state, Integer binId)
 	{
 
 		DBState dbState = stateMapper.getStateFromString(state);
@@ -135,6 +139,39 @@ public class StatsServiceJDBC implements StatsService
 		}
 
 		return metrics;
+	}
+
+	@Override
+	public State getAvailible(Object... params)
+	{
+		if (params.length == 0)
+		{
+			return null;
+		}
+		else
+		{
+			Method[] methods = this.getClass().getMethods();
+			for(Method m : methods)
+			{
+				if (m.getName().equals(params[0]) && m.getReturnType().equals(State.class))
+				{
+					Object[] newParams = new Object[params.length - 1];
+					for(int i=0;i<newParams.length; i++)
+					{
+						newParams[i] = params[i+1];
+					}
+					try
+					{
+						return (State) m.invoke(this, newParams);
+					}
+					catch (Exception e)
+					{
+						return null;
+					}
+				}
+			}
+			return null;
+		}
 	}
 
 }
