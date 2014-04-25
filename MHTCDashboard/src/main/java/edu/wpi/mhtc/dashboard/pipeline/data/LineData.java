@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.ICleaner;
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.NumericCleaner;
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.StateCleaner;
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.YearCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.config.CleanerInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
 
@@ -32,13 +35,28 @@ public class LineData {
 		for(Entry<String, String> entry : map.entrySet()){
 			String metricName = entry.getKey();
 			String metricVal = entry.getValue();
-			
-			ICleaner cleaner = CleanerInfoConfig.getInstance().getCleanInfo(this.fileInfo, metricName);
+			ICleaner cleaner = getCleaner(metricName);
 			String updatedVal = cleaner.clean(metricVal);
-			
 			newMap.put(metricName, updatedVal);
 		}
 		this.map = newMap;
+	}
+	
+	/*
+	 * get the correct cleaner according to the metricName and the fileInfo
+	 */
+	private ICleaner getCleaner(String metricName) throws Exception{
+		if(this.fileInfo.isUnified()){
+			if("state".equalsIgnoreCase(metricName)){
+				return new StateCleaner();
+			}else if("year".equalsIgnoreCase(metricName)){
+				return new YearCleaner();
+			}else{
+				return new NumericCleaner();
+			}
+		}else{
+			return CleanerInfoConfig.getInstance().getCleanInfo(this.fileInfo, metricName);
+		}
 	}
 	
 	

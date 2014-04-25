@@ -7,14 +7,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.sun.media.sound.InvalidFormatException;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
 import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
@@ -42,19 +41,15 @@ public class ExcelParser implements IParser {
 	private void init() {
 		try {
 			if (this.fileInfo.getFileType() == FileType.xlsx) {
-				this.workbook = (XSSFWorkbook) WorkbookFactory.create(new File(
-						this.fileInfo.getFileName()));
+				this.workbook = (XSSFWorkbook) WorkbookFactory.create(
+						this.fileInfo.getFile());
 			}
 			if (this.fileInfo.getFileType() == FileType.xls) {
-				this.workbook = WorkbookFactory.create(new File(this.fileInfo
-						.getFileName()));
+				this.workbook = WorkbookFactory.create(this.fileInfo.getFile());
 			}
 		} catch (InvalidFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.getStartAndEndRow();
@@ -224,9 +219,6 @@ public class ExcelParser implements IParser {
 			} catch (InvalidFormatException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (org.apache.poi.openxml4j.exceptions.InvalidFormatException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			this.getStartAndEndRow();
