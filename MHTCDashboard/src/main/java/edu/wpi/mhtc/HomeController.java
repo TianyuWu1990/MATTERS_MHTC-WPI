@@ -3,18 +3,20 @@ package edu.wpi.mhtc;
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import edu.wpi.mhtc.cache.CachedStateBinData;
 import edu.wpi.mhtc.model.state.PeerStates;
+import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.rson.ParseException;
 import edu.wpi.mhtc.rson.RSON;
 import edu.wpi.mhtc.service.StatsService;
@@ -27,7 +29,6 @@ public class HomeController {
 	
 	private PeerStates peerStates;
 	private StatsService service;
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
 	public HomeController(PeerStates peerStates, StatsService service)
@@ -45,17 +46,27 @@ public class HomeController {
 	 * @throws JsonGenerationException 
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) throws ParseException, JsonGenerationException, JsonMappingException, IOException
+	public String home(Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException, ParseException
 	{
-		model.addAttribute("jv_peer_states", RSON.parse(peerStates.getAsGrid(4)));
+		
+		
+		CachedStateBinData db = CachedStateBinData.getInstance(service);
+		ObjectMapper om = new ObjectMapper();
+		State massNational = db.query("MA", 21);
+		State massTalent = db.query("MA", 20);
+		State massCost = db.query("MA", 37);
+		State massEconomy = db.query("MA", 29);
+		
+		
 		
 		// TODO un-hardcode these bin ids
 		// TODO cache this. a req to the db every time is why we keep going down
-		model.addAttribute("jv_stats_national", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 21).getParams()));
-		model.addAttribute("jv_stats_talent", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 20).getParams()));
-		model.addAttribute("jv_stats_cost", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 37).getParams()));
-		model.addAttribute("jv_stats_economy", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 29).getParams()));
+		model.addAttribute("jv_stats_national", om.writeValueAsString(massNational.getParams()));
+		model.addAttribute("jv_stats_talent", om.writeValueAsString(massTalent.getParams()));
+		model.addAttribute("jv_stats_cost", om.writeValueAsString(massCost.getParams()));
+		model.addAttribute("jv_stats_economy", om.writeValueAsString(massEconomy.getParams()));
 		
+		model.addAttribute("jv_peer_states", om.writeValueAsString(peerStates.getAsGrid(4)));
 		
 		return "home";
 	}
