@@ -1,8 +1,5 @@
 package edu.wpi.mhtc.cache;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -16,6 +16,7 @@ import edu.wpi.mhtc.cache.CachedStateBinData;
 import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.rson.ParseException;
+import edu.wpi.mhtc.rson.RSON;
 import edu.wpi.mhtc.service.StatsService;
 
 /**
@@ -63,7 +64,7 @@ public class HomeController {
 		model.addAttribute("jv_stats_cost", om.writeValueAsString(massCost.getParams()));
 		model.addAttribute("jv_stats_economy", om.writeValueAsString(massEconomy.getParams()));
 		
-		model.addAttribute("jv_peer_states", om.writeValueAsString(peerStates.getAsGrid(4)));
+		model.addAttribute("jv_peer_states", RSON.parse(peerStates.getAsGrid(4)));
 		
 		return "home";
 	}
