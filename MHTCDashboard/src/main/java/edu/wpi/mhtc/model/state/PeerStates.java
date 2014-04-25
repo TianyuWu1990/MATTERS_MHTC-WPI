@@ -2,13 +2,11 @@ package edu.wpi.mhtc.model.state;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import edu.wpi.mhtc.rson.ParseException;
-import edu.wpi.mhtc.rson.RSON;
 import edu.wpi.mhtc.service.PeersService;
 
 @Component
@@ -17,7 +15,13 @@ public class PeerStates {
 
 	@Autowired
 	public PeerStates(PeersService service) {
-		states = (LinkedList<State>) service.getPeers();
+		try
+		{
+			states = (LinkedList<State>) service.getPeers();
+		} catch (Exception e)
+		{
+			
+		}
 	}
 
 	public LinkedList<HashMap<String, LinkedList<State>>> getAsGrid(int rows) throws ParseException {

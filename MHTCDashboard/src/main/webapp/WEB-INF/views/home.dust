@@ -117,22 +117,22 @@
 				<div id="sidebar" class="col-md-12">
 				<ul class="nav nav-tabs">
 					<li>
-						<a href="#home" data-toggle="tab">Talent</a>
+						<a href="#national" data-toggle="tab">National</a>
 					</li>
 					<li>
-						<a href="#profile" data-toggle="tab">National</a>
+						<a href="#talent" data-toggle="tab">Talent</a>
 					</li>
 					<li>
-						<a href="#messages" data-toggle="tab">Cost</a>
+						<a href="#cost" data-toggle="tab">Cost</a>
 					</li>
 					<li>
-						<a href="#settings" data-toggle="tab">Economy</a>
+						<a href="#economy" data-toggle="tab">Economy</a>
 					</li>
 				</ul>
 
 				<!-- Tab panes -->
 				<div class="tab-content">
-					<div class="tab-pane fade" id="home">
+					<div class="tab-pane fade" id="talent">
 						<table class="table table-hover" style="font-size: 13px;">
 							<thead>
 								<th>Index / Survery</th>
@@ -142,7 +142,7 @@
 								<th></th>
 							</thead>
 							<tbody>
-								{#jv_rankings}
+								{#jv_stats_talent}
 									<tr>
 										<td>{name}</td>
 										<td><span class="trend_icon trend_{trend}"></span></td>
@@ -177,11 +177,11 @@
 											</div>
 										</td>
 									</tr>
-								{/jv_rankings}
+								{/jv_stats_talent}
 							</tbody>
 						</table>
 					</div>
-					<div class="tab-pane fade" id="profile">
+					<div class="tab-pane fade" id="national">
 						<table class="table" style="font-size: 13px;">
 							<thead>
 								<th>Index / Survey</th>
@@ -190,7 +190,7 @@
 								<th></th>
 							</thead>
 							<tbody>
-								{#jv_rankings}
+								{#jv_stats_national}
 									<tr>
 										<td>{name}</td>
 										<td>
@@ -229,12 +229,114 @@
 											</div>
 										</td>
 									</tr>
-								{/jv_rankings}
+								{/jv_stats_national}
 							</tbody>
 						</table>
 					</div>
-					<div class="tab-pane fade" id="messages">...</div>
-					<div class="tab-pane fade" id="settings">...</div>
+					<div class="tab-pane fade" id="cost">
+						<table class="table" style="font-size: 13px;">
+							<thead>
+								<th>Index / Survey</th>
+								<th>Ranking / Data</th>
+								<th>Source</th>
+								<th></th>
+							</thead>
+							<tbody>
+								{#jv_stats_cost}
+									<tr>
+										<td>{name}</td>
+										<td>
+											<table class="table table-condensed"	style="font-size: 13px;">
+												<tr>
+													<td>Rank</td>
+													{#data}
+														<td>{value}</td>
+													{/data}
+												</tr>
+												<tr>
+													<td>Year</td>
+													{#data}
+														<td>'{year}</td>
+													{/data}
+												</tr>
+											</table>
+										</td>
+										<td>
+											<a href="{urlFrom}">{sourceName}</a>
+										</td>
+										<td>
+											<div class="btn-group btn-group-sm">
+												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+												<span class="glyphicon glyphicon-chevron-down"></span>
+												</button>
+												<ul class="dropdown-menu" role="menu">
+													<li><a href="#">Compare to Peer States</a></li>
+													<li><a href="#">Compare to Select States</a></li>
+													<li><a href="#">Compare to Top Ten</a></li>
+													<li><a href="#">Compare to Bottom Ten</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+													<li class="divider"></li>
+													<li><a href="#">Open Source</a></li>
+												</ul>
+											</div>
+										</td>
+									</tr>
+								{/jv_stats_cost}
+							</tbody>
+						</table>
+					</div>
+					<div class="tab-pane fade" id="economy">
+						<table class="table" style="font-size: 13px;">
+							<thead>
+								<th>Index / Survey</th>
+								<th>Ranking / Data</th>
+								<th>Source</th>
+								<th></th>
+							</thead>
+							<tbody>
+								{#jv_stats_economy}
+									<tr>
+										<td>{name}</td>
+										<td>
+											<table class="table table-condensed"	style="font-size: 13px;">
+												<tr>
+													<td>Rank</td>
+													{#data}
+														<td>{value}</td>
+													{/data}
+												</tr>
+												<tr>
+													<td>Year</td>
+													{#data}
+														<td>'{year}</td>
+													{/data}
+												</tr>
+											</table>
+										</td>
+										<td>
+											<a href="{urlFrom}">{sourceName}</a>
+										</td>
+										<td>
+											<div class="btn-group btn-group-sm">
+												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+												<span class="glyphicon glyphicon-chevron-down"></span>
+												</button>
+												<ul class="dropdown-menu" role="menu">
+													<li><a href="#">Compare to Peer States</a></li>
+													<li><a href="#">Compare to Select States</a></li>
+													<li><a href="#">Compare to Top Ten</a></li>
+													<li><a href="#">Compare to Bottom Ten</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+													<li class="divider"></li>
+													<li><a href="#">Open Source</a></li>
+												</ul>
+											</div>
+										</td>
+									</tr>
+								{/jv_stats_economy}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 					<div id="multiSelecter" style="position:absolute;left:0px;top:0px;display:none;" class="col-md-12">
