@@ -3,6 +3,9 @@ package edu.wpi.mhtc.cache;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.service.StatsService;
 
@@ -13,10 +16,9 @@ import edu.wpi.mhtc.service.StatsService;
  */
 public class CachedStateBinData
 {
-	private static Cache<StateQuery, State> queryCache = new Cache<StateQuery, State>(16);
-	private static Map<StatsService, CachedStateBinData> instances = new HashMap<StatsService, CachedStateBinData>();
-	
-	
+	private Cache<StateQuery, State> queryCache = new Cache<StateQuery, State>(16);
+	private static CachedStateBinData instance;
+	private static Logger logger = LoggerFactory.getLogger(CachedStateBinData.class);
 	private StatsService service;
 	
 	/**
@@ -35,29 +37,13 @@ public class CachedStateBinData
 	 */
 	public static CachedStateBinData getInstance(StatsService service)
 	{
-		CachedStateBinData instance = instances.get(service);
 		if (instance == null)
 		{
 			instance = new CachedStateBinData(service);
-			instances.put(service, instance);
 		}
 		return instance;
 	}
-	
-	/**
-	 * 
-	 * @param service
-	 */
-	private static void killInstance(StatsService service)
-	{
-		instances.remove(service);
-	}
-	
-	public void kill()
-	{
-		killInstance(this.service);
-	}
-	
+		
 	/**
 	 * 
 	 * @param nameOrInit the name or initial of the state
@@ -72,7 +58,10 @@ public class CachedStateBinData
 		if (s == null)
 		{
 			s = service.getStateBinData(nameOrInit, bin);
-			queryCache.put(sq, s);
+			if (queryCache.put(sq, s))
+			{
+				logger.info("cache full: swapping");
+			}
 		}
 		return s;
 	}
@@ -104,6 +93,12 @@ public class CachedStateBinData
 				return sq.initials.equals(initials) && binID == sq.binID;
 			}
 			return false;
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return initials.hashCode() ^ binID;
 		}
 	}
 }

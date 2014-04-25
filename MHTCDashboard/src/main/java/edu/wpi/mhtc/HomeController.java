@@ -3,8 +3,6 @@ package edu.wpi.mhtc;
 import java.io.IOException;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -18,7 +16,6 @@ import edu.wpi.mhtc.cache.CachedStateBinData;
 import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.rson.ParseException;
-import edu.wpi.mhtc.rson.RSON;
 import edu.wpi.mhtc.service.StatsService;
 
 /**
