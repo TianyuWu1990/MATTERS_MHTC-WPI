@@ -37,11 +37,11 @@ public class MetricsServiceJdbc implements MetricsService {
 		// TODO get rid of these terrible hard coded ids
 		if (categoryId == 21) {
 			name = "National";
-		} else if (categoryId == 22) {
+		} else if (categoryId == 20) {
 			name = "Talent";
-		} else if (categoryId == 23) {
+		} else if (categoryId == 37) {
 			name = "Cost";
-		} else if (categoryId == 24) {
+		} else if (categoryId == 29) {
 			name = "Economy";
 		}
 		
@@ -72,10 +72,10 @@ public class MetricsServiceJdbc implements MetricsService {
 
     	// TODO pull bin ids into a property or something
     	List<DBMetric> metrics = new LinkedList<DBMetric>();
+    	metrics.addAll(getMetricsInCategory(20));
     	metrics.addAll(getMetricsInCategory(21));
-    	metrics.addAll(getMetricsInCategory(22));
-    	metrics.addAll(getMetricsInCategory(23));
-    	metrics.addAll(getMetricsInCategory(24)); 
+    	metrics.addAll(getMetricsInCategory(29));
+    	metrics.addAll(getMetricsInCategory(37)); 
 
     	return metrics;
     }
