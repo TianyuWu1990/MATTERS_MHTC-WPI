@@ -1,7 +1,11 @@
 package edu.wpi.mhtc;
 
+import java.io.IOException;
 import java.util.Locale;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +41,12 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) throws ParseException {
+	public String home(Locale locale, Model model) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		model.addAttribute("jv_talent_tab", RSON.parse(new TalentTabController().getTalents()));
@@ -47,10 +54,10 @@ public class HomeController {
 		model.addAttribute("jv_rankings", RSON.parse(service.getDataForState("MA", "all").getParams()));
 		
 		// TODO unhard code these bin ids
-		model.addAttribute("jv_stats_national", RSON.parse(service.getStateBinData("MA", 21)));
-		model.addAttribute("jv_stats_talent", RSON.parse(service.getStateBinData("MA", 20)));
-		model.addAttribute("jv_stats_cost", RSON.parse(service.getStateBinData("MA", 37)));
-		model.addAttribute("jv_stats_economy", RSON.parse(service.getStateBinData("MA", 29)));
+		model.addAttribute("jv_stats_national", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 21)));
+		model.addAttribute("jv_stats_talent", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 20)));
+		model.addAttribute("jv_stats_cost", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 37)));
+		model.addAttribute("jv_stats_economy", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 29)));
 		
 		
 		return "home";
