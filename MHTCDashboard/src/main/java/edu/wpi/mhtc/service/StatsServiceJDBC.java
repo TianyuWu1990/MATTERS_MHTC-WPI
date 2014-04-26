@@ -25,7 +25,7 @@ import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 import edu.wpi.mhtc.persistence.StateMapper;
 
 @Service
-public class StatsServiceJDBC implements StatsService
+public class StatsServiceJDBC extends StatsService
 {
 
 	private JdbcTemplate template;
@@ -42,7 +42,8 @@ public class StatsServiceJDBC implements StatsService
 		this.metricsService = metricsService;
 	}
 
-	private List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric)
+	@Override
+	protected List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric)
 	{
 
 		PSqlStringMappedJdbcCall<DataPoint> call = new PSqlStringMappedJdbcCall<DataPoint>(template).withSchemaName(
@@ -68,7 +69,8 @@ public class StatsServiceJDBC implements StatsService
 
 	}
 
-	private List<DataSource> getDataForState(DBState state, List<DBMetric> metrics)
+	@Override
+	protected List<DataSource> getDataForState(DBState state, List<DBMetric> metrics)
 	{
 		List<DataSource> sources = new LinkedList<DataSource>();
 
@@ -95,8 +97,8 @@ public class StatsServiceJDBC implements StatsService
 		return sources;
 	}
 
-	
-	public State getDataForState(String state, String metrics)
+	@Override
+	protected State getDataForState(String state, String metrics)
 	{
 
 		DBState dbState = stateMapper.getStateFromString(state);
@@ -123,7 +125,8 @@ public class StatsServiceJDBC implements StatsService
 		return new State(dbState.getName(), dbState.getInitial(), sources.toArray(new DataSource[1]));		
 	}
 
-	private List<DBMetric> getListOfMetricsFromCommaSeparatedString(String metric)
+	@Override
+	public List<DBMetric> getListOfMetricsFromCommaSeparatedString(String metric)
 	{
 
 		if (metric.equals("all"))
@@ -141,35 +144,18 @@ public class StatsServiceJDBC implements StatsService
 		return metrics;
 	}
 
+	
+
+	
 	@Override
-	public State getAvailible(Object... params)
+	public State invokeThis(Method m, Object[] params)
 	{
-		if (params.length == 0)
+		try
 		{
-			return null;
+			return (State) m.invoke(this, params);
 		}
-		else
+		catch (Exception e)
 		{
-			Method[] methods = this.getClass().getMethods();
-			for(Method m : methods)
-			{
-				if (m.getName().equals(params[0]) && m.getReturnType().equals(State.class))
-				{
-					Object[] newParams = new Object[params.length - 1];
-					for(int i=0;i<newParams.length; i++)
-					{
-						newParams[i] = params[i+1];
-					}
-					try
-					{
-						return (State) m.invoke(this, newParams);
-					}
-					catch (Exception e)
-					{
-						return null;
-					}
-				}
-			}
 			return null;
 		}
 	}

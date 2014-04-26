@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.service;
 
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
 @Service
-public class MetricsServiceJdbc implements MetricsService {
+public class MetricsServiceJdbc extends MetricsService {
 
 	private JdbcTemplate template;
 
@@ -80,4 +81,16 @@ public class MetricsServiceJdbc implements MetricsService {
 
     	return new Metrics(metrics);
     }
+
+	@Override
+	public Metrics invokeThis(Method m, Object[] params) {
+		try
+		{
+			return (Metrics) m.invoke(this, params);
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+	}
 }
