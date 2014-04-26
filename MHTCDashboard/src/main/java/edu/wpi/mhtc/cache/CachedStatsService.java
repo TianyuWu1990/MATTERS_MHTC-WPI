@@ -9,16 +9,16 @@ import edu.wpi.mhtc.service.StatsService;
  * @author ted
  *
  */
-public class CachedStateBinData extends CachedData<DataSource, State, CachedStateBinData.StateQuery, StatsService>
+public class CachedStatsService extends CachedData<DataSource, State, CachedStatsService.StateQuery, StatsService>
 {
-	private static CachedStateBinData instance;
+	private static CachedStatsService instance;
 
 	
 	/**
 	 * 
 	 * @param service
 	 */
-	protected CachedStateBinData(StatsService service)
+	protected CachedStatsService(StatsService service)
 	{
 		super(service);
 	}
@@ -28,11 +28,11 @@ public class CachedStateBinData extends CachedData<DataSource, State, CachedStat
 	 * @param service
 	 * @return
 	 */
-	public static CachedStateBinData getInstance(StatsService service)
+	public static CachedStatsService getInstance(StatsService service)
 	{
 		if (instance == null)
 		{
-			instance = new CachedStateBinData(service);
+			instance = new CachedStatsService(service);
 		}
 		return instance;
 	}
