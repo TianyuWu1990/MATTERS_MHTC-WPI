@@ -40,7 +40,7 @@ public class StatsController {
 	public @ResponseBody
 	List<DBMetric> availableEndpoint(Model model) {
 
-		return metricsService.getAvailibleStatistics();
+		return metricsService.getAvailible().getMetrics();
 	}
 
 	@RequestMapping(value = STAT_ENDPOINT, method = RequestMethod.GET, params = { "states", "metrics" })
@@ -78,7 +78,7 @@ public class StatsController {
 		List<State> states = new LinkedList<State>();
 
 		for (String state : stateNames) {
-			states.add(statsService.getDataForState(state, metrics));
+			states.add(statsService.getAvailible("getDataForState", state, metrics));
 		}
 
 		return states;

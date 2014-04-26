@@ -19,7 +19,7 @@ public class MetricMapper
 	public MetricMapper(MetricsService service)
 	{
 
-		metrics = service.getAvailibleStatistics();
+		metrics = service.getAvailible().getMetrics();
 	}
 
 	/**

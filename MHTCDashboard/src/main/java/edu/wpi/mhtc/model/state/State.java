@@ -3,9 +3,10 @@ package edu.wpi.mhtc.model.state;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.wpi.mhtc.model.Model;
 import edu.wpi.mhtc.model.Data.DataSource;
 
-public class State
+public class State implements Model<DataSource>
 {
 	private final String name;
 

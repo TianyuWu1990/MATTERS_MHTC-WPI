@@ -1,10 +1,12 @@
 package edu.wpi.mhtc.service;
 
+import edu.wpi.mhtc.model.Data.DataSource;
 import edu.wpi.mhtc.model.state.State;
 
-public interface StatsService {
+public interface StatsService extends Service<DataSource, State>{
 
-	State getDataForState(String state, String metrics);
+	@Override
+	State getAvailible(Object... params);
 
-	State getStateBinData(String state, int binId);
+	State getStateBinData(String state, Integer binId);
 }

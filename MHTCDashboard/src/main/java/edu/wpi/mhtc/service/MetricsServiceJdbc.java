@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
+import edu.wpi.mhtc.model.Data.Metrics;
 import edu.wpi.mhtc.persistence.DBMetric;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
@@ -68,7 +69,7 @@ public class MetricsServiceJdbc implements MetricsService {
 	}
 	
     @Override
-    public List<DBMetric> getAvailibleStatistics() {
+    public Metrics getAvailible(Object... params) {
 
     	// TODO pull bin ids into a property or something
     	List<DBMetric> metrics = new LinkedList<DBMetric>();
@@ -77,6 +78,6 @@ public class MetricsServiceJdbc implements MetricsService {
     	metrics.addAll(getMetricsInCategory(29));
     	metrics.addAll(getMetricsInCategory(37)); 
 
-    	return metrics;
+    	return new Metrics(metrics);
     }
 }

@@ -6,17 +6,19 @@ import java.util.Locale;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import edu.wpi.mhtc.cache.CachedPeerService;
+import edu.wpi.mhtc.cache.CachedStatsService;
 import edu.wpi.mhtc.model.state.PeerStates;
+import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.rson.ParseException;
 import edu.wpi.mhtc.rson.RSON;
+import edu.wpi.mhtc.service.PeersService;
 import edu.wpi.mhtc.service.StatsService;
 
 /**
@@ -25,15 +27,14 @@ import edu.wpi.mhtc.service.StatsService;
 @Controller
 public class HomeController {
 	
-	private PeerStates peerStates;
-	private StatsService service;
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private StatsService statsService;
+	private PeersService peersService;
 	
 	@Autowired
-	public HomeController(PeerStates peerStates, StatsService service)
+	public HomeController(StatsService ss, PeersService ps)
 	{
-		this.peerStates = peerStates;
-		this.service = service;
+		this.statsService = ss;
+		this.peersService = ps;
 	}
 	
 	
@@ -45,17 +46,29 @@ public class HomeController {
 	 * @throws JsonGenerationException 
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) throws ParseException, JsonGenerationException, JsonMappingException, IOException
+	public String home(Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException, ParseException
 	{
-		model.addAttribute("jv_peer_states", RSON.parse(peerStates.getAsGrid(4)));
+		
+		
+		CachedStatsService css = CachedStatsService.getInstance(statsService);
+		CachedPeerService cps = CachedPeerService.getInstance(peersService);
+		
+		
+		ObjectMapper om = new ObjectMapper();
+		State massNational = css.query("getStateBinData", "MA", 21);
+		State massTalent = css.query("getStateBinData", "MA", 20);
+		State massCost = css.query("getStateBinData", "MA", 37);
+		State massEconomy = css.query("getStateBinData", "MA", 29);
+		PeerStates peers = cps.query("getPeers");
+		
 		
 		// TODO un-hardcode these bin ids
 		// TODO cache this. a req to the db every time is why we keep going down
-		model.addAttribute("jv_stats_national", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 21).getParams()));
-		model.addAttribute("jv_stats_talent", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 20).getParams()));
-		model.addAttribute("jv_stats_cost", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 37).getParams()));
-		model.addAttribute("jv_stats_economy", new ObjectMapper().writeValueAsString(service.getStateBinData("MA", 29).getParams()));
-		
+		model.addAttribute("jv_stats_national", om.writeValueAsString(massNational.getParams()));
+		model.addAttribute("jv_stats_talent", om.writeValueAsString(massTalent.getParams()));
+		model.addAttribute("jv_stats_cost", om.writeValueAsString(massCost.getParams()));
+		model.addAttribute("jv_stats_economy", om.writeValueAsString(massEconomy.getParams()));
+		model.addAttribute("jv_peer_states", RSON.parse(peers.getAsGrid(4)));
 		
 		return "home";
 	}
