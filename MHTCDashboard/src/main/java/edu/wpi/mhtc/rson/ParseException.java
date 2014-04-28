@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.rson;
 
+@SuppressWarnings("serial")
 public class ParseException extends Exception
 {
 

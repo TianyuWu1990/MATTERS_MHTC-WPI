@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +48,7 @@ import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 @Controller
 public class AdminController {
 
-    private DateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private DateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
     
     private MetricsService service;
     private JdbcTemplate template;
@@ -55,6 +56,7 @@ public class AdminController {
     @Autowired
     public AdminController(MetricsService service, JdbcTemplate template) {
         this.service = service;
+        this.template = template;
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -111,12 +113,12 @@ public class AdminController {
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
     public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file) {
-        String name = "Upload - " + fileDateFormat + ".csv";
+        String name = "Upload - " + fileDateFormat.format(new Date()) + ".csv";
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
                 BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File(name)));
+                        new BufferedOutputStream(new FileOutputStream(name));
                 stream.write(bytes);
                 stream.close();
                 
@@ -145,7 +147,7 @@ public class AdminController {
 
             @Override
             public Integer mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return rs.getInt("Id");
+                return rs.getInt(1);
             }
 
         });
@@ -154,7 +156,6 @@ public class AdminController {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("inname", catname);
-        params.put("parentid", null);
 
         return call.execute(params).get(0);
     }

@@ -55,7 +55,7 @@ public class FileInfo {
 	}
 	
 	private FileType getFileTypeByFileName(String fileName){
-		String[] types = fileName.split(".");
+		String[] types = fileName.split("\\.");
 		return FileType.valueOf(types[types.length - 1]);
 	}
 	

@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.service;
 
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
+import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.persistence.DBState;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
@@ -27,7 +29,7 @@ public class PeersServiceJDBC implements PeersService {
 		this.template = template;
 	}
 
-	public List<State> getPeers() {
+	public PeerStates getPeers() {
 
 		PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(
 				template).withSchemaName("mhtc_sch").withProcedureName(
@@ -49,7 +51,7 @@ public class PeersServiceJDBC implements PeersService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("showonlypeerstates", true);
 
-		return call.execute(params);
+		return new PeerStates(call.execute(params));
 
 	}
 
@@ -79,5 +81,41 @@ public class PeersServiceJDBC implements PeersService {
 		return call.execute(params);
 
 	}
+
+	@Override
+	public PeerStates getAvailible(Object... params)
+	{
+		if (params.length == 0)
+		{
+			return null;
+		}
+		else
+		{
+			Method[] methods = this.getClass().getMethods();
+			for(Method m : methods)
+			{
+				if (m.getName().equals(params[0]) && m.getReturnType().equals(PeerStates.class))
+				{
+					Object[] newParams = new Object[params.length - 1];
+					for(int i=0;i<newParams.length; i++)
+					{
+						newParams[i] = params[i+1];
+					}
+					try
+					{
+						return (PeerStates) m.invoke(this, newParams);
+					}
+					catch (Exception e)
+					{
+						return null;
+					}
+				}
+			}
+			return null;
+		}
+	}
+	
+	
+	
 
 }

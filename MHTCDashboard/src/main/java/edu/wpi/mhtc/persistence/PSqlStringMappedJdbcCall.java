@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.InvalidResultSetAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
@@ -117,10 +118,7 @@ public class PSqlStringMappedJdbcCall<T> {
             throw new RuntimeException("Error mapping SQL result set to object", e);
         } catch (SQLException e) {
             e.printStackTrace();
-            //a runtime exception?!?!?
-            //this is a webserver, not a desktop app. it cant throw one of these.
-            //actually yes it can, your stupid swallowing of this exception made debugging this thing really difficult
-			throw new RuntimeException("Error mapping SQL result set to object", e);
+            throw new RuntimeException("Error mapping SQL result set to object", e);
 		}
         return returnValues;
 	}
