@@ -79,8 +79,7 @@ public class PSqlStringMappedJdbcCall<T> {
 	/**
 	 * Adds a row mapper that is used to parse the results of the query.
 	 */
-	public PSqlStringMappedJdbcCall<T> addDeclaredRowMapper(
-			PSqlRowMapper<T> mapper) {
+	public PSqlStringMappedJdbcCall<T> addDeclaredRowMapper(PSqlRowMapper<T> mapper) {
 
 		this.mapper = mapper;
 
@@ -112,12 +111,15 @@ public class PSqlStringMappedJdbcCall<T> {
 				i++;
 			}
 
-		} catch (InvalidResultSetAccessException e){
-            throw new RuntimeException("Error mapping SQL result set to object", e);
-        } catch (SQLException e) {
-            throw new RuntimeException("Error mapping SQL result set to object", e);
-            
 		}
+        catch (InvalidResultSetAccessException e)
+        {
+            throw new RuntimeException("mapping SQL result set to object -- INVALID SET ACCESS", e);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException("mapping SQL result set to object -- GENERAL SQL EXCEPTION", e);  
+        }
         return returnValues;
 	}
 

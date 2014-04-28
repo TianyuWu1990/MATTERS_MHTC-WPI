@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import edu.wpi.mhtc.model.Data.Metrics;
 import edu.wpi.mhtc.service.MetricsService;
 
 @Component
@@ -18,8 +19,11 @@ public class MetricMapper
 	@Autowired
 	public MetricMapper(MetricsService service)
 	{
-
-		metrics = service.getAvailible().getMetrics();
+		Metrics metrics = service.getAvailible();
+		if (metrics != null)
+		{
+			this.metrics = metrics.getMetrics();
+		}
 	}
 
 	/**
