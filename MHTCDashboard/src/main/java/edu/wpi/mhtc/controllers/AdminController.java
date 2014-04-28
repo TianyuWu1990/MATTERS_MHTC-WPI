@@ -113,7 +113,7 @@ public class AdminController {
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
     public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file) {
-        String name = "Upload - " + fileDateFormat.format(new Date()) + ".csv";
+        String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
@@ -130,7 +130,8 @@ public class AdminController {
                 
                 return "You successfully uploaded " + name + " into " + name + "-uploaded !";
             } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
+                throw new RuntimeException(e);
+                //return "You failed to upload " + name + " => " + e.getMessage();
             }
         } else {
             return "You failed to upload " + name + " because the file was empty.";
@@ -157,7 +158,9 @@ public class AdminController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("inname", catname);
 
-        return call.execute(params).get(0);
+        // TODO temp while testing
+        return 2;
+        //return call.execute(params).get(0);
     }
     
 }

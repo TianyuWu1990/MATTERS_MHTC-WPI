@@ -39,8 +39,18 @@ public class DBData {
 	 *	get the metric ID -> metric value pairs 
 	 */
 	private void doMetricMapping() throws Exception{
-		CatInfo catInfo = CatInfoConfig.getInstance().getCatInfo(lineData.getFileInfo());
-		
+	    CatInfo catInfo;
+	    if (lineData.getFileInfo().isUnified()) {
+	        Map<String, String> metricMap = new HashMap<String, String>();
+	        for (String metric : lineData.getMap().keySet()) {
+	            metricMap.put(metric, metric);
+	        }
+	        
+	        catInfo = new CatInfo(lineData.getFileInfo().getCatId(), "", lineData.getFileInfo().getFileName(), metricMap);
+	    } else {
+	        catInfo = CatInfoConfig.getInstance().getCatInfo(lineData.getFileInfo());
+	    }
+	    
 		Map<String, String> metricInfo = DBLoader.getMetricInfo(catInfo.getCatID());
 		for(Entry<String, String> entry : metricInfo.entrySet()){
 			String metricName = entry.getKey();

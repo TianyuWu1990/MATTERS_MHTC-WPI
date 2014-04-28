@@ -12,6 +12,7 @@ public class FileInfo {
 	private LoadInfo loadInfo;
 	private File file;
 	private boolean isUnified = false;
+	private String catId;
 	
 	public FileInfo(String fileName, FileType fileType, ParserType parserType, LoadInfo loadInfo){
 		this.fileName = fileName;
@@ -104,5 +105,13 @@ public class FileInfo {
 
 	public void setUnified(boolean isUnified) {
 		this.isUnified = isUnified;
+	}
+	
+	public String getCatId() {
+	    return catId;
+	}
+	
+	public void setCatId(String catId) {
+	    this.catId = catId;
 	}
 }

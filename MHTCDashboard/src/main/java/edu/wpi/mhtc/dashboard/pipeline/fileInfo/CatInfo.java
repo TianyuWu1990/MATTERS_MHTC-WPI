@@ -10,7 +10,7 @@ public class CatInfo {
 	Map<String, String> metricMap; /* key is the metric name in db, value is the column name */
 	
 	public CatInfo(String catID, String catName, String fileName,
-			HashMap<String, String> metricTable) {
+			Map<String, String> metricTable) {
 		super();
 		this.catID = catID;
 		this.catName = catName;

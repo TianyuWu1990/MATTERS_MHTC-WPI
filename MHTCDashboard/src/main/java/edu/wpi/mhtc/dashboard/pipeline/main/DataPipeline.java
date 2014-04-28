@@ -15,6 +15,7 @@ public class DataPipeline {
 
 	public static void run(File file, String catID) throws Exception{
 		FileInfo fileInfo = new FileInfo(file);
+		fileInfo.setCatId(catID);
 		IParser parser = ParserFactory.getInstance(fileInfo);
 		FileData fileData = parser.parseAll();
 		
@@ -26,13 +27,14 @@ public class DataPipeline {
 				/*
 				 * logs
 				 */
-				System.out.println(dbData.getYear() + "\t"
+				/*System.out.println(dbData.getYear() + "\t"
 						+ dbData.getState().getFullName() + "\t"
-						+ dbData.getCatInfo().getCatName());
+						+ dbData.getCatInfo().getCatName());*/
 				try{
 					DBSaver.saveLineData(dbData);
 				}catch(Exception e){
 					e.printStackTrace();
+					throw new RuntimeException(e);
 				}
 			}
 		}

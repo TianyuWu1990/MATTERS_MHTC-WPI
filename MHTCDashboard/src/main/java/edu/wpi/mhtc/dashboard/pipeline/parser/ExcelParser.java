@@ -135,7 +135,7 @@ public class ExcelParser implements IParser {
 			this.endRow = this.fileInfo.getLoadInfo().getEndRow();
 		} else {
 			Sheet sheet = this.workbook.getSheetAt(0);
-			this.startRow = 1;
+			this.startRow = 2;
 			this.endRow = sheet.getLastRowNum() + 1;
 		}
 	}
