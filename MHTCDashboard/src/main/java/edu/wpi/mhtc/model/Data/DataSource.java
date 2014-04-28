@@ -8,18 +8,20 @@ public class DataSource
 	private final String urlFrom;
 	private final String sourceName;
 	private final String trend;
+	private final String binName;
 	private final LinkedList<Data> data;
 	private Integer dataAverage;
 	
 	
 	
-	public DataSource(String name, String urlFrom, String trend, String sourceName, Data...datas )
+	public DataSource(String name, String urlFrom, String trend, String sourceName, String binName, Data...datas )
 	{
 		this.name = name;
 		this.urlFrom = urlFrom;
 		this.trend = trend==null?"?":trend;
 		this.data = new LinkedList<Data>();
 		this.sourceName = sourceName;
+		this.binName = binName;
 		int i;
 		for(i = 0; i<datas.length-1; i++)
 		{
@@ -69,5 +71,8 @@ public class DataSource
 
 	public Integer getDataAverage() {
 		return dataAverage;
+	}
+	public String getBinName() {
+		return binName;
 	}
 }

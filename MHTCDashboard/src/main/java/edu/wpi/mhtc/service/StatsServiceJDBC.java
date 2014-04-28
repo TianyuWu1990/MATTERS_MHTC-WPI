@@ -75,7 +75,7 @@ public class StatsServiceJDBC implements StatsService
 		for (DBMetric metric : metrics)
 		{
 			// TODO get proper values for the datasources
-			DataSource source = new DataSource(metric.getName(), "", "NA", "");
+			DataSource source = new DataSource(metric.getName(), "", "NA", "", metric.getBinName());
 			List<DataPoint> points = getAllYearsForStateAndMetric(state, metric);
 
 			for (DataPoint datapoint : points)
