@@ -13,7 +13,6 @@ import edu.wpi.mhtc.service.MetricsService;
 @Component
 public class MetricMapper
 {
-
 	private List<DBMetric> metrics;
 
 	@Autowired
@@ -104,3 +103,4 @@ public class MetricMapper
 		return binMetrics;
 	}
 }
+

@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.dashboard.config;
 
+import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.fergiggles.giggledust.dust.DustViewResolver;
 
@@ -56,6 +59,7 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 		DustViewResolver resolver = new DustViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
 		resolver.setSuffix(".dust");
+		resolver.setOrder(0);
 		return resolver;
 	}
 
@@ -65,6 +69,18 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 		JdbcTemplate template = new JdbcTemplate(dataSource);
 		
 		return template;
+	}
+	
+	@Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigElement element = new MultipartConfigElement("uploads", 1048576, 1048576, 1048576);
+        return element;
+    }
+	
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+	    CommonsMultipartResolver mr = new CommonsMultipartResolver();
+	    return mr;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.InvalidResultSetAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
@@ -106,11 +107,10 @@ public class PSqlStringMappedJdbcCall<T> {
 
 			// Get the column names out of the first row
 			int i = 0;
-			while (result.next()) {
+			while (mapper != null && result.next()) {
 				returnValues.add(mapper.mapRow(result, i));
 				i++;
 			}
-
 		}
         catch (InvalidResultSetAccessException e)
         {
