@@ -1,18 +1,31 @@
 package edu.wpi.mhtc.controllers;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,16 +38,22 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.wpi.mhtc.model.admin.TreeViewNode;
+import edu.wpi.mhtc.persistence.PSqlRowMapper;
+import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 import edu.wpi.mhtc.rson.ParseException;
 import edu.wpi.mhtc.service.MetricsService;
+import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
 @Controller
 public class AdminController {
 
+    private DateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
     private MetricsService service;
+    private JdbcTemplate template;
     
     @Autowired
-    public AdminController(MetricsService service) {
+    public AdminController(MetricsService service, JdbcTemplate template) {
         this.service = service;
     }
 
@@ -92,14 +111,21 @@ public class AdminController {
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
     public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file) {
-        String name = "filename";
+        String name = "Upload - " + fileDateFormat + ".csv";
         if (!file.isEmpty()) {
             try {
                 byte[] bytes = file.getBytes();
                 BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File(name + "-uploaded")));
+                        new BufferedOutputStream(new FileOutputStream(new File(name)));
                 stream.write(bytes);
                 stream.close();
+                
+                BufferedReader br = new BufferedReader(new FileReader(name));
+                String category = br.readLine().split(",")[0];
+                br.close();
+                
+                DataPipeline.run(new File(name), "" + getCatId(category));
+                
                 return "You successfully uploaded " + name + " into " + name + "-uploaded !";
             } catch (Exception e) {
                 return "You failed to upload " + name + " => " + e.getMessage();
@@ -108,6 +134,29 @@ public class AdminController {
             return "You failed to upload " + name + " because the file was empty.";
         }
         
+    }
+    
+    
+    private int getCatId(String catname) {
+        PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
+                "mhtc_sch").withProcedureName("getcategorybyname");
+
+        call.addDeclaredRowMapper(new PSqlRowMapper<Integer>() {
+
+            @Override
+            public Integer mapRow(SqlRowSet rs, int rowNum) throws SQLException {
+                return rs.getInt("Id");
+            }
+
+        });
+
+        call.addDeclaredParameter(new SqlParameter("inname", Types.VARCHAR));
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("inname", catname);
+        params.put("parentid", null);
+
+        return call.execute(params).get(0);
     }
     
 }

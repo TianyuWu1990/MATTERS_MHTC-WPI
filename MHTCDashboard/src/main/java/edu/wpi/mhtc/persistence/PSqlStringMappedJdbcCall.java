@@ -122,11 +122,7 @@ public class PSqlStringMappedJdbcCall<T> {
             //actually yes it can, your stupid swallowing of this exception made debugging this thing really difficult
 			throw new RuntimeException("Error mapping SQL result set to object", e);
 		}
-        finally
-        {
-            //whether populated or not.
-            return returnValues;
-        }
+        return returnValues;
 	}
 
 	private String buildQuery(Map<String, Object> params) {
