@@ -157,7 +157,7 @@ function updateCategory(categoryId, name, visible, source) {
 function storeMetric(categoryId, name, isCalculated, type) {
     $.ajax({
         type: "POST",
-        url: 'admin/categories/' + categoryId + 'metrics/new',
+        url: 'admin/categories/' + categoryId + '/metrics/new',
         data: { name: name, iscalculated: isCalculated, type: type},
         dataType: "html",
         success: function(data) {
