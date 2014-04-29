@@ -13,7 +13,7 @@
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="css/local_style.css">
 		<title>
-		    METIS Dashboard
+		    MATTERS: Massachusetts' Technology, Talent and Economy Reporting System
 		</title>
 	</head>
 	<body onLoad="loadFunction()">
@@ -151,9 +151,6 @@
 														<a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a>
 													</li>
 													<li class="divider"></li>
-													<li>
-														<a href="#">Open Source</a>
-													</li>
 												</ul>
 											</div>
 										</td>
@@ -205,7 +202,6 @@
 													<li><a href="#">Compare to Bottom Ten</a></li>
 													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
 													<li class="divider"></li>
-													<li><a href="#">Open Source</a></li>
 												</ul>
 											</div>
 										</td>
@@ -257,7 +253,6 @@
 													<li><a href="#">Compare to Bottom Ten</a></li>
 													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
 													<li class="divider"></li>
-													<li><a href="#">Open Source</a></li>
 												</ul>
 											</div>
 										</td>
@@ -309,7 +304,6 @@
 													<li><a href="#">Compare to Bottom Ten</a></li>
 													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
 													<li class="divider"></li>
-													<li><a href="#">Open Source</a></li>
 												</ul>
 											</div>
 										</td>
