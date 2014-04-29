@@ -1,5 +1,7 @@
 package edu.wpi.mhtc.model.Data;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class DataSource
@@ -26,7 +28,9 @@ public class DataSource
 			this.data.add(datas[i]);
 		}
 		if (datas.length > 0)
+		{
 			this.addData(datas[i]);
+		}
 		
 	}
 	
@@ -69,5 +73,20 @@ public class DataSource
 
 	public Integer getDataAverage() {
 		return dataAverage;
+	}
+
+	public DataSource sort()
+	{
+		Collections.sort(data, new Comparator<Data>(){
+
+			@Override
+			public int compare(Data o1, Data o2)
+			{
+				return o1.getYear().compareTo(o2.getYear());
+			}
+
+		});
+
+		return this;
 	}
 }

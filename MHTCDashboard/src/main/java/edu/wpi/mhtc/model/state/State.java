@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.wpi.mhtc.model.Model;
 import edu.wpi.mhtc.model.Data.DataSource;
+import edu.wpi.mhtc.persistence.DBState;
 
 public class State implements Model<DataSource>
 {
@@ -23,6 +24,14 @@ public class State implements Model<DataSource>
 		{
 			this.addParam(sp);
 		}
+	}
+
+
+	public State(DBState state, LinkedList<DataSource> sources)
+	{
+		this.name = state.getName();
+		this.abbr = state.getInitial();
+		this.params = sources;
 	}
 
 

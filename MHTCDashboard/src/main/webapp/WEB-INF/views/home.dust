@@ -44,7 +44,9 @@
 						<h4 class="modal-title" id="myModalLabel">About The Massachusetts High Technology Council</h4>
 					</div>
 					<div class="modal-body" id="mbody">
-						<p>State government plays a vital role in sustaining the competitiveness of industry and the well-being of its citizens. The High Tech Council believes that when the leadership of the state's high tech companies work together, we can be far more effective in building constructive relations with State government and in enacting policies that are conducive to economic growth. We believe in the power of collaboration and continue to work with other like-minded organizations in shaping and delivering our recommendations and advocacy.</p>
+						<p>As part of its mission to make Massachusetts the world&apos;s most attractive place in which to live and work, and in which to create, and grow high technology business, the Massachusetts High Technology Council has developed the Massachusetts&apos; Technology, Talent and Economy Reporting Systems or MATTERS. MATTERS is a tool designed to help measure and evaluate Massachusetts&apos; current competitive position among leading technology states while providing policy makers with the information critical to developing public policy that attracts and retains business to the state. 
+						<br /><br />
+						MATTERS is an online system that consolidates a collection of independent national rankings along with a set of key cost, economic and talent metrics into a single source for use by all parties interested in building a successful future for Massachusetts&apos; technology-based business. Both private and public-sector decision makers will have the key information necessary to evaluate and understand Massachusetts&apos; current business position as it compares to peer states and international communities who are working aggressively to attract the same talent, apital and jobs that characterize our Bay State technology economy. Armed with MATTERS&apos; data, business, education and public-policy leaders will chart Massachusetts&apos; future collaboratively by aligning what needs to be improved or protected in order to create a prosperous, competitive business environment fundamental to building long-term economic stability and job growth within the state.</p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -72,9 +74,6 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li class="active"><a href="#">Explore</a></li>
-							<li>
-								<a href="#">Analyze</a>
-							</li>
 						<li>
 							<a href="#" data-toggle="modal" data-target="#aboutModal">About</a>
 						</li>
@@ -118,7 +117,7 @@
 							<thead>
 								<th>Index / Survery</th>
 								<th>Trend</th>
-								<th>Ranking</th>
+								<th>Value</th>
 								<th>Source</th>
 								<th></th>
 							</thead>
@@ -218,7 +217,8 @@
 						<table class="table" style="font-size: 13px;">
 							<thead>
 								<th>Index / Survey</th>
-								<th>Ranking / Data</th>
+								<th>Trend</th>
+								<th>Value</th>
 								<th>Source</th>
 								<th></th>
 							</thead>
@@ -226,38 +226,34 @@
 								{#jv_stats_cost}
 									<tr>
 										<td>{name}</td>
-										<td>
-											<table class="table table-condensed"	style="font-size: 13px;">
-												<tr>
-													<td>Rank</td>
-													{#data}
-														<td>{value}</td>
-													{/data}
-												</tr>
-												<tr>
-													<td>Year</td>
-													{#data}
-														<td>'{year}</td>
-													{/data}
-												</tr>
-											</table>
-										</td>
-										<td>
-											<a href="{urlFrom}">{sourceName}</a>
-										</td>
-										<td>
+										<td><span class="trend_icon trend_{trend}"></span></td>
+											<td>{dataAverage}</td>
+											<td><a href="{urlFrom}">{sourceName}</a></td>
+											<td>
 											<div class="btn-group btn-group-sm">
 												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-												<span class="glyphicon glyphicon-chevron-down"></span>
+													<span class="glyphicon glyphicon-chevron-down"></span>
 												</button>
 												<ul class="dropdown-menu" role="menu">
-													<li><a href="#">Compare to Peer States</a></li>
-													<li><a href="#">Compare to Select States</a></li>
-													<li><a href="#">Compare to Top Ten</a></li>
-													<li><a href="#">Compare to Bottom Ten</a></li>
-													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+													<li>
+														<a href="#">Compare to Peer States</a>
+													</li>
+													<li>
+														<a href="#" onClick="toggleMultiselect()">Compare to Select States</a>
+													</li>
+													<li>
+														<a href="#">Compare to Top Ten</a>
+													</li>
+													<li>
+														<a href="#">Compare to Bottom Ten</a>
+													</li>
+													<li>
+														<a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a>
+													</li>
 													<li class="divider"></li>
-													<li><a href="#">Open Source</a></li>
+													<li>
+														<a href="#">Open Source</a>
+													</li>
 												</ul>
 											</div>
 										</td>
@@ -270,7 +266,8 @@
 						<table class="table" style="font-size: 13px;">
 							<thead>
 								<th>Index / Survey</th>
-								<th>Ranking / Data</th>
+								<th>Trend</th>
+								<th>Value</th>
 								<th>Source</th>
 								<th></th>
 							</thead>
@@ -278,38 +275,34 @@
 								{#jv_stats_economy}
 									<tr>
 										<td>{name}</td>
-										<td>
-											<table class="table table-condensed"	style="font-size: 13px;">
-												<tr>
-													<td>Rank</td>
-													{#data}
-														<td>{value}</td>
-													{/data}
-												</tr>
-												<tr>
-													<td>Year</td>
-													{#data}
-														<td>'{year}</td>
-													{/data}
-												</tr>
-											</table>
-										</td>
-										<td>
-											<a href="{urlFrom}">{sourceName}</a>
-										</td>
-										<td>
+										<td><span class="trend_icon trend_{trend}"></span></td>
+											<td>{dataAverage}</td>
+											<td><a href="{urlFrom}">{sourceName}</a></td>
+											<td>
 											<div class="btn-group btn-group-sm">
 												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-												<span class="glyphicon glyphicon-chevron-down"></span>
+													<span class="glyphicon glyphicon-chevron-down"></span>
 												</button>
 												<ul class="dropdown-menu" role="menu">
-													<li><a href="#">Compare to Peer States</a></li>
-													<li><a href="#">Compare to Select States</a></li>
-													<li><a href="#">Compare to Top Ten</a></li>
-													<li><a href="#">Compare to Bottom Ten</a></li>
-													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+													<li>
+														<a href="#">Compare to Peer States</a>
+													</li>
+													<li>
+														<a href="#" onClick="toggleMultiselect()">Compare to Select States</a>
+													</li>
+													<li>
+														<a href="#">Compare to Top Ten</a>
+													</li>
+													<li>
+														<a href="#">Compare to Bottom Ten</a>
+													</li>
+													<li>
+														<a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a>
+													</li>
 													<li class="divider"></li>
-													<li><a href="#">Open Source</a></li>
+													<li>
+														<a href="#">Open Source</a>
+													</li>
 												</ul>
 											</div>
 										</td>

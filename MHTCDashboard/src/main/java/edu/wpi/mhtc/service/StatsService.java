@@ -21,8 +21,8 @@ public abstract class StatsService extends Service<DataSource, State>
 	
 	protected abstract State getStateBinData(String state, Integer binId);
 	protected abstract List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric);
-	protected abstract List<DataSource> getDataForState(DBState state, List<DBMetric> metrics);
-	protected abstract State getDataForState(String state, String metrics);
+	protected abstract State getDataForState(DBState state, List<DBMetric> metrics);
+	protected abstract State getDataForStateByName(String state, String metrics);
 	public abstract List<DBMetric> getListOfMetricsFromCommaSeparatedString(String metric);
 	
 	
