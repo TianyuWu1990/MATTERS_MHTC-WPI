@@ -10,7 +10,7 @@ public class DataSource
 	private final String trend;
 	private final String binName;
 	private final LinkedList<Data> data;
-	private Integer dataAverage;
+	private double dataAverage;
 	
 	
 	
@@ -69,7 +69,7 @@ public class DataSource
 		return data;
 	}
 
-	public Integer getDataAverage() {
+	public double getDataAverage() {
 		return dataAverage;
 	}
 	public String getBinName() {
