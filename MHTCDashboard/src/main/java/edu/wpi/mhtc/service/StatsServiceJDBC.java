@@ -70,9 +70,9 @@ public class StatsServiceJDBC extends StatsService
 	}
 
 	@Override
-	protected List<DataSource> getDataForState(DBState state, List<DBMetric> metrics)
+	protected State getDataForState(DBState state, List<DBMetric> metrics)
 	{
-		List<DataSource> sources = new LinkedList<DataSource>();
+		LinkedList<DataSource> sources = new LinkedList<DataSource>();
 
 		for (DBMetric metric : metrics)
 		{
@@ -91,23 +91,20 @@ public class StatsServiceJDBC extends StatsService
 					//TODO log it!
 				}
 			}
-			sources.add(source);
+			sources.add(source.sort());
 		}
 
-		return sources;
+		return new State(state, sources);
 	}
 
 	@Override
-	protected State getDataForState(String state, String metrics)
+	protected State getDataForStateByName(String state, String metrics)
 	{
 
 		DBState dbState = stateMapper.getStateFromString(state);
 		List<DBMetric> dbMetrics = getListOfMetricsFromCommaSeparatedString(metrics);
 
-		List<DataSource> sources = getDataForState(dbState, dbMetrics);
-
-		return new State(dbState.getName(), dbState.getInitial(), sources.toArray(new DataSource[1]));
-
+		return getDataForState(dbState, dbMetrics);
 	}
 	
 	
@@ -119,10 +116,8 @@ public class StatsServiceJDBC extends StatsService
 
 		DBState dbState = stateMapper.getStateFromString(state);
 		List<DBMetric> dbMetrics = metricsService.getMetricsInCategory(binId);
-		
-		List<DataSource> sources = getDataForState(dbState, dbMetrics);
 
-		return new State(dbState.getName(), dbState.getInitial(), sources.toArray(new DataSource[1]));		
+		return getDataForState(dbState, dbMetrics);
 	}
 
 	@Override

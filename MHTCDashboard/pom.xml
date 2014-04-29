@@ -13,6 +13,16 @@
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>java.net2</id>
+			<name>Repository hosting the jee6 artifacts</name>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+	</repositories>
+
+
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -116,12 +126,54 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version> <!-- makesure correct version here -->
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.10-FINAL</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>openxml4j</artifactId>
+			<version>1.0-beta</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.10-FINAL</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.jazzy</groupId>
+			<artifactId>jazzy</artifactId>
+			<version>0.5.2-rtext-1.4.1-2</version>
+		</dependency>
 
 		<!-- Rhino -->
 		<dependency>
 			<groupId>org.mozilla</groupId>
-            <artifactId>rhino</artifactId>
-            <version>1.7R4</version>
+			<artifactId>rhino</artifactId>
+			<version>1.7R4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -177,6 +229,12 @@
 		</dependency>
 
 
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+
 
 
 		<!-- Test -->
@@ -186,6 +244,13 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
