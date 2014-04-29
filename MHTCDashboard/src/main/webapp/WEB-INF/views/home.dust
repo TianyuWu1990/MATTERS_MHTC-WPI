@@ -121,13 +121,13 @@
 								<th>Source</th>
 								<th></th>
 							</thead>
-							<tbody>
+							<tbody id="Talent-tbody">
 								{#jv_stats_talent}
 									<tr>
 										<td>{name}</td>
 										<td><span class="trend_icon trend_{trend}"></span></td>
 											<td>{dataAverage}</td>
-											<td><a href="{urlFrom}">{sourceName}</a></td>
+											<td><a href="http://{urlFrom}">{sourceName}</a></td>
 											<td>
 											<div class="btn-group btn-group-sm">
 												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -138,7 +138,7 @@
 														<a href="#">Compare to Peer States</a>
 													</li>
 													<li>
-														<a href="#" onClick="toggleMultiselect()">Compare to Select States</a>
+														<a href="#" onClick="toggleMultiSelect({@idx}{.}{/idx})">Compare to Select States</a>
 													</li>
 													<li>
 														<a href="#">Compare to Top Ten</a>
@@ -166,7 +166,7 @@
 								<th>Source</th>
 								<th></th>
 							</thead>
-							<tbody>
+							<tbody id="National-tbody">
 								{#jv_stats_national}
 									<tr>
 										<td>{name}</td>
@@ -187,7 +187,7 @@
 											</table>
 										</td>
 										<td>
-											<a href="{urlFrom}">{sourceName}</a>
+											<a href="http://{urlFrom}">{sourceName}</a>
 										</td>
 										<td>
 											<div class="btn-group btn-group-sm">
@@ -196,10 +196,10 @@
 												</button>
 												<ul class="dropdown-menu" role="menu">
 													<li><a href="#">Compare to Peer States</a></li>
-													<li><a href="#">Compare to Select States</a></li>
+													<li><a href="#" onClick="toggleMultiSelect({@idx}{.}{/idx});">Compare to Select States</a></li>
 													<li><a href="#">Compare to Top Ten</a></li>
 													<li><a href="#">Compare to Bottom Ten</a></li>
-													<li><a data-toggle="modal" data-target="#myModal" onClick="addGraph()">View Graph</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a></li>
 													<li class="divider"></li>
 												</ul>
 											</div>
@@ -218,34 +218,24 @@
 								<th>Source</th>
 								<th></th>
 							</thead>
-							<tbody>
+							<tbody id="Cost-tbody">
 								{#jv_stats_cost}
 									<tr>
 										<td>{name}</td>
 										<td><span class="trend_icon trend_{trend}"></span></td>
 											<td>{dataAverage}</td>
-											<td><a href="{urlFrom}">{sourceName}</a></td>
+											<td><a href="http://{urlFrom}">{sourceName}</a></td>
 											<td>
 											<div class="btn-group btn-group-sm">
 												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 													<span class="glyphicon glyphicon-chevron-down"></span>
 												</button>
 												<ul class="dropdown-menu" role="menu">
-													<li>
-														<a href="#">Compare to Peer States</a>
-													</li>
-													<li>
-														<a href="#" onClick="toggleMultiselect()">Compare to Select States</a>
-													</li>
-													<li>
-														<a href="#">Compare to Top Ten</a>
-													</li>
-													<li>
-														<a href="#">Compare to Bottom Ten</a>
-													</li>
-													<li>
-														<a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a>
-													</li>
+													<li><a href="#">Compare to Peer States</a></li>
+													<li><a href="#" onClick="toggleMultiSelect({@idx}{.}{/idx});">Compare to Select States</a></li>
+													<li><a href="#">Compare to Top Ten</a></li>
+													<li><a href="#">Compare to Bottom Ten</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a></li>
 													<li class="divider"></li>
 												</ul>
 											</div>
@@ -264,34 +254,24 @@
 								<th>Source</th>
 								<th></th>
 							</thead>
-							<tbody>
+							<tbody id="Economy-tbody">
 								{#jv_stats_economy}
 									<tr>
 										<td>{name}</td>
 										<td><span class="trend_icon trend_{trend}"></span></td>
 											<td>{dataAverage}</td>
-											<td><a href="{urlFrom}">{sourceName}</a></td>
+											<td><a href="http://{urlFrom}">{sourceName}</a></td>
 											<td>
 											<div class="btn-group btn-group-sm">
 												<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 													<span class="glyphicon glyphicon-chevron-down"></span>
 												</button>
 												<ul class="dropdown-menu" role="menu">
-													<li>
-														<a href="#">Compare to Peer States</a>
-													</li>
-													<li>
-														<a href="#" onClick="toggleMultiselect()">Compare to Select States</a>
-													</li>
-													<li>
-														<a href="#">Compare to Top Ten</a>
-													</li>
-													<li>
-														<a href="#">Compare to Bottom Ten</a>
-													</li>
-													<li>
-														<a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a>
-													</li>
+													<li><a href="#">Compare to Peer States</a></li>
+													<li><a href="#" onClick="toggleMultiSelect({@idx}{.}{/idx});">Compare to Select States</a></li>
+													<li><a href="#">Compare to Top Ten</a></li>
+													<li><a href="#">Compare to Bottom Ten</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx}">View Graph</a></li>
 													<li class="divider"></li>
 												</ul>
 											</div>
@@ -305,12 +285,12 @@
 			</div>
 					<div id="multiSelecter" style="position:absolute;left:0px;top:0px;display:none;" class="col-md-12">
 						<p class="lead">
-							<button class="btn btn-info" onclick="toggleMultiselect();">
+							<button class="btn btn-info" onclick="toggleMultiSelect(0);">
 								<h6>
 									<span class="glyphicon glyphicon-circle-arrow-left"></span>
 									Back
 								</h6>
-							</button>
+							</button>&nbsp;&nbsp;&nbsp;&nbsp;
 							Select States to Compare
 						</p>
 						<div class="btn-group" data-toggle="buttons">
@@ -328,7 +308,7 @@
 								{/jv_peer_states}
 							</table>
 						</div>
-						<button data-toggle="modal" data-target="#myMultiModal" class="btn btn-primary" onClick="addMultiGraph()">Compare</button>
+						<button data-toggle="modal" data-target="#myModal" class="btn btn-primary" onClick="showMultiGraph()">Compare</button>
 					</div>
 				</div>
 				<div class="col-md-5">
@@ -339,6 +319,11 @@
 				</div>
 			</div>
 		</div>
+    <div id="footer">
+      	<div class="container">
+        	<p class="text-muted">&copy;2014 Massachusetts High Technology Council -- Developed by Worcester Polytechnic Institute</p>
+      	</div>
+    </div> 
 		<script src="js/load.js"></script>
 	</body>
 </html>
