@@ -300,7 +300,7 @@ function loadData(stateData){
 		}
                 var src = document.createElement('td');
                 var srcLink = document.createElement('a');
-                srcLink.href = metrics[i].urlFrom;
+                srcLink.href = "http://"+metrics[i].urlFrom;
                 srcLink.appendChild(document.createTextNode(metrics[i].sourceName));
                 var dropDown = document.createElement('tr');
                 dropDown.innerHTML = "<div class=\"btn-group btn-group-sm\"><button type=\"button\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\"><span class=\"glyphicon glyphicon-chevron-down\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li><a  data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showPeerGraph(" + i + ")\">Compare to Peer States</a></li><li><a href=\"#\" onClick=\"toggleMultiSelect(" + i + ")\">Compare to Select States</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showTopGraph(" + i + ")\">Compare to Top Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showBottomGraph(" + i + ")\">Compare to Bottom Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showGraph("+i+")\">View Graph</a></li></ul></div>";
