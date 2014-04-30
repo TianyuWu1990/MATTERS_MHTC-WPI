@@ -1,6 +1,8 @@
 package edu.wpi.mhtc.service;
 
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -74,15 +76,50 @@ public class StatsServiceJDBC implements StatsService
 
 		for (DBMetric metric : metrics)
 		{
-			// TODO get proper values for the datasources
-			DataSource source = new DataSource(metric.getName(), "", "NA", "");
 			List<DataPoint> points = getAllYearsForStateAndMetric(state, metric);
 
+			String trend = "none";
+			if (points.size() > 0) {
+				DataPoint recent = points.get(0);
+				DataPoint old = points.get(0);
+				for (DataPoint datapoint : points) {
+					if (datapoint.getYear() > recent.getYear()) {
+						recent = datapoint;
+					}
+				}
+				for (DataPoint datapoint : points) {
+				
+					if (datapoint.getYear() < old.getYear() && recent.getYear() - datapoint.getYear() <= 5) {
+						old = datapoint;
+					}
+				}
+				// TODO calculate this depending on the datatype and do a real calculation
+				double diff = recent.getValue() - old.getValue();
+				if (diff > 0) {
+					trend = "up";
+				} else if (diff < 0) {
+					trend = "down";
+				}
+				
+			}
+
+			DataSource source = new DataSource(metric.getName(), metric.getURL(), trend, metric.getSource(), metric.getBinName());
+			
 			for (DataPoint datapoint : points)
 			{
 				try
 				{
-					source.addData(new Data(datapoint.getYear(), (int) datapoint.getValue()));
+					double value = datapoint.getValue();
+					if (metric.getDataType().equals("percentage")) {
+						value *= 100;
+						BigDecimal bd = new BigDecimal(value);
+					    bd = bd.setScale(2, RoundingMode.HALF_UP);
+					    value = bd.doubleValue();
+					} else {
+						
+					}
+					
+					source.addData(new Data(datapoint.getYear(), value));
 				}
 				catch (Exception e)
 				{

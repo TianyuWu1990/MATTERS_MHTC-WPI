@@ -18,6 +18,7 @@ import edu.wpi.mhtc.persistence.DBState;
 import edu.wpi.mhtc.persistence.StateMapper;
 import edu.wpi.mhtc.service.MetricsService;
 import edu.wpi.mhtc.service.StatsService;
+import edu.wpi.mhtc.service.StatsServiceJDBC;
 
 @Controller
 public class StatsController {
@@ -25,12 +26,12 @@ public class StatsController {
 	public static final String AVAILABLE_ENDPOINT = "/data/stats/available";
 	public static final String STAT_ENDPOINT = "/data/stats/query";
 
-	private StatsService statsService;
+	private StatsServiceJDBC statsService;
 	private MetricsService metricsService;
 	private StateMapper stateMapper;
 
 	@Autowired
-	public StatsController(StatsService service, MetricsService mservice) {
+	public StatsController(StatsServiceJDBC service, MetricsService mservice) {
 
 		this.statsService = service;
 		this.metricsService = mservice;
@@ -78,7 +79,8 @@ public class StatsController {
 		List<State> states = new LinkedList<State>();
 
 		for (String state : stateNames) {
-			states.add(statsService.getAvailible("getDataForState", state, metrics));
+			states.add(statsService.getDataForState(state, metrics));
+			//states.add(statsService.getAvailible("getDataForState", state, metrics));
 		}
 
 		return states;

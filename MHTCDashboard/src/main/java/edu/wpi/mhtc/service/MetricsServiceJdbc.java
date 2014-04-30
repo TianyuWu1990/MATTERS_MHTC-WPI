@@ -52,7 +52,7 @@ public class MetricsServiceJdbc implements MetricsService {
 
             @Override
             public DBMetric mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new DBMetric(rs.getInt("Id"), rs.getString("Name"), rs.getString("DataType"), categoryId, finalName);
+                return new DBMetric(rs.getInt("Id"), rs.getString("DisplayName"), rs.getString("DataType"), categoryId, finalName, rs.getString("URL"), rs.getString("Source"));
             }
 
         });
