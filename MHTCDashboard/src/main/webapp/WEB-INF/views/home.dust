@@ -136,16 +136,16 @@
 												</button>
 												<ul class="dropdown-menu" role="menu">
 													<li>
-														<a href="#">Compare to Peer States</a>
+														<a data-toggle="modal" data-target="#myModal" onClick="showPeerGraph({@idx}{.}{/idx})">Compare to Peer States</a>
 													</li>
 													<li>
 														<a href="#" onClick="toggleMultiSelect({@idx}{.}{/idx})">Compare to Select States</a>
 													</li>
 													<li>
-														<a href="#">Compare to Top Ten</a>
+														<a data-toggle="modal" data-target="#myModal" onClick="showTopGraph({@idx}{.}{/idx})">Compare to Top Ten</a>
 													</li>
 													<li>
-														<a href="#">Compare to Bottom Ten</a>
+														<a  data-toggle="modal" data-target="#myModal" onClick="showBottomGraph({@idx}{.}{/idx})">Compare to Bottom Ten</a>
 													</li>
 													<li>
 														<a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a>
@@ -199,10 +199,14 @@
 												<span class="glyphicon glyphicon-chevron-down"></span>
 												</button>
 												<ul class="dropdown-menu" role="menu">
-													<li><a href="#">Compare to Peer States</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="showPeerGraph({@idx}{.}{/idx})">Compare to Peer States</a></li>
 													<li><a href="#" onClick="toggleMultiSelect({@idx}{.}{/idx});">Compare to Select States</a></li>
-													<li><a href="#">Compare to Top Ten</a></li>
-													<li><a href="#">Compare to Bottom Ten</a></li>
+													<li>
+														<a data-toggle="modal" data-target="#myModal" onClick="showTopGraph({@idx}{.}{/idx})">Compare to Top Ten</a>
+													</li>
+													<li>
+														<a  data-toggle="modal" data-target="#myModal" onClick="showBottomGraph({@idx}{.}{/idx})">Compare to Bottom Ten</a>
+													</li>
 													<li><a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a></li>
 													<li class="divider"></li>
 													<li><a href="#">Open Source</a></li>
@@ -251,10 +255,14 @@
 												<span class="glyphicon glyphicon-chevron-down"></span>
 												</button>
 												<ul class="dropdown-menu" role="menu">
-													<li><a href="#">Compare to Peer States</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="showPeerGraph({@idx}{.}{/idx})">Compare to Peer States</a></li>
 													<li><a href="#" onClick="toggleMultiSelect({@idx}{.}{/idx});">Compare to Select States</a></li>
-													<li><a href="#">Compare to Top Ten</a></li>
-													<li><a href="#">Compare to Bottom Ten</a></li>
+													<li>
+														<a data-toggle="modal" data-target="#myModal" onClick="showTopGraph({@idx}{.}{/idx})">Compare to Top Ten</a>
+													</li>
+													<li>
+														<a  data-toggle="modal" data-target="#myModal" onClick="showBottomGraph({@idx}{.}{/idx})">Compare to Bottom Ten</a>
+													</li>
 													<li><a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx})">View Graph</a></li>
 													<li class="divider"></li>
 													<li><a href="#">Open Source</a></li>
@@ -303,10 +311,14 @@
 												<span class="glyphicon glyphicon-chevron-down"></span>
 												</button>
 												<ul class="dropdown-menu" role="menu">
-													<li><a href="#">Compare to Peer States</a></li>
+													<li><a data-toggle="modal" data-target="#myModal" onClick="showPeerGraph({@idx}{.}{/idx})">Compare to Peer States</a></li>
 													<li><a href="#" onClick="toggleMultiSelect({@idx}{.}{/idx});">Compare to Select States</a></li>
-													<li><a href="#">Compare to Top Ten</a></li>
-													<li><a href="#">Compare to Bottom Ten</a></li>
+													<li>
+														<a data-toggle="modal" data-target="#myModal" onClick="showTopGraph({@idx}{.}{/idx})">Compare to Top Ten</a>
+													</li>
+													<li>
+														<a  data-toggle="modal" data-target="#myModal" onClick="showBottomGraph({@idx}{.}{/idx})">Compare to Bottom Ten</a>
+													</li>
 													<li><a data-toggle="modal" data-target="#myModal" onClick="showGraph({@idx}{.}{/idx}">View Graph</a></li>
 													<li class="divider"></li>
 													<li><a href="#">Open Source</a></li>

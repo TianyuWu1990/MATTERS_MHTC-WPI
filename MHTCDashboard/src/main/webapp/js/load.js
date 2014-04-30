@@ -44,16 +44,11 @@ showGraph = function(ind){
 			nv.addGraph(function() {
 				var chart = nv.models.cumulativeLineChart()
 				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1]/100 }) //adjusting, 100% is 1.00, not 100 as it is in the data
+				.y(function(d) { return d[1] }) //adjusting, 100% is 1.00, not 100 as it is in the data
 				.color(d3.scale.category10().range())
 				.useInteractiveGuideline(true)
 				;
 				 
-				chart.xAxis
-				.tickValues([1078030800000,1122782400000,1167541200000,1251691200000])
-				.tickFormat(function(d) {
-				return d3.time.format('%x')(new Date(d))
-				});
 				 var data = {key:currData.abbr};
 				 data["values"] = currData.params[dataIndex].data.map(function(d){
 				 	return [d["year"], d["value"]];
@@ -82,16 +77,11 @@ showMultiGraph = function(){
 			nv.addGraph(function() {
 				var chart = nv.models.cumulativeLineChart()
 				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1]/100 }) //adjusting, 100% is 1.00, not 100 as it is in the data
+				.y(function(d) { return d[1] }) //adjusting, 100% is 1.00, not 100 as it is in the data
 				.color(d3.scale.category10().range())
 				.useInteractiveGuideline(true)
 				;
 				 
-				chart.xAxis
-				.tickValues([1078030800000,1122782400000,1167541200000,1251691200000])
-				.tickFormat(function(d) {
-				return d3.time.format('%x')(new Date(d))
-				});
 				 var data = new Array();
 				 for(var i = 0; i < multiData.length; i++)
 				 {
@@ -116,6 +106,150 @@ showMultiGraph = function(){
 		}, 500);
 	});
 }
+
+showPeerGraph = function(ind){
+	dataIndex = ind;
+	document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
+	document.getElementById("graphStates").innerHTML = "All Peer States";
+	getData("data/stats/query?states=CA,CO,CT,GA,MD,MA,MN,NH,NJ,NY,NC,PA,TX,UT,VA,WA&metrics=" + currData.params[dataIndex].name, function(multiData){
+		setTimeout(function(){
+			nv.addGraph(function() {
+				var chart = nv.models.cumulativeLineChart()
+				.x(function(d) { return d[0] })
+				.y(function(d) { return d[1]}) //adjusting, 100% is 1.00, not 100 as it is in the data
+				.color(d3.scale.category10().range())
+				.useInteractiveGuideline(true)
+				;
+				 
+				 var data = new Array();
+				 for(var i = 0; i < multiData.length; i++)
+				 {
+				 	data[i] = {key:multiData[i].abbr};
+					data[i]["values"] = multiData[i].params[0].data.map(function(d){
+				 	return [d["year"], d["value"]];
+				 	});
+				 }
+				 chart.yAxis
+				.tickFormat(d3.format(',.1%'));
+				d3.select('#mbody svg')
+				.datum(data)
+				.transition().
+				duration(500)
+				.call(chart);
+				 
+				//TODO: Figure out a good way to do this automatically
+				nv.utils.windowResize(chart.update);
+				 
+				return chart;
+			});
+		}, 500);
+	});
+}
+
+showTopGraph = function(ind){
+	dataIndex = ind;
+	document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
+	document.getElementById("graphStates").innerHTML = "Top Ten States";
+	getData("data/stats/query?states=CA,CO,CT,GA,MD,MA,MN,NH,NJ,NY,NC,PA,TX,UT,VA,WA&metrics=" + currData.params[dataIndex].name, function(multiData){
+		setTimeout(function(){
+			nv.addGraph(function() {
+				var chart = nv.models.cumulativeLineChart()
+				.x(function(d) { return d[0] })
+				.y(function(d) { return d[1]}) //adjusting, 100% is 1.00, not 100 as it is in the data
+				.color(d3.scale.category10().range())
+				.useInteractiveGuideline(true)
+				;
+				 
+
+				 var data = new Array();
+				 for(var i = 0; i < multiData.length; i++)
+				 {
+				 	data[i] = {key:multiData[i].abbr};
+					data[i]["values"] = multiData[i].params[0].data.map(function(d){
+				 	return [d["year"], d["value"]];
+				 	});
+				    data[i]["values"].sort(compareYear);
+				 }
+				 data.sort(compareValue);
+				 data.splice(10,16);
+				 chart.yAxis
+				.tickFormat(d3.format(',.1%'));
+				d3.select('#mbody svg')
+				.datum(data)
+				.transition().
+				duration(500)
+				.call(chart);
+				 
+				//TODO: Figure out a good way to do this automatically
+				nv.utils.windowResize(chart.update);
+				 
+				return chart;
+			});
+		}, 500);
+	});	
+}
+
+function compareYear(a,b) {
+  if (a.year < b.year)
+     return -1;
+  if (a.year > b.year)
+    return 1;
+  return 0;
+}
+
+function compareValue(a,b) {
+  if (a.values[0].value < b.values[0].value)
+     return -1;
+  if (a.values[0].value > b.values[0].value)
+    return 1;
+  return 0;
+}
+
+showBottomGraph = function(ind){
+	dataIndex = ind;
+	document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
+	document.getElementById("graphStates").innerHTML = "Bottom Ten States";
+	getData("data/stats/query?states=CA,CO,CT,GA,MD,MA,MN,NH,NJ,NY,NC,PA,TX,UT,VA,WA&metrics=" + currData.params[dataIndex].name, function(multiData){
+		setTimeout(function(){
+			nv.addGraph(function() {
+				var chart = nv.models.cumulativeLineChart()
+				.x(function(d) { return d[0] })
+				.y(function(d) { return d[1]}) //adjusting, 100% is 1.00, not 100 as it is in the data
+				.color(d3.scale.category10().range())
+				.useInteractiveGuideline(true)
+				;
+				 
+
+				 var data = new Array();
+				 for(var i = 0; i < multiData.length; i++)
+				 {
+				 	data[i] = {key:multiData[i].abbr};
+					data[i]["values"] = multiData[i].params[0].data.map(function(d){
+				 	return [d["year"], d["value"]];
+				 	});
+				 	data[i]["values"].sort(compareYear);
+				 }
+				 data.sort(compareValue);
+				 data.reverse();
+				 data.splice(10,16);
+
+				 chart.yAxis
+				.tickFormat(d3.format(',.1%'));
+				d3.select('#mbody svg')
+				.datum(data)
+				.transition().
+				duration(500)
+				.call(chart);
+				 
+				//TODO: Figure out a good way to do this automatically
+				nv.utils.windowResize(chart.update);
+				 
+				return chart;
+			});
+		}, 500);
+	});	
+}
+
 
 function getData(url, callback){
 	http = new XMLHttpRequest();
@@ -168,8 +302,8 @@ function loadData(stateData){
                 var srcLink = document.createElement('a');
                 srcLink.href = metrics[i].urlFrom;
                 srcLink.appendChild(document.createTextNode(metrics[i].sourceName));
-                var dropDown = document.createElement('tr');i
-                dropDown.innerHTML = "<div class=\"btn-group btn-group-sm\"><button type=\"button\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\"><span class=\"glyphicon glyphicon-chevron-down\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li><a href=\"#\">Compare to Peer States</a></li><li><a href=\"#\" onClick=\"toggleMultiSelect(" + i + ")\">Compare to Select States</a></li><li><a href=\"#\">Compare to Top Ten</a></li><li><a href=\"#\">Compare to Bottom Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showGraph("+i+")\">View Graph</a></li><li class=\"divider\"></li><li><a href=\"#\">Open Source</a></li></ul></div>";
+                var dropDown = document.createElement('tr');
+                dropDown.innerHTML = "<div class=\"btn-group btn-group-sm\"><button type=\"button\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\"><span class=\"glyphicon glyphicon-chevron-down\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li><a  data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showPeerGraph(" + i + ")\">Compare to Peer States</a></li><li><a href=\"#\" onClick=\"toggleMultiSelect(" + i + ")\">Compare to Select States</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showTopGraph(" + i + ")\">Compare to Top Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showBottomGraph(" + i + ")\">Compare to Bottom Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showGraph("+i+")\">View Graph</a></li><li class=\"divider\"></li><li><a href=\"#\">Open Source</a></li></ul></div>";
                 src.appendChild(srcLink);
                 tr.appendChild(name);
                 if(metrics[i].binName != "National")
