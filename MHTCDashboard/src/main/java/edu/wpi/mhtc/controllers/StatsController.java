@@ -79,7 +79,7 @@ public class StatsController {
 		List<State> states = new LinkedList<State>();
 
 		for (String state : stateNames) {
-			states.add(statsService.getDataForState(state, metrics));
+			states.add(statsService.getDataForStateByName(state, metrics));
 			//states.add(statsService.getAvailible("getDataForState", state, metrics));
 		}
 

@@ -20,7 +20,7 @@ import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
 @Service
-public class PeersServiceJDBC implements PeersService {
+public class PeersServiceJDBC extends PeersService {
 
 	private JdbcTemplate template;
 
@@ -29,7 +29,8 @@ public class PeersServiceJDBC implements PeersService {
 		this.template = template;
 	}
 
-	public PeerStates getPeers() {
+	@Override
+	protected PeerStates getPeers() {
 
 		PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(
 				template).withSchemaName("mhtc_sch").withProcedureName(
@@ -55,6 +56,7 @@ public class PeersServiceJDBC implements PeersService {
 
 	}
 
+	@Override
 	public List<DBState> getPeersFull() {
 
 		PSqlStringMappedJdbcCall<DBState> call = new PSqlStringMappedJdbcCall<DBState>(
@@ -81,41 +83,18 @@ public class PeersServiceJDBC implements PeersService {
 		return call.execute(params);
 
 	}
-
+	
+	
 	@Override
-	public PeerStates getAvailible(Object... params)
+	public PeerStates invokeThis(Method m, Object[] params)
 	{
-		if (params.length == 0)
+		try
 		{
-			return null;
+			return (PeerStates) m.invoke(this, params);
 		}
-		else
+		catch (Exception e)
 		{
-			Method[] methods = this.getClass().getMethods();
-			for(Method m : methods)
-			{
-				if (m.getName().equals(params[0]) && m.getReturnType().equals(PeerStates.class))
-				{
-					Object[] newParams = new Object[params.length - 1];
-					for(int i=0;i<newParams.length; i++)
-					{
-						newParams[i] = params[i+1];
-					}
-					try
-					{
-						return (PeerStates) m.invoke(this, newParams);
-					}
-					catch (Exception e)
-					{
-						return null;
-					}
-				}
-			}
 			return null;
 		}
 	}
-	
-	
-	
-
 }
