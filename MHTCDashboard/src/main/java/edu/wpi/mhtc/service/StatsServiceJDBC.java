@@ -5,11 +5,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.util.ArrayUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
@@ -34,7 +38,11 @@ public class StatsServiceJDBC extends StatsService
 	private StateMapper stateMapper;
 	private MetricMapper metricMapper;
 	private MetricsService metricsService;
-
+	
+	private int[] tabids = { 91, 92, 93, 94, 95, 32, 29, 30, 25, 34, 28, 33, 27, 31, 61, 65, 66, 67, 70, 71, 73 };
+	private int[] swaptrendids = { 96, 97 };
+	
+	
 	@Autowired
 	public StatsServiceJDBC(JdbcTemplate template, StateMapper stateMapper, MetricMapper metricMapper, MetricsService metricsService)
 	{
@@ -97,15 +105,32 @@ public class StatsServiceJDBC extends StatsService
 				}
 				// TODO calculate this depending on the datatype and do a real calculation
 				double diff = recent.getValue() - old.getValue();
+				
+				boolean swap = false;
+	            for (int i = 0; i < swaptrendids.length; i++)
+	                if (swaptrendids[i] == metric.getId())
+	                    swap = true;
+				
+	            if (swap)
+	                   //diff = diff - 1;
+	            
 				if (diff > 0) {
 					trend = "up";
 				} else if (diff < 0) {
 					trend = "down";
+				} else {
+				    trend = "no_change";
 				}
 				
 			}
 
-			DataSource source = new DataSource(metric.getName(), metric.getURL(), trend, metric.getSource(), metric.getBinName());
+			// TODO delete this crap once we no longer care about this tab idiocy
+			boolean tabbed = false;
+			for (int i = 0; i < tabids.length; i++)
+			    if (tabids[i] == metric.getId())
+			        tabbed = true;
+			
+			DataSource source = new DataSource(metric.getId(), metric.getName(), metric.getURL(), trend, metric.getSource(), metric.getBinName(), tabbed);
 			
 			for (DataPoint datapoint : points)
 			{

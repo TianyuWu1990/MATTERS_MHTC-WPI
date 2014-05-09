@@ -12,22 +12,30 @@ public class DataSource
 	private final String trend;
 	private final String binName;
 	private final LinkedList<Data> data;
+	private final int id;
+	private final boolean tabbed;
 	private double dataAverage;
+	private Data recent;
 	
 	
 	
-	public DataSource(String name, String urlFrom, String trend, String sourceName, String binName, Data...datas )
+	
+	public DataSource(int id, String name, String urlFrom, String trend, String sourceName, String binName, boolean tabbed, Data...datas )
 	{
+	    this.id = id;
 		this.name = name;
 		this.urlFrom = urlFrom;
 		this.trend = trend==null?"?":trend;
 		this.data = new LinkedList<Data>();
 		this.sourceName = sourceName;
 		this.binName = binName;
+		this.tabbed = tabbed;
 		int i;
 		for(i = 0; i<datas.length-1; i++)
 		{
 			this.data.add(datas[i]);
+			if (recent == null || recent.getYear() < datas[i].getYear())
+			    recent = datas[i];
 		}
 		if (datas.length > 0)
 		{
@@ -50,6 +58,10 @@ public class DataSource
 		{
 			dataAverage /= count;
 		}
+		
+		if (recent == null || recent.getYear() < d.getYear())
+            recent = d;
+		
 		return this;
 	}
 
@@ -94,5 +106,24 @@ public class DataSource
 
 	public String getBinName() {
 		return binName;
+	}
+	
+	public Data getRecent() {
+	    return recent;
+	}
+	
+	public int getId() {
+	    return id;
+	}
+	
+	public boolean getTabbed() {
+	    return tabbed;
+	}
+	
+	public String getTabString() {
+	    if (tabbed)
+	        return "tabbed_metric";
+	    else
+	        return "";
 	}
 }

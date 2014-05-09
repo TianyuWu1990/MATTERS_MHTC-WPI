@@ -27,5 +27,8 @@ public abstract class PeersService extends Service<State, PeerStates>{
 	
 	
 	public abstract List<DBState> getPeersFull();
+	public abstract List<State> getTopTenPeersForMetric(String metric, int year);
+	public abstract List<State> getBottomTenPeersForMetric(String metric, int year);
+	
 	protected abstract PeerStates getPeers();
 }

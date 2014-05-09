@@ -11,6 +11,31 @@ background-image: url(img/trend_meter.png);
 background-repeat: no-repeat;
 }
 
+.dropdown-menu
+{
+left:auto;
+right:0;
+	
+}
+
+label.btn-default.statebutton.active
+{
+	background-color: #46AF31;
+	background-image: none;
+	border-color: rgb(128, 128, 128);
+	
+}
+
+label.btn-default.statebutton
+{
+	background-color: #2d6ca2;
+	background-image: linear-gradient(to bottom,#428bca 0,#2d6ca2 100%);
+	color: #fff;
+	text-decoration: none;
+	text-shadow: none;
+	border-color: rgb(43, 102, 154);'
+}
+
 .trend_down
 {
 background-position: 0px 0px;
@@ -41,4 +66,17 @@ background-position: 0px -210px;
 }
 input[type="checkbox"]{
 	display:none;
+}
+
+table.table tbody tr td.tabbed_metric
+{
+	padding-left:30px;
+}
+
+.tab-pane
+{
+	
+	overflow:auto;
+	height:75%;
+	
 }

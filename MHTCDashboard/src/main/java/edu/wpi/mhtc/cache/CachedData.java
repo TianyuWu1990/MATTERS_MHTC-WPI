@@ -20,7 +20,7 @@ public abstract class CachedData<T, M extends Model<T>, CQ extends CachedData.Ca
 	private static Logger logger = LoggerFactory.getLogger(CachedData.class);
 	
 	private S service;
-	private Cache<CQ, M> queryCache = new Cache<CQ, M>(16);
+	private Cache<CQ, M> queryCache = new Cache<CQ, M>(64);
 	
 	/**
 	 * 
