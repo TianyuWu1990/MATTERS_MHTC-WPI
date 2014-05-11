@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 
 <html>
@@ -17,7 +18,8 @@
         <script src="js/functions.js"></script>
     </head>
     <body>
-        <div id="top-div" class="outer-div"><label class="title">Administrator's Page</label></div>
+        <div id="top-div" class="outer-div"><label class="title">Administrator's Page</label>
+        <a href="<c:url value="j_spring_security_logout"/>" class="ui-button" style="float:right"> Logout</a></div>
         <div id="mainDiv" class="outer-div">
             <div id="toolbar-div">
                 <a id="addNewCategBtn" href="#" class="ui-button">Add New Category</a>

@@ -70,6 +70,10 @@ label.btn-default.statebutton
 {
 background-position: 0px 0px;
 }
+.trend_down_reversed
+{
+background-position: 0px -30px;
+}
 
 .trend_no_change
 {
@@ -79,6 +83,10 @@ background-position: 0px -150px;
 .trend_up
 {
 background-position: 0px -210px;
+}
+.trend_up_reversed
+{
+background-position: 0px -240px;
 }
 #sidebar,#multiSelecter,#legend
 {

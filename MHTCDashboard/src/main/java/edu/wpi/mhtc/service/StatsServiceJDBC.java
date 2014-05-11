@@ -53,7 +53,7 @@ public class StatsServiceJDBC extends StatsService
 	}
 
 	@Override
-	protected List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric)
+	public List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric)
 	{
 
 		PSqlStringMappedJdbcCall<DataPoint> call = new PSqlStringMappedJdbcCall<DataPoint>(template).withSchemaName(
@@ -80,7 +80,7 @@ public class StatsServiceJDBC extends StatsService
 	}
 
 	@Override
-	protected State getDataForState(DBState state, List<DBMetric> metrics)
+	public State getDataForState(DBState state, List<DBMetric> metrics)
 	{
 		LinkedList<DataSource> sources = new LinkedList<DataSource>();
 
@@ -106,18 +106,16 @@ public class StatsServiceJDBC extends StatsService
 				// TODO calculate this depending on the datatype and do a real calculation
 				double diff = recent.getValue() - old.getValue();
 				
-				boolean swap = false;
-	            for (int i = 0; i < swaptrendids.length; i++)
-	                if (swaptrendids[i] == metric.getId())
-	                    swap = true;
-				
-	            if (swap)
-	                   //diff = diff - 1;
+	            String reversed;
+	            if (metric.getTrendType().equals("reversed"))
+	                reversed = "_reversed";
+	            else
+	                reversed = "";
 	            
 				if (diff > 0) {
-					trend = "up";
+					trend = "up"+reversed;
 				} else if (diff < 0) {
-					trend = "down";
+					trend = "down"+reversed;
 				} else {
 				    trend = "no_change";
 				}

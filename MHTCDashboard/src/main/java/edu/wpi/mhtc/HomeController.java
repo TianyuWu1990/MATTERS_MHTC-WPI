@@ -59,10 +59,10 @@ public class HomeController {
 		
 		
 		ObjectMapper om = new ObjectMapper();
-		State massNational = css.query("getStateBinData", "MA", 21);
-		State massTalent = css.query("getStateBinData", "MA", 20);
-		State massCost = css.query("getStateBinData", "MA", 37);
-		State massEconomy = css.query("getStateBinData", "MA", 29);
+		State massNational = statsService.getStateBinData("MA", 21);//statsService. css.query("getStateBinData", "MA", 21);
+		State massTalent = statsService.getStateBinData("MA", 20);//css.query("getStateBinData", "MA", 20);
+		State massCost = statsService.getStateBinData("MA", 37);//css.query("getStateBinData", "MA", 37);
+		State massEconomy = statsService.getStateBinData("MA", 29);//css.query("getStateBinData", "MA", 29);
 		PeerStates peers = cps.query("getPeers");
 		
 		logger.info("national datasize: {}", massNational.getParams().size());

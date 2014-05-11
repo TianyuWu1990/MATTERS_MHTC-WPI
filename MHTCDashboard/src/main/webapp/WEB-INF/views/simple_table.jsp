@@ -15,7 +15,7 @@
 				<td><c:out value="${stat.name}"></c:out></td>
 			</c:otherwise>
 		</c:choose>
-		<td><span class="trend_icon trend_{trend}"></span></td>
+		<td><span class="trend_icon trend_${stat.trend}"></span></td>
 
 		<c:set var="stat_value" scope="request" value="${stat.recent.value}" />
 		<c:set var="stat_type" scope="request" value="${stat.type}" />

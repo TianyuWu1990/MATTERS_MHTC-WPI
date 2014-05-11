@@ -19,10 +19,10 @@ import edu.wpi.mhtc.persistence.DBState;
 public abstract class StatsService extends Service<DataSource, State>
 {
 	
-	protected abstract State getStateBinData(String state, Integer binId);
-	protected abstract List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric);
-	protected abstract State getDataForState(DBState state, List<DBMetric> metrics);
-	protected abstract State getDataForStateByName(String state, String metrics);
+	public abstract State getStateBinData(String state, Integer binId);
+	public abstract List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric);
+	public abstract State getDataForState(DBState state, List<DBMetric> metrics);
+	public abstract State getDataForStateByName(String state, String metrics);
 	public abstract List<DBMetric> getListOfMetricsFromCommaSeparatedString(String metric);
 	
 	

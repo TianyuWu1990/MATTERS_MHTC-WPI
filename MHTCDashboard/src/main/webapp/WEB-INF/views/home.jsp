@@ -90,12 +90,15 @@
 					<li><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<form class="navbar-form navbar-left" action="./admin" method="get" role="search">
+					<form class="navbar-form navbar-left" action="<c:url value='j_spring_security_check' />" method="POST" role="search">
 						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Username"> <input type="password"
-								class="form-control" placeholder="Password">
+							<input type="text" class="form-control" placeholder="username" name="username"> <input type="password"
+								class="form-control" placeholder="password" name="password">
 						</div>
 						<button type="submit" value="submit" class="btn btn-default">Login</button>
+						
+						<input type="hidden" name="${_csrf.parameterName}"
+							value="${_csrf.token}" />
 					</form>
 				</ul>
 			</div>

@@ -9,14 +9,16 @@ public class DBMetric {
 	private String binName;
 	private String URL;
 	private String source;
+	private String trendType;
 
-	public DBMetric(int id, String name, String dataType, int binId, String binName, String URL, String source) {
+	public DBMetric(int id, String name, String dataType, int binId, String binName, String URL, String source, String trendType) {
 		this.id = id;
 		this.name = name;
 		this.dataType = dataType;
 		this.binName = binName;
 		this.URL = URL;
 		this.source = source;
+		this.trendType = trendType;
 	}
 
 	public int getId() {
@@ -46,5 +48,9 @@ public class DBMetric {
 	public String getSource() {
 		return source;
 	}
+
+    public String getTrendType() {
+        return trendType;
+    }
 
 }
