@@ -130,21 +130,21 @@ public class StatsServiceJDBC extends StatsService
 			    if (tabids[i] == metric.getId())
 			        tabbed = true;
 			
-			DataSource source = new DataSource(metric.getId(), metric.getName(), metric.getURL(), trend, metric.getSource(), metric.getBinName(), tabbed);
+			DataSource source = new DataSource(metric.getId(), metric.getName(), metric.getURL(), trend, metric.getSource(), metric.getDataType(), metric.getBinName(), tabbed);
 			
 			for (DataPoint datapoint : points)
 			{
 				try
 				{
 					double value = datapoint.getValue();
-					if (metric.getDataType().equals("percentage")) {
+					/*if (metric.getDataType().equals("percentage")) {
 						value *= 100;
 						BigDecimal bd = new BigDecimal(value);
 					    bd = bd.setScale(2, RoundingMode.HALF_UP);
 					    value = bd.doubleValue();
 					} else {
 						
-					}
+					}*/
 					
 					source.addData(new Data(datapoint.getYear(), value));
 				}

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -71,13 +72,30 @@ public class HomeController {
 		
 		
 		// TODO un-hardcode these bin ids
-		model.addAttribute("jv_stats_national", om.writeValueAsString(massNational.getParams()));
-		model.addAttribute("jv_stats_talent", om.writeValueAsString(massTalent.getParams()));
-		model.addAttribute("jv_stats_cost", om.writeValueAsString(massCost.getParams()));
-		model.addAttribute("jv_stats_economy", om.writeValueAsString(massEconomy.getParams()));
-		model.addAttribute("jv_peer_states", RSON.parse(peers.getAsGrid(4)));
+		model.addAttribute("jv_stats_national", massNational.getParams());
+		model.addAttribute("jv_stats_talent", massTalent.getParams());
+		model.addAttribute("jv_stats_cost", massCost.getParams());
+		model.addAttribute("jv_stats_economy", massEconomy.getParams());
+		model.addAttribute("jv_peer_states", peers.getAsGrid(4));
 		
 		return "home";
+	}
+	
+	@RequestMapping(value = "/{state}/table", method=RequestMethod.GET)
+	public String home(Model model, @PathVariable("state") String state) {
+	    CachedStatsService css = CachedStatsService.getInstance(statsService);
+	    State massNational = css.query("getStateBinData", state, 21);
+        State massTalent = css.query("getStateBinData", state, 20);
+        State massCost = css.query("getStateBinData", state, 37);
+        State massEconomy = css.query("getStateBinData", state, 29);
+        
+        model.addAttribute("jv_stats_national", massNational.getParams());
+        model.addAttribute("jv_stats_talent", massTalent.getParams());
+        model.addAttribute("jv_stats_cost", massCost.getParams());
+        model.addAttribute("jv_stats_economy", massEconomy.getParams());
+        
+        return "state_tab_display";
+	    
 	}
 	
 }

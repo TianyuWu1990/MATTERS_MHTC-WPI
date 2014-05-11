@@ -20,10 +20,10 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>-->
-	<beans:bean class="com.fergiggles.giggledust.dust.DustViewResolver">
+	<!--  <beans:bean class="com.fergiggles.giggledust.dust.DustViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".dust" />
-	</beans:bean>
+	</beans:bean>-->
 	
 	<context:component-scan base-package="edu.wpi.mhtc" />
 	<resources mapping="/js/**" location="js/" />

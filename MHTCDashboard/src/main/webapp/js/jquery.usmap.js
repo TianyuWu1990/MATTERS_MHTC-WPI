@@ -37,6 +37,8 @@ multiMode = false;
           return "Connecticut";
         case "NH":
           return "New Hampshire";
+        case "NJ":
+          return "New Jersey";
         default:
           return false;
       }
@@ -134,7 +136,8 @@ multiMode = false;
         'NY': {fill: '#F90'},
         'CT': {fill: '#F90'},
         'NH': {fill: '#F90'},
-        'MA': {fill: '#F90'}
+        'MA': {fill: '#F90'},
+        'NJ': {fill: '#F90'},
     },
     
     // Events

@@ -86,6 +86,9 @@ loadFunction = function() {
             'NH' : {
                 fill : 'MidnightBlue'
             },
+            'NJ' : {
+                fill : 'MidnightBlue'
+            },
             'MA' : {
                 fill : 'green'
             }
@@ -102,14 +105,14 @@ showGraph = function(ind) {
     document.getElementById("graphStates").innerHTML = currData.name;
     setTimeout(function() {
         nv.addGraph(function() {
-            var chart = nv.models.lineChart().x(function(d) {
+            var chart = nv.models.lineChart().margin({left: 100}).x(function(d) {
                 return d[0]
             }).y(function(d) {
                 return d[1]
             }) // adjusting, 100% is 1.00, not 100 as it is in the data
             .color(d3.scale.category10().range()).useInteractiveGuideline(true);
 
-            chart.xAxis/*.tickValues([ 1078030800000, 1122782400000, 1167541200000, 1251691200000 ])*/.tickFormat(
+            chart.xAxis.axisLabel("testnamex")/*.tickValues([ 1078030800000, 1122782400000, 1167541200000, 1251691200000 ])*/.tickFormat(
                     function(d) {
                         return d3.format('1d')(d);//d3.time.format('%x')(new Date(d))
                     });
@@ -120,7 +123,7 @@ showGraph = function(ind) {
                 return [ d["year"], d["value"] ];
             });
             //chart.yAxis.tickFormat(d3.format(',.1%'));
-            chart.yAxis.tickFormat(d3.format(',1d'));
+            chart.yAxis.axisLabel("testnamey").tickFormat(d3.format(',1d'));
             d3.select('#mbody svg').datum([ data ]).transition().duration(500).call(chart);
 
             // TODO: Figure out a good way to do this automatically
@@ -186,7 +189,7 @@ showMultiGraph = function(states) {
                 }) // adjusting, 100% is 1.00, not 100 as it is in the data
                 .color(d3.scale.category10().range()).useInteractiveGuideline(true);
 
-                chart.xAxis.tickValues([ 1078030800000, 1122782400000, 1167541200000, 1251691200000 ]).tickFormat(
+                chart.xAxis.tickFormat(
                         function(d) {
                             return d3.format('1d')(d);
                         });
@@ -238,7 +241,21 @@ function getParamsOfId(idx) {
 }
 
 var currData = "";
+
 function loadData(stateData) {
+    currData = stateData[0];
+    
+    $.get("" + currData.abbr + "/table", function(data) {
+        $("#sidebar").html(data);
+        $("#nationalTab").addClass("active");
+        $("#national").removeClass("fade");
+        $("#national").addClass("active");
+    });
+    
+    
+}
+
+function loadDataold(stateData) {
     currData = stateData[0];
     var metrics = stateData[0].params;
     document.getElementById('National-tbody').innerHTML = '';

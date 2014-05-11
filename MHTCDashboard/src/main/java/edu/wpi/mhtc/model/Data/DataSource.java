@@ -14,13 +14,15 @@ public class DataSource
 	private final LinkedList<Data> data;
 	private final int id;
 	private final boolean tabbed;
-	private double dataAverage;
+    private final String type;
+
+    private double dataAverage;
 	private Data recent;
 	
 	
 	
 	
-	public DataSource(int id, String name, String urlFrom, String trend, String sourceName, String binName, boolean tabbed, Data...datas )
+	public DataSource(int id, String name, String urlFrom, String trend, String sourceName, String type, String binName, boolean tabbed, Data...datas )
 	{
 	    this.id = id;
 		this.name = name;
@@ -30,6 +32,7 @@ public class DataSource
 		this.sourceName = sourceName;
 		this.binName = binName;
 		this.tabbed = tabbed;
+		this.type = type;
 		int i;
 		for(i = 0; i<datas.length-1; i++)
 		{
@@ -126,4 +129,7 @@ public class DataSource
 	    else
 	        return "";
 	}
+    public String getType() {
+        return type;
+    }
 }
