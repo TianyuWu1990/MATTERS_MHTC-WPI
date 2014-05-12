@@ -1,4 +1,25 @@
 
+$(document).ready(function() {
+   dataIndex = 0;
+   currentind = 0;
+   $("#graph_toggle").click(function(e) {
+       if (current_graph == 'line') {
+           current_graph = 'bar';
+           $("#graph_toggle").html("Switch to Line");
+       } else if (current_graph == 'bar') {
+           current_graph = 'line';
+           $("#graph_toggle").html("Switch to Bar");
+       }
+       
+       current_graph_function(currentind);
+   });
+   
+   
+   current_graph_function = null;
+   current_graph = 'line';
+   current_tab = 'national';
+});
+
 toggleMultiSelect = function(ind) {
     $("#multiSelecter").toggle("slide", {
         direction : "right"
@@ -10,6 +31,13 @@ toggleMultiSelect = function(ind) {
     dataIndex = getParamsOfId(ind);
 
     selected = [ currData.abbr ];
+    if ($("#normallegend").hasClass("hidden")) {
+        $("#normallegend").removeClass("hidden");
+        $("#multilegend").addClass("hidden");
+    } else {
+        $("#normallegend").addClass("hidden");
+        $("#multilegend").removeClass("hidden");
+    }
 
     $(".stateButton").each(function(i) {
         var state;
@@ -97,23 +125,36 @@ loadFunction = function() {
         currData = data[0];
     });
 }
-var dataIndex = 0;
 showGraph = function(ind) {
+    d3.selectAll("#mbody svg > *").remove();
+    current_graph_function = showGraph;
+    currentind = ind;
     dataIndex = getParamsOfId(ind);
     document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
     document.getElementById("graphStates").innerHTML = currData.name;
     setTimeout(function() {
         nv.addGraph(function() {
-            var chart = nv.models.lineChart().margin({
+            var chart;
+            if (current_graph == 'line') {
+                chart = nv.models.lineChart()
+                .useInteractiveGuideline(true);
+            } else if (current_graph == 'bar') {
+                chart = nv.models.discreteBarChart();
+            }
+            chart.margin({
                 left : 100
             }).x(function(d) {
                 return d[0]
             }).y(function(d) {
                 return d[1]
             }) // adjusting, 100% is 1.00, not 100 as it is in the data
-            .color(d3.scale.category10().range()).useInteractiveGuideline(true);
+            .color(d3.scale.category10().range())
 
-            chart.xAxis.axisLabel("Year").tickFormat(d3.format('.0f'));
+            var xtickvalues = currData.params[dataIndex].data.map(function(d) {
+                return d["year"];
+            });
+            
+            chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
 
             if (currData.params[dataIndex].type == "integer") {
                 chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
@@ -145,10 +186,14 @@ showGraph = function(ind) {
 }
 
 showMultiGraphOnSelected = function() {
+    current_graph_function = showMultiGraphOnSelected;
+    currentind = ind;
     showMultiGraph(selected);
 }
 
 showMultiGraphOnTopTen = function(ind) {
+    current_graph_function = showMultiGraphOnTopTen;
+    currentind = ind;
     dataIndex = getParamsOfId(ind);
 
     getData("data/peers/top?metric=" + currData.params[dataIndex].name + "&year="
@@ -162,6 +207,8 @@ showMultiGraphOnTopTen = function(ind) {
 }
 
 showMultiGraphOnBottomTen = function(ind) {
+    current_graph_function = showMultiGraphOnBottomTen;
+    currentind = ind;
     dataIndex = getParamsOfId(ind);
 
     getData("data/peers/bottom?metric=" + currData.params[dataIndex].name + "&year="
@@ -175,6 +222,8 @@ showMultiGraphOnBottomTen = function(ind) {
 }
 
 showMultiGraphOnPeers = function(ind) {
+    current_graph_function = showMultiGraphOnPeers;
+    currentind = ind;
     dataIndex = getParamsOfId(ind);
 
     getData("data/peers", function(states) {
@@ -186,22 +235,34 @@ showMultiGraphOnPeers = function(ind) {
 }
 
 showMultiGraph = function(states) {
+    d3.selectAll("#mbody svg > *").remove();
     document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
     document.getElementById("graphStates").innerHTML = states.join(", ");
     getData("data/stats/query?states=" + states.join(",") + "&metrics=" + currData.params[dataIndex].name, function(
             multiData) {
         setTimeout(function() {
             nv.addGraph(function() {
-                var chart = nv.models.lineChart().margin({
+                var chart;
+                if (current_graph == 'line') {
+                    chart = nv.models.lineChart()
+                    .useInteractiveGuideline(true);
+                } else if (current_graph == 'bar') {
+                    chart = nv.models.multiBarChart();
+                }
+                chart.margin({
                     left : 100
                 }).x(function(d) {
                     return d[0]
                 }).y(function(d) {
                     return d[1]
                 }) // adjusting, 100% is 1.00, not 100 as it is in the data
-                .color(d3.scale.category10().range()).useInteractiveGuideline(true);
+                .color(d3.scale.category10().range())
 
-                chart.xAxis.axisLabel("Year").tickFormat(d3.format('.0f'));
+                var xtickvalues = currData.params[dataIndex].data.map(function(d) {
+                    return d["year"];
+                });
+                
+                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
 
                 if (currData.params[dataIndex].type == "integer") {
                     chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
@@ -264,12 +325,36 @@ var currData = "";
 
 function loadData(stateData) {
     currData = stateData[0];
+    
+    if ($("#national").hasClass("active")) {
+        current_tab = 'national';
+    } else if ($("#talent").hasClass("active")) {
+        current_tab = 'talent';
+    } else if ($("#cost").hasClass("active")) {
+        current_tab = 'cost';
+    } else if ($("#economy").hasClass("active")) {
+        current_tab = 'economy';
+    }
 
     $.get("" + currData.abbr + "/table", function(data) {
         $("#sidebar").html(data);
-        $("#nationalTab").addClass("active");
-        $("#national").removeClass("fade");
-        $("#national").addClass("active");
+        if (current_tab == 'national') {
+            $("#nationalTab").addClass("active");
+            $("#national").removeClass("fade");
+            $("#national").addClass("active");
+        } else if (current_tab == 'talent') {
+            $("#talentTab").addClass("active");
+            $("#talent").removeClass("fade");
+            $("#talent").addClass("active");
+        } else if (current_tab == 'cost') {
+            $("#costTab").addClass("active");
+            $("#cost").removeClass("fade");
+            $("#cost").addClass("active");
+        } else if (current_tab == 'economy') {
+            $("#economyTab").addClass("active");
+            $("#economy").removeClass("fade");
+            $("#economy").addClass("active");
+        }
     });
 
 }

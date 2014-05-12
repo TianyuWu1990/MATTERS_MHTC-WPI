@@ -712,6 +712,12 @@ multiMode = false;
         var attrs = {fill: 'orange'};
         this.options.stateSpecificStyles[stateData.name] = attrs;
         stateData.shape.animate(attrs, this.options.stateHoverAnimation);
+      } else {
+
+          var stateData = this._getState(currentStateAbbr);
+          var attrs = {fill: 'green'};
+          this.options.stateSpecificStyles[stateData.name] = attrs;
+          stateData.shape.animate(attrs, this.options.stateHoverAnimation);
       }
     },
     reset: function(options){

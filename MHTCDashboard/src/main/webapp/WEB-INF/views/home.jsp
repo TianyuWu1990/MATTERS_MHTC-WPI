@@ -24,6 +24,8 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+					<button type="button" class="btn btn-primary btn-right" id="graph_toggle">Switch to Bar</button>
 					<h4 class="modal-title" id="graphTitle">State Science and Technology Graph</h4>
 					<h4 class="small" id="graphStates">Selected States: Massachusetts, California, Texas</h4>
 				</div>
@@ -62,6 +64,10 @@
 						prosperous, competitive business environment fundamental to building long-term economic stability and job growth
 						within the state.
 					</p>
+					<p class="text-muted centered">
+						<br />&copy;2014 Worcester Polytechnic Institute. All rights reserved.<br /> Sponsored by Mass High Technology
+						Council
+					</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -84,21 +90,22 @@
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="text-align: center">
+				<ul class="nav navbar-nav navbar-left">
 					<li class="active"><a href="#">Explore</a></li>
 					<li><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
 				</ul>
+				<h1 class="centered title">MATTERS Dashboard</h1>
 				<ul class="nav navbar-nav navbar-right">
-					<form class="navbar-form navbar-left" action="<c:url value='j_spring_security_check' />" method="POST" role="search">
+					<form class="navbar-form navbar-left" action="<c:url value='j_spring_security_check' />" method="POST"
+						role="search">
 						<div class="form-group">
 							<input type="text" class="form-control" placeholder="username" name="username"> <input type="password"
 								class="form-control" placeholder="password" name="password">
 						</div>
 						<button type="submit" value="submit" class="btn btn-default">Login</button>
-						
-						<input type="hidden" name="${_csrf.parameterName}"
-							value="${_csrf.token}" />
+
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form>
 				</ul>
 			</div>
@@ -147,29 +154,49 @@
 				</div>
 			</div>
 			<div class="col-md-5">
-				<h2 class="text-center">
-					<div id="stateTitle">Massachusetts</div>
-				</h2>
 				<div id="legend" style="float: right">
-					<table>
+					<table id="normallegend">
 						<tr>
-							<td><div id="peerlegend" class="legendbox"></div></td>
+							<td><div class="legendbox boxblue"></div></td>
 							<td>Peer State</td>
 						</tr>
 						<tr>
-							<td><div id="currentlegend" class="legendbox"></div></td>
+							<td><div class="legendbox boxgreen"></div></td>
 							<td>Selected State</td>
+						</tr>
+						<tr>
+							<td><div class="legendbox boxyellow"></div></td>
+							<td>Highlighted State</td>
+						</tr>
+					</table>
+					<table id="multilegend" class="hidden">
+						<tr>
+							<td><div class="legendbox boxblue"></div></td>
+							<td>Unselected State</td>
+						</tr>
+						<tr>
+							<td><div class="legendbox boxgreen"></div></td>
+							<td>Selected State</td>
+						</tr>
+						<tr>
+							<td><div class="legendbox boxyellow"></div></td>
+							<td>Current State</td>
 						</tr>
 					</table>
 				</div>
+				<h2 class="text-center">
+					<div id="stateTitle">Massachusetts</div>
+				</h2>
 				<div id="map" style="width: 600px; height: 375px;"></div>
 			</div>
 		</div>
 	</div>
 	<div id="footer">
 		<div class="container">
-			<p class="text-muted">&copy;2014 Massachusetts High Technology Council -- Developed by Worcester Polytechnic
-				Institute</p>
+			<p class="text-muted centered">
+				<br />&copy;2014 Worcester Polytechnic Institute. All rights reserved.<br /> Sponsored by Mass High Technology
+				Council
+			</p>
 		</div>
 	</div>
 	<script src="js/load.js"></script>
