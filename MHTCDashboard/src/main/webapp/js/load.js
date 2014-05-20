@@ -18,7 +18,40 @@ $(document).ready(function() {
    current_graph_function = null;
    current_graph = 'line';
    current_tab = 'national';
+   graph_title_prefix = '';
+   
+   $("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
+   $("div.tab-pane").scroll(adjustDropDown);
 });
+
+
+adjustDropDown = function(e) {
+    setTimeout(function() {
+        var divWithScroll = $("#sidebar div.active");
+        var openMenuContainer = $("#sidebar div.open");
+        $("#sidebar div.open ul.dropdown-menu").each(function() {
+            
+            var height = divWithScroll.height();
+            var top = openMenuContainer.position().top + $(this).position().top;
+            var bottom = openMenuContainer.position().top + $(this).position().top + $(this).height();
+            
+            if (top < 0) {
+                $(this).css("bottom", "auto");
+                $(this).css("top", "" + openMenuContainer.height() + "px");
+            }
+            
+            if (bottom > height) {
+
+                $(this).css("top", "auto");
+                $(this).css("bottom", "" + (openMenuContainer.height() +2) + "px");
+            }
+            
+        });
+        
+        //var scrollTop = divWithScroll.scrollTop();
+        
+    }, 20);
+}
 
 toggleMultiSelect = function(ind) {
     $("#multiSelecter").toggle("slide", {
@@ -55,6 +88,7 @@ toggleMultiSelect = function(ind) {
     });
 }
 selectState = function(state) {
+    
     if (state == currData.abbr) {
 
         return;
@@ -186,12 +220,14 @@ showGraph = function(ind) {
 }
 
 showMultiGraphOnSelected = function() {
+    graph_title_prefix = "Compare to Selected: ";
     current_graph_function = showMultiGraphOnSelected;
     currentind = ind;
     showMultiGraph(selected);
 }
 
 showMultiGraphOnTopTen = function(ind) {
+    graph_title_prefix = "Compare Top TenStates: ";
     current_graph_function = showMultiGraphOnTopTen;
     currentind = ind;
     dataIndex = getParamsOfId(ind);
@@ -207,6 +243,7 @@ showMultiGraphOnTopTen = function(ind) {
 }
 
 showMultiGraphOnBottomTen = function(ind) {
+    graph_title_prefix = "Compare Bottom Ten States: ";
     current_graph_function = showMultiGraphOnBottomTen;
     currentind = ind;
     dataIndex = getParamsOfId(ind);
@@ -222,6 +259,7 @@ showMultiGraphOnBottomTen = function(ind) {
 }
 
 showMultiGraphOnPeers = function(ind) {
+    graph_title_prefix = "Compare All Peers: ";
     current_graph_function = showMultiGraphOnPeers;
     currentind = ind;
     dataIndex = getParamsOfId(ind);
@@ -236,7 +274,7 @@ showMultiGraphOnPeers = function(ind) {
 
 showMultiGraph = function(states) {
     d3.selectAll("#mbody svg > *").remove();
-    document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
+    document.getElementById("graphTitle").innerHTML = graph_title_prefix + currData.params[dataIndex].name;
     document.getElementById("graphStates").innerHTML = states.join(", ");
     getData("data/stats/query?states=" + states.join(",") + "&metrics=" + currData.params[dataIndex].name, function(
             multiData) {
@@ -325,6 +363,7 @@ var currData = "";
 
 function loadData(stateData) {
     currData = stateData[0];
+    $("#stateTitle").text(currData.name);
     
     if ($("#national").hasClass("active")) {
         current_tab = 'national';
@@ -337,7 +376,7 @@ function loadData(stateData) {
     }
 
     $.get("" + currData.abbr + "/table", function(data) {
-        $("#sidebar").html(data);
+        $("#state_container").html(data);
         if (current_tab == 'national') {
             $("#nationalTab").addClass("active");
             $("#national").removeClass("fade");

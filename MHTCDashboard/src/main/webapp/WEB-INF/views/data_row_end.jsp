@@ -12,11 +12,11 @@
 			<span class="glyphicon glyphicon-chevron-down"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="#" data-toggle="modal" data-target="#myModal" onClick="showMultiGraphOnPeers(${fn:escapeXml(data_value.id)})">Compare to Peer States</a></li>
+			<li><a href="#" data-toggle="modal" data-target="#myModal" onClick="showMultiGraphOnPeers(${fn:escapeXml(data_value.id)})">Compare Peer States</a></li>
 			<li><a href="#" onClick="toggleMultiSelect(${fn:escapeXml(data_value.id)});">Compare to Select States</a></li>
-			<li><a href="#" data-toggle="modal" data-target="#myModal" onClick="showMultiGraphOnTopTen(${fn:escapeXml(data_value.id)})">Compare to Top Ten</a></li>
-			<li><a href="#" data-toggle="modal" data-target="#myModal" onClick="showMultiGraphOnBottomTen(${fn:escapeXml(data_value.id)})">Compare to Bottom Ten</a></li>
-			<li><a data-toggle="modal" data-target="#myModal" onClick="showGraph(${fn:escapeXml(data_value.id)})">View Graph</a></li>
+			<li><a href="#" data-toggle="modal" data-target="#myModal" onClick="showMultiGraphOnTopTen(${fn:escapeXml(data_value.id)})">Compare Top Ten States</a></li>
+			<li><a href="#" data-toggle="modal" data-target="#myModal" onClick="showMultiGraphOnBottomTen(${fn:escapeXml(data_value.id)})">Compare Bottom Ten States</a></li>
+			<li><a data-toggle="modal" data-target="#myModal" onClick="showGraph(${fn:escapeXml(data_value.id)})">Display Selected State Data</a></li>
 			<li class="divider"></li>
 		</ul>
 	</div>

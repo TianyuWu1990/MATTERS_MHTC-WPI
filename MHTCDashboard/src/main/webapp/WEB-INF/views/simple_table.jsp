@@ -23,6 +23,7 @@
 		<c:remove var="stat_value" scope="request" />
 		<c:remove var="stat_type" scope="request" />
 
+		<td><c:out value="${stat.recent.year}" /></td>
 		<c:set var="data_value" scope="request" value="${stat}" />
 		<c:import url="data_row_end.jsp" />
 		<c:remove var="data_value" scope="request" />

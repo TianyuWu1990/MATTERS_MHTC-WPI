@@ -77,22 +77,29 @@ public class HomeController {
 		model.addAttribute("jv_stats_cost", massCost.getParams());
 		model.addAttribute("jv_stats_economy", massEconomy.getParams());
 		model.addAttribute("jv_peer_states", peers.getAsGrid(4));
+
+        model.addAttribute("jv_current_state", "MA");
 		
 		return "home";
 	}
 	
 	@RequestMapping(value = "/{state}/table", method=RequestMethod.GET)
-	public String home(Model model, @PathVariable("state") String state) {
+	public String home(Model model, @PathVariable("state") String state) throws ParseException {
+        CachedPeerService cps = CachedPeerService.getInstance(peersService);
 	    CachedStatsService css = CachedStatsService.getInstance(statsService);
 	    State massNational = css.query("getStateBinData", state, 21);
         State massTalent = css.query("getStateBinData", state, 20);
         State massCost = css.query("getStateBinData", state, 37);
         State massEconomy = css.query("getStateBinData", state, 29);
+        PeerStates peers = cps.query("getPeers");
         
         model.addAttribute("jv_stats_national", massNational.getParams());
         model.addAttribute("jv_stats_talent", massTalent.getParams());
         model.addAttribute("jv_stats_cost", massCost.getParams());
         model.addAttribute("jv_stats_economy", massEconomy.getParams());
+        model.addAttribute("jv_peer_states", peers.getAsGrid(4));
+        
+        model.addAttribute("jv_current_state", state);
         
         return "state_tab_display";
 	    

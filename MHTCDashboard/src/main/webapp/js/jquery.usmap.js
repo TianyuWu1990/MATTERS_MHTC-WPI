@@ -151,11 +151,11 @@ multiMode = false;
     },
     
     'mouseover': function(event, data){
-      $("#stateTitle").text(toFullName(data.name) || currentState);
+      $("#mapTitle").text(toFullName(data.name) || "Click to Select a State");
     },
     
     'mouseout': function(event, data){
-      $("#stateTitle").text(currentState);
+      $("#mapTitle").text("Click to Select a State");
     },
     
     'clickState': {},

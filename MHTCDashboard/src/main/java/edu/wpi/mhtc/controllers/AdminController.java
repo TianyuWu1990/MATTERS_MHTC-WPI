@@ -72,7 +72,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/categories/{categoryid}/metrics/table")
     public String metricTable(Model model, @PathVariable("categoryid") int categoryId) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
         
-        model.addAttribute("jv_metrics", new ObjectMapper().writeValueAsString(service.getMetricsForCategory(categoryId)));
+        model.addAttribute("jv_metrics", service.getMetricsForCategory(categoryId));
         
         return "admin_metrics_table";
     }

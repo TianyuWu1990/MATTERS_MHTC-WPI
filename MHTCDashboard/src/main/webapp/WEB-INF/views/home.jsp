@@ -25,7 +25,7 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-					<button type="button" class="btn btn-primary btn-right" id="graph_toggle">Switch to Bar</button>
+					<!-- <button type="button" class="btn btn-primary btn-right" id="graph_toggle">Switch to Bar</button>-->
 					<h4 class="modal-title" id="graphTitle">State Science and Technology Graph</h4>
 					<h4 class="small" id="graphStates">Selected States: Massachusetts, California, Texas</h4>
 				</div>
@@ -49,17 +49,17 @@
 				<div class="modal-body" id="mbody">
 					<p>
 						As part of its mission to make Massachusetts the world&apos;s most attractive place in which to live and work, and
-						in which to create, and grow high technology business, the Massachusetts High Technology Council has developed the
-						Massachusetts&apos; Technology, Talent and Economy Reporting Systems or MATTERS. MATTERS is a tool designed to
+						in which to create, and grow high technology business, the <strong>Massachusetts High Technology Council</strong> has developed the
+						<span class="bluetext">Massachusetts&apos; Technology, Talent and Economy Reporting Systems</span> or <span class="bluetext">MATTERS</span>. <span class="bluetext">MATTERS</span> is a tool designed to
 						help measure and evaluate Massachusetts&apos; current competitive position among leading technology states while
 						providing policy makers with the information critical to developing public policy that attracts and retains
-						business to the state. <br /> <br /> MATTERS is an online system that consolidates a collection of independent
+						business to the state. <br /> <br /> <span class="bluetext">MATTERS</span> is an online system that consolidates a collection of independent
 						national rankings along with a set of key cost, economic and talent metrics into a single source for use by all
 						parties interested in building a successful future for Massachusetts&apos; technology-based business. Both private
 						and public-sector decision makers will have the key information necessary to evaluate and understand
 						Massachusetts&apos; current business position as it compares to peer states and international communities who are
 						working aggressively to attract the same talent, apital and jobs that characterize our Bay State technology
-						economy. Armed with MATTERS&apos; data, business, education and public-policy leaders will chart
+						economy. Armed with <span class="bluetext">MATTERS</span>&apos; data, business, education and public-policy leaders will chart
 						Massachusetts&apos; future collaboratively by aligning what needs to be improved or protected in order to create a
 						prosperous, competitive business environment fundamental to building long-term economic stability and job growth
 						within the state.
@@ -116,44 +116,22 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-7">
-				<div id="sidebar" class="col-md-12">
+			
+			<h2 class="text-center">
+				<div id="stateTitle">Massachusetts</div>
+			</h2>
+			
+			
+			<div class="col-md-7" id="state_container">
 					<c:import url="state_tab_display.jsp" />
-				</div>
-				<div id="multiSelecter" style="position: absolute; left: 0px; top: 0px; display: none;" class="col-md-12">
-					<p class="lead">
-						<button class="btn btn-info" onclick="toggleMultiSelect(0);">
-							<h6>
-								<span class="glyphicon glyphicon-circle-arrow-left"></span> Back
-							</h6>
-						</button>
-						&nbsp;&nbsp;&nbsp;&nbsp; Select States to Compare
-					</p>
-					<table>
-						<tr>
-							<td>
-								<div class="btn-group" data-toggle="buttons">
-									<table class="table" align="center">
-										<c:forEach items="${jv_peer_states}" var="stat">
-											<tr>
-												<c:forEach items="${stat.row}" var="row">
-													<td><label class="btn btn-default stateButton" onClick="selectState('${fn:escapeXml(row.abbr)}');">
-															<input type="checkbox" id="chk${fn:escapeXml(row.abbr)}"> <c:out value="${row.name}"></c:out>
-													</label></td>
-												</c:forEach>
-											</tr>
-										</c:forEach>
-									</table>
-								</div>
-							</td>
-							<td>
-								<button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="showMultiGraphOnSelected()">Compare</button>
-							</td>
-						</tr>
-					</table>
-				</div>
+				
 			</div>
 			<div class="col-md-5">
+				
+				<h2 class="text-center">
+					<div id="mapTitle">Click to Select a State</div>
+				</h2>
+				<div id="map" style="width: 600px; height: 375px;"></div>
 				<div id="legend" style="float: right">
 					<table id="normallegend">
 						<tr>
@@ -184,10 +162,6 @@
 						</tr>
 					</table>
 				</div>
-				<h2 class="text-center">
-					<div id="stateTitle">Massachusetts</div>
-				</h2>
-				<div id="map" style="width: 600px; height: 375px;"></div>
 			</div>
 		</div>
 	</div>

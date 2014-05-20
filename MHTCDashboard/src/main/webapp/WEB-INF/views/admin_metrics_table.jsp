@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <table class="tbl">
    <tr>
       <th>Id</th>
@@ -7,14 +8,14 @@
       <th>Type</th>
       <th></th>
    </tr>
-{#jv_metrics}
+	<c:forEach items="${jv_metrics}" var="metric">
 	<tr>
-		<td>{id}</td>
-		<td id="editmetricname_{id}">{name}</td>
-		<td id="editmetricvisible_{id}">{visible}</td>
-		<td id="editmetriccalculated_{id}">{calculated}</td>
-		<td id="editmetrictype_{id}">{type}</td>
-		<td><a href="#" id="editmetric_{id}" class="editCategCLS">Edit</a></td>
+		<td>${metric.id}</td>
+		<td id="editmetricname_${metric.id}">${metric.name}</td>
+		<td id="editmetricvisible_${metric.id}">${metric.visible}</td>
+		<td id="editmetriccalculated_${metric.id}">${metric.calculated}</td>
+		<td id="editmetrictype_{id}">${metric.id}</td>
+		<td><a href="#" id="editmetric_${metric.id}" class="editCategCLS">Edit</a></td>
 	</tr>
-{/jv_metrics}
+	</c:forEach>
 </table>
