@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
 <script src="js/raphael.js"></script>
 <script src="js/color.jquery.js"></script>
+<script src="js/dataquery.js"></script>
 <script src="js/jquery.usmap.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>

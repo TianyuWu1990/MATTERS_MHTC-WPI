@@ -276,7 +276,11 @@ showMultiGraph = function(states) {
     d3.selectAll("#mbody svg > *").remove();
     document.getElementById("graphTitle").innerHTML = graph_title_prefix + currData.params[dataIndex].name;
     document.getElementById("graphStates").innerHTML = states.join(", ");
-    getData("data/stats/query?states=" + states.join(",") + "&metrics=" + currData.params[dataIndex].name, function(
+    // getData("data/stats/query?states=" + states.join(",") + "&metrics=" + currData.params[dataIndex].name,
+    
+    var query = DQ.Query().addState(states).addMetric(currData.params[dataIndex].name);
+    
+    query.execute(function(
             multiData) {
         setTimeout(function() {
             nv.addGraph(function() {
