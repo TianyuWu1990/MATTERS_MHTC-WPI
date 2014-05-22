@@ -9,7 +9,7 @@
 			<c:when test="${stat.tabbed}">
 				<td><ul>
 						<li><c:out value="${stat.name}"></c:out></li>
-					</ul>
+					</ul></td>
 			</c:when>
 			<c:otherwise>
 				<td><c:out value="${stat.name}"></c:out></td>

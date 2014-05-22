@@ -1,4 +1,8 @@
 
+
+var currData = "";
+
+// Gets called on load deals with random crap of hacks to make stuff
 $(document).ready(function() {
    dataIndex = 0;
    currentind = 0;
@@ -24,7 +28,7 @@ $(document).ready(function() {
    $("div.tab-pane").scroll(adjustDropDown);
 });
 
-
+// Hack that gets called when clicking on a button or when scrolling the div, flips the dropdown if it will make it display better
 adjustDropDown = function(e) {
     setTimeout(function() {
         var divWithScroll = $("#sidebar div.active");
@@ -53,6 +57,7 @@ adjustDropDown = function(e) {
     }, 20);
 }
 
+// Gets called when doing compare to select states or when going back, does a bunch of hacks to make that crap work
 toggleMultiSelect = function(ind) {
     $("#multiSelecter").toggle("slide", {
         direction : "right"
@@ -87,6 +92,8 @@ toggleMultiSelect = function(ind) {
         }
     });
 }
+
+// Gets called when clicking on the map (i have no idea how), deals with switching a state or doing multiselect
 selectState = function(state) {
     
     if (state == currData.abbr) {
@@ -97,6 +104,8 @@ selectState = function(state) {
     if (!multiMode)
         loadState(state);
 }
+
+// gets called on page load, sets up the map does other hacks
 loadFunction = function() {
     $('#sidebar li:eq(0) a').tab('show');
     $(function() {
@@ -159,6 +168,8 @@ loadFunction = function() {
         currData = data[0];
     });
 }
+
+// gets called when doing display selected state data, shows a graph for a single state single metric 
 showGraph = function(ind) {
     d3.selectAll("#mbody svg > *").remove();
     current_graph_function = showGraph;
@@ -219,6 +230,7 @@ showGraph = function(ind) {
     }, 500);
 }
 
+// gets called when doing compared to selected states
 showMultiGraphOnSelected = function() {
     graph_title_prefix = "Compare to Selected: ";
     current_graph_function = showMultiGraphOnSelected;
@@ -226,6 +238,7 @@ showMultiGraphOnSelected = function() {
     showMultiGraph(selected);
 }
 
+//gets called when compare to top ten, shows a multigraph for the top ten
 showMultiGraphOnTopTen = function(ind) {
     graph_title_prefix = "Compare Top TenStates: ";
     current_graph_function = showMultiGraphOnTopTen;
@@ -242,6 +255,7 @@ showMultiGraphOnTopTen = function(ind) {
 
 }
 
+// gets called when compare to bottom ten, shows a multigraph for the bottom ten
 showMultiGraphOnBottomTen = function(ind) {
     graph_title_prefix = "Compare Bottom Ten States: ";
     current_graph_function = showMultiGraphOnBottomTen;
@@ -258,6 +272,7 @@ showMultiGraphOnBottomTen = function(ind) {
 
 }
 
+// gets called when doing compare to peer states, shows a multigraph for the selected states
 showMultiGraphOnPeers = function(ind) {
     graph_title_prefix = "Compare All Peers: ";
     current_graph_function = showMultiGraphOnPeers;
@@ -337,6 +352,7 @@ showMultiGraph = function(states) {
     });
 }
 
+// a crappy implementation of $.get
 function getData(url, callback) {
     http = new XMLHttpRequest();
     http.open("GET", url, true);
@@ -348,10 +364,12 @@ function getData(url, callback) {
     http.send(null);
 }
 
+// changes the loaded state
 function loadState(stateAbbr) {
     getData("data/stats/query?states=" + stateAbbr + "&metrics=all", loadData);
 }
 
+// Returns the parameter of currData with the given metricid
 function getParamsOfId(idx) {
 
     for (var i = 0; i < currData.params.length; i++) {
@@ -363,8 +381,7 @@ function getParamsOfId(idx) {
 
 }
 
-var currData = "";
-
+// pushes a new table into the page, makes sure the active tab is correct
 function loadData(stateData) {
     currData = stateData[0];
     $("#stateTitle").text(currData.name);

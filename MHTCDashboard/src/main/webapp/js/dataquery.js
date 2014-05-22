@@ -2,15 +2,14 @@
 var DQ = (function($){
     
     function buildQuery(dataQuery) {
-        
         var query = "data/stats/query?states=" + dataQuery.states.join(",") + "&metrics=" + dataQuery.metrics.join(",");
         
         return query;
     }
     
-    
     /**
      * Creates an object that stores information about a query to the server and can be executed.
+     * @constructor
      */
     function Query() { };
     
@@ -36,6 +35,10 @@ var DQ = (function($){
         return this;
     };
     
+    /**
+     * @param state Can either be a string of a state or 
+     * @returns {Query}
+     */
     Query.prototype.addMetric = function(metric) {
         if ($.inArray(metric, this.metric) == -1) {
             this.metrics.push(metric);
@@ -43,6 +46,10 @@ var DQ = (function($){
         return this;
     };
     
+    /**
+     * 
+     * @param callback
+     */
     Query.prototype.execute = function(callback) {
         var query = buildQuery(this);
         
@@ -50,7 +57,6 @@ var DQ = (function($){
             callback(data);
         });
     }
-    
 
     var DataQuery = {};
     
