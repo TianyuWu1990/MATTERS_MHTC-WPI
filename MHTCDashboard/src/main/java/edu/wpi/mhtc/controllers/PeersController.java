@@ -30,7 +30,7 @@ public class PeersController {
 	@RequestMapping(value = ENDPOINT, method = RequestMethod.GET)
 	public @ResponseBody List<State> initialsEndpoint(Model model)
 	{
-		return service.getAvailible("getPeers").getStates();
+		return service.getAllPeers();
 	}
 	
 	@RequestMapping(value = "/data/peers/top", params = { "metric", "year" })

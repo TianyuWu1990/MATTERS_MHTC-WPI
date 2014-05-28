@@ -16,13 +16,12 @@ import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.model.admin.AdminMetric;
 import edu.wpi.mhtc.model.admin.TreeViewNode;
-import edu.wpi.mhtc.model.Data.Metrics;
-import edu.wpi.mhtc.persistence.DBMetric;
+import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
 @Service
-public class MetricsServiceJdbc extends MetricsService {
+public class MetricsServiceJdbc implements MetricsService {
 
     private JdbcTemplate template;
 
@@ -31,10 +30,12 @@ public class MetricsServiceJdbc extends MetricsService {
         this.template = template;
 
     }
+    
+    private int[] tabids = { 91, 92, 93, 94, 95, 32, 29, 30, 25, 34, 28, 33, 27, 31, 61, 65, 66, 67, 70, 71, 73 };
 
     @Override
-    public List<DBMetric> getMetricsInCategory(final int categoryId) {
-        PSqlStringMappedJdbcCall<DBMetric> metricCall = new PSqlStringMappedJdbcCall<DBMetric>(template)
+    public List<Metric> getMetricsInCategory(final int categoryId) {
+        PSqlStringMappedJdbcCall<Metric> metricCall = new PSqlStringMappedJdbcCall<Metric>(template)
                 .withSchemaName("mhtc_sch").withProcedureName("getmetrics");
 
         String name = "";
@@ -51,12 +52,19 @@ public class MetricsServiceJdbc extends MetricsService {
 
         final String finalName = name;
 
-        metricCall.addDeclaredRowMapper(new PSqlRowMapper<DBMetric>() {
+        metricCall.addDeclaredRowMapper(new PSqlRowMapper<Metric>() {
 
             @Override
-            public DBMetric mapRow(SqlRowSet rs, int rowNum) throws SQLException {
+            public Metric mapRow(SqlRowSet rs, int rowNum) throws SQLException {
                 String trendType = rs.getString("TrendType");
-                return new DBMetric(rs.getInt("Id"), rs.getString("DisplayName"), rs.getString("DataType"), categoryId, finalName, rs.getString("URL"), rs.getString("Source"), trendType == null ? "" : trendType);
+                
+
+                boolean tabbed = false;
+                for (int i = 0; i < tabids.length; i++)
+                    if (tabids[i] == rs.getInt("Id"))
+                        tabbed = true;
+                
+                return new Metric(rs.getInt("Id"), rs.getString("DisplayName"), categoryId, finalName, rs.getString("DataType"), trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"), tabbed);
             }
 
         });
@@ -237,27 +245,15 @@ public class MetricsServiceJdbc extends MetricsService {
     }
 
     @Override
-    public Metrics getAvailible(Object... params) {
+    public List<Metric> getAllMetrics() {
 
         // TODO pull bin ids into a property or something
-        List<DBMetric> metrics = new LinkedList<DBMetric>();
+        List<Metric> metrics = new LinkedList<Metric>();
         metrics.addAll(getMetricsInCategory(20));
         metrics.addAll(getMetricsInCategory(21));
         metrics.addAll(getMetricsInCategory(29));
         metrics.addAll(getMetricsInCategory(37));
 
-        return new Metrics(metrics);
+        return metrics;
     }
-
-	@Override
-	public Metrics invokeThis(Method m, Object[] params) {
-		try
-		{
-			return (Metrics) m.invoke(this, params);
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
-	}
 }

@@ -13,16 +13,16 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
+import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.persistence.DBMetric;
 import edu.wpi.mhtc.persistence.DBState;
 import edu.wpi.mhtc.persistence.MetricMapper;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
 @Service
-public class PeersServiceJDBC extends PeersService {
+public class PeersServiceJDBC implements PeersService {
 
     private JdbcTemplate template;
     private MetricMapper metricMapper;
@@ -34,7 +34,7 @@ public class PeersServiceJDBC extends PeersService {
     }
 
     @Override
-    protected PeerStates getPeers() {
+    public List<State> getAllPeers() {
 
         PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(template).withSchemaName("mhtc_sch")
                 .withProcedureName("getstates");
@@ -43,9 +43,9 @@ public class PeersServiceJDBC extends PeersService {
 
             @Override
             public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new State(rs.getString("Name"), rs.getString("Abbreviation"));
+                return new State(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"));
             }
-
+            
         });
 
         call.addDeclaredParameter(new SqlParameter("showonlypeerstates", Types.BOOLEAN));
@@ -53,7 +53,7 @@ public class PeersServiceJDBC extends PeersService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("showonlypeerstates", true);
 
-        return new PeerStates(call.execute(params));
+        return call.execute(params);
 
     }
 
@@ -94,7 +94,7 @@ public class PeersServiceJDBC extends PeersService {
     }
 
     private List<State> getTenStates(String metric, int year, String operation) {
-        DBMetric dbMetric = metricMapper.getMetricFromString(metric);
+        Metric dbMetric = metricMapper.getMetricFromString(metric);
 
         PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(template).withSchemaName(
                 "mhtc_sch").withProcedureName(operation);
@@ -103,7 +103,7 @@ public class PeersServiceJDBC extends PeersService {
 
             @Override
             public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new State(rs.getString("StateName"), rs.getString("Abbreviation"));
+                return new State(rs.getInt("StateId"), rs.getString("StateName"), rs.getString("Abbreviation"));
             }
 
         });
@@ -118,12 +118,4 @@ public class PeersServiceJDBC extends PeersService {
         return call.execute(params);
     }
 
-    @Override
-    public PeerStates invokeThis(Method m, Object[] params) {
-        try {
-            return (PeerStates) m.invoke(this, params);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 }

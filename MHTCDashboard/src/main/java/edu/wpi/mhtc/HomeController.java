@@ -1,6 +1,7 @@
 package edu.wpi.mhtc;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import edu.wpi.mhtc.cache.CachedPeerService;
-import edu.wpi.mhtc.cache.CachedStatsService;
+import edu.wpi.mhtc.model.Data.DataSeries;
 import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.rson.ParseException;
@@ -53,30 +53,20 @@ public class HomeController {
 	{
 		
 		Logger logger = LoggerFactory.getLogger(this.getClass());
+		logger.info("Home called");
 		
-		CachedStatsService css = CachedStatsService.getInstance(statsService);
-		CachedPeerService cps = CachedPeerService.getInstance(peersService);
-		
-		
-		ObjectMapper om = new ObjectMapper();
-		State massNational = statsService.getStateBinData("MA", 21);//statsService. css.query("getStateBinData", "MA", 21);
-		State massTalent = statsService.getStateBinData("MA", 20);//css.query("getStateBinData", "MA", 20);
-		State massCost = statsService.getStateBinData("MA", 37);//css.query("getStateBinData", "MA", 37);
-		State massEconomy = statsService.getStateBinData("MA", 29);//css.query("getStateBinData", "MA", 29);
-		PeerStates peers = cps.query("getPeers");
-		
-		logger.info("national datasize: {}", massNational.getParams().size());
-		logger.info("talent datasize: {}",massTalent.getParams().size());
-		logger.info("cost datasize: {}",massCost.getParams().size());
-		logger.info("economy datasize: {}",massEconomy.getParams().size());
-		
+		List<DataSeries> massNational = statsService.getStateBinData("MA", 21);
+		List<DataSeries> massTalent = statsService.getStateBinData("MA", 20);
+		List<DataSeries> massCost = statsService.getStateBinData("MA", 37);
+		List<DataSeries> massEconomy = statsService.getStateBinData("MA", 29);
+		List<State> peers = peersService.getAllPeers();
 		
 		// TODO un-hardcode these bin ids
-		model.addAttribute("jv_stats_national", massNational.getParams());
-		model.addAttribute("jv_stats_talent", massTalent.getParams());
-		model.addAttribute("jv_stats_cost", massCost.getParams());
-		model.addAttribute("jv_stats_economy", massEconomy.getParams());
-		model.addAttribute("jv_peer_states", peers.getAsGrid(4));
+		model.addAttribute("jv_stats_national", massNational);
+		model.addAttribute("jv_stats_talent", massTalent);
+		model.addAttribute("jv_stats_cost", massCost);
+		model.addAttribute("jv_stats_economy", massEconomy);
+		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(4));
 
         model.addAttribute("jv_current_state", "MA");
 		
@@ -85,19 +75,22 @@ public class HomeController {
 	
 	@RequestMapping(value = "/{state}/table", method=RequestMethod.GET)
 	public String home(Model model, @PathVariable("state") String state) throws ParseException {
-        CachedPeerService cps = CachedPeerService.getInstance(peersService);
-	    CachedStatsService css = CachedStatsService.getInstance(statsService);
-	    State massNational = css.query("getStateBinData", state, 21);
-        State massTalent = css.query("getStateBinData", state, 20);
-        State massCost = css.query("getStateBinData", state, 37);
-        State massEconomy = css.query("getStateBinData", state, 29);
-        PeerStates peers = cps.query("getPeers");
-        
-        model.addAttribute("jv_stats_national", massNational.getParams());
-        model.addAttribute("jv_stats_talent", massTalent.getParams());
-        model.addAttribute("jv_stats_cost", massCost.getParams());
-        model.addAttribute("jv_stats_economy", massEconomy.getParams());
-        model.addAttribute("jv_peer_states", peers.getAsGrid(4));
+
+
+        Logger logger = LoggerFactory.getLogger(this.getClass());
+        logger.info("New state requested: " + state);
+	    
+        List<DataSeries> massNational = statsService.getStateBinData(state, 21);
+        List<DataSeries> massTalent = statsService.getStateBinData(state, 20);
+        List<DataSeries> massCost = statsService.getStateBinData(state, 37);
+        List<DataSeries> massEconomy = statsService.getStateBinData(state, 29);
+        List<State> peers = peersService.getAllPeers();
+
+        model.addAttribute("jv_stats_national", massNational);
+        model.addAttribute("jv_stats_talent", massTalent);
+        model.addAttribute("jv_stats_cost", massCost);
+        model.addAttribute("jv_stats_economy", massEconomy);
+        model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(4));
         
         model.addAttribute("jv_current_state", state);
         

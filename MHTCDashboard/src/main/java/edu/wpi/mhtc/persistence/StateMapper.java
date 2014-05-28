@@ -6,22 +6,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.service.PeersService;
 
 @Component
 public class StateMapper {
 
-	private List<DBState> states;
+	private List<State> states;
 
 	@Autowired
 	public StateMapper(PeersService service) {
 
-		states = service.getPeersFull();
+		states = service.getAllPeers();
 	}
 
-	public DBState getStateByID(int id) {
+	public State getStateByID(int id) {
 
-		for (DBState state : states) {
+		for (State state : states) {
 			if (state.getId() == id) {
 				return state;
 			}
@@ -30,9 +31,9 @@ public class StateMapper {
 		return null;
 	}
 
-	public DBState getStateByName(String name) {
+	public State getStateByName(String name) {
 
-		for (DBState state : states) {
+		for (State state : states) {
 			if (state.getName().equals(name)) {
 				return state;
 			}
@@ -41,10 +42,10 @@ public class StateMapper {
 		return null;
 	}
 
-	public DBState getStateByAbbreviation(String abbreviation) {
+	public State getStateByAbbreviation(String abbreviation) {
 
-		for (DBState state : states) {
-			if (state.getInitial().equals(abbreviation)) {
+		for (State state : states) {
+			if (state.getAbbr().equals(abbreviation)) {
 				return state;
 			}
 		}
@@ -52,8 +53,8 @@ public class StateMapper {
 		return null;
 	}
 	
-	public DBState getStateFromString(String state) {
-		DBState dbState = this.getStateByName(state);
+	public State getStateFromString(String state) {
+	    State dbState = this.getStateByName(state);
 		if (dbState == null)
 			dbState = this.getStateByAbbreviation(state);
 		if (dbState == null)
@@ -62,7 +63,7 @@ public class StateMapper {
 		return dbState;
 	}
 	
-	public List<DBState> getAllStates() {
+	public List<State> getAllStates() {
 		return Collections.unmodifiableList(states);
 	}
 }
