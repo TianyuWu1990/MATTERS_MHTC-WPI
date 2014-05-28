@@ -38,7 +38,6 @@ import org.springframework.web.multipart.MultipartFile;
 import edu.wpi.mhtc.model.admin.TreeViewNode;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
-import edu.wpi.mhtc.rson.ParseException;
 import edu.wpi.mhtc.service.MetricsService;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
@@ -57,20 +56,20 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(Locale locale, Model model) throws ParseException {
+    public String admin(Locale locale, Model model) {
         
         return "admin_tool";
     }
     
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
-    public @ResponseBody List<TreeViewNode> categories() throws ParseException {
+    public @ResponseBody List<TreeViewNode> categories() {
         List<TreeViewNode> returnList = new LinkedList<TreeViewNode>();
         returnList.add(service.getCategoriesAsTree());
         return returnList;
     }
     
     @RequestMapping(value = "/admin/categories/{categoryid}/metrics/table")
-    public String metricTable(Model model, @PathVariable("categoryid") int categoryId) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
+    public String metricTable(Model model, @PathVariable("categoryid") int categoryId) {
         
         model.addAttribute("jv_metrics", service.getMetricsForCategory(categoryId));
         
@@ -87,7 +86,7 @@ public class AdminController {
     
     @RequestMapping(value = "/admin/categories/{categoryid}/update", method=RequestMethod.POST, params = { "name", "visible", "source"})
     @ResponseStatus(value = HttpStatus.OK)
-    public void updateCategory(Model model, @PathVariable("categoryid") int categoryId, @RequestParam("visible") boolean visible, @RequestParam("name") String name, @RequestParam("source") String source) throws ParseException, JsonGenerationException, JsonMappingException, IOException {
+    public void updateCategory(Model model, @PathVariable("categoryid") int categoryId, @RequestParam("visible") boolean visible, @RequestParam("name") String name, @RequestParam("source") String source) {
 
         service.updateCategory(categoryId, name, visible, source);
     }

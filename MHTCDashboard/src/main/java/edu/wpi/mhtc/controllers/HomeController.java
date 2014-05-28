@@ -1,4 +1,4 @@
-package edu.wpi.mhtc;
+package edu.wpi.mhtc.controllers;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import edu.wpi.mhtc.model.Data.DataSeries;
 import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.rson.ParseException;
-import edu.wpi.mhtc.rson.RSON;
 import edu.wpi.mhtc.service.PeersService;
 import edu.wpi.mhtc.service.StatsService;
 
@@ -49,7 +47,7 @@ public class HomeController {
 	 * @throws JsonGenerationException 
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) throws JsonGenerationException, JsonMappingException, IOException, ParseException
+	public String home(Locale locale, Model model)
 	{
 		
 		Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -74,7 +72,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/{state}/table", method=RequestMethod.GET)
-	public String home(Model model, @PathVariable("state") String state) throws ParseException {
+	public String home(Model model, @PathVariable("state") String state) {
 
 
         Logger logger = LoggerFactory.getLogger(this.getClass());
