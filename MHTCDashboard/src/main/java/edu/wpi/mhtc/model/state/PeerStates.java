@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.wpi.mhtc.model.Model;
-import edu.wpi.mhtc.rson.ParseException;
 
 public class PeerStates implements Model<State>{
 	private LinkedList<State> states;
@@ -15,7 +14,7 @@ public class PeerStates implements Model<State>{
 		states = (LinkedList<State>) list;
 	}
 
-	public LinkedList<HashMap<String, LinkedList<State>>> getAsGrid(int rows) throws ParseException {
+	public LinkedList<HashMap<String, LinkedList<State>>> getAsGrid(int rows) {
 		@SuppressWarnings("unchecked")
         LinkedList<State> queue = (LinkedList<State>) states.clone();
 		LinkedList<HashMap<String, LinkedList<State>>> result = new LinkedList<HashMap<String, LinkedList<State>>>();
