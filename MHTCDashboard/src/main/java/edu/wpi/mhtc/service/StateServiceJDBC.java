@@ -1,6 +1,5 @@
 package edu.wpi.mhtc.service;
 
-import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.model.Data.Metric;
-import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.persistence.DBState;
 import edu.wpi.mhtc.persistence.MetricMapper;
@@ -22,13 +20,13 @@ import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
 @Service
-public class PeersServiceJDBC implements PeersService {
+public class StateServiceJDBC implements StateService {
 
     private JdbcTemplate template;
     private MetricMapper metricMapper;
 
     @Autowired
-    public PeersServiceJDBC(JdbcTemplate template, MetricMapper metricMapper) {
+    public StateServiceJDBC(JdbcTemplate template, MetricMapper metricMapper) {
         this.template = template;
         this.metricMapper = metricMapper;
     }
@@ -43,7 +41,7 @@ public class PeersServiceJDBC implements PeersService {
 
             @Override
             public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new State(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"));
+                return new State(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"), true);
             }
             
         });
@@ -103,7 +101,7 @@ public class PeersServiceJDBC implements PeersService {
 
             @Override
             public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new State(rs.getInt("StateId"), rs.getString("StateName"), rs.getString("Abbreviation"));
+                return new State(rs.getInt("StateId"), rs.getString("StateName"), rs.getString("Abbreviation"), true);
             }
 
         });
@@ -114,6 +112,28 @@ public class PeersServiceJDBC implements PeersService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("metricid", dbMetric.getId());
         params.put("compareyear", year);
+
+        return call.execute(params);
+    }
+
+    @Override
+    public List<State> getAllStates() {
+        PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(template).withSchemaName("mhtc_sch")
+                .withProcedureName("getstates");
+
+        call.addDeclaredRowMapper(new PSqlRowMapper<State>() {
+
+            @Override
+            public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
+                return new State(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"), rs.getBoolean("IsPeerState"));
+            }
+            
+        });
+
+        call.addDeclaredParameter(new SqlParameter("showonlypeerstates", Types.BOOLEAN));
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("showonlypeerstates", false);
 
         return call.execute(params);
     }

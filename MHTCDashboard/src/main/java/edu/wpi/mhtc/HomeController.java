@@ -21,7 +21,7 @@ import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.rson.ParseException;
 import edu.wpi.mhtc.rson.RSON;
-import edu.wpi.mhtc.service.PeersService;
+import edu.wpi.mhtc.service.StateService;
 import edu.wpi.mhtc.service.StatsService;
 
 /**
@@ -31,10 +31,10 @@ import edu.wpi.mhtc.service.StatsService;
 public class HomeController {
 	
 	private StatsService statsService;
-	private PeersService peersService;
+	private StateService peersService;
 	
 	@Autowired
-	public HomeController(StatsService ss, PeersService ps)
+	public HomeController(StatsService ss, StateService ps)
 	{
 		this.statsService = ss;
 		this.peersService = ps;

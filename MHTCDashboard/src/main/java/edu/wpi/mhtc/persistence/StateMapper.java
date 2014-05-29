@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.service.PeersService;
+import edu.wpi.mhtc.service.StateService;
 
 @Component
 public class StateMapper {
@@ -15,7 +15,7 @@ public class StateMapper {
 	private List<State> states;
 
 	@Autowired
-	public StateMapper(PeersService service) {
+	public StateMapper(StateService service) {
 
 		states = service.getAllPeers();
 	}
