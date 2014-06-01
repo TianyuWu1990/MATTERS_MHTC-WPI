@@ -4,7 +4,6 @@
 
 function state()
 {
-    //this.states = [];
     this.states = $.parseJSON($.ajax({
     	url: 'data/states/all',
         dataType: 'text',
@@ -14,7 +13,6 @@ function state()
         }
     }).responseText);
 }
-
 
 state.prototype.getStateByID = function(id){
 	for( var i=0 ; i< this.states.length; i++ ){
@@ -71,12 +69,7 @@ state.prototype.getPeers = function(){
 };
 
 state.prototype.toString = function(){
-
-	var strStates="";
-	for( var i=0 ; i< this.states.length; i++ ){
-		strStates += this.states[i].id + " : " + this.states[i].name + " : " + this.states[i].abbr + " : " + this.states[i].peerState + "<br>" ;
-	}
-	return strStates;	
+	return JSON.stringify(this.states);
 };
 
 
