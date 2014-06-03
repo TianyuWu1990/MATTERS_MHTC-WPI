@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import edu.wpi.mhtc.model.persistence.EntityRepository;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.service.StateService;
 
@@ -15,9 +16,9 @@ public class StateMapper {
 	private List<State> states;
 
 	@Autowired
-	public StateMapper(StateService service) {
+	public StateMapper(EntityRepository repo) {
 
-		states = service.getAllPeers();
+		states = repo.executeQuery(State.queryForAll);
 	}
 
 	public State getStateByID(int id) {
