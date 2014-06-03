@@ -23,9 +23,6 @@ import edu.wpi.mhtc.service.StatsServiceJDBC;
 @Controller
 public class StatsController {
 
-	public static final String AVAILABLE_ENDPOINT = "/data/stats/available";
-	public static final String STAT_ENDPOINT = "/data/stats/query";
-
 	private StatsService statsService;
 	private MetricsService metricsService;
 	private StateMapper stateMapper;
@@ -37,14 +34,14 @@ public class StatsController {
 		this.metricsService = mservice;
 	}
 
-	@RequestMapping(value = AVAILABLE_ENDPOINT, method = RequestMethod.GET)
+	@RequestMapping(value = "/data/stats/available", method = RequestMethod.GET)
 	public @ResponseBody
 	List<Metric> availableEndpoint(Model model) {
 
 		return metricsService.getAllMetrics();
 	}
 
-	@RequestMapping(value = STAT_ENDPOINT, method = RequestMethod.GET, params = { "states", "metrics" })
+	@RequestMapping(value = "/data/stats/query", method = RequestMethod.GET, params = { "states", "metrics" })
 	public @ResponseBody
 	List<List<DataSeries>> statEndpoint(Model model, @RequestParam(value = "states") String states,
 			@RequestParam(value = "metrics") String metrics) {

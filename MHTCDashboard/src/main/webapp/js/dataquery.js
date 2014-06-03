@@ -11,10 +11,10 @@ var DQ = (function($){
      * Creates an object that stores information about a query to the server and can be executed.
      * @constructor
      */
-    function Query() { };
-    
-    Query.prototype.states = [];
-    Query.prototype.metrics = [];
+    function Query() { 
+    	this.states = [];
+    	this.metrics = [];
+    };
     
     /**
      * Adds state(s) to the query.
@@ -36,11 +36,11 @@ var DQ = (function($){
     };
     
     /**
-     * @param state Can either be a string of a state or 
+     * @param metric Can either be a string of a state or 
      * @returns {Query}
      */
     Query.prototype.addMetric = function(metric) {
-        if ($.inArray(metric, this.metric) == -1) {
+        if ($.inArray(metric, this.metric) === -1) {
             this.metrics.push(metric);
         }
         return this;
@@ -60,7 +60,7 @@ var DQ = (function($){
 
     var DataQuery = {};
     
-    DataQuery.Query = function() {
+    DataQuery.create = function() {
         return new Query();
     };
     
