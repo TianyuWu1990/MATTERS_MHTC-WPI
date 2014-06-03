@@ -15,34 +15,23 @@
  }
 
  metric.prototype.getMetricByID = function(id){
- 	for( var i=0 ; i< this.metrics.length; i++ ){
- 		if (this.metrics[i].id == parseInt(""+id,10)) {
- 			return this.metrics[i];
- 		}
- 	}
- 	return null;
+		return this.metrics.filter(function(each) {
+		return each.id == parseInt(""+id,10);
+		});
  };
-
+ 
 
  metric.prototype.getMetricByName = function(name){
- 	for( var i=0 ; i< this.metrics.length; i++ ){
- 		if (this.metrics[i].name===name) {
- 			return this.metrics[i];
- 		}
- 	}
- 	return null;
+		return this.metrics.filter(function(each) {
+		return each.name === name;
+		});
  };
 
 
  metric.prototype.getMetricFromString = function(metric){
- 	for( var i=0 ; i< this.metrics.length; i++ ){
- 		if (this.metrics[i].id == parseInt(""+metric,10) || 
- 			this.metrics[i].name===metric ) {
- 			
- 			return this.metrics[i];
- 		}
- 	}
- 	return null;
+		return this.metrics.filter(function(each) {
+		return each.id == parseInt(""+metric,10) || each.name===metric;
+		});
  };
 
  metric.prototype.getAllMetrics = function() {
@@ -50,13 +39,9 @@
  };
 
  metric.prototype.getAllInBin = function(id){
- 	var metricsInBin = [];
- 	for( var i=0 ; i< this.metrics.length; i++ ){
- 		if (this.metrics[i].binId == parseInt(""+id,10)) {
- 			metricsInBin.push(this.metrics[i]);
- 		}
- 	}
- 	return metricsInBin;
+	return this.metrics.filter(function(each) {
+		return each.binId == parseInt(""+id,10);
+	});
  };
 
  metric.prototype.toString = function(){
