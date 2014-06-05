@@ -2,17 +2,85 @@
  * @author salah
  */
 
-//TODO fully document
 
 /**
  * A module that loads a list of metrics from the server when the page starts
  * and maintains it. Provides functionality for obtaining metrics from the list
  * by name or id.
  */
-var Metrics = (function() {
+ var Metrics = (function() {
 
-	Metric = function() { };
+	/**
+	* Prototype definition for a single matric
+	*/
+	 Metric = function(id, binId, binName, name, urlFrom, sourceName, 
+							type, trendType, tabbed) {
+	    this.id=id;
+	    this.binId=binId;
+	    this.binName=binName;
+	    this.name=name;
+		
+	    this.urlFrom=urlFrom;
+	    this.sourceName=sourceName;
+		
+	    this.type=type;
+	    this.trendType=trendType;
+	    this.tabbed=tabbed;
+			
+	};
+
+	Metric.prototype.getName=function() {
+		return this.name;
+	}
+
+	Metric.prototype.getUrlFrom=function() {
+		return this.urlFrom;
+	}
+
+	Metric.prototype.getSourceName=function() {
+		return this.sourceName;
+	}
+
+	Metric.prototype.getBinName=function() {
+		return this.binName;
+	}
 	
+	Metric.prototype.getId=function() {
+	    return this.id;
+	}
+	
+	Metric.prototype.getTabbed=function() {
+	    return this.tabbed;
+	}
+	
+	Metric.prototype.getTabString=function() {
+	    if (this.tabbed)
+	        return "tabbed_metric";
+	    else
+	        return "";
+	}
+	
+	Metric.prototype.getType=function() {
+        return this.type;
+    }
+
+	Metric.prototype.getBinId=function() {
+        return this.binId;
+    }
+
+	Metric.prototype.getTrendType=function() {
+        return this.trendType;
+    }
+	
+	Metric.prototype.toString=function() {
+        return JSON.stringify(this);
+    }
+	
+	
+	/**
+	 * variable to cache all metrics
+	 * 
+	 */
 	var metrics = $.parseJSON($.ajax({
 		url : 'data/metrics/all',
 		dataType : 'text',
@@ -22,17 +90,31 @@ var Metrics = (function() {
 		}
 	}).responseText);
 	
+	/**
+	* each matric is converted to a Metric object
+	*/
 	metrics = metrics.map(function(metric) {
-		return metric; // TODO convert this to the metric prototype
+		return new Metric(metric.id, metric.binId, metric.binName, 
+				metric.name, metric.urlFrom, metric.sourceName, 
+				metric.type, metric.trendType, metric.tabbed); 
 	});
+	
 
+
+	/**
+	* helper method to return a single metric object, instead of an array
+	*/
+	
 	function returnFirstOrNull(array) {
 		if (array.length == 1)
-			return filtered[0];
+			return array[0];
 		else
 			return null;
 	}
 
+	/**
+	* interface definition for publicly accessible methods
+	*/
 	var publicInterface = {};
 
 	/**
@@ -63,21 +145,32 @@ var Metrics = (function() {
 		}));
 	};
 
+	/**
+	 * Retuens all metrics
+	 * 
+	 * 
+	 */
 	publicInterface.getAllMetrics = function() {
-		return this.metrics;
+		return metrics;
 	};
 
+	/**
+	 * Given id if a bin/top-level-category, returns all metrics in that bin
+	 * 
+	 */
 	publicInterface.getAllInBin = function(id) {
-		return this.metrics.filter(function(each) {
+		return metrics.filter(function(each) {
 			return each.binId == id;
 		});
 	};
 
+	/**
+	 * Returns a string representation of the metrics array
+	 */
 	publicInterface.toString = function() {
-		return JSON.stringify(this.metrics);
+		return JSON.stringify(metrics);
 	};
 
 	return publicInterface;
 
-}());
-
+ }());
