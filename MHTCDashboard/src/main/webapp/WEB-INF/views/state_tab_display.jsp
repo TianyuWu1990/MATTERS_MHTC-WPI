@@ -85,7 +85,7 @@
 </div>
 <div id="multiSelecter" style="position: absolute; left: 0px; top: 0px; display: none;" class="col-md-12">
 <p class="lead">
-	<button class="btn btn-info" onclick="toggleMultiSelect(0);">
+	<button class="btn btn-info" onclick="cm.toggleMultiSelect(0);">
 		<h6>
 			<span class="glyphicon glyphicon-circle-arrow-left"></span> Back
 		</h6>
@@ -107,7 +107,7 @@
 									</label></td>
 								</c:when>
 								<c:otherwise>
-									<td><label class="btn btn-default stateButton" onClick="selectState('${fn:escapeXml(row.abbr)}');">
+									<td><label class="btn btn-default stateButton" onClick="cm.selectState('${fn:escapeXml(row.abbr)}');">
 											<input type="checkbox" id="chk${fn:escapeXml(row.abbr)}"> <c:out value="${row.name}"></c:out>
 									</label></td>
 								</c:otherwise>
@@ -119,7 +119,7 @@
 			</div>
 		</td>
 		<td>
-			<button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="showMultiGraphOnSelected()">Compare</button>
+			<button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="cm.showMultiGraphOnSelected()">Compare</button>
 			</td>
 		</tr>
 	</table>

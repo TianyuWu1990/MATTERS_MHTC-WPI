@@ -1,4 +1,4 @@
-package edu.wpi.mhtc.dashboard.pipeline.parser;
+/**package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import java.io.File;
 import java.io.IOException;
@@ -293,4 +293,4 @@ public class Type1Parser implements IParser {
 
 	}
 
-}
+}**/

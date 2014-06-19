@@ -12,11 +12,11 @@ public class ParserFactory {
 			case excel:
 				return new ExcelParser(fileInfo);
 			case type1:
-				return new Type1Parser(fileInfo);
+//				return new Type1Parser(fileInfo);
 			case type2:
 				return new Type2Parser(fileInfo);
 			case type3:
-				return new Type3Parser(fileInfo);
+	//			return new Type3Parser(fileInfo);
 			case type4:
 				return new Type4Parser(fileInfo);
 			case type5:

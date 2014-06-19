@@ -1,4 +1,124 @@
-
+ /**var WIDTH = 930,
+      HEIGHT = 630,
+      LABELS_WIDTH = 70;
+  
+  // Default options
+  var defaults = {
+    // The styles for the state
+    'stateStyles': {
+      fill: "#666",
+      stroke: "#FFF",
+      "stroke-width": 1,
+      "stroke-linejoin": "bevel",
+      scale: [1.1, 1.1]
+    },
+    
+    // The styles for the hover
+    'stateHoverStyles': {
+      fill: "#666",
+      stroke: "#FFF",
+      scale: [1.1, 1.1]
+    },
+    
+    // The time for the animation, set to false to remove the animation
+    'stateHoverAnimation': 300,
+    
+    // State specific styles. 'ST': {}
+    
+    
+    // State specific hover styles
+    'stateSpecificHoverStyles': {
+        'WA': {fill: '#F90'},
+        'CA': {fill: '#F90'},
+        'UT': {fill: '#F90'},
+        'CO': {fill: '#F90'},
+        'TX': {fill: '#F90'},
+        'MN': {fill: '#F90'},
+        'GA': {fill: '#F90'},
+        'NC': {fill: '#F90'},
+        'VA': {fill: '#F90'},
+        'MD': {fill: '#F90'},
+        'PA': {fill: '#F90'},
+        'NY': {fill: '#F90'},
+        'CT': {fill: '#F90'},
+        'NH': {fill: '#F90'},
+        'MA': {fill: '#F90'},
+        'NJ': {fill: '#F90'},
+    },
+    
+    // Events
+    
+    click: function(event, data) {
+      $("#map").usmap('select',data.name, true);
+      if(!(cm.multiMode) && toFullName(data.name)){
+    	  //currentState=state.getStatebyAbbr(data.name).name;
+        currentState = toFullName(data.name);
+        currentStateAbbr = data.name;
+      }
+    },
+    
+    'mouseover': function(event, data){
+      $("#mapTitle").text(toFullName(data.name) || "Click to Select a State");
+    },
+    
+    'mouseout': function(event, data){
+      $("#mapTitle").text("Click to Select a State");
+    },
+    
+    'clickState': {},
+    
+    'mouseoverState': {},
+    
+    'mouseoutState': {},
+    
+    
+    // Labels
+    'showLabels' : false,
+    
+    'labelWidth': 30,
+    
+    'labelHeight': 25,
+    
+    'labelGap' : 12,
+    
+    'labelRadius' : 6,
+    
+    'labelBackingStyles': {
+      fill: "#333",
+      stroke: "#666",
+      "stroke-width": 1,
+      "stroke-linejoin": "round",
+      scale: [1, 1]
+    },
+    
+    // The styles for the hover
+    'labelBackingHoverStyles': {
+      fill: "#33c",
+      stroke: "#000"
+    },
+    
+    'stateSpecificLabelBackingStyles': {},
+    
+    'stateSpecificLabelBackingHoverStyles': {},
+    
+    'labelTextStyles': {
+      fill: "#fff",
+      'stroke': 'none',
+      'font-weight': 300,
+      'stroke-width': 0,
+      'font-size': '10px'
+    },
+    
+    // The styles for the hover
+    'labelTextHoverStyles': {},
+    
+    'stateSpecificLabelTextStyles': {},
+    
+    'stateSpecificLabelTextHoverStyles': {}
+  };
+   
+**/
+/*
 var currData = "";
 stateAbbr = "MA";
 
@@ -27,6 +147,7 @@ $(document).ready(function() {
    $("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
    $("div.tab-pane").scroll(adjustDropDown);
 });
+*/
 
 // Hack that gets called when clicking on a button or when scrolling the div, flips the dropdown if it will make it display better
 adjustDropDown = function(e) {
@@ -57,6 +178,7 @@ adjustDropDown = function(e) {
     }, 20);
 }
 
+/*
 // Gets called when doing compare to select states or when going back, does a bunch of hacks to make that crap work
 toggleMultiSelect = function(ind) {
     $("#multiSelecter").toggle("slide", {
@@ -104,6 +226,23 @@ selectState = function(state) {
     if (!multiMode)
         loadState(state);
 }
+
+*/
+
+
+// new loadfunction to be called from body-onload
+loadFunction = function() {
+	//$('#map').usmap({});
+	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
+	$("div.tab-pane").scroll(adjustDropDown);
+
+	cm=CM.create();
+	
+	cm.loadFunction();
+}
+
+
+/*
 
 // gets called on page load, sets up the map does other hacks
 loadFunction = function() {
@@ -169,6 +308,7 @@ loadFunction = function() {
         stateAbbr = currData[0].state.abbr;
     });
 }
+
 
 // gets called when doing display selected state data, shows a graph for a single state single metric 
 showGraph = function(ind) {
@@ -293,8 +433,7 @@ showMultiGraph = function(states) {
     document.getElementById("graphTitle").innerHTML = graph_title_prefix + currData[dataIndex].metric.name;
     document.getElementById("graphStates").innerHTML = states.join(", ");
     
-    var query = DQ.Query().addState(states).addMetric(currData[dataIndex].metric.name);
-    
+    var query = DQ.create().addState(states).addMetric(currData[dataIndex].metric.name);
     query.execute(function(
             multiData) {
         setTimeout(function() {
@@ -419,3 +558,4 @@ function loadData(stateData) {
     });
 
 }
+*/

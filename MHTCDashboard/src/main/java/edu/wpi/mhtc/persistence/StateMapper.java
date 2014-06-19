@@ -17,7 +17,7 @@ public class StateMapper {
 	@Autowired
 	public StateMapper(StateService service) {
 
-		states = service.getAllPeers();
+		states = service.getAllStates();
 	}
 
 	public State getStateByID(int id) {

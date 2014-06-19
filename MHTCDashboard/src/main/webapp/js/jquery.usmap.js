@@ -1,11 +1,11 @@
-var currentState = "Massachusetts";
-var currentStateAbbr = "MA";
+/**var currentState = "Massachusetts";
+var stateAbbr = "MA";**/
 var lastToggle = 0;
-var selected = new Array('MA');
-multiMode = false;
+//cm.selected = new Array('MA');
+//cm.multiMode = false;
 (function($, document, window, Raphael, undefined) {
   // jQuery Plugin Factory
-  function toFullName(sname){
+  /**function toFullName(sname){
       switch(sname){
         case "MA":
           return "Massachusetts";
@@ -38,11 +38,12 @@ multiMode = false;
         case "NH":
           return "New Hampshire";
         case "NJ":
+          	
           return "New Jersey";
         default:
           return false;
       }
-  }
+  }**/
 
   function jQueryPluginFactory( $, name, methods, getters ){
     getters = getters instanceof Array ? getters : [];
@@ -143,15 +144,21 @@ multiMode = false;
     // Events
     
     click: function(event, data) {
+    	
       $("#map").usmap('select',data.name, true);
-      if(!multiMode && toFullName(data.name)){
-        currentState = toFullName(data.name);
-        currentStateAbbr = data.name;
+     
+      if(!(cm.multiMode) && States.getStateByAbbreviation(data.name).name){
+    	  //currentState=state.getStatebyAbbr(data.name).name;
+       // currentState = toFullName(data.name);
+        cm.stateAbbr = data.name;
+        
+        
+        
       }
     },
     
     'mouseover': function(event, data){
-      $("#mapTitle").text(toFullName(data.name) || "Click to Select a State");
+      $("#mapTitle").text(States.getStateByAbbreviation(data.name).name || "Click to Select a State");
     },
     
     'mouseout': function(event, data){
@@ -662,42 +669,55 @@ multiMode = false;
       this._triggerEvent(type, event, stateData);
     },
     select: function(state, check) {
-      if(!document.getElementById('chk'+state))
-          return;
+    	
+     /* if(!document.getElementById('chk'+state))
+          return;*/
       thisTime = new Date().getTime();
       if(thisTime - lastToggle < 100)
         return;
       lastToggle = thisTime;
       state = state.toUpperCase(); // ensure state is uppercase to match
       var attrs = {fill: 'green'};
-      if(multiMode === true){
-        ind = selected.indexOf(state);
+      
+      if((cm.multiMode) === true){
+    	 
+        ind = cm.selected.indexOf(state);
+       
         if(ind === -1){
-          selected.push(state);
+          cm.selected.push(state);
+          
         }else{
-          selected.splice(ind, 1);
+          cm.selected.splice(ind, 1);
           console.log("hit");
           attrs = {fill: 'MidnightBlue'};
         }
       }else{ 
-        var stateData = this._getState(currentStateAbbr);
+        var stateData = this._getState(cm.stateAbbr);
         var attr = {fill: 'MidnightBlue'};
         this.options.stateSpecificStyles[stateData.name] = attr;
         stateData.shape.animate(attr, this.options.stateHoverAnimation);  
+        
+        cm.selected=[state];
+        
       }
+      
       if(check){
+    	  
       //TODO: Get Mirroring of the two working both ways
       // Note: Calling click calls this method again, and breaks the functionality...
       //var clickAction = document.getElementById('chk'+state).parentElement.getAttribute('onClick');
       //document.getElementById('chk'+state).parentElement.setAttribute('onClick','');
         $("#chk"+state).click();
-        if(!multiMode)
+        //cm.loadState(state);
+        
+        if(!(cm.multiMode))
           $("#chk"+state).disabled = true;
       //document.getElementById('chk'+state).setAttribute.onclick = clickAction;
       //console.log(clickAction);
       }
       var stateData = this._getState(state);
       // hover effect
+     
       this.bringShapeToFront(stateData.shape);
       this.paper.safari();
       
@@ -705,29 +725,36 @@ multiMode = false;
       stateData.shape.animate(attrs, this.options.stateHoverAnimation);
     },
     toggleMultiselect: function(){
+    	
       this.reset();
-      multiMode = !multiMode;
-      if(multiMode){
-        var stateData = this._getState(currentStateAbbr);
+      
+      cm.multiMode = !cm.multiMode;
+      
+      if(cm.multiMode){
+    	  
+        var stateData = this._getState(cm.stateAbbr);
+        
         var attrs = {fill: 'orange'};
         this.options.stateSpecificStyles[stateData.name] = attrs;
         stateData.shape.animate(attrs, this.options.stateHoverAnimation);
       } else {
-
-          var stateData = this._getState(currentStateAbbr);
+    	  
+          var stateData = this._getState(cm.stateAbbr);
           var attrs = {fill: 'green'};
           this.options.stateSpecificStyles[stateData.name] = attrs;
           stateData.shape.animate(attrs, this.options.stateHoverAnimation);
       }
     },
     reset: function(options){
-      selected.forEach(function(val, ind, arr){
+    	
+      cm.selected.forEach(function(val, ind, arr){
+    	 
         var stateData = this._getState(val);
         var attrs = {fill: 'MidnightBlue'};
         this.options.stateSpecificStyles[stateData.name] = attrs;
         stateData.shape.animate(attrs, this.options.stateHoverAnimation);
       }, this);
-      this.select(currentStateAbbr, true);
+      this.select(cm.stateAbbr, true);
     },
     
     /**

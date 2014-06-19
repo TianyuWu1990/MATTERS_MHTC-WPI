@@ -18,8 +18,8 @@ public class DevelopmentConfiguration {
 		dataSource.setDriverClassName("org.postgresql.Driver");
 		
 		dataSource.setUrl("jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc-prod");
-		dataSource.setUsername("dev");
-		dataSource.setPassword("password");
+		dataSource.setUsername("server");
+		dataSource.setPassword("mhtcboxofducks");
 	
 		return dataSource;
 	}
