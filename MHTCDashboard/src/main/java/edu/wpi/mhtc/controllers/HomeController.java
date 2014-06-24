@@ -81,13 +81,13 @@ public class HomeController {
         List<DataSeries> massTalent = statsService.getStateBinData(state, 20);
         List<DataSeries> massCost = statsService.getStateBinData(state, 37);
         List<DataSeries> massEconomy = statsService.getStateBinData(state, 29);
-        List<State> peers = peersService.getAllPeers();
+        List<State> peers = peersService.getAllStates();
 
         model.addAttribute("jv_stats_national", massNational);
         model.addAttribute("jv_stats_talent", massTalent);
         model.addAttribute("jv_stats_cost", massCost);
         model.addAttribute("jv_stats_economy", massEconomy);
-        model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(4));
+        model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(10));
         
         model.addAttribute("jv_current_state", state);
         

@@ -29,12 +29,19 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-					<!-- <button type="button" class="btn btn-primary btn-right" id="graph_toggle">Switch to Bar</button>-->
+					<button type="button" class="btn btn-primary btn-right" id="graph_toggle">Switch to Bar</button>
+					<select id="chartType">
+						<option value="line">Line</option>
+						<option value="bar">Bar</option>
+						<option value="table">Table</option>
+						
+					</select>
+
 					<h4 class="modal-title" id="graphTitle">State Science and Technology Graph</h4>
 					<h4 class="small" id="graphStates">Selected States: Massachusetts, California, Texas</h4>
 				</div>
 				<div class="modal-body" id="mbody">
-					<svg style="height: 50%;"></svg>
+					<svg style="height: 150%;"></svg>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -239,6 +239,12 @@ loadFunction = function() {
 	cm=CM.create();
 	
 	cm.loadFunction();
+	$("#chartType" ).change(function() {
+		  cm.current_graph = this.value;
+		  //alert("current_graph11"+cm.current_graph);
+		  cm.showMultiGraph(cm.selected);
+		});
+
 }
 
 

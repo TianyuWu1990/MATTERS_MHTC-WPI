@@ -19,22 +19,18 @@ var CM = (function($) {
 		this.multiMode = false; //load.js, jquery.usmap.js
 
 	   $("#graph_toggle").click(function(e) {
-	       if (current_graph == 'line') {
-	           current_graph = 'bar';
+	       if (cm.current_graph == 'line') {
+	           cm.current_graph = 'bar';
 	           $("#graph_toggle").html("Switch to Line");
-	       } else if (current_graph == 'bar') {
-	           current_graph = 'line';
+	       } else /*if (cm.current_graph == 'bar')*/ {
+	           cm.current_graph = 'line';
 	           $("#graph_toggle").html("Switch to Bar");
 	       }
 	       
-	       current_graph_function(currentind);
+	    	   
+	       
+	       cm.showMultiGraph(cm.selected);
 	   });
-	   
-	   
-	   current_graph_function = null;
-	   current_graph = 'line';
-	   current_tab = 'national';
-	   graph_title_prefix = '';
 	   
 	};
 /*
@@ -281,7 +277,7 @@ var CM = (function($) {
 	    }, 500);
 	    */
 	    //alert(cm.selected);
-	    selected = $.parseJSON($.ajax({
+	    this.selected = $.parseJSON($.ajax({
 				url : "data/peers/top?metric=" + currData[dataIndex].metric.name + "&year="
 	            + currData[dataIndex].recent.year,
 				dataType : 'text',
@@ -293,7 +289,7 @@ var CM = (function($) {
 	            return s.abbr;
 	        });
 			
-        this.showMultiGraph(selected);
+        this.showMultiGraph( this.selected);
 
 	}
 
@@ -348,70 +344,132 @@ var CM = (function($) {
         this.showMultiGraph(selected);
 	    
 	}
+	
 
 	Chart.prototype.showMultiGraph = function(states) {
-	    d3.selectAll("#mbody svg > *").remove();
-	    document.getElementById("graphTitle").innerHTML = graph_title_prefix + currData[dataIndex].metric.name;
-	    document.getElementById("graphStates").innerHTML = states.join(", ");
-	    
-	    var query = DQ.create().addState(states).addMetric(currData[dataIndex].metric.name);
-	    query.execute(function(
-	            multiData) {
-	        setTimeout(function() {
-	            nv.addGraph(function() {
-	                var chart;
-	                if (current_graph == 'line') {
-	                    chart = nv.models.lineChart()
-	                    .useInteractiveGuideline(true);
-	                } else if (current_graph == 'bar') {
-	                    chart = nv.models.multiBarChart();
-	                }
-	                chart.margin({
-	                    left : 100
-	                }).x(function(d) {
-	                    return d[0]
-	                }).y(function(d) {
-	                    return d[1]
-	                }) // adjusting, 100% is 1.00, not 100 as it is in the data
-	                .color(d3.scale.category10().range())
+		//alert("current_graph444:"+current_graph);
+	   
+	    if (this.current_graph == 'table') {
+	    	//alert("inside show table");
+	    	//this.showTable();
+	    	$("#mbody svg").remove();
+	    	$("#mbody").append("<table class='table table-condensed' style='font-size: 13px;'></table>");
+	    	var table=$("#mbody table");
+	    	//table.append("<tr><td>abc</td><td>def</td><td>ghi</td><td>jkl</td></tr>");
+	    	//table.append("<tr><td>abc</td><td>def</td><td>ghi</td><td>jkl</td></tr>");
+	    	
+		    var query = DQ.create().addState(states).addMetric(currData[dataIndex].metric.name);
+		    query.execute(function(
+		            multiData) {
+		        setTimeout(function() {
+		                var chart;
+		                var row="<th>&nbsp;</th>"
 
-	                var xtickvalues = currData[dataIndex].dataPoints.map(function(d) {
-	                    return d["year"];
-	                });
-	                
-	                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
+		                row = row + currData[dataIndex].dataPoints.map(function(d) {
+		                    return "<th>"+d["year"] + "</th>";
+		                }).join("");
+		                row = "<tr>" +row +"</tr>"
+		                table.append(row);
 
-	                if (currData[dataIndex].metric.type == "integer") {
-	                    chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
-	                } else if (currData[dataIndex].metric.type == "rank") {
-	                    chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
-	                } else if (currData[dataIndex].metric.type == "percentage") {
-	                    chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
-	                } else if (currData[dataIndex].metric.type == "numeric") {
-	                    chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
-	                } else if (currData[dataIndex].metric.type == "currency") {
-	                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
-	                }
-	                var data = new Array();
-	                for (var i = 0; i < multiData.length; i++) {
-	                    data[i] = {
-	                        key : multiData[i][0].state.abbr
-	                    };
-	                    data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-	                        return [ d["year"], d["value"] ];
-	                    });
-	                }
-	                d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
+		                var data = new Array();
+		                for (var i = 0; i < multiData.length; i++) {
+		                        row = "<th>" + multiData[i][0].state.name + "</th>" ;
+		                    row = row + multiData[i][0].dataPoints.map(function(d) {
+		                        return "<td>" +  d["value"] + "</td>";
+		                    }).join("");
+		                    row = "<tr>" +row +"</tr>"
+			                table.append(row);
+		                }
+		                
+		                
+		        }, 500);
+		    });
 
-	                // TODO: Figure out a good way to do this automatically
-	                nv.utils.windowResize(chart.update);
 
-	                return chart;
-	            });
-	        }, 500);
-	    });
+	    	
+	    }
+	    else
+	    {
+	    	$("#mbody > *").remove();
+	    	//alert("inside show chart");
+	    	if($("#mbody svg").length==0){
+	    		//alert("inside show svg");
+	    		
+
+	    		$("#mbody").append( "<svg style=\"height: 150%;\"></svg>" );
+	    		
+	    	}
+		    	
+		    d3.selectAll("#mbody svg > *").remove();
+		    	//alert("inside show graph");
+		    document.getElementById("graphTitle").innerHTML = graph_title_prefix + currData[dataIndex].metric.name;
+		    document.getElementById("graphStates").innerHTML = states.join(", ");
+		    
+		    var query = DQ.create().addState(states).addMetric(currData[dataIndex].metric.name);
+		    query.execute(function(
+		            multiData) {
+		        setTimeout(function() {
+		            nv.addGraph(function() {
+		                var chart;
+		                if (cm.current_graph == 'line') {
+		                    chart = nv.models.lineChart()
+		                    .useInteractiveGuideline(true);
+		                } else if (cm.current_graph == 'bar') {
+		                    chart = nv.models.multiBarChart();
+		                }
+		                chart.margin({
+		                    left : 100
+		                }).x(function(d) {
+		                    return d[0]
+		                }).y(function(d) {
+		                    return d[1]
+		                }) // adjusting, 100% is 1.00, not 100 as it is in the data
+		                .color(d3.scale.category10().range())
+	
+		                var xtickvalues = currData[dataIndex].dataPoints.map(function(d) {
+		                    return d["year"];
+		                });
+		                
+		                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
+	
+		                if (currData[dataIndex].metric.type == "integer") {
+		                    chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
+		                } else if (currData[dataIndex].metric.type == "rank") {
+		                    chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
+		                } else if (currData[dataIndex].metric.type == "percentage") {
+		                    chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
+		                } else if (currData[dataIndex].metric.type == "numeric") {
+		                    chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
+		                } else if (currData[dataIndex].metric.type == "currency") {
+		                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
+		                }
+		                var data = new Array();
+		                for (var i = 0; i < multiData.length; i++) {
+		                    data[i] = {
+		                        key : multiData[i][0].state.abbr
+		                    };
+		                    data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
+		                        return [ d["year"], d["value"] ];
+		                    });
+		                }
+		                d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
+	
+		                // TODO: Figure out a good way to do this automatically
+		                nv.utils.windowResize(chart.update);
+	
+		                return chart;
+		            });
+		        }, 500);
+		    });
+		  }
+	   
 	}
+	
+	Chart.prototype.showTable = function (){
 
+		
+		
+	}
 	// a crappy implementation of $.get
 	Chart.prototype.getData = function(url, callback) {
 	    http = new XMLHttpRequest();
