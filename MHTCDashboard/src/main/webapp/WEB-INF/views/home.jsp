@@ -16,7 +16,11 @@
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="js/state.js"></script>
+<script src="js/metric.js"></script>
 <script src="js/chart.js"></script>
+<script src="js/appstate.js"></script>
+
+
 <link rel="stylesheet" href="css/local_style.css">
 <title>MATTERS: Massachusetts' Technology, Talent and Economy Reporting System</title>
 </head>
@@ -29,8 +33,9 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-					<button type="button" class="btn btn-primary btn-right" id="graph_toggle">Switch to Bar</button>
-					<select id="chartType">
+					<!-- <button type="button" class="btn btn-primary btn-right" id="graph_toggle">Switch to Bar
+					</button> -->
+					<select id="chartType" class="btn btn-primary btn-right">
 						<option value="line">Line</option>
 						<option value="bar">Bar</option>
 						<option value="table">Table</option>
@@ -75,8 +80,7 @@
 						prosperous, competitive business environment fundamental to building long-term economic stability and job growth
 						within the state.
 					</p>
-					<p class="text-muted centered">
-						<br />&copy;2014 Worcester Polytechnic Institute. All rights reserved.<br /> Sponsored by Mass High Technology
+					<p class="text-muted centered"><br />&copy;2014 Worcester Polytechnic Institute. All rights reserved.<br /> Sponsored by Mass High Technology
 						Council
 					</p>
 				</div>

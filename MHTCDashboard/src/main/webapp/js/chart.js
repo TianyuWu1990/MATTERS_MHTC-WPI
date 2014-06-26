@@ -7,9 +7,9 @@ var CM = (function($) {
 	
 	function Chart() {
 
-		this.dataIndex = 0; // load.js
+		//this.dataIndex = 0; // load.js
 		this.currentind = 0; // load.js
-		this.currData = ''; // load.js
+		//this.currData = ''; // load.js
 		this.stateAbbr = "MA"; // load.js
 		this.current_graph = 'line'; // laod.js
 		this.current_graph_function = null; // load.js
@@ -77,7 +77,7 @@ var CM = (function($) {
 
 	    $("#map").usmap('toggleMultiselect');
 	  
-	    dataIndex = this.getParamsOfId(ind);
+	    //dataIndex = this.getParamsOfId(ind);
         
 	    this.selected = [ this.stateAbbr ];
 	    
@@ -186,18 +186,20 @@ var CM = (function($) {
 	        }
 	    });
 	    this.getData("data/stats/query?states=MA&metrics=all", function(data) {
-	        currData = data[0];
-	        stateAbbr = currData[0].state.abbr;
+	    	 
+	        //currData = data[0];
+	        stateAbbr =  data[0][0].state.abbr;
+	      
 	    });
 	    
 	}
 
 	// gets called when doing display selected state data, shows a graph for a single state single metric 
-	Chart.prototype.showGraph = function(ind) {
+	/**Chart.prototype.showGraph = function(ind) {
 	    d3.selectAll("#mbody svg > *").remove();
 	    current_graph_function = this.showGraph;
 	    currentind = ind;
-	    dataIndex = this.getParamsOfId(ind);
+	    dataIndex = this.getParamsOfId(ind);//this.getParamsOfId(ind);
 	    document.getElementById("graphTitle").innerHTML = currData[dataIndex].metric.name;
 	    document.getElementById("graphStates").innerHTML = currData[0].state.name;
 	    setTimeout(function() {
@@ -251,11 +253,20 @@ var CM = (function($) {
 	            return chart;
 	        });
 	    }, 500);
+	}**/
+	
+	Chart.prototype.showGraph = function(ind) {
+		this.graph_title_prefix = "Display";
+		 this.current_graph_function = this.showGraph;
+		 this.currentind = ind;
+		 //dataIndex = this.getParamsOfId(ind);
+		 this.selected = [ this.stateAbbr ];
+	     this.showMultiGraph(this.selected);
 	}
 
 	// gets called when doing compared to selected states
 	Chart.prototype.showMultiGraphOnSelected = function() {
-		 graph_title_prefix = "Compare to Selected: ";
+		this.graph_title_prefix = "Compare to Selected: ";
 	    current_graph_function = this.showMultiGraphOnSelected;
 	    //currentind = ind;
 	    this.showMultiGraph(this.selected);
@@ -263,10 +274,10 @@ var CM = (function($) {
 
 	//gets called when compare to top ten, shows a multigraph for the top ten
 	Chart.prototype.showMultiGraphOnTopTen = function(ind) {
-	    graph_title_prefix = "Compare Top TenStates: ";
+		this.graph_title_prefix = "Compare Top Ten States: ";
 	    current_graph_function = this.showMultiGraphOnTopTen;
-	    currentind = ind;
-	    dataIndex = this.getParamsOfId(ind);
+	    this.currentind = ind;
+	   // dataIndex = this.getParamsOfId(ind);//this.getParamsOfId(ind);
 
 	    /*
 	    this.getData("data/peers/top?metric=" + currData[dataIndex].metric.name + "&year="
@@ -277,9 +288,11 @@ var CM = (function($) {
 	    }, 500);
 	    */
 	    //alert(cm.selected);
+	   
 	    this.selected = $.parseJSON($.ajax({
-				url : "data/peers/top?metric=" + currData[dataIndex].metric.name + "&year="
-	            + currData[dataIndex].recent.year,
+//			url : "data/peers/top?metric=" + currData[dataIndex].metric.name + "&year="
+			url : "data/peers/top?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
+	           // + currData[dataIndex].recent.year,
 				dataType : 'text',
 				async : false,
 				success : function(data) {
@@ -288,17 +301,17 @@ var CM = (function($) {
 			}).responseText).map(function(s) {
 	            return s.abbr;
 	        });
-			
+	    
         this.showMultiGraph( this.selected);
 
 	}
 
 	// gets called when compare to bottom ten, shows a multigraph for the bottom ten
 	Chart.prototype.showMultiGraphOnBottomTen = function(ind) {
-	    graph_title_prefix = "Compare Bottom Ten States: ";
+		this.graph_title_prefix = "Compare Bottom Ten States: ";
 	    current_graph_function = this.showMultiGraphOnBottomTen;
-	    currentind = ind;
-	    dataIndex = this.getParamsOfId(ind);
+	    this.currentind = ind;
+	    //dataIndex = this.getParamsOfId(ind);//this.getParamsOfId(ind);
 
 	    /**this.getData("data/peers/bottom?metric=" + currData[dataIndex].metric.name + "&year="
 	            + currData[dataIndex].recent.year, function(states) {
@@ -308,9 +321,9 @@ var CM = (function($) {
 	        showMultiGraph(statelist);
 	    }, 500);**/
 	    
-	    selected = $.parseJSON($.ajax({
-			url : "data/peers/bottom?metric=" + currData[dataIndex].metric.name + "&year="
-            + currData[dataIndex].recent.year,
+	    this.selected = $.parseJSON($.ajax({
+			url : "data/peers/bottom?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
+	           // + currData[dataIndex].recent.year,
 			dataType : 'text',
 			async : false,
 			success : function(data) {
@@ -320,16 +333,16 @@ var CM = (function($) {
             return s.abbr;
         });
 		
-    this.showMultiGraph(selected);
+    this.showMultiGraph(this.selected);
 
 	}
 
 	// gets called when doing compare to peer states, shows a multigraph for the selected states
 	Chart.prototype.showMultiGraphOnPeers = function(ind) {
-	    graph_title_prefix = "Compare All Peers: ";
+		this.graph_title_prefix = "Compare All Peers: ";
 	    current_graph_function = this.showMultiGraphOnPeers;
-	    currentind = ind;
-	    dataIndex = this.getParamsOfId(ind);
+	    this.currentind = ind;
+	  //  dataIndex = this.getParamsOfId(ind);//this.getParamsOfId(ind);
 /*
 	    this.getData("data/peers", function(states) {
 	        var statelist = states.map(function(s) {
@@ -338,10 +351,10 @@ var CM = (function($) {
 	        this.showMultiGraph(statelist);
 	    }, 500);
 */
-        selected = States.getPeers().map(function(s) {
+        this.selected = States.getPeers().map(function(s) {
             return s.abbr;
         });
-        this.showMultiGraph(selected);
+        this.showMultiGraph(this.selected);
 	    
 	}
 	
@@ -352,20 +365,20 @@ var CM = (function($) {
 	    if (this.current_graph == 'table') {
 	    	//alert("inside show table");
 	    	//this.showTable();
-	    	$("#mbody svg").remove();
+	    	$("#mbody > *").remove();
 	    	$("#mbody").append("<table class='table table-condensed' style='font-size: 13px;'></table>");
 	    	var table=$("#mbody table");
 	    	//table.append("<tr><td>abc</td><td>def</td><td>ghi</td><td>jkl</td></tr>");
 	    	//table.append("<tr><td>abc</td><td>def</td><td>ghi</td><td>jkl</td></tr>");
 	    	
-		    var query = DQ.create().addState(states).addMetric(currData[dataIndex].metric.name);
+		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(this.currentind).getName());
 		    query.execute(function(
 		            multiData) {
 		        setTimeout(function() {
 		                var chart;
 		                var row="<th>&nbsp;</th>"
 
-		                row = row + currData[dataIndex].dataPoints.map(function(d) {
+		                row = row + multiData[0][0].dataPoints.map(function(d) {
 		                    return "<th>"+d["year"] + "</th>";
 		                }).join("");
 		                row = "<tr>" +row +"</tr>"
@@ -402,10 +415,10 @@ var CM = (function($) {
 		    	
 		    d3.selectAll("#mbody svg > *").remove();
 		    	//alert("inside show graph");
-		    document.getElementById("graphTitle").innerHTML = graph_title_prefix + currData[dataIndex].metric.name;
+		    document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(this.currentind).getName();
 		    document.getElementById("graphStates").innerHTML = states.join(", ");
 		    
-		    var query = DQ.create().addState(states).addMetric(currData[dataIndex].metric.name);
+		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(this.currentind).getName());
 		    query.execute(function(
 		            multiData) {
 		        setTimeout(function() {
@@ -426,14 +439,15 @@ var CM = (function($) {
 		                }) // adjusting, 100% is 1.00, not 100 as it is in the data
 		                .color(d3.scale.category10().range())
 	
-		                var xtickvalues = currData[dataIndex].dataPoints.map(function(d) {
+//		                var xtickvalues = currData[dataIndex].dataPoints.map(function(d) {
+		                var xtickvalues = multiData[0][0].dataPoints.map(function(d) {
 		                    return d["year"];
 		                });
 		                
 		                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
 	
-		                if (currData[dataIndex].metric.type == "integer") {
-		                    chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
+		                /* if (currData[dataIndex].metric.type == "integer") {
+		                   chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
 		                } else if (currData[dataIndex].metric.type == "rank") {
 		                    chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
 		                } else if (currData[dataIndex].metric.type == "percentage") {
@@ -442,7 +456,19 @@ var CM = (function($) {
 		                    chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
 		                } else if (currData[dataIndex].metric.type == "currency") {
 		                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
-		                }
+		                }*/
+		                var type_var=Metrics.getMetricByID(cm.currentind).getType();
+		                if (type_var == "integer") {
+					           chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
+			                } else if (type_var == "rank") {
+			                    chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
+			                } else if (type_var == "percentage") {
+			                    chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
+			                } else if (type_var == "numeric") {
+			                    chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
+			                } else if (type_var == "currency") {
+			                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
+			                }
 		                var data = new Array();
 		                for (var i = 0; i < multiData.length; i++) {
 		                    data[i] = {
@@ -480,7 +506,7 @@ var CM = (function($) {
 	        }
 	    }
 	    http.send(null);
-	}
+	} 
 
 	// changes the loaded state
 	Chart.prototype.loadState = function(stateAbbr) {
@@ -490,7 +516,7 @@ var CM = (function($) {
 	}
 
 	// Returns the parameter of currData with the given metricid
-	Chart.prototype.getParamsOfId = function(idx) {
+	/*Chart.prototype.getParamsOfId = function(idx) {
 
 	    for (var i = 0; i < currData.length; i++) {
 	        if (currData[i].metric.id == idx)
@@ -499,12 +525,12 @@ var CM = (function($) {
 
 	    return -1;
 
-	}
+	}*/
 
 	// pushes a new table into the page, makes sure the active tab is correct
 	Chart.prototype.loadData = function(stateData) {
-	    currData = stateData[0];
-	    stateAbbr = currData[0].state.abbr;
+		//currData = stateData[0];
+	    stateAbbr = stateData[0][0].state.abbr;
 	    
 	    if ($("#national").hasClass("active")) {
 	        current_tab = 'national';
@@ -535,7 +561,9 @@ var CM = (function($) {
 	            $("#economy").removeClass("fade");
 	            $("#economy").addClass("active");
 	        }
-	        $("#stateTitle").text(currData[0].state.name);
+	      //  $("#stateTitle").text(currData[0].state.name);
+	        $("#stateTitle").text(stateData[0][0].state.name);
+	        
 	    });
 
 	}

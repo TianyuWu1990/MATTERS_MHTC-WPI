@@ -82,12 +82,12 @@ public class StateServiceJDBC implements StateService {
 
     @Override
     public List<State> getTopTenPeersForMetric(String metric, int year) {
-        return getTenStates(metric, year, "gettoptenstates");
+        return getTenStates(metric, year, "gettoptenstates_maxyear");
     }
 
     @Override
     public List<State> getBottomTenPeersForMetric(String metric, int year) {
-        return getTenStates(metric, year, "getbottomtenstates");
+        return getTenStates(metric, year, "getbottomtenstates_maxyear");
 
     }
 
@@ -107,11 +107,12 @@ public class StateServiceJDBC implements StateService {
         });
 
         call.addDeclaredParameter(new SqlParameter("metricid", Types.INTEGER));
-        call.addDeclaredParameter(new SqlParameter("compareyear", Types.INTEGER));
+        //call.addDeclaredParameter(new SqlParameter("compareyear", Types.INTEGER));
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("metricid", dbMetric.getId());
-        params.put("compareyear", year);
+        
+        //params.put("compareyear", year);
 
         return call.execute(params);
     }

@@ -63,7 +63,7 @@ public class HomeController {
 		model.addAttribute("jv_stats_talent", massTalent);
 		model.addAttribute("jv_stats_cost", massCost);
 		model.addAttribute("jv_stats_economy", massEconomy);
-		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(10));
+		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
 		
         model.addAttribute("jv_current_state", "MA");
 		
@@ -87,7 +87,7 @@ public class HomeController {
         model.addAttribute("jv_stats_talent", massTalent);
         model.addAttribute("jv_stats_cost", massCost);
         model.addAttribute("jv_stats_economy", massEconomy);
-        model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(10));
+        model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
         
         model.addAttribute("jv_current_state", state);
         

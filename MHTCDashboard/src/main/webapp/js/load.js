@@ -237,8 +237,10 @@ loadFunction = function() {
 	$("div.tab-pane").scroll(adjustDropDown);
 
 	cm=CM.create();
-	
+	//as=AS.create();
 	cm.loadFunction();
+	
+	//cm.loadFunction();
 	$("#chartType" ).change(function() {
 		  cm.current_graph = this.value;
 		  //alert("current_graph11"+cm.current_graph);
