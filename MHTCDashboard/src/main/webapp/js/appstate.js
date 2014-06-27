@@ -3,11 +3,11 @@
 
 var AS= (function($) {
     function AppState() {
-    	this.currentind = 0; // load.js
-		this.stateAbbr = "MA"; // load.js	
-		this.multiMode = false; //load.js, jquery.usmap.js	
-		this.selected = ['MA']; //load.js, jquery.usmap.js
-		this.current_tab = 'national'; // load.js
+    	this.currentind = 0; 
+		this.stateAbbr = "MA";	
+		this.multiMode = false; 
+		this.selected = ['MA']; 
+		this.current_tab = 'national'; 
     }
 
     AppState.prototype.toggleMultiSelect = function(ind) {
@@ -21,8 +21,7 @@ var AS= (function($) {
 
 	    $("#map").usmap('toggleMultiselect');
 	  
-	    //dataIndex = this.getParamsOfId(ind);
-        
+	   
 	    this.selected = [ this.stateAbbr ];
 	    
 	    if ($("#normallegend").hasClass("hidden")) {
@@ -42,12 +41,12 @@ var AS= (function($) {
 	            
 	        });
 	        
-	        if ($(this).hasClass("active") && state != as.stateAbbr) {
+	        if ($(this).hasClass("active") && state != this.stateAbbr) {
 	            $(this).removeClass("active");
 	            
 	        }
 
-	        if (state == as.stateAbbr && !$(this).hasClass("active")) {
+	        if (state == this.stateAbbr && !$(this).hasClass("active")) {
 	            $(this).addClass("active");
 	           
 	        }
@@ -56,7 +55,7 @@ var AS= (function($) {
 
     AppState.prototype.selectState = function(state) {
 		
-	    if (state == stateAbbr) {
+	    if (state == this.stateAbbr) {
              
 	        return;
 	    }
@@ -125,16 +124,46 @@ var AS= (function($) {
 	            }
 	        }
 	    });
-	    this.getData("data/stats/query?states=MA&metrics=all", function(data) {
-   
-	        stateAbbr =  data[0][0].state.abbr;
-	      
-	    });
+	    
+	
+	
 	    
 	}
+AppState.prototype.set_initializer=function(title_prefix_in, this_graph_in ) {
+	cm.graph_title_prefix = title_prefix_in;
+	cm.current_graph_function = this_graph_in;
+}
+ AppState.prototype.showGraph = function(ind) {
+	this.set_initializer(" ",this.showGraph); 
+    this.currentind = ind;		 
+	this.selected = [ this.stateAbbr ];
+	cm.showMultiGraph(this.selected);
+	}
+ AppState.prototype.showMultiGraphOnSelected = function() {
+    this.set_initializer("Compare to Selected: ",this.showMultiGraphOnSelected);
+    cm.showMultiGraph(this.selected);
+	   
+	}
+ 
+ AppState.prototype.showMultiGraphOnTopTen = function(ind) {
+	    this.set_initializer("Compare Top Ten States: ",this.showMultiGraphOnTopTen); 
+		this.currentind = ind;
+	  	this.selected = $.parseJSON($.ajax({
+			url : "data/peers/top?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
+				dataType : 'text',
+				async : false,
+				success : function(data) {
+					return data;
+				}
+			}).responseText).map(function(s) {
+	            return s.abbr;
+	        });
+	    
+  
+	    cm.showMultiGraph( this.selected);
+	}
 
-
-AppState.prototype.getData = function(url, callback) {
+/**AppState.prototype.getData = function(url, callback) {
     http = new XMLHttpRequest();
     http.open("GET", url, true);
     http.onreadystatechange = function() {
@@ -143,7 +172,7 @@ AppState.prototype.getData = function(url, callback) {
         }
     }
     http.send(null);
-}
+}**/
 
 AppState.prototype.toggleMultiSelect = function(ind) {
 	this.currentind=ind;		
@@ -156,7 +185,7 @@ AppState.prototype.toggleMultiSelect = function(ind) {
 
     $("#map").usmap('toggleMultiselect');
   
-    //dataIndex = this.getParamsOfId(ind);
+    
     
     this.selected = [ this.stateAbbr ];
     
@@ -168,7 +197,7 @@ AppState.prototype.toggleMultiSelect = function(ind) {
         $("#multilegend").removeClass("hidden");
     }
 
-    $(".stateButton").each(function(i) {
+    $(".statebutton").each(function(i) {
     	
         var state;
         $(this).find("input").each(function(checkbox) {
@@ -177,27 +206,23 @@ AppState.prototype.toggleMultiSelect = function(ind) {
             
         });
         
-        if ($(this).hasClass("active") && state != stateAbbr) {
+        if ($(this).hasClass("active") && state != this.stateAbbr) {
             $(this).removeClass("active");
             
         }
 
-        if (state == stateAbbr && !$(this).hasClass("active")) {
+        if (state == this.stateAbbr && !$(this).hasClass("active")) {
             $(this).addClass("active");
            
         }
     });
 }
 
-/***AppState.prototype.loadState = function(stateAbbr) {
-	
-    this.getData("data/stats/query?states=" + stateAbbr + "&metrics=all", this.loadData);
-    
-}***/
+
 
 AppState.prototype.loadState = function(stateData) {
-	//currData = stateData[0];
-    stateAbbr = stateData;
+	
+    this.stateAbbr = stateData;
     
     if ($("#national").hasClass("active")) {
         current_tab = 'national';
@@ -209,8 +234,11 @@ AppState.prototype.loadState = function(stateData) {
         current_tab = 'economy';
     }
 
-    $.get("" + stateAbbr + "/table", function(data) {
+    $("#stateTitle").text(States.getStateByAbbreviation(this.stateAbbr).getName());
+    
+    $.get("" + this.stateAbbr + "/table", function(data) {
         $("#state_container").html(data);
+        
         if (current_tab == 'national') {
             $("#nationalTab").addClass("active");
             $("#national").removeClass("fade");
@@ -228,12 +256,43 @@ AppState.prototype.loadState = function(stateData) {
             $("#economy").removeClass("fade");
             $("#economy").addClass("active");
         }
-      //  $("#stateTitle").text(currData[0].state.name);
-        $("#stateTitle").text(States.getStateByAbbreviation(stateAbbr).getName());
+       
+     
         
     });
 
 }
+AppState.prototype.showMultiGraphOnBottomTen = function(ind) {
+	this.set_initializer("Compare Bottom Ten States: ",this.showMultiGraphOnBottomTen);
+    this.currentind = ind;
+    this.selected = $.parseJSON($.ajax({
+		url : "data/peers/bottom?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
+           
+		dataType : 'text',
+		async : false,
+		success : function(data) {
+			return data;
+		}
+	}).responseText).map(function(s) {
+        return s.abbr;
+    });
+	
+
+    cm.showMultiGraph(this.selected);
+}
+
+AppState.prototype.showMultiGraphOnPeers = function(ind) {
+	this.set_initializer("Compare All Peers: ",this.showMultiGraphOnPeers);
+    
+	
+    this.currentind = ind;
+    this.selected = States.getPeers().map(function(s) {
+        return s.abbr;
+    });
+    cm.showMultiGraph(this.selected);
+    
+}
+
 
 
 var publicInterface = {};

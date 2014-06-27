@@ -119,7 +119,7 @@
 			</div>
 		</td>
 		<td>
-			<button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="cm.showMultiGraphOnSelected()">Compare</button>
+			<button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="as.showMultiGraphOnSelected()">Compare</button>
 			</td>
 		</tr>
 	</table>

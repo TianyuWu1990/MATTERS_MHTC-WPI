@@ -147,7 +147,7 @@ var lastToggle = 0;
     	
       $("#map").usmap('select',data.name, true);
      
-      if(!(as.multiMode) && States.getStateByAbbreviation(data.name).name){
+      if(!(as.multiMode) && States.getStateByAbbreviation(data.name).getName()){
     	  //currentState=state.getStatebyAbbr(data.name).name;
        // currentState = toFullName(data.name);
         as.stateAbbr = data.name;
@@ -680,7 +680,7 @@ var lastToggle = 0;
       var attrs = {fill: 'green'};
       
       if((as.multiMode) === true){
-    	 
+    	
         ind = as.selected.indexOf(state);
        
         if(ind === -1){
@@ -690,8 +690,10 @@ var lastToggle = 0;
           as.selected.splice(ind, 1);
           console.log("hit");
           attrs = {fill: 'MidnightBlue'};
+          
         }
       }else{ 
+    	
         var stateData = this._getState(as.stateAbbr);
         var attr = {fill: 'MidnightBlue'};
         this.options.stateSpecificStyles[stateData.name] = attr;
@@ -748,11 +750,12 @@ var lastToggle = 0;
     reset: function(options){
     	
       as.selected.forEach(function(val, ind, arr){
-    	 
+    	  
         var stateData = this._getState(val);
         var attrs = {fill: 'MidnightBlue'};
         this.options.stateSpecificStyles[stateData.name] = attrs;
         stateData.shape.animate(attrs, this.options.stateHoverAnimation);
+        
       }, this);
       this.select(as.stateAbbr, true);
     },
