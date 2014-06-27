@@ -8,15 +8,15 @@ var CM = (function($) {
 	function Chart() {
 
 		//this.dataIndex = 0; // load.js
-		this.currentind = 0; // load.js
+		/***this.currentind = 0; **/// load.js
 		//this.currData = ''; // load.js
-		this.stateAbbr = "MA"; // load.js
+		/***this.stateAbbr = "MA";***/ // load.js
 		this.current_graph = 'line'; // laod.js
 		this.current_graph_function = null; // load.js
-		this.current_tab = 'national'; // load.js
+		/***this.current_tab = 'national'; ****/// load.js
 		this.graph_title_prefix = ''; // load.js
-		this.selected = ['MA']; //load.js, jquery.usmap.js
-		this.multiMode = false; //load.js, jquery.usmap.js
+		/***this.selected = ['MA'];***/ //load.js, jquery.usmap.js
+		/***this.multiMode = false;***/ //load.js, jquery.usmap.js
 
 	   $("#graph_toggle").click(function(e) {
 	       if (cm.current_graph == 'line') {
@@ -29,7 +29,7 @@ var CM = (function($) {
 	       
 	    	   
 	       
-	       cm.showMultiGraph(cm.selected);
+	       cm.showMultiGraph(as.selected);
 	   });
 	   
 	};
@@ -65,9 +65,8 @@ var CM = (function($) {
 */
 
 	// Gets called when doing compare to select states or when going back, does a bunch of hacks to make that crap work
-	Chart.prototype.toggleMultiSelect = function(ind) {
-		 
-		
+	/***Chart.prototype.toggleMultiSelect = function(ind) {
+		this.currentind=ind;		
 	    $("#multiSelecter").toggle("slide", {
 	        direction : "right"
 	    }, 200);
@@ -108,11 +107,11 @@ var CM = (function($) {
 	           
 	        }
 	    });
-	}
+	}***/
 	
 
 	// Gets called when clicking on the map (i have no idea how), deals with switching a state or doing multiselect
-	Chart.prototype.selectState = function(state) {
+	/***Chart.prototype.selectState = function(state) {
 		
 	    if (state == stateAbbr) {
              
@@ -123,10 +122,10 @@ var CM = (function($) {
 	    if (!this.multiMode)
 	    	
 	        this.loadState(state);
-	}
+	}***/
 
 	// gets called on page load, sets up the map does other hacks
-	Chart.prototype.loadFunction = function() {
+	/***Chart.prototype.loadFunction = function() {
 		
 	    $('#sidebar li:eq(0) a').tab('show');
 	    $(function() {
@@ -192,7 +191,7 @@ var CM = (function($) {
 	      
 	    });
 	    
-	}
+	}***/
 
 	// gets called when doing display selected state data, shows a graph for a single state single metric 
 	/**Chart.prototype.showGraph = function(ind) {
@@ -258,10 +257,12 @@ var CM = (function($) {
 	Chart.prototype.showGraph = function(ind) {
 		this.graph_title_prefix = "Display";
 		 this.current_graph_function = this.showGraph;
-		 this.currentind = ind;
-		 //dataIndex = this.getParamsOfId(ind);
+		/** this.currentind = ind;		 
 		 this.selected = [ this.stateAbbr ];
-	     this.showMultiGraph(this.selected);
+	     this.showMultiGraph(this.selected);**/
+		 as.currentind = ind;		 
+		 as.selected = [ as.stateAbbr ];
+	     this.showMultiGraph(as.selected);
 	}
 
 	// gets called when doing compared to selected states
@@ -269,14 +270,17 @@ var CM = (function($) {
 		this.graph_title_prefix = "Compare to Selected: ";
 	    current_graph_function = this.showMultiGraphOnSelected;
 	    //currentind = ind;
-	    this.showMultiGraph(this.selected);
+	    /***this.showMultiGraph(this.selected);***/
+	    this.showMultiGraph(as.selected);
 	}
 
 	//gets called when compare to top ten, shows a multigraph for the top ten
 	Chart.prototype.showMultiGraphOnTopTen = function(ind) {
 		this.graph_title_prefix = "Compare Top Ten States: ";
-	    current_graph_function = this.showMultiGraphOnTopTen;
-	    this.currentind = ind;
+		/***current_graph_function = this.showMultiGraphOnTopTen;****/
+		this.current_graph_function = this.showMultiGraphOnTopTen;
+	    /***this.currentind = ind;***/
+	    as.currentind = ind;
 	   // dataIndex = this.getParamsOfId(ind);//this.getParamsOfId(ind);
 
 	    /*
@@ -289,7 +293,7 @@ var CM = (function($) {
 	    */
 	    //alert(cm.selected);
 	   
-	    this.selected = $.parseJSON($.ajax({
+	    /***this.selected***/ as.selected = $.parseJSON($.ajax({
 //			url : "data/peers/top?metric=" + currData[dataIndex].metric.name + "&year="
 			url : "data/peers/top?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
 	           // + currData[dataIndex].recent.year,
@@ -302,15 +306,18 @@ var CM = (function($) {
 	            return s.abbr;
 	        });
 	    
-        this.showMultiGraph( this.selected);
-
+      /***  this.showMultiGraph( this.selected);***/
+	    this.showMultiGraph( as.selected);
 	}
 
 	// gets called when compare to bottom ten, shows a multigraph for the bottom ten
 	Chart.prototype.showMultiGraphOnBottomTen = function(ind) {
 		this.graph_title_prefix = "Compare Bottom Ten States: ";
-	    current_graph_function = this.showMultiGraphOnBottomTen;
-	    this.currentind = ind;
+		/****current_graph_function = this.showMultiGraphOnBottomTen;****/
+		
+	    this.current_graph_function = this.showMultiGraphOnBottomTen;
+	   /*** this.currentind = ind;***/
+	    as.currentind = ind;
 	    //dataIndex = this.getParamsOfId(ind);//this.getParamsOfId(ind);
 
 	    /**this.getData("data/peers/bottom?metric=" + currData[dataIndex].metric.name + "&year="
@@ -321,7 +328,7 @@ var CM = (function($) {
 	        showMultiGraph(statelist);
 	    }, 500);**/
 	    
-	    this.selected = $.parseJSON($.ajax({
+	    /***this.selected***/as.selected = $.parseJSON($.ajax({
 			url : "data/peers/bottom?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
 	           // + currData[dataIndex].recent.year,
 			dataType : 'text',
@@ -333,15 +340,17 @@ var CM = (function($) {
             return s.abbr;
         });
 		
-    this.showMultiGraph(this.selected);
-
+   /**** this.showMultiGraph(this.selected);***/
+	    this.showMultiGraph(as.selected);
 	}
 
 	// gets called when doing compare to peer states, shows a multigraph for the selected states
 	Chart.prototype.showMultiGraphOnPeers = function(ind) {
 		this.graph_title_prefix = "Compare All Peers: ";
-	    current_graph_function = this.showMultiGraphOnPeers;
-	    this.currentind = ind;
+	    /***current_graph_function = this.showMultiGraphOnPeers;***/
+		this.current_graph_function = this.showMultiGraphOnPeers;
+	  /***  this.currentind = ind;***/
+	    as.currentind = ind;
 	  //  dataIndex = this.getParamsOfId(ind);//this.getParamsOfId(ind);
 /*
 	    this.getData("data/peers", function(states) {
@@ -351,10 +360,14 @@ var CM = (function($) {
 	        this.showMultiGraph(statelist);
 	    }, 500);
 */
-        this.selected = States.getPeers().map(function(s) {
+        /***this.selected = States.getPeers().map(function(s) {
             return s.abbr;
         });
-        this.showMultiGraph(this.selected);
+        this.showMultiGraph(this.selected);***/
+	    as.selected = States.getPeers().map(function(s) {
+            return s.abbr;
+        });
+        this.showMultiGraph(as.selected);
 	    
 	}
 	
@@ -370,8 +383,8 @@ var CM = (function($) {
 	    	var table=$("#mbody table");
 	    	//table.append("<tr><td>abc</td><td>def</td><td>ghi</td><td>jkl</td></tr>");
 	    	//table.append("<tr><td>abc</td><td>def</td><td>ghi</td><td>jkl</td></tr>");
-	    	
-		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(this.currentind).getName());
+	    	/***this.currentind***/
+		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
 		    query.execute(function(
 		            multiData) {
 		        setTimeout(function() {
@@ -415,10 +428,11 @@ var CM = (function($) {
 		    	
 		    d3.selectAll("#mbody svg > *").remove();
 		    	//alert("inside show graph");
-		    document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(this.currentind).getName();
+		    /***this.currentind***/
+		    document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
 		    document.getElementById("graphStates").innerHTML = states.join(", ");
-		    
-		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(this.currentind).getName());
+		    /***this.currentind***/
+		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
 		    query.execute(function(
 		            multiData) {
 		        setTimeout(function() {
@@ -457,7 +471,8 @@ var CM = (function($) {
 		                } else if (currData[dataIndex].metric.type == "currency") {
 		                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
 		                }*/
-		                var type_var=Metrics.getMetricByID(cm.currentind).getType();
+		                /***cm.currentind***/
+		                var type_var=Metrics.getMetricByID(as.currentind).getType();
 		                if (type_var == "integer") {
 					           chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
 			                } else if (type_var == "rank") {
@@ -497,7 +512,7 @@ var CM = (function($) {
 		
 	}
 	// a crappy implementation of $.get
-	Chart.prototype.getData = function(url, callback) {
+/***	Chart.prototype.getData = function(url, callback) {
 	    http = new XMLHttpRequest();
 	    http.open("GET", url, true);
 	    http.onreadystatechange = function() {
@@ -506,14 +521,14 @@ var CM = (function($) {
 	        }
 	    }
 	    http.send(null);
-	} 
+	} ***/
 
 	// changes the loaded state
-	Chart.prototype.loadState = function(stateAbbr) {
+	/***Chart.prototype.loadState = function(stateAbbr) {
 		
 	    this.getData("data/stats/query?states=" + stateAbbr + "&metrics=all", this.loadData);
 	    
-	}
+	}***/
 
 	// Returns the parameter of currData with the given metricid
 	/*Chart.prototype.getParamsOfId = function(idx) {
@@ -528,7 +543,7 @@ var CM = (function($) {
 	}*/
 
 	// pushes a new table into the page, makes sure the active tab is correct
-	Chart.prototype.loadData = function(stateData) {
+	/**Chart.prototype.loadData = function(stateData) {
 		//currData = stateData[0];
 	    stateAbbr = stateData[0][0].state.abbr;
 	    
@@ -566,7 +581,7 @@ var CM = (function($) {
 	        
 	    });
 
-	}
+	}***/
 
 	
 	var publicInterface = {};

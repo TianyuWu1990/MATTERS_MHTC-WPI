@@ -1,8 +1,8 @@
 /**var currentState = "Massachusetts";
 var stateAbbr = "MA";**/
 var lastToggle = 0;
-//cm.selected = new Array('MA');
-//cm.multiMode = false;
+//as.selected = new Array('MA');
+//as.multiMode = false;
 (function($, document, window, Raphael, undefined) {
   // jQuery Plugin Factory
   /**function toFullName(sname){
@@ -147,10 +147,10 @@ var lastToggle = 0;
     	
       $("#map").usmap('select',data.name, true);
      
-      if(!(cm.multiMode) && States.getStateByAbbreviation(data.name).name){
+      if(!(as.multiMode) && States.getStateByAbbreviation(data.name).name){
     	  //currentState=state.getStatebyAbbr(data.name).name;
        // currentState = toFullName(data.name);
-        cm.stateAbbr = data.name;
+        as.stateAbbr = data.name;
         
         
         
@@ -679,25 +679,25 @@ var lastToggle = 0;
       state = state.toUpperCase(); // ensure state is uppercase to match
       var attrs = {fill: 'green'};
       
-      if((cm.multiMode) === true){
+      if((as.multiMode) === true){
     	 
-        ind = cm.selected.indexOf(state);
+        ind = as.selected.indexOf(state);
        
         if(ind === -1){
-          cm.selected.push(state);
+          as.selected.push(state);
           
         }else{
-          cm.selected.splice(ind, 1);
+          as.selected.splice(ind, 1);
           console.log("hit");
           attrs = {fill: 'MidnightBlue'};
         }
       }else{ 
-        var stateData = this._getState(cm.stateAbbr);
+        var stateData = this._getState(as.stateAbbr);
         var attr = {fill: 'MidnightBlue'};
         this.options.stateSpecificStyles[stateData.name] = attr;
         stateData.shape.animate(attr, this.options.stateHoverAnimation);  
         
-        cm.selected=[state];
+        as.selected=[state];
         
       }
       
@@ -708,9 +708,9 @@ var lastToggle = 0;
       //var clickAction = document.getElementById('chk'+state).parentElement.getAttribute('onClick');
       //document.getElementById('chk'+state).parentElement.setAttribute('onClick','');
         $("#chk"+state).click();
-        //cm.loadState(state);
+        //as.loadState(state);
         
-        if(!(cm.multiMode))
+        if(!(as.multiMode))
           $("#chk"+state).disabled = true;
       //document.getElementById('chk'+state).setAttribute.onclick = clickAction;
       //console.log(clickAction);
@@ -728,18 +728,18 @@ var lastToggle = 0;
     	
       this.reset();
       
-      cm.multiMode = !cm.multiMode;
+      as.multiMode = !as.multiMode;
       
-      if(cm.multiMode){
+      if(as.multiMode){
     	  
-        var stateData = this._getState(cm.stateAbbr);
+        var stateData = this._getState(as.stateAbbr);
         
         var attrs = {fill: 'orange'};
         this.options.stateSpecificStyles[stateData.name] = attrs;
         stateData.shape.animate(attrs, this.options.stateHoverAnimation);
       } else {
     	  
-          var stateData = this._getState(cm.stateAbbr);
+          var stateData = this._getState(as.stateAbbr);
           var attrs = {fill: 'green'};
           this.options.stateSpecificStyles[stateData.name] = attrs;
           stateData.shape.animate(attrs, this.options.stateHoverAnimation);
@@ -747,14 +747,14 @@ var lastToggle = 0;
     },
     reset: function(options){
     	
-      cm.selected.forEach(function(val, ind, arr){
+      as.selected.forEach(function(val, ind, arr){
     	 
         var stateData = this._getState(val);
         var attrs = {fill: 'MidnightBlue'};
         this.options.stateSpecificStyles[stateData.name] = attrs;
         stateData.shape.animate(attrs, this.options.stateHoverAnimation);
       }, this);
-      this.select(cm.stateAbbr, true);
+      this.select(as.stateAbbr, true);
     },
     
     /**

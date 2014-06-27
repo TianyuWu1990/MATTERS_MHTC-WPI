@@ -237,14 +237,15 @@ loadFunction = function() {
 	$("div.tab-pane").scroll(adjustDropDown);
 
 	cm=CM.create();
-	//as=AS.create();
-	cm.loadFunction();
-	
+	as=AS.create();
 	//cm.loadFunction();
+	as.loadFunction();
+	
 	$("#chartType" ).change(function() {
 		  cm.current_graph = this.value;
 		  //alert("current_graph11"+cm.current_graph);
-		  cm.showMultiGraph(cm.selected);
+		  //cm.showMultiGraph(cm.selected);
+		  cm.showMultiGraph(as.selected);
 		});
 
 }

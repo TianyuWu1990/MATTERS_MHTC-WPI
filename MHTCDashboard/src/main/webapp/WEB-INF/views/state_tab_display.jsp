@@ -83,9 +83,9 @@
 	</div>
 </div>
 </div>
-<div id="multiSelecter" style="position: absolute; left: 0px; top: 0px; display: none;" class="col-md-12">
+<div id="multiSelecter" style="position: relative; left: 0px; top: 0px; display: none;" class="col-md-12">
 <p class="lead">
-	<button class="btn btn-info" onclick="cm.toggleMultiSelect(0);">
+	<button class="btn btn-info" onclick="as.toggleMultiSelect(0);">
 		<h6>
 			<span class="glyphicon glyphicon-circle-arrow-left"></span> Back
 		</h6>
@@ -102,12 +102,12 @@
 							<c:forEach items="${stat.row}" var="row">
 								<c:choose>
 								<c:when test="${row.abbr == jv_current_state}">
-									<td><label class="stateButton">
+									<td><label class="statebutton">
 											<c:out value="${row.name}"/>
 									</label></td>
 								</c:when>
 								<c:otherwise>
-									<td><label class="btn btn-default stateButton" onClick="cm.selectState('${fn:escapeXml(row.abbr)}');">
+									<td><label class="btn btn-default statebutton" onClick="as.selectState('${fn:escapeXml(row.abbr)}');">
 											<input type="checkbox" id="chk${fn:escapeXml(row.abbr)}"> <c:out value="${row.name}"></c:out>
 									</label></td>
 								</c:otherwise>
