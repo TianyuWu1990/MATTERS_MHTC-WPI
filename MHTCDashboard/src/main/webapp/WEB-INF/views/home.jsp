@@ -1,6 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<!DOCTYPE html>
 <html>
 <head>
 <link href="css/nv.d3.css" rel="stylesheet">
@@ -157,15 +156,12 @@
 							<td><div class="legendbox boxgreen"></div></td>
 							<td>Selected State</td>
 						</tr>
-						<tr>
-							<td><div class="legendbox boxyellow"></div></td>
-							<td>Highlighted State</td>
-						</tr>
+						
 					</table>
 					<table id="multilegend" class="hidden">
 						<tr>
 							<td><div class="legendbox boxblue"></div></td>
-							<td>Unselected State</td>
+							<td>Peer State</td>
 						</tr>
 						<tr>
 							<td><div class="legendbox boxgreen"></div></td>

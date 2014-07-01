@@ -13,10 +13,10 @@
 </ul>
 
 <!-- Tab panes -->
-<div class="tab-content">
+<div class="tab-content" >
 
 	<div class="tab-pane fade" id="national">
-		<table class="table" style="font-size: 13px;">
+		<table class="table" style="font-size: 13px;" >
 			<thead>
 				<th>Index / Survey</th>
 				<th>Ranking / Data</th>
@@ -65,7 +65,7 @@
 		</table>
 	</div>
 	<div class="tab-pane fade" id="economy">
-		<table class="table" style="font-size: 13px;">
+		<table class="table" style="font-size: 13px;" >
 			<thead>
 				<th>Index / Survey</th>
 				<th>Trend</th>
@@ -102,13 +102,13 @@
 							<c:forEach items="${stat.row}" var="row">
 								<c:choose>
 								<c:when test="${row.abbr == jv_current_state}">
-									<td><label class="statebutton">
+									<td><label class="activestatelabel multiselectbutton">
 											<c:out value="${row.name}"/>
 									</label></td>
 								</c:when>
 								<c:otherwise>
-									<td><label class="btn btn-default statebutton" onClick="as.selectState('${fn:escapeXml(row.abbr)}');">
-											<input type="checkbox" id="chk${fn:escapeXml(row.abbr)}"> <c:out value="${row.name}"></c:out>
+									<td><label class="statebutton multiselectbutton"   id="chk${fn:escapeXml(row.abbr)}">
+											 <c:out value="${row.name}"></c:out>
 									</label></td>
 								</c:otherwise>
 								</c:choose>

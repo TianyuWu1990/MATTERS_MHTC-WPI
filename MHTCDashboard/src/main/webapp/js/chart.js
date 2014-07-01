@@ -74,7 +74,7 @@ var CM = (function($) {
 	    	if($("#mbody svg").length==0){
 	    	
 
-	    		$("#mbody").append( "<svg style=\"height: 150%;\"></svg>" );
+	    		$("#mbody").append( "<svg style=\"height: 50%;\"></svg>" );
 	    		
 	    	}
 		    	
