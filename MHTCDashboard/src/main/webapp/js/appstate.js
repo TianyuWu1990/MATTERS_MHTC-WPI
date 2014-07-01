@@ -347,7 +347,7 @@ AppState.prototype.loadState = function(stateData) {
 
     
     $.get("" + this.stateAbbr + "/table", function(data) {
-        $("#stateTitle").text(States.getStateByAbbreviation(this.stateAbbr).getName());
+        $("#stateTitle").text(States.getStateByAbbreviation(as.stateAbbr).getName());
         $("#state_container").html(data);
         
         if (current_tab == 'national') {
