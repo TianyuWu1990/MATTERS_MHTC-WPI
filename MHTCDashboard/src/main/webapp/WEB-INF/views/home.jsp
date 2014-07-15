@@ -2,9 +2,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
-<link href="css/nv.d3.css" rel="stylesheet">
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="js/nv.d3.min.js"></script>
+ <link href="css/nv.d3.css" rel="stylesheet">
+<!--  <script src="http://d3js.org/d3.v3.min.js"></script> -->
+ <script src="js/d3.v3.min.js"></script>
+
+ <script src="js/nv.d3.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
@@ -24,7 +26,6 @@
 <title>MATTERS: Massachusetts' Technology, Talent and Economy Reporting System</title>
 </head>
 <body onLoad="loadFunction()">
-
 	<!-- a graph -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -61,7 +62,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">About The Massachusetts High Technology Council</h4>
 				</div>
-				<div class="modal-body" id="mbody">
+				<div class="modal-body" id="aboutBody">
 					<p>
 						As part of its mission to make Massachusetts the world&apos;s most attractive place in which to live and work, and
 						in which to create, and grow high technology business, the <strong>Massachusetts High Technology Council</strong> has developed the
@@ -89,8 +90,8 @@
 			</div>
 		</div>
 	</div>
-
-	<nav class="navbar navbar-default" role="navigation">
+	
+	<nav class="navbar navbar-default" role="navigation" id="navbarid">
 		<div class="container-fluid">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -109,7 +110,7 @@
 					<li class="active"><a href="#">Explore</a></li>
 					<li><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
 				</ul>
-				<h1 class="centered title">MATTERS Dashboard</h1>
+				<h1 class="centered title">Massachusetts' Technology, Talent and Economy Reporting System</h1>
 				<ul class="nav navbar-nav navbar-right">
 					<form class="navbar-form navbar-left" action="<c:url value='j_spring_security_check' />" method="POST"
 						role="search">
@@ -184,6 +185,7 @@
 			</p>
 		</div>
 	</div>
+	
 	<script src="js/load.js"></script>
 </body>
 </html>

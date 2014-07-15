@@ -16,7 +16,7 @@
 <div class="tab-content" >
 
 	<div class="tab-pane fade" id="national">
-		<table class="table" style="font-size: 13px;" >
+		<table class="table table-hover" style="font-size: 13px;" >
 			<thead>
 				<th>Index / Survey</th>
 				<th>Ranking / Data</th>
@@ -48,7 +48,7 @@
 		</table>
 	</div>
 	<div class="tab-pane fade" id="cost">
-		<table class="table" style="font-size: 13px;">
+		<table class="table table-hover" style="font-size: 13px;">
 			<thead>
 				<th>Index / Survey</th>
 				<th>Trend</th>
@@ -65,7 +65,7 @@
 		</table>
 	</div>
 	<div class="tab-pane fade" id="economy">
-		<table class="table" style="font-size: 13px;" >
+		<table class="table table-hover" style="font-size: 13px;" >
 			<thead>
 				<th>Index / Survey</th>
 				<th>Trend</th>

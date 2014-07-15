@@ -8,7 +8,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:forEach items="${data_values}" var="stat">
-	<tr>
+  	<tr >
 		<c:choose>
 			<c:when test="${stat.metric.tabbed}">
 				<td><ul>
@@ -21,7 +21,7 @@
 		</c:choose>
 		<td>
 			<table class="table table-condensed" style="font-size: 13px;">
-				<tr>
+				<tr  >
 					<td>Rank</td>
 					<c:forEach items="${stat.dataPoints}" var="data">
 
@@ -45,4 +45,5 @@
 		<c:import url="data_row_end.jsp" />
 		<c:remove var="data_value" scope="request" />
 	</tr>
+	
 </c:forEach>

@@ -350,7 +350,13 @@ AppState.prototype.loadState = function(stateData) {
         $("#stateTitle").text(States.getStateByAbbreviation(as.stateAbbr).getName());
         $("#state_container").html(data);
         
-        if (current_tab == 'national') {
+        
+        $("#"+current_tab+"Tab").addClass("active");
+        $("#"+current_tab).removeClass("fade");
+        $("#"+current_tab).addClass("active");
+        
+        
+        /*if (current_tab == 'national') {
             $("#nationalTab").addClass("active");
             $("#national").removeClass("fade");
             $("#national").addClass("active");
@@ -366,7 +372,7 @@ AppState.prototype.loadState = function(stateData) {
             $("#economyTab").addClass("active");
             $("#economy").removeClass("fade");
             $("#economy").addClass("active");
-        }
+        }*/
 
 
         $(".statebutton").click(function (){ 

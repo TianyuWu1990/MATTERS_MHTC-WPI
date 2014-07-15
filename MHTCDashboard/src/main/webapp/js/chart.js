@@ -6,7 +6,8 @@
 var CM = (function($) {
 	
 	function Chart() {
-
+		this.array_colors=["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2",
+		                  "#7f7f7f","#bcbd22","#17becf","#F2F5A9","#FE2EF7","#6E6E6E","#F6CED8","#3B0B0B","#181907"];
 		this.current_graph = 'line'; 
 		this.current_graph_function = null; 
 		this.graph_title_prefix = ''; 
@@ -31,11 +32,11 @@ var CM = (function($) {
 
 	Chart.prototype.showMultiGraph = function(states) {
 		    if (this.current_graph == 'table') {
-	    	$("#mbody > *").remove();
+		    	$("#mbody > *").remove();
 	    	document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
 		    document.getElementById("graphStates").innerHTML = states.join(", ");
 		    
-	    	$("#mbody").append("<table class='table table-condensed' style='font-size: 13px;'></table>");
+	    	$("#mbody").append("<table id='myTable' class='table table-condensed' style='font-size: 13px;'></table>");
 	    	var table=$("#mbody table");
 		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
 		    query.execute(function(
@@ -69,8 +70,8 @@ var CM = (function($) {
 	    }
 	    else
 	    {
-	    	$("#mbody > *").remove();
 	    	
+	    	$("#mbody > *").remove();
 	    	if($("#mbody svg").length==0){
 	    	
 
@@ -126,7 +127,8 @@ var CM = (function($) {
 		                var data = new Array();
 		                for (var i = 0; i < multiData.length; i++) {
 		                    data[i] = {
-		                        key : multiData[i][0].state.abbr
+		                        key : multiData[i][0].state.abbr,
+		                        color: cm.array_colors[i%cm.array_colors.length]
 		                    };
 		                    data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
 		                        return [ d["year"], d["value"] ];

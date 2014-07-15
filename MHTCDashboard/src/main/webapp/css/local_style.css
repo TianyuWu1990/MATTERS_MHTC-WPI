@@ -204,3 +204,106 @@ table.table tbody tr td.tabbed_metric
 	overflow:auto;
 	
 }
+
+#nationaltab a
+{
+		background-color: green;
+		color: white;
+	
+}
+#talenttab a
+{
+		background-color: #FF4D4D;
+		color: white;
+	
+}
+#economytab a
+{
+		background-color: #3385FF;
+		color: white;
+	
+}
+#costtab a
+{
+		background-color: #6600CC;
+		color: white;
+	
+}
+
+/**#National-tbody tr:nth-child(odd)
+ {
+ background-color: #F6FFED;
+ }
+ #National-tbody tr:nth-child(even)
+ {
+ background-color: #FFFFFF;
+ }
+
+
+#talent-tbody tr:nth-child(odd)
+ {
+ background-color:  #FFE0E0;
+ }
+ 
+ #talent-tbody tr:nth-child(even)
+ {
+ background-color: #FFFFFF;
+ }
+ 
+ #cost-tbody tr:nth-child(odd)
+ {
+ background-color:#DAC2F2;
+ }
+ #cost-tbody tr:nth-child(even)
+ {
+ background-color:#FFFFFF;
+  }
+ 
+ #economy-tbody tr:nth-child(odd)
+   {
+   background-color: #6699FF;
+   }
+   
+#economy-tbody tr:nth-child(even)
+   {
+   background-color: #FFFFFF;
+   }
+*/
+#National tbody>tr:hover>td
+
+ {
+ background-color:#7ECB98;
+ }
+ 
+  #talent tbody>tr:hover>td
+ {
+ background-color:  #FFE0E0;
+ }
+ #cost tbody>tr:hover>td
+ {
+ background-color:#DAC2F2;
+ }
+ #economy tbody>tr:hover>td 
+  {
+  background-color: #ADC2FF;
+  } 
+ 
+.table-condensed > tbody > tr , .table-condensed > tbody > tr:hover>td, .table-condensed > tbody > tr:hover>th
+  {
+  background-color: #fff;
+  } 
+ 
+.topContainer{
+	background-color:#000099;
+	height:30px;
+	width:100%;
+	
+}   
+.bottomContainer{
+	background-color:#000099;
+	height:10px;
+	width:100%;
+}
+#navbarid{
+background-image: linear-gradient(to bottom,#FFFFFF 0,#3D8AF4 100%);
+background-repeat: repeat-x;}
