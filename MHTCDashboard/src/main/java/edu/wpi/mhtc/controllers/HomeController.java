@@ -52,6 +52,7 @@ public class HomeController {
 		Logger logger = LoggerFactory.getLogger(this.getClass());
 		logger.info("Home called");
 		
+		List<DataSeries> massProfile = statsService.getStateBinData("MA", 45);/**AAEJ**/
 		List<DataSeries> massNational = statsService.getStateBinData("MA", 21);
 		List<DataSeries> massTalent = statsService.getStateBinData("MA", 20);
 		List<DataSeries> massCost = statsService.getStateBinData("MA", 37);
@@ -59,6 +60,7 @@ public class HomeController {
 		List<State> peers = peersService.getAllStates();
 		
 		// TODO un-hardcode these bin ids
+		model.addAttribute("jv_stats_profile",massProfile );/**AAEJ**/
 		model.addAttribute("jv_stats_national", massNational);
 		model.addAttribute("jv_stats_talent", massTalent);
 		model.addAttribute("jv_stats_cost", massCost);
@@ -77,12 +79,14 @@ public class HomeController {
         Logger logger = LoggerFactory.getLogger(this.getClass());
         logger.info("New state requested: " + state);
 	    
+        List<DataSeries> massProfile = statsService.getStateBinData(state, 45);/**AAEJ**/
         List<DataSeries> massNational = statsService.getStateBinData(state, 21);
         List<DataSeries> massTalent = statsService.getStateBinData(state, 20);
         List<DataSeries> massCost = statsService.getStateBinData(state, 37);
         List<DataSeries> massEconomy = statsService.getStateBinData(state, 29);
         List<State> peers = peersService.getAllStates();
 
+        model.addAttribute("jv_stats_profile",massProfile ); /**AAEJ**/
         model.addAttribute("jv_stats_national", massNational);
         model.addAttribute("jv_stats_talent", massTalent);
         model.addAttribute("jv_stats_cost", massCost);

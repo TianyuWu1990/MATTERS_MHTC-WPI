@@ -12,7 +12,7 @@ height: 25px;
 background-image: url(img/trend_meter.png);
 background-repeat: no-repeat;
 }
-
+  
 .bluetext 
 {
 	
@@ -50,6 +50,7 @@ right:0;
 {
     fill-opacity: 1;
     stroke-opacity: 1;
+    
 }
 
 .legendbox
@@ -205,6 +206,11 @@ table.table tbody tr td.tabbed_metric
 	
 }
 
+#profiletab a{
+	background-color: #977509;
+	color:#fff;
+	font-weight:bold;
+}
 #nationaltab a
 {
 		background-color: green;
@@ -269,6 +275,10 @@ table.table tbody tr td.tabbed_metric
    background-color: #FFFFFF;
    }
 */
+#Profile tbody > tr:hover >td
+  {
+  background-color: #FFE8A0;
+  }
 #National tbody>tr:hover>td
 
  {

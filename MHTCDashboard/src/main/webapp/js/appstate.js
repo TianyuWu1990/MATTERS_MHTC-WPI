@@ -335,7 +335,9 @@ AppState.prototype.loadState = function(stateData) {
 	
     this.stateAbbr = stateData;
     
-    if ($("#national").hasClass("active")) {
+    if ($("#profile").hasClass("active")) {
+        current_tab = 'profile';
+    } else if ($("#national").hasClass("active")) {
         current_tab = 'national';
     } else if ($("#talent").hasClass("active")) {
         current_tab = 'talent';

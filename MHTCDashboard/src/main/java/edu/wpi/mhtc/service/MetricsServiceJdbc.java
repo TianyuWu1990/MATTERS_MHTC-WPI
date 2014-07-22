@@ -32,7 +32,7 @@ public class MetricsServiceJdbc implements MetricsService {
     }
     
     private int[] tabids = { 91, 92, 93, 94, 95, 32, 29, 30, 25, 34, 28, 33, 27, 31, 61, 65, 66, 67, 70, 71, 73 };
-
+    
     @Override
     public List<Metric> getMetricsInCategory(final int categoryId) {
         PSqlStringMappedJdbcCall<Metric> metricCall = new PSqlStringMappedJdbcCall<Metric>(template)
@@ -48,6 +48,8 @@ public class MetricsServiceJdbc implements MetricsService {
             name = "Cost";
         } else if (categoryId == 29) {
             name = "Economy";
+        }else if (categoryId == 45) {
+            name = "Profile";
         }
 
         final String finalName = name;
@@ -61,9 +63,9 @@ public class MetricsServiceJdbc implements MetricsService {
 
                 boolean tabbed = false;
                 for (int i = 0; i < tabids.length; i++)
-                    if (tabids[i] == rs.getInt("Id"))
-                        tabbed = true;
-                
+                	if (tabids[i] == rs.getInt("Id"))
+                			tabbed = true;
+                		
                 return new Metric(rs.getInt("Id"), rs.getString("DisplayName"), categoryId, finalName, rs.getString("DataType"), trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"), tabbed);
             }
 
