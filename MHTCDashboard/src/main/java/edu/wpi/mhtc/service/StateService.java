@@ -2,15 +2,17 @@ package edu.wpi.mhtc.service;
 
 import java.util.List;
 
+import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.persistence.DBState;
 
 public interface StateService{
 
-	List<DBState> getPeersFull();
-	List<State> getTopTenPeersForMetric(String metric, int year);
-	List<State> getBottomTenPeersForMetric(String metric, int year);
+	List<State> getTopTenStatesForMetric(Metric metric);
+	List<State> getBottomTenStatesForMetric(Metric metric);
 	
 	List<State> getAllPeers();
     List<State> getAllStates();
+    
+    State getStateById(int id);
+    
 }

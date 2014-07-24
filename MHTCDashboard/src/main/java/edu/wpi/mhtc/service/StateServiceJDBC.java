@@ -1,141 +1,77 @@
 package edu.wpi.mhtc.service;
 
-import java.sql.SQLException;
 import java.sql.Types;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.persistence.DBState;
-import edu.wpi.mhtc.persistence.MetricMapper;
-import edu.wpi.mhtc.persistence.PSqlRowMapper;
-import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
+import edu.wpi.mhtc.model.state.StateRowMapper;
+import edu.wpi.mhtc.persistence.JdbcProcedure;
 
+// TODO cached service
 @Service
-public class StateServiceJDBC implements StateService {
+public class StateServiceJDBC implements StateService
+{
 
-    private JdbcTemplate template;
-    private MetricMapper metricMapper;
+	private JdbcProcedure<State> getStates;
+	private JdbcProcedure<State> getTopTenStates;
+	private JdbcProcedure<State> getBottomTenStates;
+	private JdbcProcedure<State> getStateById;
 
-    @Autowired
-    public StateServiceJDBC(JdbcTemplate template, MetricMapper metricMapper) {
-        this.template = template;
-        this.metricMapper = metricMapper;
-    }
+	@Autowired
+	public StateServiceJDBC(JdbcTemplate template)
+	{
+		getStates = new JdbcProcedure<State>(template).withSchemaName(MetricServiceJdbc.MHTC_SCHEMA)
+				.withProcedureName("getStates").addDeclaredParameter(new SqlParameter("onlyPeers", Types.BOOLEAN))
+				.addDeclaredRowMapper(new StateRowMapper());
 
-    @Override
-    public List<State> getAllPeers() {
+		getTopTenStates = new JdbcProcedure<State>(template).withSchemaName(MetricServiceJdbc.MHTC_SCHEMA)
+				.withProcedureName("getTopTenStates").addDeclaredParameter(new SqlParameter("metricId", Types.INTEGER))
+				.addDeclaredRowMapper(new StateRowMapper());
 
-        PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(template).withSchemaName("mhtc_sch")
-                .withProcedureName("getstates");
+		getBottomTenStates = new JdbcProcedure<State>(template).withSchemaName(MetricServiceJdbc.MHTC_SCHEMA)
+				.withProcedureName("getBottomTenStates")
+				.addDeclaredParameter(new SqlParameter("metricId", Types.INTEGER))
+				.addDeclaredRowMapper(new StateRowMapper());
 
-        call.addDeclaredRowMapper(new PSqlRowMapper<State>() {
+		getStateById = new JdbcProcedure<State>(template).withSchemaName(MetricServiceJdbc.MHTC_SCHEMA)
+				.withProcedureName("getStateById").addDeclaredParameter(new SqlParameter("stateId", Types.INTEGER))
+				.addDeclaredRowMapper(new StateRowMapper());
+	}
 
-            @Override
-            public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new State(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"), true);
-            }
-            
-        });
+	@Override
+	public List<State> getAllPeers()
+	{
+		return getStates.createCall().withParam("onlyPeers", true).call();
+	}
 
-        call.addDeclaredParameter(new SqlParameter("showonlypeerstates", Types.BOOLEAN));
+	@Override
+	public List<State> getAllStates()
+	{
+		return getStates.createCall().withParam("onlyPeers", false).call();
+	}
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("showonlypeerstates", true);
+	@Override
+	public List<State> getTopTenStatesForMetric(Metric metric)
+	{
+		return getTopTenStates.createCall().withParam("metricId", metric.getId()).call();
+	}
 
-        return call.execute(params);
+	@Override
+	public List<State> getBottomTenStatesForMetric(Metric metric)
+	{
+		return getBottomTenStates.createCall().withParam("metricId", metric.getId()).call();
+	}
 
-    }
-
-    @Override
-    public List<DBState> getPeersFull() {
-
-        PSqlStringMappedJdbcCall<DBState> call = new PSqlStringMappedJdbcCall<DBState>(template).withSchemaName(
-                "mhtc_sch").withProcedureName("getstates");
-
-        call.addDeclaredRowMapper(new PSqlRowMapper<DBState>() {
-
-            @Override
-            public DBState mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new DBState(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"), rs
-                        .getBoolean("IsPeerState"));
-            }
-
-        });
-
-        call.addDeclaredParameter(new SqlParameter("showonlypeerstates", Types.BOOLEAN));
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("showonlypeerstates", false);
-
-        return call.execute(params);
-
-    }
-
-    @Override
-    public List<State> getTopTenPeersForMetric(String metric, int year) {
-        return getTenStates(metric, year, "gettoptenstates");
-    }
-
-    @Override
-    public List<State> getBottomTenPeersForMetric(String metric, int year) {
-        return getTenStates(metric, year, "getbottomtenstates");
-
-    }
-
-    private List<State> getTenStates(String metric, int year, String operation) {
-        Metric dbMetric = metricMapper.getMetricFromString(metric);
-
-        PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(template).withSchemaName(
-                "mhtc_sch").withProcedureName(operation);
-
-        call.addDeclaredRowMapper(new PSqlRowMapper<State>() {
-
-            @Override
-            public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new State(rs.getInt("StateId"), rs.getString("StateName"), rs.getString("Abbreviation"), true);
-            }
-
-        });
-
-        call.addDeclaredParameter(new SqlParameter("metricid", Types.INTEGER));
-        call.addDeclaredParameter(new SqlParameter("compareyear", Types.INTEGER));
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("metricid", dbMetric.getId());
-        params.put("compareyear", year);
-
-        return call.execute(params);
-    }
-
-    @Override
-    public List<State> getAllStates() {
-        PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(template).withSchemaName("mhtc_sch")
-                .withProcedureName("getstates");
-
-        call.addDeclaredRowMapper(new PSqlRowMapper<State>() {
-
-            @Override
-            public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new State(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"), rs.getBoolean("IsPeerState"));
-            }
-            
-        });
-
-        call.addDeclaredParameter(new SqlParameter("showonlypeerstates", Types.BOOLEAN));
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("showonlypeerstates", false);
-
-        return call.execute(params);
-    }
+	@Override
+	public State getStateById(int id)
+	{
+		return getStateById.createCall().withParam("stateId", id).call().get(0);
+	}
 
 }

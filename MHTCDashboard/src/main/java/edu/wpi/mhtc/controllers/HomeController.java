@@ -28,13 +28,13 @@ import edu.wpi.mhtc.service.StatsService;
 public class HomeController {
 	
 	private StatsService statsService;
-	private StateService peersService;
+	private StateService stateService;
 	
 	@Autowired
-	public HomeController(StatsService ss, StateService ps)
+	public HomeController(StatsService statsService, StateService stateService)
 	{
-		this.statsService = ss;
-		this.peersService = ps;
+		this.statsService = statsService;
+		this.stateService = stateService;
 	}
 	
 	
@@ -52,11 +52,13 @@ public class HomeController {
 		Logger logger = LoggerFactory.getLogger(this.getClass());
 		logger.info("Home called");
 		
-		List<DataSeries> massNational = statsService.getStateBinData("MA", 21);
-		List<DataSeries> massTalent = statsService.getStateBinData("MA", 20);
-		List<DataSeries> massCost = statsService.getStateBinData("MA", 37);
-		List<DataSeries> massEconomy = statsService.getStateBinData("MA", 29);
-		List<State> peers = peersService.getAllPeers();
+		String maId = "21";
+		
+		List<DataSeries> massNational = statsService.getStateBinData(maId, 21);
+		List<DataSeries> massTalent = statsService.getStateBinData(maId, 20);
+		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
+		List<DataSeries> massEconomy = statsService.getStateBinData(maId, 29);
+		List<State> peers = stateService.getAllPeers();
 		
 		// TODO un-hardcode these bin ids
 		model.addAttribute("jv_stats_national", massNational);
@@ -76,13 +78,15 @@ public class HomeController {
 
         Logger logger = LoggerFactory.getLogger(this.getClass());
         logger.info("New state requested: " + state);
-	    
-        List<DataSeries> massNational = statsService.getStateBinData(state, 21);
-        List<DataSeries> massTalent = statsService.getStateBinData(state, 20);
-        List<DataSeries> massCost = statsService.getStateBinData(state, 37);
-        List<DataSeries> massEconomy = statsService.getStateBinData(state, 29);
-        List<State> peers = peersService.getAllPeers();
 
+        String maId = "21";
+		
+		List<DataSeries> massNational = statsService.getStateBinData(maId, 21);
+		List<DataSeries> massTalent = statsService.getStateBinData(maId, 20);
+		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
+		List<DataSeries> massEconomy = statsService.getStateBinData(maId, 29);
+		List<State> peers = stateService.getAllPeers();
+		
         model.addAttribute("jv_stats_national", massNational);
         model.addAttribute("jv_stats_talent", massTalent);
         model.addAttribute("jv_stats_cost", massCost);

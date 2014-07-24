@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.wpi.mhtc.model.Model;
-
-public class PeerStates implements Model<State>{
+public class PeerStates{
 	private LinkedList<State> states;
 
 	public PeerStates(List<State> list)

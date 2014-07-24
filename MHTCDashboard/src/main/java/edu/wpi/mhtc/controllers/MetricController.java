@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.wpi.mhtc.model.Data.Metric;
-import edu.wpi.mhtc.service.MetricsService;
+import edu.wpi.mhtc.service.MetricService;
 
 /**
  * A controller that provides endpoints that returns metrics or lists of metrics.
@@ -19,10 +19,10 @@ import edu.wpi.mhtc.service.MetricsService;
 @Controller
 public class MetricController {
 
-    private MetricsService service;
+    private MetricService service;
     
     @Autowired
-    public MetricController(MetricsService service) {
+    public MetricController(MetricService service) {
         this.service = service;
     }
     
@@ -32,6 +32,6 @@ public class MetricController {
     @RequestMapping(value = "/data/metrics/all", method = RequestMethod.GET)
     public @ResponseBody
     List<Metric> allMetricsEndpoint() {
-        return service.getAllMetrics();
+        return service.getAllVisibleMetrics();
     }
 }

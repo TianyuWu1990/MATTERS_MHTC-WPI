@@ -5,16 +5,7 @@
 
 <c:forEach items="${data_values}" var="stat">
 	<tr>
-		<c:choose>
-			<c:when test="${stat.metric.tabbed}">
-				<td><ul>
-						<li><c:out value="${stat.metric.name}"></c:out></li>
-					</ul></td>
-			</c:when>
-			<c:otherwise>
-				<td><c:out value="${stat.metric.name}"></c:out></td>
-			</c:otherwise>
-		</c:choose>
+		<td><c:out value="${stat.metric.displayName}"></c:out></td>
 		<td><span class="trend_icon trend_${stat.trend}"></span></td>
 
 		<c:set var="stat_value" scope="request" value="${stat.recent.value}" />

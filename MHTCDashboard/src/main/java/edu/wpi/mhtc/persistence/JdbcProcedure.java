@@ -30,7 +30,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
  * @author Stokes
  * 
  */
-public class PSqlStringMappedJdbcCall<T> {
+public class JdbcProcedure<T> {
 
 	private JdbcTemplate template;
 	private List<SqlParameter> declaredParams;
@@ -42,7 +42,7 @@ public class PSqlStringMappedJdbcCall<T> {
 	 * Creates a new PSqlStringMappedJdbcCall using the given template for
 	 * queries.
 	 */
-	public PSqlStringMappedJdbcCall(JdbcTemplate template) {
+	public JdbcProcedure(JdbcTemplate template) {
 
 		this.template = template;
 
@@ -52,7 +52,7 @@ public class PSqlStringMappedJdbcCall<T> {
 	/**
 	 * Sets name of the schema that contains the procedure to execute.
 	 */
-	public PSqlStringMappedJdbcCall<T> withSchemaName(String schemaname) {
+	public JdbcProcedure<T> withSchemaName(String schemaname) {
 		this.schemaName = schemaname;
 		return this;
 	}
@@ -60,7 +60,7 @@ public class PSqlStringMappedJdbcCall<T> {
 	/**
 	 * Sets the name of the procedure to execute.
 	 */
-	public PSqlStringMappedJdbcCall<T> withProcedureName(String procedurename) {
+	public JdbcProcedure<T> withProcedureName(String procedurename) {
 		this.procedureName = procedurename;
 		return this;
 	}
@@ -69,7 +69,7 @@ public class PSqlStringMappedJdbcCall<T> {
 	 * Adds an input parameter to the procedure.
 	 * 
 	 */
-	public PSqlStringMappedJdbcCall<T> addDeclaredParameter(SqlParameter param) {
+	public JdbcProcedure<T> addDeclaredParameter(SqlParameter param) {
 
 		declaredParams.add(param);
 
@@ -79,11 +79,15 @@ public class PSqlStringMappedJdbcCall<T> {
 	/**
 	 * Adds a row mapper that is used to parse the results of the query.
 	 */
-	public PSqlStringMappedJdbcCall<T> addDeclaredRowMapper(PSqlRowMapper<T> mapper) {
+	public JdbcProcedure<T> addDeclaredRowMapper(PSqlRowMapper<T> mapper) {
 
 		this.mapper = mapper;
 
 		return this;
+	}
+	
+	public ProcedureCall<T> createCall() {
+		return new ProcedureCall<T>(this);
 	}
 
 	/**

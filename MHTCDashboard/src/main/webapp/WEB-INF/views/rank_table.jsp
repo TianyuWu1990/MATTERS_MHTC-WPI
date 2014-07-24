@@ -9,16 +9,7 @@
 
 <c:forEach items="${data_values}" var="stat">
 	<tr>
-		<c:choose>
-			<c:when test="${stat.metric.tabbed}">
-				<td><ul>
-						<li><c:out value="${stat.metric.name}"></c:out></li>
-					</ul>
-			</c:when>
-			<c:otherwise>
-				<td><c:out value="${stat.metric.name}"></c:out></td>
-			</c:otherwise>
-		</c:choose>
+		<td><c:out value="${stat.metric.displayName}"></c:out></td>
 		<td>
 			<table class="table table-condensed" style="font-size: 13px;">
 				<tr>

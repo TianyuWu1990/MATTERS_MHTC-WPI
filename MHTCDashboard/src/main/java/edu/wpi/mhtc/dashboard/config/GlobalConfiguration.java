@@ -18,10 +18,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import com.fergiggles.giggledust.dust.DustViewResolver;
-
-import edu.wpi.mhtc.model.persistence.EntityRepository;
-
 /**
  * Provides configuration that is global to all profiles for the web dashboard.
  * This configuration class is the entry configuration class that is specified
@@ -84,13 +80,6 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	public CommonsMultipartResolver multipartResolver() {
 	    CommonsMultipartResolver mr = new CommonsMultipartResolver();
 	    return mr;
-	}
-	
-	@Bean
-	@Autowired
-	public EntityRepository entityRepository(JdbcTemplate template) {
-	    EntityRepository repo = new EntityRepository("edu.wpi.mhtc.model", template);
-	    return repo;
 	}
 
 }

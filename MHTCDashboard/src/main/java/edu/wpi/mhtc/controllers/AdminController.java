@@ -5,21 +5,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,10 +30,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import edu.wpi.mhtc.model.admin.TreeViewNode;
+import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
-import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
-import edu.wpi.mhtc.service.MetricsService;
+import edu.wpi.mhtc.persistence.JdbcProcedure;
+import edu.wpi.mhtc.service.MetricService;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
 @Controller
@@ -46,11 +41,11 @@ public class AdminController {
 
     private DateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
     
-    private MetricsService service;
+    private MetricService service;
     private JdbcTemplate template;
     
     @Autowired
-    public AdminController(MetricsService service, JdbcTemplate template) {
+    public AdminController(MetricService service, JdbcTemplate template) {
         this.service = service;
         this.template = template;
     }
@@ -62,16 +57,16 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
-    public @ResponseBody List<TreeViewNode> categories() {
-        List<TreeViewNode> returnList = new LinkedList<TreeViewNode>();
-        returnList.add(service.getCategoriesAsTree());
-        return returnList;
+    public @ResponseBody List<Metric> categories() {
+        //List<TreeViewNode> returnList = new LinkedList<TreeViewNode>();
+        //returnList.add(service.getCategoriesAsTree());
+        return null;
     }
     
     @RequestMapping(value = "/admin/categories/{categoryid}/metrics/table")
     public String metricTable(Model model, @PathVariable("categoryid") int categoryId) {
         
-        model.addAttribute("jv_metrics", service.getMetricsForCategory(categoryId));
+        //model.addAttribute("jv_metrics", service.getMetricsForCategory(categoryId));
         
         return "admin_metrics_table";
     }
@@ -80,7 +75,7 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.OK)
     public void addCategory(@RequestParam("parentid") int parentId, @RequestParam("name") String name, @RequestParam("source") String source) {
         
-        service.storeCategory(name, parentId, source);
+        //service.storeCategory(name, parentId, source);
         
     }
     
@@ -88,14 +83,14 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.OK)
     public void updateCategory(Model model, @PathVariable("categoryid") int categoryId, @RequestParam("visible") boolean visible, @RequestParam("name") String name, @RequestParam("source") String source) {
 
-        service.updateCategory(categoryId, name, visible, source);
+        //service.updateCategory(categoryId, name, visible, source);
     }
     
     @RequestMapping(value = "/admin/categories/{categoryid}/metrics/new", method=RequestMethod.POST, params = { "name", "iscalculated", "type"})
     @ResponseStatus(value = HttpStatus.OK)
     public void addMetric(@PathVariable("categoryid") int categoryId, @RequestParam("name") String name, @RequestParam("iscalculated") boolean isCalculated, @RequestParam("type") String type) {
         
-        service.storeMetric(categoryId, name, isCalculated, type);
+        //service.storeMetric(categoryId, name, isCalculated, type);
         
     }
     
@@ -103,7 +98,7 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.OK)
     public void updateMetric(@PathVariable("metricid") int metricId, @RequestParam("name") String name, @RequestParam("visible") boolean visible, @RequestParam("iscalculated") boolean isCalculated, @RequestParam("type") String type) {
         
-        service.updateMetric(metricId, name, visible, isCalculated, type);
+        //service.updateMetric(metricId, name, visible, isCalculated, type);
         
     }
     
@@ -137,7 +132,7 @@ public class AdminController {
     
     
     private int getCatId(String catname) {
-        PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
+        JdbcProcedure<Integer> call = new JdbcProcedure<Integer>(template).withSchemaName(
                 "mhtc_sch").withProcedureName("getcategorybyname");
 
         call.addDeclaredRowMapper(new PSqlRowMapper<Integer>() {

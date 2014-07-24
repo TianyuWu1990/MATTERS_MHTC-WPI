@@ -17,33 +17,29 @@ import edu.wpi.mhtc.model.Data.Data;
 import edu.wpi.mhtc.model.Data.DataSeries;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.persistence.MetricMapper;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
-import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
-import edu.wpi.mhtc.persistence.StateMapper;
+import edu.wpi.mhtc.persistence.JdbcProcedure;
 
 @Service
 public class StatsServiceJDBC implements StatsService
 {
 
 	private JdbcTemplate template;
-	private StateMapper stateMapper;
-	private MetricMapper metricMapper;
-	private MetricsService metricsService;
+	private StateService stateService;
+	private MetricService metricService;
 	
 	@Autowired
-	public StatsServiceJDBC(JdbcTemplate template, StateMapper stateMapper, MetricMapper metricMapper, MetricsService metricsService)
+	public StatsServiceJDBC(JdbcTemplate template, StateService stateService, MetricService metricService)
 	{
 		this.template = template;
-		this.stateMapper = stateMapper;
-		this.metricMapper = metricMapper;
-		this.metricsService = metricsService;
+		this.stateService = stateService;
+		this.metricService = metricService;
 	}
 
 	private List<Data> getAllYearsForStateAndMetric(final State state, final Metric metric)
 	{
 
-		PSqlStringMappedJdbcCall<Data> call = new PSqlStringMappedJdbcCall<Data>(template).withSchemaName(
+		JdbcProcedure<Data> call = new JdbcProcedure<Data>(template).withSchemaName(
 				"mhtc_sch").withProcedureName("getdatabymetricandstate");
 
 		call.addDeclaredRowMapper(new PSqlRowMapper<Data>()
@@ -83,30 +79,30 @@ public class StatsServiceJDBC implements StatsService
 	}
 
 	@Override
-	public List<DataSeries> getDataForStateByName(String state, String metrics)
+	public List<DataSeries> getDataForStateByName(String stateId, String metricIds)
 	{
 
-		State dbState = stateMapper.getStateFromString(state);
-		List<Metric> dbMetrics = getListOfMetricsFromCommaSeparatedString(metrics);
+		State state = stateService.getStateById(Integer.parseInt(stateId));
+		List<Metric> metrics = getListOfMetricsFromCommaSeparatedString(metricIds);
 
-		return getDataForState(dbState, dbMetrics);
+		return getDataForState(state, metrics);
 	}
 	
 	@Override
-	public List<DataSeries> getStateBinData(String state, Integer binId)
+	public List<DataSeries> getStateBinData(String stateId, Integer binId)
 	{
 
-		State dbState = stateMapper.getStateFromString(state);
-		List<Metric> dbMetrics = metricsService.getMetricsInCategory(binId);
+		State state = stateService.getStateById(Integer.parseInt(stateId));
+		List<Metric> metrics = metricService.getAllVisibleMetricsByCategory(binId);
 
-		return getDataForState(dbState, dbMetrics);
+		return getDataForState(state, metrics);
 	}
 
 	private List<Metric> getListOfMetricsFromCommaSeparatedString(String metric)
 	{
 
 		if (metric.equals("all"))
-			return metricMapper.getAll();
+			return metricService.getAllVisibleMetrics();
 
 		String[] splits = metric.split(",");
 
@@ -114,7 +110,7 @@ public class StatsServiceJDBC implements StatsService
 
 		for (String split : splits)
 		{
-			metrics.add(metricMapper.getMetricFromString(split));
+			metrics.add(metricService.getMetricById(Integer.parseInt(split)));
 		}
 
 		return metrics;

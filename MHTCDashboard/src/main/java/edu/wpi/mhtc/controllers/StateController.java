@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.wpi.mhtc.model.state.State;
+import edu.wpi.mhtc.service.MetricService;
 import edu.wpi.mhtc.service.StateService;
 
 /**
@@ -19,39 +20,47 @@ import edu.wpi.mhtc.service.StateService;
  * @author Stokes
  */
 @Controller
-public class StateController {
+public class StateController
+{
 
-    private StateService service;
+	private StateService service;
+	private MetricService metricService;
 
-    @Autowired
-    public StateController(StateService service) {
-        this.service = service;
-    }
+	@Autowired
+	public StateController(StateService service, MetricService metricService)
+	{
+		this.service = service;
+		this.metricService = metricService;
+	}
 
-    @RequestMapping(value = "/data/peers", method = RequestMethod.GET)
-    public @ResponseBody
-    List<State> initialsEndpoint(Model model) {
-        return service.getAllPeers();
-    }
+	@RequestMapping(value = "/data/peers", method = RequestMethod.GET)
+	public @ResponseBody
+	List<State> initialsEndpoint(Model model)
+	{
+		return service.getAllPeers();
+	}
 
-    /**
-     * Returns a list of all states supported by the system.
-     */
-    @RequestMapping(value = "/data/states/all", method = RequestMethod.GET)
-    public @ResponseBody
-    List<State> allStatesEndpoint() {
-        return service.getAllStates();
-    }
+	/**
+	 * Returns a list of all states supported by the system.
+	 */
+	@RequestMapping(value = "/data/states/all", method = RequestMethod.GET)
+	public @ResponseBody
+	List<State> allStatesEndpoint()
+	{
+		return service.getAllStates();
+	}
 
-    @RequestMapping(value = "/data/peers/top", params = { "metric", "year" })
-    public @ResponseBody
-    List<State> topTenEndpoint(Model model, @RequestParam("metric") String metric, @RequestParam("year") int year) {
-        return service.getTopTenPeersForMetric(metric, year);
-    }
+	@RequestMapping(value = "/data/peers/top", params = { "metric" })
+	public @ResponseBody
+	List<State> topTenEndpoint(Model model, @RequestParam("metric") String metric, @RequestParam("year") int year)
+	{
+		return service.getTopTenStatesForMetric(metricService.getMetricById(Integer.parseInt(metric)));
+	}
 
-    @RequestMapping(value = "/data/peers/bottom", params = { "metric", "year" })
-    public @ResponseBody
-    List<State> bottomTenEndpoint(Model model, @RequestParam("metric") String metric, @RequestParam("year") int year) {
-        return service.getBottomTenPeersForMetric(metric, year);
-    }
+	@RequestMapping(value = "/data/peers/bottom", params = { "metric" })
+	public @ResponseBody
+	List<State> bottomTenEndpoint(Model model, @RequestParam("metric") String metric, @RequestParam("year") int year)
+	{
+		return service.getBottomTenStatesForMetric(metricService.getMetricById(Integer.parseInt(metric)));
+	}
 }
