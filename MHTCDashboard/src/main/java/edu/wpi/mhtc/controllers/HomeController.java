@@ -54,6 +54,7 @@ public class HomeController {
 		
 		String maId = "21";
 		
+		List<DataSeries> massProfile = statsService.getStateBinData(maId, 45);
 		List<DataSeries> massNational = statsService.getStateBinData(maId, 21);
 		List<DataSeries> massTalent = statsService.getStateBinData(maId, 20);
 		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
@@ -61,12 +62,13 @@ public class HomeController {
 		List<State> peers = stateService.getAllPeers();
 		
 		// TODO un-hardcode these bin ids
+		model.addAttribute("jv_stats_profile",massProfile );
 		model.addAttribute("jv_stats_national", massNational);
 		model.addAttribute("jv_stats_talent", massTalent);
 		model.addAttribute("jv_stats_cost", massCost);
 		model.addAttribute("jv_stats_economy", massEconomy);
-		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(4));
-
+		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
+		
         model.addAttribute("jv_current_state", "MA");
 		
 		return "home";
@@ -79,19 +81,21 @@ public class HomeController {
         Logger logger = LoggerFactory.getLogger(this.getClass());
         logger.info("New state requested: " + state);
 
-        String maId = "21";
-		
-		List<DataSeries> massNational = statsService.getStateBinData(maId, 21);
-		List<DataSeries> massTalent = statsService.getStateBinData(maId, 20);
-		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
-		List<DataSeries> massEconomy = statsService.getStateBinData(maId, 29);
+        String stateId = "" + stateService.getStateByAbbreviation(state).getId();
+        
+        List<DataSeries> profile = statsService.getStateBinData(stateId, 45);
+		List<DataSeries> national = statsService.getStateBinData(stateId, 21);
+		List<DataSeries> talent = statsService.getStateBinData(stateId, 20);
+		List<DataSeries> cost = statsService.getStateBinData(stateId, 37);
+		List<DataSeries> economy = statsService.getStateBinData(stateId, 29);
 		List<State> peers = stateService.getAllPeers();
 		
-        model.addAttribute("jv_stats_national", massNational);
-        model.addAttribute("jv_stats_talent", massTalent);
-        model.addAttribute("jv_stats_cost", massCost);
-        model.addAttribute("jv_stats_economy", massEconomy);
-        model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(4));
+        model.addAttribute("jv_stats_profile",profile );
+        model.addAttribute("jv_stats_national", national);
+        model.addAttribute("jv_stats_talent", talent);
+        model.addAttribute("jv_stats_cost", cost);
+        model.addAttribute("jv_stats_economy", economy);
+        model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
         
         model.addAttribute("jv_current_state", state);
         

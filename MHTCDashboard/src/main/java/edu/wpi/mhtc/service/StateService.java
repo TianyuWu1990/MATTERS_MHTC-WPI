@@ -14,5 +14,6 @@ public interface StateService{
     List<State> getAllStates();
     
     State getStateById(int id);
+    State getStateByAbbreviation(String abbreviation);
     
 }

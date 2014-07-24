@@ -22,6 +22,7 @@ public class StateServiceJDBC implements StateService
 	private JdbcProcedure<State> getTopTenStates;
 	private JdbcProcedure<State> getBottomTenStates;
 	private JdbcProcedure<State> getStateById;
+	private JdbcProcedure<State> getStateByAbbreviation;
 
 	@Autowired
 	public StateServiceJDBC(JdbcTemplate template)
@@ -41,6 +42,10 @@ public class StateServiceJDBC implements StateService
 
 		getStateById = new JdbcProcedure<State>(template).withSchemaName(MetricServiceJdbc.MHTC_SCHEMA)
 				.withProcedureName("getStateById").addDeclaredParameter(new SqlParameter("stateId", Types.INTEGER))
+				.addDeclaredRowMapper(new StateRowMapper());
+		
+		getStateByAbbreviation = new JdbcProcedure<State>(template).withSchemaName(MetricServiceJdbc.MHTC_SCHEMA)
+				.withProcedureName("getStateByAbbreviation").addDeclaredParameter(new SqlParameter("stateAbbreviation", Types.CHAR))
 				.addDeclaredRowMapper(new StateRowMapper());
 	}
 
@@ -72,6 +77,12 @@ public class StateServiceJDBC implements StateService
 	public State getStateById(int id)
 	{
 		return getStateById.createCall().withParam("stateId", id).call().get(0);
+	}
+
+	@Override
+	public State getStateByAbbreviation(String abbreviation)
+	{
+		return getStateByAbbreviation.createCall().withParam("stateAbbreviation", abbreviation).call().get(0);
 	}
 
 }

@@ -30,7 +30,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
  * @author Stokes
  * 
  */
-public class JdbcProcedure<T> {
+public class JdbcProcedure<T>
+{
 
 	private JdbcTemplate template;
 	private List<SqlParameter> declaredParams;
@@ -42,7 +43,8 @@ public class JdbcProcedure<T> {
 	 * Creates a new PSqlStringMappedJdbcCall using the given template for
 	 * queries.
 	 */
-	public JdbcProcedure(JdbcTemplate template) {
+	public JdbcProcedure(JdbcTemplate template)
+	{
 
 		this.template = template;
 
@@ -52,7 +54,8 @@ public class JdbcProcedure<T> {
 	/**
 	 * Sets name of the schema that contains the procedure to execute.
 	 */
-	public JdbcProcedure<T> withSchemaName(String schemaname) {
+	public JdbcProcedure<T> withSchemaName(String schemaname)
+	{
 		this.schemaName = schemaname;
 		return this;
 	}
@@ -60,7 +63,8 @@ public class JdbcProcedure<T> {
 	/**
 	 * Sets the name of the procedure to execute.
 	 */
-	public JdbcProcedure<T> withProcedureName(String procedurename) {
+	public JdbcProcedure<T> withProcedureName(String procedurename)
+	{
 		this.procedureName = procedurename;
 		return this;
 	}
@@ -69,7 +73,8 @@ public class JdbcProcedure<T> {
 	 * Adds an input parameter to the procedure.
 	 * 
 	 */
-	public JdbcProcedure<T> addDeclaredParameter(SqlParameter param) {
+	public JdbcProcedure<T> addDeclaredParameter(SqlParameter param)
+	{
 
 		declaredParams.add(param);
 
@@ -79,14 +84,16 @@ public class JdbcProcedure<T> {
 	/**
 	 * Adds a row mapper that is used to parse the results of the query.
 	 */
-	public JdbcProcedure<T> addDeclaredRowMapper(PSqlRowMapper<T> mapper) {
+	public JdbcProcedure<T> addDeclaredRowMapper(PSqlRowMapper<T> mapper)
+	{
 
 		this.mapper = mapper;
 
 		return this;
 	}
-	
-	public ProcedureCall<T> createCall() {
+
+	public ProcedureCall<T> createCall()
+	{
 		return new ProcedureCall<T>(this);
 	}
 
@@ -98,11 +105,13 @@ public class JdbcProcedure<T> {
 	 *            The values of the parameters
 	 * @return A list of T as mapped by the row mapper
 	 */
-	public List<T> execute(Map<String, Object> params) {
+	public List<T> execute(Map<String, Object> params)
+	{
 
 		List<T> returnValues = new LinkedList<T>();
-        
-        try {
+
+		try
+		{
 
 			String statement = buildQuery(params);
 
@@ -110,42 +119,52 @@ public class JdbcProcedure<T> {
 
 			// Get the column names out of the first row
 			int i = 0;
-			while (mapper != null && result.next()) {
+			while (mapper != null && result.next())
+			{
 				returnValues.add(mapper.mapRow(result, i));
 				i++;
 			}
+		} catch (InvalidResultSetAccessException e)
+		{
+			throw new RuntimeException("mapping SQL result set to object -- INVALID SET ACCESS", e);
+		} catch (SQLException e)
+		{
+			throw new RuntimeException("mapping SQL result set to object -- GENERAL SQL EXCEPTION", e);
 		}
-        catch (InvalidResultSetAccessException e)
-        {
-            throw new RuntimeException("mapping SQL result set to object -- INVALID SET ACCESS", e);
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException("mapping SQL result set to object -- GENERAL SQL EXCEPTION", e);  
-        }
-        return returnValues;
+		return returnValues;
 	}
 
-	private String buildQuery(Map<String, Object> params) {
+	private String buildQuery(Map<String, Object> params)
+	{
 		String statement = "SELECT * FROM ";
 		statement += schemaName + ".";
 		statement += procedureName + "(";
 
-		for (int i = 0; i < declaredParams.size(); i++) {
+		for (int i = 0; i < declaredParams.size(); i++)
+		{
 			statement += declaredParams.get(i).getName();
 			statement += " := ";
 
-			if (declaredParams.get(i).getSqlType() == Types.VARCHAR) {
-				statement += "'";
-				statement += params.get(declaredParams.get(i).getName());
-				statement += "'";
+			switch (declaredParams.get(i).getSqlType())
+			{
 
-			} else if (declaredParams.get(i).getSqlType() == Types.INTEGER
-					|| declaredParams.get(i).getSqlType() == Types.BOOLEAN) {
+			case Types.VARCHAR:
+			case Types.CHAR:
+				statement += "'";
 				statement += params.get(declaredParams.get(i).getName());
+				statement += "'";
+				break;
+			case Types.BOOLEAN:
+			case Types.INTEGER:
+				statement += params.get(declaredParams.get(i).getName());
+				break;
+			default:
+				throw new UnsupportedOperationException("JdbcProcedure does not support parameters of Sql Type code: "
+						+ declaredParams.get(i).getSqlType());
+
 			}
-
-			if (i < declaredParams.size()-1)
+			
+			if (i < declaredParams.size() - 1)
 				statement += ",";
 		}
 
