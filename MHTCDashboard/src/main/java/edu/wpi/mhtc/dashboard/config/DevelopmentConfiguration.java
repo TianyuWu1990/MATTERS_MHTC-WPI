@@ -16,9 +16,19 @@ public class DevelopmentConfiguration {
 		BasicDataSource dataSource = new BasicDataSource();
 	
 		dataSource.setDriverClassName("org.postgresql.Driver");
-		dataSource.setUrl("jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc-dev-2");
+		
+		/*dataSource.setUrl("jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc-dev");
 		dataSource.setUsername("server");
 		dataSource.setPassword("mhtcboxofducks");
+	    */
+/********************************************************/
+/** COnfigure your own local connection ***/
+/********************************************************/
+		
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/mhtc_local");
+		dataSource.setUsername("postgres");
+		dataSource.setPassword("12345");
+  		
 		return dataSource;
 	}
 }

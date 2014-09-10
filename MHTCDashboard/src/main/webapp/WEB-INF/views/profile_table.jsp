@@ -8,19 +8,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:forEach items="${data_values}" var="stat">
-  	<tr  onmouseover="as.setHeatMapOnHover(${fn:escapeXml(stat.metric.id)},${style_values},'#map',-1)"
-  	     onmouseout= "as.UnSetHeatMap(${style_values})">
-		<c:choose>
-			<c:when test="${stat.metric.tabbed}">
-				<td><ul>
-						<li ><c:out value="${stat.metric.name}"></c:out></li>
-					</ul></td>
-			</c:when>
-			<c:otherwise>
-				<td ><c:out value="${stat.metric.name}"></c:out></td>
-			</c:otherwise>
-		</c:choose>
-		<td >
+  	<tr onmouseover="as.setHeatMapOnHover(${fn:escapeXml(stat.metric.id)},${style_values},'#map',-1)"
+	    onmouseout= "as.UnSetHeatMap(${style_values})" ><td><c:out value="${stat.metric.name}"></c:out></td>
+  	
+		
+		<td>
 			<table class="table table-condensed" style="font-size: 13px;">
 				<tr  >
 					<td>Rank</td>

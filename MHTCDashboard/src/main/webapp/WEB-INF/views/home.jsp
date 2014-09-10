@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.GregorianCalendar"%>
 <html>
 <head>
  <link href="css/nv.d3.css" rel="stylesheet">
@@ -27,9 +29,9 @@
 </head>
 <body onLoad="loadFunction()">
 	<!-- a graph -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+		<div class="modal-dialog" >
+			<div class="modal-content" >
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
@@ -45,8 +47,8 @@
 					<h4 class="modal-title" id="graphTitle">State Science and Technology Graph</h4>
 					<h4 class="small" id="graphStates">Selected States: Massachusetts, California, Texas</h4>
 				</div>
-				<div class="modal-body" id="mbody">
-					<svg style="height: 150%;"></svg>
+				<div class="modal-body" id="mbody" style="background-color: rgb(25, 25, 112);">
+					<svg style="height: 150%;" ></svg>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -54,10 +56,42 @@
 			</div>
 		</div>
 	</div>
-
+	<!--US. MAP -->
+	<div class="modal fade" id="myModalHeatMap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+		<div class="modal-dialog" >
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<%/* <table><tr><td><select id="AllPeerTopBottomHeatMap" class="btn btn-primary btn-right">
+						<option value="0">All States</option>
+						<option value="1">Peer States</option>
+						<option value="2">Top Ten States</option>
+						<option value="3">Bottom Ten States</option>
+						
+					</select></td>
+					
+					<td>
+					</td></tr></table>*/%>
+					<select id="yearHeatMap" class="btn btn-primary btn-right"></select>
+					</select>
+					<h4 class="modal-title" id="graphTitleHeatMap">State Science and Technology U.S. Heatmap</h4>
+					<h4 class="modal-title" id="graphCatHeatMap"></h4>
+					<h4 class="modal-title" id="graphStatesHeatMapPos0">Selected States: All States</h4>
+					<h4 class="modal-title" id="graphStatesHeatMapPos1"  style="height:2%;"></h4>
+				</div>
+				<div class="modal-body" id="mbodyHeatMap" style="background-color: #A7A9A9; height:95%">
+					<svg style="width: 100%; height: 100%;" ></svg>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content" >
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">About The Massachusetts High Technology Council</h4>
@@ -147,12 +181,17 @@
 					<div id="mapTitle">Click to Select a State</div>
 				</h2>
 				<div id="map" style="width: 600px; height: 375px;"></div>
+				<ul class="nav">
+					<li id="multiplequeryTab" ><a href="#" onClick="as.toggleMultiSelect(76,-1);" data-toggle="tab"  >Multiple Selection</a></li>
+				</u>
 				<div id="legend" style="float: right">
-					<table id="normallegend">
+					<table>
 						<tr>
-							<td><div class="legendbox boxblue"></div></td>
+							<td><div class="legendbox boxblue" id="boxcolorpeerstates"></div></td>
 							<td>Peer State</td>
 						</tr>
+					</table>
+					<table id="normallegend">
 						<tr>
 							<td><div class="legendbox boxgreen"></div></td>
 							<td>Selected State</td>
@@ -160,10 +199,6 @@
 						
 					</table>
 					<table id="multilegend" class="hidden">
-						<tr>
-							<td><div class="legendbox boxblue"></div></td>
-							<td>Peer State</td>
-						</tr>
 						<tr>
 							<td><div class="legendbox boxgreen"></div></td>
 							<td>Selected State</td>
@@ -187,5 +222,6 @@
 	</div>
 	
 	<script src="js/load.js"></script>
+	
 </body>
 </html>

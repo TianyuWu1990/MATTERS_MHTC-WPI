@@ -13,20 +13,20 @@
 	/**
 	* Prototype definition for a single matric
 	*/
-	 Metric = function(id, binId, name, displayName, urlFrom, sourceName, 
-							type, trendType, parentId) {
+	 Metric = function(id, binId, binName, name, urlFrom, sourceName, 
+							type, trendType, tabbed) {
 	    this.id=id;
 	    this.binId=binId;
+	    this.binName=binName;
 	    this.name=name;
-	    this.displayName=displayName;
 		
 	    this.urlFrom=urlFrom;
 	    this.sourceName=sourceName;
 		
 	    this.type=type;
 	    this.trendType=trendType;
-	    
-		this.parentId=parentId;
+	    this.tabbed=tabbed;
+			
 	};
 
 	Metric.prototype.getName=function() {
@@ -40,9 +40,24 @@
 	Metric.prototype.getSourceName=function() {
 		return this.sourceName;
 	}
+
+	Metric.prototype.getBinName=function() {
+		return this.binName;
+	}
 	
 	Metric.prototype.getId=function() {
 	    return this.id;
+	}
+	
+	Metric.prototype.getTabbed=function() {
+	    return this.tabbed;
+	}
+	
+	Metric.prototype.getTabString=function() {
+	    if (this.tabbed)
+	        return "tabbed_metric";
+	    else
+	        return "";
 	}
 	
 	Metric.prototype.getType=function() {
@@ -60,14 +75,6 @@
 	Metric.prototype.toString=function() {
         return JSON.stringify(this);
     }
-	
-	Metric.prototype.getDisplayName=function() {
-		return this.displayName;
-	}
-	
-	Metric.prototype.getParentId=function() {
-		return this.parentId;
-	}
 	
 	
 	/**
@@ -87,9 +94,9 @@
 	* each matric is converted to a Metric object
 	*/
 	metrics = metrics.map(function(metric) {
-		return new Metric(metric.id, metric.binId, metric.name, 
-				metric.displayName, metric.urlFrom, metric.sourceName, 
-				metric.type, metric.trendType, metric.parentId); 
+		return new Metric(metric.id, metric.binId, metric.binName, 
+				metric.name, metric.urlFrom, metric.sourceName, 
+				metric.type, metric.trendType, metric.tabbed); 
 	});
 	
 
@@ -127,7 +134,7 @@
 			return each.name === name;
 		}));
 	};
-
+   
 	/**
 	 * Given a string that could be a name or id, returns a metric that matches
 	 * either.
