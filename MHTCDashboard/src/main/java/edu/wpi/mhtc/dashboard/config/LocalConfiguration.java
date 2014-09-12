@@ -20,9 +20,9 @@ public class LocalConfiguration {
 	
 		dataSource.setDriverClassName("org.postgresql.Driver");
 		
-		dataSource.setUrl("jdbc:postgresql://localhost:5432/mhtc");
-		dataSource.setUsername("dev");
-		dataSource.setPassword("password");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/mhtc_local");
+		dataSource.setUsername("long");
+		dataSource.setPassword("123");
 	
 		return dataSource;
 	}
