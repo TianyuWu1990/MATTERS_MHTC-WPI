@@ -32,6 +32,7 @@ public class MetricController {
     @RequestMapping(value = "/data/metrics/all", method = RequestMethod.GET)
     public @ResponseBody
     List<Metric> allMetricsEndpoint() {
-        return service.getAllVisibleMetrics();
+        //return service.getAllVisibleMetrics();
+    	return service.getAllMetrics();
     }
 }
