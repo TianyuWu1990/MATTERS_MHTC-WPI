@@ -14,9 +14,13 @@ import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
 public class DataPipeline {
 
 	public static void run(File file, String catID) throws Exception{
-		FileInfo fileInfo = new FileInfo(file);
-		fileInfo.setCatId(catID);
-		IParser parser = ParserFactory.getInstance(fileInfo);
+		
+		UnifiedDatasource source = new UnifiedDatasource(file, catID);
+	
+		IParser parser = ParserFactory.getInstance(source);
+		
+		
+		
 		FileData fileData = parser.parseAll();
 		
 		Iterator<LineData> iter = fileData.getLineDataList().iterator();

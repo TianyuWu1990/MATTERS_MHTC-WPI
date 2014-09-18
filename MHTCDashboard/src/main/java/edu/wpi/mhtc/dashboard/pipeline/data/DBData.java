@@ -41,22 +41,46 @@ public class DBData {
 	private void doMetricMapping() throws Exception{
 	    CatInfo catInfo;
 	    if (lineData.getFileInfo().isUnified()) {
+	    	
 	        Map<String, String> metricMap = new HashMap<String, String>();
 	        for (String metric : lineData.getMap().keySet()) {
-	            metricMap.put(metric, metric);
+	            
+	        	
+	        	
+//	       CK- What is this for? mapping metrics to themselves? 
+//	       It is passed to catInfo, but nothing in call hierarchy accesses this element
+	        	metricMap.put(metric, metric);
 	        }
 	        
 	        catInfo = new CatInfo(lineData.getFileInfo().getCatId(), "", lineData.getFileInfo().getFileName(), metricMap);
-	    } else {
+	    } 
+	    else {
 	        catInfo = CatInfoConfig.getInstance().getCatInfo(lineData.getFileInfo());
 	    }
 	    
-		Map<String, String> metricInfo = DBLoader.getMetricInfo(catInfo.getCatID());
-		for(Entry<String, String> entry : metricInfo.entrySet()){
-			String metricName = entry.getKey();
-			String metricID = entry.getValue();
+		Map<String, String> categoryMetrics = DBLoader.getMetricInfo(catInfo.getCatID()); //metrics associated with this category
+		
+		if(categoryMetrics.isEmpty()){  
+			System.out.println("there are no metrics associated with this category");
+			return;
+		}
+		for(Entry<String, String> metric : categoryMetrics.entrySet()){
+			String metricName = metric.getKey();
+			String metricID = metric.getValue();
+			
 			String colName = catInfo.getColumnNameByMetricName(metricName);
+
+			if (colName == null) {
+
+				System.out.println("The column name " + metricName
+						+ " was not found in in this line.");
+				break;
+			}
+			
 			String metricVal = lineData.getValueFromColumnName(colName);
+			
+			
+			
 			this.map.put(metricID, metricVal);
 		}
 	}

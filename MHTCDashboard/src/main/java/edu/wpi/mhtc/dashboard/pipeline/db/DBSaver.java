@@ -14,7 +14,9 @@ public class DBSaver {
 	 * save line data into DB
 	 */
 	public static boolean saveLineData(DBData dbData) throws SQLException {
+		
 		if(!isDBDataValid(dbData)){
+			System.out.println("Data is not valid");
 			return false;
 		}
 		int year = Integer.parseInt(dbData.getYear());
@@ -28,7 +30,10 @@ public class DBSaver {
 			int metricID = Integer.parseInt(entry.getKey());
 			
 			if(entry.getKey() == null || entry.getValue() == null){
-				continue;
+				
+				System.out.println("there is nothing in this map - dbData.getMap() \n Data never made it here");
+				return false;
+//				continue; this is a bad trap
 			}
 			float metricValue = Float.parseFloat(entry.getValue());
 
