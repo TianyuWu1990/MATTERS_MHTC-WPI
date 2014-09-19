@@ -35,6 +35,7 @@ import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.service.MetricService;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
 @Controller
@@ -52,7 +53,10 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(Locale locale, Model model) {
+    public String admin(Locale locale, Model model) throws Exception {
+        Map<String, String> categories = DBLoader.getCategoryInfo();
+        
+        model.addAttribute("categories", categories);
         
         return "admin_tool";
     }
