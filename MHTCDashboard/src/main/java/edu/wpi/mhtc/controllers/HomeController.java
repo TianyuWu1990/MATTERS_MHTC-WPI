@@ -81,7 +81,8 @@ public class HomeController {
         Logger logger = LoggerFactory.getLogger(this.getClass());
         logger.info("New state requested: " + state);
 
-        String stateId = "" + stateService.getStateByAbbreviation(state).getId();
+       // String stateId = "" + stateService.getStateByAbbreviation(state).getId();
+        String stateId=state;
         
         List<DataSeries> profile = statsService.getStateBinData(stateId, 45);
 		List<DataSeries> national = statsService.getStateBinData(stateId, 21);

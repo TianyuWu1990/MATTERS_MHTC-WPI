@@ -32,7 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
-import edu.wpi.mhtc.persistence.JdbcProcedure;
+import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
+//import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.service.MetricService;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
@@ -132,7 +133,7 @@ public class AdminController {
     
     
     private int getCatId(String catname) {
-        JdbcProcedure<Integer> call = new JdbcProcedure<Integer>(template).withSchemaName(
+    	PSqlStringMappedJdbcCall <Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
                 "mhtc_sch").withProcedureName("getcategorybyname");
 
         call.addDeclaredRowMapper(new PSqlRowMapper<Integer>() {
