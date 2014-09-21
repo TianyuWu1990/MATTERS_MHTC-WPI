@@ -17,6 +17,8 @@ var AS= (function($) {
 		this.defaultStateMultimodeColor="orange";
 		this.ordered_states_metrics=[];
 		this.current_tab_style="#profiletab a";
+		this.selected_multiple_metrics=[]; /********Array where multiple metrics selected are stored*********/
+		this.selected_multiple_years=[];/********Array where multiple years selected are stored*********/
     }
 
       AppState.prototype.selectState = function(state) {
@@ -145,7 +147,22 @@ var AS= (function($) {
 	    });
 	     
 	}
-    
+    /*
+     * Gets the array of year in which the metric appears. 
+     */
+    AppState.prototype.getYearsMetric=function(multiData){
+    	var array_years=[];
+		var k=0;
+		for(var i=0; i<multiData.length; i++){
+			for(var j=0; j<multiData[i][0].dataPoints.length; j++){
+				if(array_years.indexOf(multiData[i][0].dataPoints[j].year) < 0){
+					array_years[k]=multiData[i][0].dataPoints[j].year;
+					k++;
+				}
+			}
+		}
+		return array_years;
+    };
     /*
      * This function generates Heat Map 
      * Input: Metric ID and Base Color for heat map
@@ -165,7 +182,7 @@ var AS= (function($) {
         			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
         			/*******************************************************************************/
         			
-        			var array_years=[];
+        			/*var array_years=[];
         			var k=0;
         			for(var i=0; i<multiData.length; i++){
         				for(var j=0; j<multiData[i][0].dataPoints.length; j++){
@@ -174,7 +191,14 @@ var AS= (function($) {
         						k++;
         					}
         				}
-        			}	
+        			}*/
+        			 /*var selplaybutton = $("#playbutton");
+        			 selplaybutton.empty();
+        			 selplaybutton.append('<div class="btn btn-info" id="#playbuttonanimation">Play</div>');
+        			  */    			
+						
+					
+        			var array_years=as.getYearsMetric(multiData);
         			var sel = $("#yearHeatMap");
         			sel.empty();
         			var size_tam=array_years.length-1;
@@ -182,7 +206,7 @@ var AS= (function($) {
         				//sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
         			}*/
         			
-        			array_years.sort(function(a,b){return b - a}) 
+        			array_years.sort(function(a,b){return b - a}); 
         			for(var k=0; k<array_years.length; k++){
         				if(year_in!=array_years[k])   				 
         					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
@@ -249,25 +273,22 @@ var AS= (function($) {
     		          'showLabels' : false,
     		         
     		          'mouseover': function(event, data){
-    		        	  var found = $.map(as.ordered_states_metrics, function(val,i) {
-    		        		  var indexcounter;
-    		        		  var percentage="";
-    		        		  var return_value_element;
-    		        		  if(val.state_element == States.getStateByAbbreviation(data.name).abbr){
-    		        			  if(as.ordered_states_metrics[0].binName_element!='National')
-    		        				  indexcounter=i+1;
-    		        			  else
-    		        				  indexcounter=as.ordered_states_metrics.length-i;
-    		        			  if(val.value_element==0.0){
-		        			    	  return "No value for this state";  
-		        			      }
-		        			      else{
-		        			    	  if(as.ordered_states_metrics[0].metricType=="percentage"){
-	    		        				  return_value_element=val.value_element*100;
-	    		        				  return_value_element= Math.round(return_value_element*100)/100+"%";
-	    		        				 
-	
-	    		        			  }
+    		        	  	  			var found = $.map(as.ordered_states_metrics, function(val,i) {
+    		        	  	  			var indexcounter;
+    		        	  	  			var percentage="";
+    		        	  	  			var return_value_element;
+    		        	  	  			if(val.state_element == States.getStateByAbbreviation(data.name).abbr){
+    		        	  	  				if(as.ordered_states_metrics[0].binName_element!='National')
+    		        	  	  					indexcounter=i+1;
+    		        	  	  				else
+    		        	  	  					indexcounter=as.ordered_states_metrics.length-i;
+    		        	  	  				if(val.value_element==0.0){
+    		        	  	  					return "No value for this state";  
+    		        	  	  				}else{
+    		        	  	  					if(as.ordered_states_metrics[0].metricType=="percentage"){
+    		        	  	  						return_value_element=val.value_element*100;
+    		        	  	  						return_value_element= Math.round(return_value_element*100)/100+"%";
+    		        	  	  				}
 	    		        				 
 	    		        			  else{
 	    		        				  return_value_element=Math.round( val.value_element*100)/100;
@@ -302,21 +323,71 @@ var AS= (function($) {
         });
        
     	   
-    }
+    };
+/* AppState.prototype.getYearMultipleSelect=function(selectedOptions){
+	 var sel=$("yearmultiplemetric");
+	 sel.empty();
+	 var j=0;
+	 this.selected_multiple_years=[];
+	 for(var i=0; i<selectedOptions.length; i++){
+		 if(selectedOptions[i].selected){
+			 this.selected_multiple_years[j]=selectedOptions[i].value;
+			 j++;
+		 }
+	 }
+ };  */
  AppState.prototype.getMetricMultipleSelect=function(selectedOptions){
 	 var sel = $("#selectedmultiplemetrics");
      sel.empty();
-     //sel.append('<table>');
-     
+     this.selected_multiple_metrics=[];
+     var j=0;
 	 for (var i=0; i<selectedOptions.length;i++){
 		 if(selectedOptions[i].selected)
+			 {
 			 sel.append('<option value="' + selectedOptions[i].value + '">' + Metrics.getMetricByID(selectedOptions[i].value).getName() + '</option>');
 			 //sel.append('<tr><td valign="top" align="left">'+Metrics.getMetricByID(selectedOptions[i].value).getName() +'</td></tr>');
-		 
+			 this.selected_multiple_metrics[j]=selectedOptions[i].value;
+			 j++;
+			 }
 	 }
 	// sel.append('<table>');
 	 
- }
+ };
+AppState.prototype.startPlayer=function(ind,style_in, tag_id,  starttop){
+	this.current_tab_style=style_in;
+	var baseColor=colorToHex(getStyleRuleValue('background-color',style_in));
+	var selected_states= States.getAllstates().map(function(s) {
+		return s.abbr;
+	});
+ 	var query = DQ.create().addState(selected_states).addMetric(Metrics.getMetricByID(76).getName());
+    query.execute(function(multiData) {
+    	setTimeout(function() {//start
+    		
+    		var array_years=as.getYearsMetric(multiData);
+    		var size_tam=array_years.length;
+    		if(size_tam>0){
+    			array_years.sort(function(a,b){return a - b;});
+    			var current_year_in=0;
+    			var j=0;
+    			while(j<5){
+    				current_year_in=array_years[0];
+    				for(var i=0; i<size_tam;i++){
+    					current_year_in=array_years[i];
+    					setTimeout(function(){
+    						as.SetHeatMap(76,"#3d8af4", "#mbodyHeatMap",current_year_in);
+    					}, 2500);
+    					j++;
+    				}
+    				
+    			}
+    		}
+    		
+    	});//end
+    });
+    		
+	
+	
+}; 
 /**
  * 
  * @param ind Metric id
@@ -554,7 +625,12 @@ AppState.prototype.set_initializer=function(title_prefix_in, this_graph_in ) {
 	   
 	}
 
-
+ AppState.prototype.showMultipleMetricsStatesYears = function(year_in) {
+	    this.set_initializer("Compare to Selected: ",this.showMultipleMetricsStatesYears);
+	     cm.showMultipleMetricsStatesYears(this.selected,this.selected_multiple_metrics,year_in);
+	    
+		   
+		}
  /*
   * This function calls the chart module for displaying the graph type for TOP TEN states for the current Metric.
   * Input: Metric ID
@@ -759,7 +835,8 @@ AppState.prototype.changeColorModalWindow=function(tag_id,color_in){
 	
 }
 /* 
- * This Function changes the color of all peer states once a tab is clicked.
+ * This Function changes the color of all peer states once a tab is clicked. 
+ * It also changes the background color of all modal windows
  */ 
 AppState.prototype.changeColorPeerStates = function(style){
 	/*this.selected =States.getPeers().map(function(s){
@@ -779,7 +856,7 @@ AppState.prototype.changeColorPeerStates = function(style){
 	modalcontentidstyle=modalcontentidstyle+" tbody > tr:hover > td";
 	var newColorModalWindow= getStyleRuleValue('background-color',modalcontentidstyle);
 	this.changeColorModalWindow('mbody',newColor);
-	
+	this.changeColorModalWindow('mbodyMultipleQuery',newColor);
 	/**var divModalWindow=document.getElementById('mbody'); 
 	divModalWindow.style.backgroundColor =newColor;
 	divModalWindow.style.borderWidth ="1px";**/

@@ -47,7 +47,7 @@
 					<h4 class="modal-title" id="graphTitle">State Science and Technology Graph</h4>
 					<h4 class="small" id="graphStates">Selected States: Massachusetts, California, Texas</h4>
 				</div>
-				<div class="modal-body" id="mbody" style="background-color: rgb(25, 25, 112);">
+				<div class="modal-body" id="mbody" style="background-color: rgb(61, 38, 244);">
 					<svg style="height: 150%;" ></svg>
 				</div>
 				<div class="modal-footer">
@@ -56,6 +56,27 @@
 			</div>
 		</div>
 	</div>
+	<!-- Multiple metric, multiple states, multiple year query -->
+	
+	<div class="modal fade" id="myModalMultipleQuery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+		<div class="modal-dialog" >
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<select id="yearsMultipleQuery" class="btn btn-primary btn-right"></select>			
+					<h4 class="modal-title" id="graphTitleMultipleQuery">State Science and Technology Graph</h4>
+					<%/** <h4 class="small" id="graphStatesMultipleQuery">Selected States: Massachusetts, California, Texas</h4> */%>
+				</div>
+				<div class="modal-body" id="mbodyMultipleQuery" style="background-color: rgb(61, 38, 244);">
+					<svg style="height: 150%;" ></svg>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<!--US. MAP -->
 	<div class="modal fade" id="myModalHeatMap" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 		<div class="modal-dialog" >
@@ -72,14 +93,39 @@
 					
 					<td>
 					</td></tr></table>*/%>
-					<select id="yearHeatMap" class="btn btn-primary btn-right"></select>
-					</select>
-					<h4 class="modal-title" id="graphTitleHeatMap">State Science and Technology U.S. Heatmap</h4>
-					<h4 class="modal-title" id="graphCatHeatMap"></h4>
-					<h4 class="modal-title" id="graphStatesHeatMapPos0">Selected States: All States</h4>
-					<h4 class="modal-title" id="graphStatesHeatMapPos1"  style="height:2%;"></h4>
+					 <table style="width:100%; height: 13%;">
+					 	<tr>
+					 		<td valign="top" align="left">
+					 			<table><tr><td>
+				 					<h4 class="modal-title" id="graphTitleHeatMap">State Science and Technology U.S. Heatmap</h4>
+									<h4 class="modal-title" id="graphCatHeatMap"></h4>
+									<h4 class="modal-title" id="graphStatesHeatMapPos0">Selected States: All States</h4>
+									<h4 class="modal-title" id="graphStatesHeatMapPos1"  style="height:2%;"></h4>
+								</td></tr></table>
+							</td>
+							<td  valign="top" align="right">
+								<table>
+									<tr>
+										<td></td>
+										<td valign="top" align="right">
+											<select id="yearHeatMap" class="btn btn-primary btn-right"></select>
+										</td>
+									</tr>
+									<%/*<tr>
+										<td  valign="top" align="left">
+											<div class="btn btn-info" id="playbuttonanimation">Play</div>
+								            
+										</td>
+										<td valign="top" align="right">
+										<div class="btn btn-info" id="stopbuttonanimation">Stop</div></td>
+									</tr>*/%>
+								</table>
+							</td> 
+						</tr>
+						
+					</table>
 				</div>
-				<div class="modal-body" id="mbodyHeatMap" style="background-color: #A7A9A9; height:95%">
+				<div class="modal-body" id="mbodyHeatMap" style="background-color: #A7A9A9; height:100%">
 					<svg style="width: 100%; height: 100%;" ></svg>
 				</div>
 				<div class="modal-footer">

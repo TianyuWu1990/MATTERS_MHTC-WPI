@@ -99,7 +99,7 @@
 				metric.type, metric.trendType, metric.tabbed); 
 	});
 	
-
+	
 
 	/**
 	* helper method to return a single metric object, instead of an array
@@ -125,7 +125,18 @@
 			return each.id == id;
 		}));
 	};
-
+	
+	publicInterface.arrayGetMetricByID = function(id) {
+		var array_return;
+		var i=0;
+		return metrics.filter(function(each) {
+			if(each.id == id){
+				array_return[i]=id;
+				i++;
+			}
+			return array_return;	
+		});
+	};
 	/**
 	 * Gets a metric with the given name from the list of cached metrics.
 	 */

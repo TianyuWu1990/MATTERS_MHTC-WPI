@@ -204,5 +204,19 @@ loadFunction = function() {
 		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', this.value);
 		
 	});
+	$( "#playbuttonanimation" ).click(function() {
+		$("#yearHeatMap").prop('disabled', true);
+		
+		$("#stopbuttonanimation").prop('disabled', false); 
+        as.startPlayer(as.currentind,as.current_tab_style, '#mbodyHeatMap',  true);
+	});
+	$( "#stopbuttonanimation" ).click(function() {
+		$("#yearHeatMap").prop('disabled', false);
+		
+        alert( "The animation has ended" );
+	});
+	$("#yearsMultipleQuery").change(function(){
+		as.showMultipleMetricsStatesYears(this.value);
+	});
 	
 };

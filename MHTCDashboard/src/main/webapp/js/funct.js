@@ -10,7 +10,7 @@ $( document ).ready(function() {
 			as.getMetricMultipleSelect(this.options);
 	
 	 });
-	 $("#yearmultiplemetric").change(function(){
-		///alert("YEAR: "+this.value);
-	});
+	/* $("#yearmultiplemetric").change(function(){
+		 as.getYearMultipleSelect(this.options);
+	});*/
   });

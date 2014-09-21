@@ -46,6 +46,15 @@ var DQ = (function($){
         return this;
     };
     
+    Query.prototype.addMultipleMetrics = function(metric) {
+    	for(var i=0; i<metric.length;i++){
+    		if ($.inArray(metric, this.metric[i]) === -1) {
+                this.metrics.push(metric[i]);
+            }
+    	}
+        
+        return this;
+    };
     /**
      * 
      * @param callback

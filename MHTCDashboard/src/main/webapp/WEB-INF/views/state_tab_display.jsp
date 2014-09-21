@@ -160,7 +160,7 @@
 		<td>
 			<div class="btn-group" data-toggle="buttons">
 				<table class="table" align="center">
-					<c:forEach items="${jv_peer_states}" var="stat">
+					<c:forEach items="${jv_all_states}" var="stat">
 						<tr>
 							<c:forEach items="${stat.row}" var="row">
 								<c:choose>
@@ -204,21 +204,17 @@
 	<tr>
 		<td valign="top" nowrap="true" align="left">
 			<table>
-				<tr>
-					<td valign="top" nowrap="true" align="left">
-						<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">Select All States</button>
-						<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect All States</button>
-					</td>
-					
-					
 				
-				</tr>
 				
 			</table></td>
-			<td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td>
+			<td valign="top" nowrap="true" align="right">	<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">Select States</button>
+					</td>
 			<td valign="top" nowrap="true" align="right">
-				<button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="as.showMultiGraphOnSelected()">Compare</button>
-			</td>
+						<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect States</button>
+					</td>
+			<%/*<td valign="top" nowrap="true" align="right">
+				<button data-toggle="modal" data-target="#myModalMultipleQuery" class="btn btn-info" onClick="as.showMultipleMetricsStatesYears(-1)">Compare</button>
+			</td> */%>
 	</tr>
 	<tr>
 		<td valign="top" nowrap="true" align="left">		
@@ -246,7 +242,7 @@
 				</table>
 			</div>
 		</td>
-		<td>&nbsp;&nbsp;</td>
+		
 		<td valign="top" align="left">
 			<div >
 			<table>
@@ -257,33 +253,41 @@
 			</table>
 			</div>
 		</td>
-		<td>&nbsp;&nbsp;</td>
+		
 		<td valign="top" align="left">
 			<table>
-				<tr>
+				<% /**<tr>
 					<td valign="top" nowrap="true" align="left">Select year</td>
 				</tr>
-				<tr>
+				 <tr>
 					<td valign="top" nowrap="true" align="left">
 					<select  id='yearmultiplemetric' name="yearmultiplemetric" multiple="multiple" size="10" style='width:70px;'>
+					*/%>
 						<%
-						GregorianCalendar cal = new GregorianCalendar();
+						/* GregorianCalendar cal = new GregorianCalendar();
 						int current_year=cal.get(Calendar.YEAR);
 						int bottom_year=cal.get(Calendar.YEAR)-20;
 						for(int i=current_year;i>=bottom_year;i--){
-							%><option value="<%=i %>"><%=i %></option><%
+							if(i==current_year){
+											
+							}else{
+										
+							}
 								
 						}
-						%>
+						*/ %>
 						
 					
-					</select>
+					<% /*</select>
 					</td>
-				</tr>
+				</tr>*/%>
 				
-				<% /**<tr>
-					<td valign="middle" nowrap="true" align="left"><button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="as.showMultiGraphOnSelected()">Compare</button></td>
-				</tr> */%>
+				<tr><td><br /><br /><br /><br /><br /><br /><br /><br /><br /></td></tr>
+				<tr>
+					<td valign="top" nowrap="true" align="right">
+						<button data-toggle="modal" data-target="#myModalMultipleQuery" class="btn btn-info" onClick="as.showMultipleMetricsStatesYears(-1)">Compare</button>
+					</td>	
+				</tr> 
 			</table>
 		</td>
 		</tr>

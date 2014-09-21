@@ -12,7 +12,10 @@ var CM = (function($) {
 		this.current_graph = 'line'; 
 		this.current_graph_function = null; 
 		this.graph_title_prefix = ''; 
-
+		this.multiDataMultipleQuery=[];/**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
+		this.kcounter;/**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
+		this.kcounterexecute;/**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
+		this.year_selected; /**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
 	    $("#graph_toggle").click(function(e) {
 	       if (cm.current_graph == 'line') {
 	           cm.current_graph = 'bar';
@@ -24,7 +27,150 @@ var CM = (function($) {
 	       cm.showMultiGraph(as.selected);
 	   });	   
 	};
-	
+	/*********************************************************************************************/
+	/**************GET ONLY THE POSSIBLE YEARS ACCORDING TO THE METRICS SELECTED ****************/
+	/*********************************************************************************************/					
+	Chart.prototype.getMultipleYearsMetricState = function(states,multiDataMultipleQuery) {
+		var array_years=[];
+		var k=0;
+		for(var j=0; j<states.length; j++){
+			for(var i=0;i<multiDataMultipleQuery.length;i++){
+				for(var w=0;w<multiDataMultipleQuery[i][j][0].dataPoints.length; w++){
+					if(array_years.indexOf(multiDataMultipleQuery[i][j][0].dataPoints[w].year) < 0){
+						array_years[k]=multiDataMultipleQuery[i][j][0].dataPoints[w].year;
+						k++;
+					}
+				}
+			}
+		}
+		return array_years;
+	};
+
+	Chart.prototype.showMultipleMetricsStatesYears = function(states,selected_multiple_metrics,year_in) {
+		var query;
+		this.year_selected=year_in;
+		$("#mbodyMultipleQuery > *").remove();
+		//document.getElementById("graphStatesMultipleQuery").innerHTML = states.join(", ");
+		
+		$("#mbodyMultipleQuery").append("<table id='myTable' class='table table-condensed' style='font-size: 13px; background-color:#fff'></table>");
+		var table=$("#mbodyMultipleQuery table");
+		if(selected_multiple_metrics.length>0){
+			
+			if(selected_multiple_metrics.length==1){ /*Similar to the one we had**/
+				$("#yearsMultipleQuery").addClass("hidden");
+				query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[0]).getName());
+				document.getElementById("graphTitleMultipleQuery").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(selected_multiple_metrics[0]).getName();
+				
+				query.execute(function(multiData) {
+			        setTimeout(function() {
+			        	
+		                var row="<th>&nbsp;</th>";
+		                row = row + multiData[0][0].dataPoints.map(function(d) {
+		                    return "<th>"+d["year"] + "</th>";
+		                }).join("");
+		                row = "<tr>" +row +"</tr>";
+		                table.append(row);
+		                var data = new Array();
+		                for (var i = 0; i < multiData.length; i++) {
+		                        row = "<th>" + multiData[i][0].state.name + "</th>" ;
+		                    row = row + multiData[i][0].dataPoints.map(function(d) {
+		                        return "<td>" +  d["value"] + "</td>";
+		                    }).join("");
+		                    row = "<tr>" +row +"</tr>";
+			                table.append(row);
+		                }
+			        }, 500);
+				});
+			}else{
+				/*var d = new Date();
+			    var current_year = d.getFullYear();
+			    var first_year =current_year-10;*/
+				
+				document.getElementById("graphTitleMultipleQuery").innerHTML = this.graph_title_prefix + "Multiple metrics selected";
+					this.kcounterexecute=0;
+					this.multiDataMultipleQuery=[];
+					for(this.kcounter=0; this.kcounter<selected_multiple_metrics.length;this.kcounter++){
+						query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[this.kcounter]).getName());
+						
+						query.execute(function(multiData) {
+							cm.multiDataMultipleQuery[cm.kcounterexecute]=multiData;
+							cm.kcounterexecute++;
+						});
+					}
+					
+					setTimeout(function() {	
+						
+						
+						var array_years=cm.getMultipleYearsMetricState(states,cm.multiDataMultipleQuery);
+					    $("#yearsMultipleQuery").removeClass("hidden");
+					    var sel = $("#yearsMultipleQuery");
+		    			sel.empty();
+		    			array_years.sort(function(a,b){return b - a;}); 
+		    			if(cm.year_selected==-1)
+		    				cm.year_selected=array_years[0];
+		    			for(var k=0; k<array_years.length; k++){
+		    				
+		    				if(array_years[k]==cm.year_selected)
+		    					sel.append('<option value="' + array_years[k] + '" selected>' + array_years[k] + '</option>');
+		    				else
+		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
+		    			}
+						
+						var row="<th>&nbsp;</th>";
+						for(cm.kcounter=0;cm.kcounter<cm.multiDataMultipleQuery.length;cm.kcounter++){
+							row = row + "<th>"+cm.multiDataMultipleQuery[cm.kcounter][0][0].metric.name+"</th>";
+						}
+						row = "<tr>" +row +"</tr>"; 
+						table.append(row);
+						
+						var data = new Array();
+						var current_state="-1";
+						var band;
+						for(var j=0; j<states.length; j++){
+							if(current_state!=states[j]){
+								current_state=states[j];
+								band=false;
+							}
+							
+							for(cm.kcounterexecute=0;cm.kcounterexecute<cm.multiDataMultipleQuery.length;cm.kcounterexecute++){
+								
+								for(var w=0;w<cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints.length; w++){
+									
+									if(cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints[w].year==cm.year_selected){
+										if(!band){
+											row = "<th>" + cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].state.name + "</th>";
+											band=true;
+										}
+											
+										row = row +"<td>"+cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints[w].value+"</td>";
+										
+									}
+									
+								}
+								
+									
+							}
+							if(band){ 
+								row = "<tr>" +row +"</tr>";
+								table.append(row);
+							}
+						}
+						
+						
+					}, 500);
+				
+				
+				
+			}	
+				
+				
+					
+		}else{
+			var row="<tr><td valign='top' align='center'>Select at least one metric<td></tr>";
+			table.append(row);
+		}
+			
+	};
 	/**
 	 * This function display the different types of chart (line,bar or table) for selected state/s and metric.
 	 */
@@ -63,12 +209,7 @@ var CM = (function($) {
 
 		    
 	    	
-	    }/*else if (this.current_graph == "heatmap") {
-	    	   
-	    	   $("#mbody > *").remove();
-			   $('#mbody').usmap();
-			   $("#mbody").usmap('changeStateColor', "MA", "FFFFFF");
-		   }*/else{
+	    }else{
 	    	
 	    	$("#mbody > *").remove();
 	    	if($("#mbody svg").length==0){
