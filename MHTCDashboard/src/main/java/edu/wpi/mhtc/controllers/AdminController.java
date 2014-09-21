@@ -108,7 +108,7 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file) {
+    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) {
         String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
         if (!file.isEmpty()) {
             try {
