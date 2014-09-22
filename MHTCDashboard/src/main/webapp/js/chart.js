@@ -141,10 +141,12 @@ var CM = (function($) {
 											row = "<th>" + cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].state.name + "</th>";
 											band=true;
 										}
-											
-										row = row +"<td>"+cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints[w].value+"</td>";
-										
+										if(cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints[w].value!=null)	
+											row = row +"<td>"+cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints[w].value+"</td>";
+										else
+											row = row +"<td>NV</td>";
 									}
+									
 									
 								}
 								

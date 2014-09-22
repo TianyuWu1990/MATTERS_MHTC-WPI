@@ -1,4 +1,4 @@
- 
+ var global_timer = null;
 // Hack that gets called when clicking on a button or when scrolling the div, flips the dropdown if it will make it display better
 adjustDropDown = function(e) {
     setTimeout(function() {
@@ -179,15 +179,29 @@ getNewColor=function(hexcolor,value,highest){
 	}*/
 	
 	return thecolor;		
-}  
+};  
 
- 
+animateHeatMap=function(){
+	var array_years=[2013,2012,2011];
+	for (var i=0; i<array_years.length; i++) {
+		//console.log("YEAR "+array_years[i]);
+		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', array_years[i]);
+		
+	  }
+
+}; 
+stopHeatMapAnimation=function() {
+	if (!global_timer) return false;
+	  	clearInterval(global_timer);
+	global_timer = null;
+};
 // new loadfunction to be called from body-onload
 loadFunction = function() {
 	//$('#map').usmap({});
 	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
 	$("div.tab-pane").scroll(adjustDropDown);
-
+	$("#selectallmultiplemetric").addClass("hidden");
+	$("#unselectallmultiplemetric").addClass("hidden");
 	cm=CM.create();
 	as=AS.create();
 	//cm.loadFunction();
@@ -202,18 +216,21 @@ loadFunction = function() {
 		});
 	$("#yearHeatMap").change(function(){
 		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', this.value);
-		
 	});
 	$( "#playbuttonanimation" ).click(function() {
-		$("#yearHeatMap").prop('disabled', true);
+		///$("#yearHeatMap").prop('disabled', true);
 		
 		$("#stopbuttonanimation").prop('disabled', false); 
-        as.startPlayer(as.currentind,as.current_tab_style, '#mbodyHeatMap',  true);
+		if (!global_timer)
+			global_timer = setInterval(animateHeatMap,4500);
+
+		
+		//as.startPlayer(as.currentind,as.current_tab_style, '#mbodyHeatMap',  true);
 	});
 	$( "#stopbuttonanimation" ).click(function() {
 		$("#yearHeatMap").prop('disabled', false);
-		
-        alert( "The animation has ended" );
+		stopHeatMapAnimation();
+        //alert( "The animation has ended" );
 	});
 	$("#yearsMultipleQuery").change(function(){
 		as.showMultipleMetricsStatesYears(this.value);

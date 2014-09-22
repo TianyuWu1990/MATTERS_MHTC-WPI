@@ -205,13 +205,19 @@ var AS= (function($) {
         			/*if(year_in!=-1){
         				//sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
         			}*/
-        			
+        			console.log("outside "+year_in);
         			array_years.sort(function(a,b){return b - a}); 
         			for(var k=0; k<array_years.length; k++){
-        				if(year_in!=array_years[k])   				 
+        				if(year_in!=array_years[k]){
+        					console.log("array_years "+array_years[k]);
         					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
-        				else
+        				}   				 
+        					
+        				else{
+        					console.log("year_in "+year_in);
         					sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
+        				}
+        					
         			}
         			/*******************************************************************************/
         			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
@@ -739,11 +745,15 @@ AppState.prototype.toggleMultiSelect = function(ind,option ) {
 		
 		$("#multiplequeryTab").addClass("hidden");
 		$("#multiplequeryTabDisappear").removeClass("hidden");
-		
+		$("#selectallmultiplemetric").removeClass("hidden");
+		$("#unselectallmultiplemetric").removeClass("hidden");
 		
 	}else{
 		tagoption="#multiSelecter";
 		$("#multiplequeryTab").addClass("hidden");
+		$("#selectallmultiplemetric").addClass("hidden");
+		$("#unselectallmultiplemetric").addClass("hidden");
+		
 	}
 	
     $(tagoption).toggle("slide", {
@@ -763,6 +773,8 @@ AppState.prototype.toggleMultiSelect = function(ind,option ) {
     	$("#selectallmultiplemetric").prop('disabled', true); 
     	$("#unselectallmultiplemetric").prop('disabled', true);
     	$("#multiplequeryTab").removeClass("hidden");
+    	$("#selectallmultiplemetric").addClass("hidden");
+		$("#unselectallmultiplemetric").addClass("hidden");
     	}
     else
     	{

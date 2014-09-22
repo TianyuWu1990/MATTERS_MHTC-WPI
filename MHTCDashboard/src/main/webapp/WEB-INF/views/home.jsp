@@ -111,7 +111,7 @@
 											<select id="yearHeatMap" class="btn btn-primary btn-right"></select>
 										</td>
 									</tr>
-									<%/*<tr>
+									<% /* <tr>
 										<td  valign="top" align="left">
 											<div class="btn btn-info" id="playbuttonanimation">Play</div>
 								            
@@ -222,14 +222,27 @@
 				
 			</div>
 			<div class="col-md-5">
+				<table><tr><td align="right">
+				<button class="btn btn-info" id="multiplequeryTab"  onClick="as.toggleMultiSelect(76,-1);">
+					 Multiple Selection
+					
+				</button>
 				
+				</td>
+				<td valign="top" nowrap="true" align="right">	
+					<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">Select States</button>
+				</td>
+			    <td valign="top" nowrap="true" align="right">
+					<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect States</button>
+				</td>
+				</tr></table>
 				<h2 class="text-center">
 					<div id="mapTitle">Click to Select a State</div>
 				</h2>
 				<div id="map" style="width: 600px; height: 375px;"></div>
-				<ul class="nav">
+				<% /*<ul class="nav">
 					<li id="multiplequeryTab" ><a href="#" onClick="as.toggleMultiSelect(76,-1);" data-toggle="tab"  >Multiple Selection</a></li>
-				</u>
+				</u> */ %>
 				<div id="legend" style="float: right">
 					<table>
 						<tr>

@@ -207,11 +207,11 @@
 				
 				
 			</table></td>
-			<td valign="top" nowrap="true" align="right">	<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">Select States</button>
+			<%/*<td valign="top" nowrap="true" align="right">	<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">Select States</button>
 					</td>
 			<td valign="top" nowrap="true" align="right">
 						<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect States</button>
-					</td>
+					</td> */%>
 			<%/*<td valign="top" nowrap="true" align="right">
 				<button data-toggle="modal" data-target="#myModalMultipleQuery" class="btn btn-info" onClick="as.showMultipleMetricsStatesYears(-1)">Compare</button>
 			</td> */%>
