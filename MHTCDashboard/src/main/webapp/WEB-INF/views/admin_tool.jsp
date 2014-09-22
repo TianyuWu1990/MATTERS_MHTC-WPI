@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 
 <html>
@@ -17,7 +18,8 @@
         <script src="js/functions.js"></script>
     </head>
     <body>
-        <div id="top-div" class="outer-div"><label class="title">Administrator's Page</label></div>
+        <div id="top-div" class="outer-div"><label class="title">Administrator's Page</label>
+        <a href="<c:url value="j_spring_security_logout"/>" class="ui-button" style="float:right"> Logout</a></div>
         <div id="mainDiv" class="outer-div">
             <div id="toolbar-div">
                 <a id="addNewCategBtn" href="#" class="ui-button">Add New Category</a>
@@ -25,7 +27,7 @@
                 |
                 <a id="addNewMetricBtn" href="#" class="ui-button">Add New Metric</a>
                 <div id="btnDiv">
-                	<form method="POST" enctype="multipart/form-data" action="admin/upload/add">
+                	<form method="POST" enctype="multipart/form-data" action="upload/add/">
 						<input type="file" name="file" ><br /> 
 						<!--<input type="text" name="name" class="hidden">!-->
 						<input type="submit" value="Upload"> Press here to upload the file!

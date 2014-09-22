@@ -7,22 +7,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import edu.wpi.mhtc.model.Data.Metrics;
-import edu.wpi.mhtc.service.MetricsService;
+import edu.wpi.mhtc.model.Data.Metric;
+import edu.wpi.mhtc.service.MetricService;
 
 @Component
 public class MetricMapper
 {
-	private List<DBMetric> metrics;
+	private List<Metric> metrics;
 
 	@Autowired
-	public MetricMapper(MetricsService service)
+	public MetricMapper(MetricService service)
 	{
-		Metrics metrics = service.getAvailible();
-		if (metrics != null)
-		{
-			this.metrics = metrics.getMetrics();
-		}
+		metrics = service.getAllMetrics();
 	}
 
 	/**
@@ -30,10 +26,10 @@ public class MetricMapper
 	 * 
 	 * @return The matching metric or null if nothing found
 	 */
-	public DBMetric getMetricByID(int id)
+	public Metric getMetricByID(int id)
 	{
 
-		for (DBMetric metric : metrics)
+		for (Metric metric : metrics)
 		{
 			if (metric.getId() == id)
 			{
@@ -49,10 +45,10 @@ public class MetricMapper
 	 * 
 	 * @return The matching metric or null if nothing found
 	 */
-	public DBMetric getMetricByName(String name)
+	public Metric getMetricByName(String name)
 	{
 
-		for (DBMetric metric : metrics)
+		for (Metric metric : metrics)
 		{
 			if (metric.getName().equals(name))
 			{
@@ -68,9 +64,9 @@ public class MetricMapper
 	 * 
 	 * @return The matching metric or null if nothing found
 	 */
-	public DBMetric getMetricFromString(String metric)
+	public Metric getMetricFromString(String metric)
 	{
-		DBMetric dbMetric = this.getMetricByName(metric);
+	    Metric dbMetric = this.getMetricByName(metric);
 		if (dbMetric == null)
 			try {
 				dbMetric = this.getMetricByID(Integer.parseInt(metric));
@@ -83,7 +79,7 @@ public class MetricMapper
 	/**
 	 * Returns an unmodifiable list of all metrics in the mapper
 	 */
-	public List<DBMetric> getAll()
+	public List<Metric> getAll()
 	{
 		return Collections.unmodifiableList(metrics);
 	}
@@ -92,10 +88,10 @@ public class MetricMapper
 	 * Returns a list of all metrics in a specific bin
 	 * @param id The id of the bin to search for
 	 */
-	public List<DBMetric> getAllInBin(int id)
+	public List<Metric> getAllInBin(int id)
 	{
-		List<DBMetric> binMetrics = new LinkedList<DBMetric>();
-		for (DBMetric metric : metrics)
+		List<Metric> binMetrics = new LinkedList<Metric>();
+		for (Metric metric : metrics)
 		{
 			if (metric.getBinId() == id)
 				binMetrics.add(metric);
