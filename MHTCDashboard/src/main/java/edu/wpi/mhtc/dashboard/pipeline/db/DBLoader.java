@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,6 +50,7 @@ public class DBLoader {
 	 * key is the metric name, value is the metric ID
 	 */
 	public static Map<String, String> getMetricInfo(String catID) throws Exception{
+		
 		HashMap<String, String> table = new HashMap<String, String>();
 		Connection conn = DBConnector.getInstance().getConn();
 		
@@ -70,4 +72,104 @@ public class DBLoader {
 		}
 		return table;
 	}
+	
+//	added by ck, called by category ID
+	/*
+	 * key is the metric name, value is the metric ID
+	 */
+	public static Map<String, String> getMetricInfo(int catID) throws Exception{
+		
+		HashMap<String, String> table = new HashMap<String, String>();
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		//String sql = "select * from mhtc_sch.getMetrics(5,FALSE)";
+		String sql = "select * from mhtc_sch.getMetrics(?, FALSE)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setInt(1, catID); // set parameter 1 catID
+		ResultSet rs = pstatement.executeQuery();
+		
+		try {	
+			while (rs.next()) {
+				String metricID = rs.getString("Id").toLowerCase();
+				String metricName = rs.getString("Name").toLowerCase();
+				table.put(metricName, metricID);
+            }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return table;
+	}
+	
+	
+	
+	
+
+	public static int getCategoryId(String categoryName) throws Exception{
+		
+		Connection conn = DBConnector.getInstance().getConn();
+		String sql = "select * from mhtc_sch.getcategorybyname(?)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, categoryName); 
+		ResultSet rs = pstatement.executeQuery();
+		
+		if(!rs.next()){
+			throw new Exception("No ID found in DB for category "+categoryName);
+		}
+		
+		else
+			return Integer.parseInt(rs.getString("Id"));
+		
+	}
+	
+//	check for category before calling!!	
+//	If this method passed a category name that is already present in the db
+//	it will insert a duplicate with a different id
+
+	public static boolean insertNewCategory(String name, String parentID, String source) throws Exception{
+		
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "select * from mhtc_sch.insertcategory(?,?,?)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, name); 
+		
+		if(parentID == null){
+			pstatement.setNull(2, Types.INTEGER);
+		}
+		else
+			pstatement.setInt(2, Integer.parseInt(parentID));
+		pstatement.setString(3, source); 
+		ResultSet rs = pstatement.executeQuery();
+		
+		rs.next();
+		
+		if (Integer.parseInt(rs.getString("insertcategory")) == 1)
+				return true;
+		else 
+			return false;
+	}
+	
+	
+	 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

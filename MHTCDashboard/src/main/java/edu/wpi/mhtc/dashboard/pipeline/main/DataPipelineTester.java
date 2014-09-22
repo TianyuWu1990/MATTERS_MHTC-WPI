@@ -1,7 +1,8 @@
 package edu.wpi.mhtc.dashboard.pipeline.main;
 
 import java.io.File;
-import java.sql.SQLException;
+
+import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
 public class DataPipelineTester {
 
@@ -13,23 +14,61 @@ public class DataPipelineTester {
 	public static void main(String[] args){
 		
 		
-		try {
-			
-			DataPipeline.run(inputFile, "" + categoryName);
-		} 
 		
-		catch (SQLException e) {
+//		to test db method get category id by name
+//		try{
+//			int i = DBLoader.getCategoryId("NoWayThisIsInDB");
+//			System.out.println("Id for category is "+i);
+//			System.out.println("Id for category should not be found");
+//		}
+//		catch(Exception e){
+//			System.out.println("No Category Id found");
+//		}
+//		try{
+//			int i = DBLoader.getCategoryId("Population");
+//			System.out.println("Id for category is "+i);
+//			System.out.println("Id for category should be 8");
+//		}
+//		catch(Exception e){
+//			System.out.println("No Category Id found");
+//		}
+		
+		
+		try{
+			boolean b = DBLoader.insertNewCategory("TestCategoryFromPipeline", null, "testing.com");
+			System.out.println("Insert returned "+b);
 			
-			System.out.println("DBSaver.saveLineData threw sql exception" + e.getMessage());
+			int i = DBLoader.getCategoryId("TestCategoryFromPipeline");
+			System.out.println("Get Id returned "+i);
 			
-			e.printStackTrace();
-		}
-		catch (Exception e) {
 			
-			System.out.println("Something weird happened" + e.getMessage());
-			e.printStackTrace();
 		}
 		
+		
+		catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+//		
+//		
+//		
+//		
+//		try {
+//			
+//			DataPipeline.run(inputFile, "" + categoryName);
+//		} 
+//		
+//		catch (SQLException e) {
+//			
+//			System.out.println("DBSaver.saveLineData threw sql exception" + e.getMessage());
+//			
+//			e.printStackTrace();
+//		}
+//		catch (Exception e) {
+//			
+//			System.out.println("Something weird happened" + e.getMessage());
+//			e.printStackTrace();
+//		}
+//		
 		
 	}
 	
