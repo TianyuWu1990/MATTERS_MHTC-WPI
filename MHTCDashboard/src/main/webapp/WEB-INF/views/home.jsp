@@ -230,9 +230,12 @@
 				
 				</td>
 				<td valign="top" nowrap="true" align="right">	
-					<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">Select States</button>
+					<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">All States</button>
 				</td>
-			    <td valign="top" nowrap="true" align="right">
+				  <td valign="top" nowrap="true" align="right">&nbsp;
+					<button class="btn btn-info" onClick="as.SelectPeerStates()" id="selectpeerstates" disabled="true">Peer States</button>
+				</td>
+			    <td valign="top" nowrap="true" align="right">&nbsp;
 					<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect States</button>
 				</td>
 				</tr></table>

@@ -557,7 +557,7 @@ AppState.prototype.checkIfAllStatesChecked=function(){
 		$("#unselectall").prop("disabled", true);
 		$("#selectallmultiplemetric").prop("disabled",false);
 		$("#unselectallmultiplemetric").prop("disabled", true);
-		
+		$("#selectpeerstates").prop("disabled",false);
 		
 	}
 	else if(counter_unselected==0){/** If all states are selected then the SELECTALL button gets blocked and the UNSELECTALL gets unblocked**/
@@ -565,11 +565,14 @@ AppState.prototype.checkIfAllStatesChecked=function(){
 		$("#unselectall").prop("disabled", false);
 		$("#selectallmultiplemetric").prop("disabled",true);
 		$("#unselectallmultiplemetric").prop("disabled", false);
+		$("#selectpeerstates").prop("disabled",false);
+		
 	}else{ /** some states have been selected, therefore both buttons may appear**/
 		$("#selectall").prop("disabled",false);
 		$("#unselectall").prop("disabled",false);
 		$("#selectallmultiplemetric").prop("disabled",false);
 		$("#unselectallmultiplemetric").prop("disabled",false);
+		$("#selectpeerstates").prop("disabled",false);
 	}
 	
 }
@@ -698,12 +701,30 @@ AppState.prototype.showMultiGraphOnPeers = function(ind) {
 	   
 	   cm.showMultiGraph(this.selected);
 	    
+	};
+AppState.prototype.SelectPeerStates=function(){
+	var indexState;
+	this.SelectUnSelectAllTabs(4);
+	var selected_states=States.getPeers().map(function(s){
+		return s.abbr; 
+	});
+    for(var i=0; i<selected_states.length;i++){
+    	this.clickCallback(selected_states[i]);
 	}
+    $("#selectallmultiplemetric").prop("disabled",false);
+	$("#unselectallmultiplemetric").prop("disabled", false);
+	$("#selectpeerstates").prop("disabled",true);		
+		
+};
+
+ 	
  AppState.prototype.SelectUnSelectAllTabs=function(type_in){
 	 var indexState;
 	 var selected_states=States.getAllstates().map(function(s){
-		return s.abbr; 
+				return s.abbr; 
 	 });
+	
+	 
 	 
 	 for(var i=0; i<selected_states.length;i++){
 			if(selected_states[i]!='US'){
@@ -725,14 +746,17 @@ AppState.prototype.showMultiGraphOnPeers = function(ind) {
 		 		break;
 	 	case 3: $("#selectallmultiplemetric").prop("disabled",true);
 				$("#unselectallmultiplemetric").prop("disabled", false);
+				$("#selectpeerstates").prop("disabled",false);
 				break;
 	    case 4: $("#selectallmultiplemetric").prop("disabled",false);
  				$("#unselectallmultiplemetric").prop("disabled", true);
+ 				$("#selectpeerstates").prop("disabled",false);
  				break;
+	  
 	 		
 	 }
 	
- }
+ };
   /*
   * This function aids in changing color on selecting multiple states on US map and state buttons and resets to original on exit. 
   */ 
@@ -747,6 +771,8 @@ AppState.prototype.toggleMultiSelect = function(ind,option ) {
 		$("#multiplequeryTabDisappear").removeClass("hidden");
 		$("#selectallmultiplemetric").removeClass("hidden");
 		$("#unselectallmultiplemetric").removeClass("hidden");
+		$("#selectpeerstates").removeClass("hidden");
+			
 		
 	}else{
 		tagoption="#multiSelecter";
@@ -772,9 +798,12 @@ AppState.prototype.toggleMultiSelect = function(ind,option ) {
     	$("#unselectall").prop('disabled', true);
     	$("#selectallmultiplemetric").prop('disabled', true); 
     	$("#unselectallmultiplemetric").prop('disabled', true);
+    	$("#selectpeerstates").prop("disabled",true);
     	$("#multiplequeryTab").removeClass("hidden");
     	$("#selectallmultiplemetric").addClass("hidden");
 		$("#unselectallmultiplemetric").addClass("hidden");
+		$("#selectpeerstates").addClass("hidden");
+		
     	}
     else
     	{
@@ -783,6 +812,7 @@ AppState.prototype.toggleMultiSelect = function(ind,option ) {
     		as.changeColor(as.stateAbbr, as.defaultStateMultimodeColor); 
     		$("#selectall").prop('disabled', false);
     		$("#selectallmultiplemetric").prop('disabled', false); 
+    		$("#selectpeerstates").prop('disabled', false); 
     		}, 1500);
     	
     	}

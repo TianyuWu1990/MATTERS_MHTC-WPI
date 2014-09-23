@@ -202,6 +202,7 @@ loadFunction = function() {
 	$("div.tab-pane").scroll(adjustDropDown);
 	$("#selectallmultiplemetric").addClass("hidden");
 	$("#unselectallmultiplemetric").addClass("hidden");
+	$("#selectpeerstates").addClass("hidden");
 	cm=CM.create();
 	as=AS.create();
 	//cm.loadFunction();

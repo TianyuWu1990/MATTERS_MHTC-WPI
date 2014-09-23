@@ -190,6 +190,113 @@
 		</tr>
 	</table>
 </div>
+<%/*****************************************************************************/ %>
+<div id="multiSelecterMetricStateCopy"  style="position: relative; left: 0px; top: 0px; display: none;" > 
+<div id="sidebar" class="col-md-12">
+
+<ul class="nav nav-tabs">
+    <li id="profileTab"><a href="#profile" data-toggle="tab"  >State Profile</a></li>
+	<li id="nationalTab"><a href="#national" data-toggle="tab" >National Rankings</a></li>
+	<li id="talentTab"><a href="#talent" data-toggle="tab" >Talent Metrics</a></li>
+	<li id="costTab"><a href="#cost" data-toggle="tab">Cost Metrics</a></li>
+	<li id="economyTab"><a href="#economy" data-toggle="tab" >Economy Metrics</a></li>
+	
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content" >
+    
+    <div class="tab-pane fade" id="profile">
+		<table class="table table-hover" style="font-size: 13px;" >
+			<thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="Profile-tbody">
+			    <c:set var="style_values" scope="session" value="'#profiletab a'"/>
+			    
+				<c:set var="data_values" scope="session" value="${jv_stats_profile}" />
+				<c:import url="profile_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+		</table>
+	</div>
+   
+	<div class="tab-pane fade" id="national">
+		<table class="table table-hover" style="font-size: 13px;">
+			<thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="National-tbody" >
+			    <c:set var="style_values" scope="session" value="'#nationaltab a'"/>
+				<c:set var="data_values" scope="session" value="${jv_stats_national}" />
+				<c:import url="rank_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+		</table>
+	</div>
+	<div class="tab-pane fade" id="talent">
+		<table class="table table-hover" style="font-size: 13px;">
+			 <thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="Talent-tbody" >
+			    <c:set var="style_values" scope="session" value="'#talenttab a'"/>
+				<c:set var="data_values" scope="session" value="${jv_stats_talent}" />
+				<c:import url="rank_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+			
+		</table>
+	</div>
+	<div class="tab-pane fade" id="cost">
+		<table class="table table-hover" style="font-size: 13px;">
+			<thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="Cost-tbody" >
+			    <c:set var="style_values" scope="session" value="'#costtab a'"/>
+				<c:set var="data_values" scope="session" value="${jv_stats_cost}" />
+				<c:import url="rank_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+			
+		</table>
+	</div>
+	<div class="tab-pane fade" id="economy">
+		<table class="table table-hover" style="font-size: 13px;" >
+			<thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="Economy-tbody" >
+			    <c:set var="style_values" scope="session" value="'#economytab a'"/>
+				<c:set var="data_values" scope="session" value="${jv_stats_economy}" />
+				<c:import url="rank_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+			
+		</table>
+	</div>
+	
+</div>
+</div>
+</div>
+<%/*****************************************************************************/ %>
+
 
 <div id="multiSelecterMetricState" style="position: relative; left: 0px; top: 0px; display: none;" class="col-md-12">
 <p class="lead">
