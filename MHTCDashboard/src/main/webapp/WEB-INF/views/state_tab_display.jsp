@@ -202,7 +202,6 @@
 	<li id="economyTab"><a href="#economy" data-toggle="tab" >Economy Metrics</a></li>
 	
 </ul>
-
 <!-- Tab panes -->
 <div class="tab-content" >
     
