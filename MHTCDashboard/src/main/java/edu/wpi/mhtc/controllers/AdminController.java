@@ -30,12 +30,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import edu.wpi.mhtc.model.Data.Metric;
-import edu.wpi.mhtc.persistence.PSqlRowMapper;
-import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
-//import edu.wpi.mhtc.persistence.JdbcProcedure;
-import edu.wpi.mhtc.service.MetricService;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
+import edu.wpi.mhtc.model.Data.Metric;
+import edu.wpi.mhtc.persistence.JdbcProcedure;
+import edu.wpi.mhtc.persistence.PSqlRowMapper;
+import edu.wpi.mhtc.service.MetricService;
 
 @Controller
 public class AdminController {
@@ -116,7 +115,11 @@ public class AdminController {
                 
                 BufferedReader br = new BufferedReader(new FileReader(name));
                 String category = br.readLine().split(",")[0];
+                
+                System.out.println("\nCategory ="+category);
                 br.close();
+//                
+////                System.out.println("Next Error Message is here");
                 
                 DataPipeline.run(new File(name), "" + getCatId(category));
                 
@@ -133,7 +136,7 @@ public class AdminController {
     
     
     private int getCatId(String catname) {
-    	PSqlStringMappedJdbcCall <Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
+        JdbcProcedure<Integer> call = new JdbcProcedure<Integer>(template).withSchemaName(
                 "mhtc_sch").withProcedureName("getcategorybyname");
 
         call.addDeclaredRowMapper(new PSqlRowMapper<Integer>() {
@@ -150,9 +153,9 @@ public class AdminController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("inname", catname);
 
-        // TODO temp while testing
+        // TODO create new category if one does not exist
         return 2;
-        //return call.execute(params).get(0);
+//        return call.execute(params).get(0);
     }
     
 }

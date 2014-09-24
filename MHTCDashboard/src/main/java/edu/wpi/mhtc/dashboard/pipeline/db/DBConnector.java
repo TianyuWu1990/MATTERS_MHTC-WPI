@@ -2,13 +2,21 @@ package edu.wpi.mhtc.dashboard.pipeline.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import edu.wpi.mhtc.dashboard.pipeline.data.DBData;
 
 public class DBConnector {
 
 	private static DBConnector dbConnector;
-	private String url = "jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc";
-	private String user = "dev";
-	private String password = "password";
+	private String url = "jdbc:postgresql://127.0.0.1:5432/mhtc_local";
+	private String user = "postgres";
+	private String password = "12345";
 	private Connection conn = null;
 
 	private DBConnector() {
@@ -19,6 +27,7 @@ public class DBConnector {
 			e.printStackTrace();
 		}
 	}
+
 
 	public static DBConnector getInstance() {
 		if (dbConnector == null) {
@@ -37,5 +46,6 @@ public class DBConnector {
 	public void setConn(Connection conn) {
 		this.conn = conn;
 	}
+	
 
 }
