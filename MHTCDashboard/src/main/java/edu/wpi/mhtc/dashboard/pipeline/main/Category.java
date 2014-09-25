@@ -8,6 +8,8 @@ public class Category {
 	
 	private String name;
 	private int id;
+	
+//	key is the metric name, value is the metric ID
 	private Map<String, String> metrics;
 	
 	
@@ -18,7 +20,6 @@ public class Category {
 		this.name = name;
 		id = DBLoader.getCategoryId(name);
 		metrics = DBLoader.getMetricInfo(id); 
-		
 	}
 	
 	public int getId(){
@@ -27,10 +28,6 @@ public class Category {
 	
 	public String getName(){
 		return name;
-	}
-
-	public Map<String, String> getMetrics(){
-		return metrics;
 	}
 	
 	
@@ -41,6 +38,11 @@ public class Category {
 //		it will insert a duplicate with a different id
 
 		return DBLoader.insertNewCategory(name, parentID, source);
+	}
+
+	
+	public int getMetricID(String name) {
+		return Integer.parseInt(metrics.get(name));
 	}
 	
 }

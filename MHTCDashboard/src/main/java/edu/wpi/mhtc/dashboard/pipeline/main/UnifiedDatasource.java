@@ -13,7 +13,7 @@ public class UnifiedDatasource {
 	private FileType fileType = FileType.xlsx;
 	private ParserType parserType = ParserType.excel;
 	private LoadInfo loadInfo;	  //not sure what this is for?
-	private Category category;	  //set by user in admin panel, passes as arg to constructor
+	private String categoryName;	//set by user in admin panel, passes as arg to constructor
 
 	
 	
@@ -24,11 +24,12 @@ public class UnifiedDatasource {
 //	TODO: handle creating new category in the db
 	public UnifiedDatasource(File file, String categoryName) throws Exception{
 		this.file = file;
-		this.category = new Category(categoryName);
+		this.categoryName = categoryName;
 	}
 	
-	
-	
+	public String getCategoryName(){
+		return categoryName;
+	}
 	
 	/*
 	 * setters and getters
@@ -60,9 +61,6 @@ public class UnifiedDatasource {
 		return true;
 	}
 	
-	public int getCatId() {
-	    return category.getId();
-	}
 	
 //	not sure if this is needed?
 //	public void setCategory(Category category){

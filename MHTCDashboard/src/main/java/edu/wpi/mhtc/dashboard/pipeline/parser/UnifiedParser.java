@@ -1,38 +1,37 @@
 package edu.wpi.mhtc.dashboard.pipeline.parser;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
 import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.dashboard.pipeline.main.Category;
 import edu.wpi.mhtc.dashboard.pipeline.main.Line;
 import edu.wpi.mhtc.dashboard.pipeline.main.UnifiedDatasource;
 
 public class UnifiedParser implements IParser {
 	
+	private Category category;
 	private ArrayList<String> columnNames;
 	private ArrayList<Line> lines;
 	private XSSFWorkbook workbook;
 	private int startRow;
 	private int endRow;
 
-	public UnifiedParser(UnifiedDatasource unifiedSource) throws InvalidFormatException, IOException {
+//	exception comes from category creation
+	public UnifiedParser(UnifiedDatasource source) throws Exception {
 		
 		this.columnNames = new ArrayList<String>();
 		this.lines = new ArrayList<Line>();
-		this.workbook = (XSSFWorkbook) WorkbookFactory.create(unifiedSource.getFile());
+		this.workbook = (XSSFWorkbook) WorkbookFactory.create(source.getFile());
+		this.category = new Category(source.getCategoryName());
 		this.getStartAndEndRow();
 		
 	}
@@ -45,7 +44,8 @@ public class UnifiedParser implements IParser {
 			this.endRow = sheet.getLastRowNum() + 1;
 
 	}
-
+	
+//	could have a check that column names match metrics for this category here
 	@Override
 	public List<String> getColumnNames() {
 		if (this.columnNames.isEmpty()) {
@@ -80,67 +80,72 @@ public class UnifiedParser implements IParser {
 
 		for (int i = 0; i < this.workbook.getNumberOfSheets(); i++) {
 			Sheet sheet = this.workbook.getSheetAt(i);
+			
+			Line line = null;
 			for (int j = this.startRow; j < this.endRow; j++) {
 				
 				Row row = sheet.getRow(j);
-				Line line;
 				Cell cell;
+				
 				if (containsData(row)){
-
+					
 					line = new Line();
 					for (int k = row.getFirstCellNum(); k < row.getLastCellNum(); k++) {
 						cell = row.getCell(k);
-						String columnName = columnNames.get(k);
-						if (cell == null) {
-							line.put(columnName, "NULL");
-						} 
-						else {
-							switch (cell.getCellType()) {
+						if (cell != null){
 							
-							case Cell.CELL_TYPE_NUMERIC:
-								double value = cell.getNumericCellValue();
-								if (value % 1 == 0) {
-									line.put(columnName,
-											Integer.toString((int) value));
-								} else {
-									line.put(columnName, Double.toString(value));
+							String columnName = columnNames.get(k);
+							
+							if(columnName.equalsIgnoreCase("year")){
+								if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
+									line.setYear(String.valueOf((int) cell.getNumericCellValue()));
 								}
-
-								break;
-							case Cell.CELL_TYPE_STRING:
-								line.put(columnName, cell.getStringCellValue());
-								break;
+								else if (cell.getCellType() == Cell.CELL_TYPE_STRING){
+									line.setYear(cell.getStringCellValue());
+								}
+							}
+							
+							else if(columnName.equalsIgnoreCase("state") && (cell.getCellType() == Cell.CELL_TYPE_STRING)){
+								line.setState(cell.getStringCellValue());
+							}
+							
+							else{
+								int id = category.getMetricID(columnName);
+								Float value = null;
+								switch (cell.getCellType()) {
 								
-//								ck-shouldn't this be 'null' not blank? what does blank mean?
-							case Cell.CELL_TYPE_BLANK:
-								line.put(columnName, "BLANK");
-								break;
-								
-//								ck -added check for boolean
-							case Cell.CELL_TYPE_BOOLEAN:
-								line.put(columnName, String.valueOf(cell.getBooleanCellValue()));
-								
-							case Cell.CELL_TYPE_ERROR:
-								line.put(columnName,
-										Byte.toString(cell.getErrorCellValue()));
-								break;
-							default:
-								break;
+								case Cell.CELL_TYPE_NUMERIC:
+									value = (float) cell.getNumericCellValue();
+									break;
+									
+								case Cell.CELL_TYPE_STRING:
+									value = Float.parseFloat(cell.getStringCellValue());
+									break;
+								case Cell.CELL_TYPE_BOOLEAN:
+//									TODO: not sure what values boolean metrics have in db, if they are ever stored
+//									value =
+									break;
+								default:
+									break;
+								}
+								if(value != null)
+									line.addMetric(columnName, id, value);
 							}
 						}
-					}
-					lines.add(line);
+					} 
+					if(line.isValid())
+						lines.add(line);
 				}
 			}
 		}
 	}
+				
+		
+	
 
 
 
-	@Override
-	public Iterator<LineData> iterator() {
-		return new ExcelIterator();
-	}
+
 	
 	public Iterator<Line> getLineIterator(){
 		return lines.iterator();
@@ -162,114 +167,22 @@ public class UnifiedParser implements IParser {
 			return false;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
-	private class ExcelIterator implements Iterator<LineData> {
-
-		private List<String> columnNames;
-		private Workbook workbook;
-		private FileInfo fileInfo;
-		private int startRow;
-		private int endRow;
-		private int currentRow;
-
-//		public ExcelIterator() {
-//			this.fileInfo = ExcelParser.this.fileInfo;
-//			this.columnNames = ExcelParser.this.getColumnNames();
-//			this.init();
-//		}
-
-		@Override
-		public boolean hasNext() {
-			return (this.currentRow <= this.endRow);
-		}
-
-		@Override
-		public LineData next() {
-			Sheet sheet = this.workbook.getSheetAt(0);
-			Row row = sheet.getRow(this.currentRow - 1);
-			Cell cell = null;
-			HashMap<String, String> map = new HashMap<String, String>();
-			for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++) {
-				cell = row.getCell(i);
-				String rowName = this.columnNames.get(i);
-				if (cell == null) {
-					map.put(rowName, "NULL");
-				} else {
-					switch (cell.getCellType()) {
-					case 0:
-						map.put(rowName,
-								Double.toString(cell.getNumericCellValue()));
-						break;
-					case 1:
-						map.put(rowName, cell.getStringCellValue());
-						break;
-					case 3:
-						map.put(rowName, "BLANK");
-						break;
-					case 5:
-						map.put(rowName,
-								Byte.toString(cell.getErrorCellValue()));
-						break;
-					default:
-						break;
-					}
-				}
-			}
-			this.currentRow++;
-			return new LineData(map, this.fileInfo);
-		}
-
-		@Override
-		public void remove() {
-		}
-
-		
-		
-		
-//		private void init() {
-//			try {
-//				if (ExcelParser.this.fileInfo.getFileType() == FileType.xlsx) {
-//					this.workbook = (XSSFWorkbook) WorkbookFactory
-//							.create(new File(ExcelParser.this.fileInfo
-//									.getFileName()));
-//				}
-//				if (ExcelParser.this.fileInfo.getFileType() == FileType.xls) {
-//					this.workbook = WorkbookFactory.create(new File(
-//							ExcelParser.this.fileInfo.getFileName()));
-//				}
-//			} catch (InvalidFormatException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			this.getStartAndEndRow();
-//			this.currentRow = this.startRow;
-//			if (this.columnNames.isEmpty()) {
-//				Sheet sheet = this.workbook.getSheetAt(0);
-//				Row row = sheet.getRow(this.startRow - 1);
-//				Cell cell = null;
-//				for (int i = row.getFirstCellNum(); i < row.getLastCellNum(); i++) {
-//					cell = row.getCell(i);
-//					if (cell.getCellType() == 1) {
-//						this.columnNames.add(cell.getStringCellValue()
-//								.toLowerCase());
-//					}
-//				}
-//			}
-//			this.currentRow = this.startRow + 1;
-//		}
-
-
-
+	@Override
+	public Iterator<LineData> iterator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
 
 }
