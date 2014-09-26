@@ -31,7 +31,7 @@ public class UnifiedParser implements IParser {
 		this.columnNames = new ArrayList<String>();
 		this.lines = new ArrayList<Line>();
 		this.workbook = (XSSFWorkbook) WorkbookFactory.create(source.getFile());
-		this.category = new Category(source.getCategoryName());
+		this.category = new Category(source.getCategoryID());
 		this.getStartAndEndRow();
 		
 	}

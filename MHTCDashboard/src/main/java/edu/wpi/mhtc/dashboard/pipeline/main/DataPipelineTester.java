@@ -7,9 +7,10 @@ import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
 public class DataPipelineTester {
 
-	static File inputFile = new File("TestUnifiedFile.xlsx"); //local test excel file
-	static String categoryName = "Testing Category Name"; //this is supplied by the user through the admin panel
-	static String metricName = "testing metric name"; //for testing
+	static File inputFile = new File("TestFile3.xlsx"); //local test excel file
+//	static String categoryName = "Testing Category Name"; //this is supplied by the user through the admin panel
+	static int catID = 46;
+	static String metricName = "test metric 1"; //for testing
 	
 	
 	public static void main(String[] args){
@@ -23,13 +24,13 @@ public class DataPipelineTester {
 //			boolean categoryAdded = DBLoader.insertNewCategory(categoryName, null, "testing.com");
 //			System.out.println("Insert returned "+categoryAdded);
 //			
-			categoryID = DBLoader.getCategoryId(categoryName);
+//			categoryID = DBLoader.getCategoryId(categoryName);
 //			System.out.println("Get Id returned "+categoryID);
 //			
 //			boolean metricAdded = DBLoader.insertNewMetric(metricName, false, categoryID, "numeric" );
 //			System.out.println("Insert returned "+metricAdded);
 			
-			Map<String, String> metric = DBLoader.getMetricInfo(categoryID);
+			Map<String, String> metric = DBLoader.getMetricInfo(catID);
 			metricID = Integer.parseInt(metric.get(metricName));
 			System.out.println("Get metricID returned "+metricID);	
 		}
@@ -42,7 +43,7 @@ public class DataPipelineTester {
 		
 		try {
 			
-//			DataPipeline.run(inputFile, categoryName);
+			DataPipeline.run(inputFile, String.valueOf(catID));
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

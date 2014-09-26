@@ -18,7 +18,7 @@ public class DBSaver {
 	public static void saveLine(Line line) throws SQLException {
 		
 		Connection conn = DBConnector.getInstance().getConn();
-		String sql = "insert into mhtc_sch.statistics values(?, ?, ?, ?) ";
+		String sql = "insert into mhtc_sch.statistics values(?, ?, ?, ?) on duplicate  ";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
 		pstatement.setInt(2, line.getMetricID()); // set parameter 2 (ID)
