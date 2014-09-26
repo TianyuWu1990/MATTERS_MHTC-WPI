@@ -37,7 +37,8 @@ public class StatsController {
 	public @ResponseBody
 	List<Metric> availableEndpoint(Model model) {
 
-		return metricService.getAllVisibleMetrics();
+		//return metricService.getAllVisibleMetrics();
+		return metricService.getAllMetrics();
 	}
 
 	@RequestMapping(value = "/data/stats/query", method = RequestMethod.GET, params = { "states", "metrics" })

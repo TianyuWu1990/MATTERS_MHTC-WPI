@@ -4,8 +4,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:forEach items="${data_values}" var="stat">
-	<tr>
-		<td><c:out value="${stat.metric.displayName}"></c:out></td>
+	<tr onmouseover="as.setHeatMapOnHover(${fn:escapeXml(stat.metric.id)},${style_values},'#map',-1)"
+	    onmouseout= "as.UnSetHeatMap(${style_values})">
+	    
+		<c:choose>
+			<c:when test="${stat.metric.tabbed}">
+				<td><ul>
+						<li><c:out value="${stat.metric.name}"></c:out></li>
+					</ul></td>
+			</c:when>
+			<c:otherwise>
+				<td><c:out value="${stat.metric.name}"></c:out></td>
+			</c:otherwise>
+		</c:choose>
 		<td><span class="trend_icon trend_${stat.trend}"></span></td>
 
 		<c:set var="stat_value" scope="request" value="${stat.recent.value}" />

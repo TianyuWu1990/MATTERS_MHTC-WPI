@@ -1,6 +1,7 @@
 package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
 import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
@@ -40,8 +42,7 @@ public class Type4Parser implements IParser {
 	}
 
 	private void init() throws InvalidFormatException, IOException {
-		this.workbook = WorkbookFactory.create(new File(this.fileInfo
-				.getFileName()));
+		this.workbook = WorkbookFactory.create( new FileInputStream(this.fileInfo.getFileName()));
 		this.sheet = this.workbook.getSheetAt(0);
 		String fileName = this.fileInfo.getFileName();
 		this.state = fileName.substring(
@@ -127,7 +128,7 @@ public class Type4Parser implements IParser {
 		}
 
 		private void init() throws InvalidFormatException, IOException {
-			this.workbook = WorkbookFactory.create(new File(this.fileInfo
+			this.workbook = WorkbookFactory.create(new FileInputStream(this.fileInfo
 					.getFileName()));
 			this.sheet = this.workbook.getSheetAt(0);
 		}

@@ -230,11 +230,11 @@
 			<version>1.8.0.10</version>
 		</dependency>
 
-		<dependency>
+		<!--   <dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 			<version>3.1</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -242,11 +242,11 @@
 		</dependency>
 
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>commons-collections</groupId>
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
-		</dependency>
+		</dependency> -->
 
 
 
@@ -271,6 +271,7 @@
 		    <plugin>
 	<groupId>org.codehaus.mojo</groupId>
 	<artifactId>tomcat-maven-plugin</artifactId>
+	<version>2.5.1</version>
 	<configuration>
 		<url>http://127.0.0.1:8080/manager</url>
 		<server>TomcatServer</server>
@@ -278,11 +279,11 @@
 	</configuration>
 </plugin>
 		    
-		    <plugin>
+		  <!--  <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>
           <version>2.0</version>
-        </plugin>
+        </plugin> -->
         
         
         <plugin>

@@ -75,7 +75,7 @@ right:0;
 
 .boxblue
 {
-	background-color:rgb(0,0,128);
+	background-color: rgb(61,138,244);  /**rgb(0,0,128);*/
 }
 
 .boxgreen
@@ -87,6 +87,11 @@ right:0;
 {
 	background-color:rgb(255,153,0);
 }
+
+.boxred {
+	background-color:#FF4D4D;
+}
+
 
 #legend
 {
@@ -176,7 +181,7 @@ background-position: 0px -210px;
 {
 background-position: 0px -240px;
 }
-#sidebar,#multiSelecter,#legend
+#sidebar,#multiSelecter,#multiSelecterMetricState,#legend
 {
 	border-color: #ABC;
 	border-style: solid;
@@ -207,33 +212,67 @@ table.table tbody tr td.tabbed_metric
 }
 
 #profiletab a{
-	background-color: #977509;
+	background-color: #3D8AF4 ; 
 	color:#fff;
-	font-weight:bold;
+	
+	text-align: center;
+	width: 145px;
+}
+
+#profiletab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#3D8AF4 100%);
 }
 #nationaltab a
 {
-		background-color: green;
-		color: white;
+		background-color: #7ECB98;
+		color: black;
 	
+	    text-align: center;
+	    width: 160px;
+}
+#nationaltab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#7ECB98 100%);
 }
 #talenttab a
 {
-		background-color: #FF4D4D;
+		background-color: #F17171; /*#FF7171; // #FF4D4D**/;
 		color: white;
-	
+		
+	   	text-align: center;
+		width: 145px;
+}
+#talenttab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#FF7171 100%);
 }
 #economytab a
 {
-		background-color: #3385FF;
+		background-color: #977509;
 		color: white;
-	
+		
+		text-align: center;
+		width: 160px;	
+}
+#economytab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#977509 100%);
 }
 #costtab a
 {
-		background-color: #6600CC;
+		background-color: #A366E0;// #6600CC;
+		color: white;
+		
+		text-align: center;
+		width: 145px;	
+}
+#costtab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#A366E0 100%);
+}
+#multiplequerytab a
+{
+		background-color: #191970; /*#3D8AF4;*/
 		color: white;
 	
+	    text-align: center;
+	    width: 160px;
 }
 
 /**#National-tbody tr:nth-child(odd)
@@ -275,34 +314,35 @@ table.table tbody tr td.tabbed_metric
    background-color: #FFFFFF;
    }
 */
-#Profile tbody > tr:hover >td
+#Profile tbody tr:hover td
   {
-  background-color: #FFE8A0;
+  background-color:  #ADC2FF; 
   }
-#National tbody>tr:hover>td
+
+#national tbody tr:hover td
 
  {
- background-color:#7ECB98;
+ background-color:#CBFFF2;	 /**#7ECB98;**/
  }
+/*
+ #national tbody tr:hover tr td{
+  background-color:#D0A9F5;	 /**#7ECB98;**/
  
-  #talent tbody>tr:hover>td
- {
- background-color:  #FFE0E0;
  }
- #cost tbody>tr:hover>td
+*/
+#talent tbody tr:hover td
+ {
+ background-color:#F27B7B;
+ }
+ #cost tbody tr:hover td
  {
  background-color:#DAC2F2;
  }
- #economy tbody>tr:hover>td 
+ #economy tbody tr:hover td 
   {
-  background-color: #ADC2FF;
+  background-color: #FFE48A;
   } 
- 
-.table-condensed > tbody > tr , .table-condensed > tbody > tr:hover>td, .table-condensed > tbody > tr:hover>th
-  {
-  background-color: #fff;
-  } 
- 
+
 .topContainer{
 	background-color:#000099;
 	height:30px;
@@ -317,3 +357,25 @@ table.table tbody tr td.tabbed_metric
 #navbarid{
 background-image: linear-gradient(to bottom,#FFFFFF 0,#3D8AF4 100%);
 background-repeat: repeat-x;}
+
+.container {
+width: 85%;	
+}
+
+
+.nav >li.active>a{
+	font-size:14px;
+	font-weight:bold;
+	background-color:#fff;
+	border:1px solid #ddd;
+	border-bottom-color:transparent;
+	cursor:default
+}
+
+.arrow { 
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent; 
+	border-right: 10px solid transparent; 
+	border-top: 10px solid black; 
+}

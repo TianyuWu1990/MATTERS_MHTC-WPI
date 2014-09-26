@@ -1,5 +1,7 @@
 
-
+/*
+ * This module handles the Application User responses and State.
+ */
 
 var AS= (function($) {
     function AppState() {
@@ -10,10 +12,11 @@ var AS= (function($) {
 		this.current_tab = 'national'; 
 		this.stateColor="#666";
 		this.stateHoverColor='purple';
-		this.peerStateColor='MidnightBlue';
+		this.peerStateColor=  '#3D8AF4';   /**'MidnightBlue; #977509';**/
 		this.stateSelectedColor="green";
 		this.defaultStateMultimodeColor="orange";
-		
+		this.ordered_states_metrics=[];
+		this.current_tab_style="#profiletab a";
     }
 
       AppState.prototype.selectState = function(state) {
@@ -39,8 +42,10 @@ var AS= (function($) {
 	        
 	}
     
+      /*
+       * Initializes the application. Called when page is loaded.
+       */
     AppState.prototype.loadFunction = function() {
-		
 	    $('#sidebar li:eq(0) a').tab('show');
 	    $(function() {
 	        $("[rel='tooltip']").tooltip();
@@ -50,57 +55,58 @@ var AS= (function($) {
 	    	stateClicked = $(this).attr("id").substr(3, 2); 
 	    	as.clickCallback(stateClicked);
 	    });
-	    
+	    /*
+	     * Initializes the US Map with custom styles. 
+	     */
 	    $('#map').usmap({
 	        'stateSpecificStyles' : {
 	            'WA' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'CA' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'UT' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'CO' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'TX' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'MN' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'GA' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'NC' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'VA' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'MD' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'PA' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'NY' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'CT' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
 	            'NH' : {
-	                fill : 'MidnightBlue'
+	                fill : as.peerStateColor
 	            },
-	            'NJ' : { fill : 'MidnightBlue'},
+	            'NJ' : { fill : as.peerStateColor},
 	            'MA' : {
 	                fill : 'green'
 	            }
 	        },
-	    ///// from usmap
 	        'stateStyles': {
 	            fill: this.stateColor,
 	            stroke: "#FFF",
@@ -114,25 +120,7 @@ var AS= (function($) {
 	            scale: [1.1, 1.1]
 	          },
 	          'stateHoverAnimation': 300,
-	          // State specific hover styles
-	          /*'stateSpecificHoverStyles': {
-	              'WA': {fill: 'purple'},
-	              'CA': {fill: 'purple'},
-	              'UT': {fill: '#F90'},
-	              'CO': {fill: '#F90'},
-	              'TX': {fill: '#F90'},
-	              'MN': {fill: '#F90'},
-	              'GA': {fill: '#F90'},
-	              'NC': {fill: '#F90'},
-	              'VA': {fill: '#F90'},
-	              'MD': {fill: '#F90'},
-	              'PA': {fill: '#F90'},
-	              'NY': {fill: '#F90'},
-	              'CT': {fill: '#F90'},
-	              'NH': {fill: '#F90'},
-	              'MA': {fill: '#F90'},
-	              'NJ': {fill: '#F90'},
-	          },*/
+	          
 	          'labelWidth': 30,
 	          
 	          'labelHeight': 25,
@@ -146,34 +134,290 @@ var AS= (function($) {
 	          },
 	          
 	          'mouseover': function(event, data){
-	              $("#mapTitle").text(States.getStateByAbbreviation(data.name).name || "Click to Select a State");
+	        	  $("#mapTitle").text(States.getStateByAbbreviation(data.name).name || "Click to Select a State");
+	        	  
 	            },
 	            
 	            'mouseout': function(event, data){
 	              $("#mapTitle").text("Click to Select a State");
+	             
 	            }
-
-	    // end from usmap
 	    });
-	   // $('#map').usmap('changeStateColor','MT','RED');
-	    
+	     
 	}
+    
+    /*
+     * This function generates Heat Map 
+     * Input: Metric ID and Base Color for heat map
+     */
+    AppState.prototype.SetHeatMap=function (ind,baseColor, tag_id,year_in){
+    	if(!this.multiMode) /** This was causing a weird error specially because the dropdown menu was heatmapping other metrics*/
+    		this.currentind=ind;
+    	
+    	var selected_states= States.getAllstates().map(function(s) {
+    		return s.abbr;
+    	});
+     	var query = DQ.create().addState(selected_states).addMetric(Metrics.getMetricByID(this.currentind).getName());
+        query.execute(function(
+                multiData) {
+        		setTimeout(function() {
+        			/*******************************************************************************/
+        			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
+        			/*******************************************************************************/
+        			
+        			var array_years=[];
+        			var k=0;
+        			for(var i=0; i<multiData.length; i++){
+        				for(var j=0; j<multiData[i][0].dataPoints.length; j++){
+        					if(array_years.indexOf(multiData[i][0].dataPoints[j].year) < 0){
+        						array_years[k]=multiData[i][0].dataPoints[j].year;
+        						k++;
+        					}
+        				}
+        			}	
+        			var sel = $("#yearHeatMap");
+        			sel.empty();
+        			var size_tam=array_years.length-1;
+        			/*if(year_in!=-1){
+        				//sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
+        			}*/
+        			
+        			array_years.sort(function(a,b){return b - a}) 
+        			for(var k=0; k<array_years.length; k++){
+        				if(year_in!=array_years[k])   				 
+        					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
+        				else
+        					sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
+        			}
+        			/*******************************************************************************/
+        			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
+        			/*******************************************************************************/
+        			if(year_in==-1){
+						year_in = array_years[0];
+					}
+        			var j;
+        			var sentinel;
+        			for(var i=0; i<multiData.length; i++){
+        				if((multiData[i][0].state.abbr!='US')&&(multiData[i][0].state.abbr!='DC')){
+        					j=0;
+        					sentinel=false;
+        					while((!sentinel)&&(j<multiData[i][0].dataPoints.length)){
+        						if(multiData[i][0].dataPoints[j].year==year_in){
+        							sentinel=true;
+        						}
+        						else{
+        							j++;
+        						}
+        							
+        					}
+        					if(sentinel){
+        						as.ordered_states_metrics[i]={ value_element: multiData[i][0].dataPoints[j].value,
+        													   state_element:multiData[i][0].state.abbr,
+        													   binName_element:multiData[0][0].metric.binName,
+        													   metricType: multiData[0][0].metric.type}
+        					}
+        					else{
+        						as.ordered_states_metrics[i]={ value_element: 0.0,
+	        								   				   state_element:multiData[i][0].state.abbr,
+	        								   				   binName_element:multiData[0][0].metric.binName,
+	        								   				   metricType: multiData[0][0].metric.type}
+        					}
+        							
+        				}
+         			}
+        			
+    			as.ordered_states_metrics.sort(function (a, b) {
+        	    	return b.value_element-a.value_element;
+        	    });
+    			
+        	          	    
+    			$(tag_id).usmap({
+    		        
+    		        'stateStyles': {
+    		            fill: this.stateColor,
+    		            stroke: "#FFF",
+    		            "stroke-width": 1.1,
+    		            "stroke-linejoin": "bevel",
+    		            scale: [1.1, 1.1]
+    		          },
+    		          'stateHoverStyles': {
+    		            fill: "#FFCCFF",
+    		            stroke: "#FFF",
+    		            scale: [1.1, 1.1]
+    		          },
+    		         
+    		          'showLabels' : false,
+    		         
+    		          'mouseover': function(event, data){
+    		        	  var found = $.map(as.ordered_states_metrics, function(val,i) {
+    		        		  var indexcounter;
+    		        		  var percentage="";
+    		        		  var return_value_element;
+    		        		  if(val.state_element == States.getStateByAbbreviation(data.name).abbr){
+    		        			  if(as.ordered_states_metrics[0].binName_element!='National')
+    		        				  indexcounter=i+1;
+    		        			  else
+    		        				  indexcounter=as.ordered_states_metrics.length-i;
+    		        			  if(val.value_element==0.0){
+		        			    	  return "No value for this state";  
+		        			      }
+		        			      else{
+		        			    	  if(as.ordered_states_metrics[0].metricType=="percentage"){
+	    		        				  return_value_element=val.value_element*100;
+	    		        				  return_value_element= Math.round(return_value_element*100)/100+"%";
+	    		        				 
+	
+	    		        			  }
+	    		        				 
+	    		        			  else{
+	    		        				  return_value_element=Math.round( val.value_element*100)/100;
+	    		        			  }
+		        			    	  return "Ranking: "+indexcounter+" Value: "+return_value_element;
+		        			      } 
+    		        		  }
+    		        		  
+    		        		}); 
+    		        	  $("#graphStatesHeatMapPos0").text("State: "+States.getStateByAbbreviation(data.name).name);
+    		        	  $("#graphStatesHeatMapPos1").text(found[0]);
+    		            },
+    		            
+    		            'mouseout': function(event, data){
+    		              $("#graphStatesHeatMapPos0").text("Selected States: All States");
+    		              $("#graphStatesHeatMapPos1").text("");
+    		            }
+    		    });
+        	    for(var i=0; i<as.ordered_states_metrics.length;i++){
+        	    	if(multiData[0][0].metric.binName!="National"){
+        	    		newColor=getNewColor(baseColor,as.ordered_states_metrics[i].value_element,as.ordered_states_metrics[0].value_element);
+        	    	}
+        	    	else{
+        	    		newColor=getNewColor(baseColor,as.ordered_states_metrics[0].value_element-as.ordered_states_metrics[i].value_element +1,as.ordered_states_metrics[0].value_element);
+        	    		
+        	    		
+        	    	}      
+        	    	$(tag_id).usmap('changeStateColor',  as.ordered_states_metrics[i].state_element, newColor);
+        				
+        		}
+        		});	
+        });
+       
+    	   
+    }
+ AppState.prototype.getMetricMultipleSelect=function(selectedOptions){
+	 var sel = $("#selectedmultiplemetrics");
+     sel.empty();
+     //sel.append('<table>');
+     
+	 for (var i=0; i<selectedOptions.length;i++){
+		 if(selectedOptions[i].selected)
+			 sel.append('<option value="' + selectedOptions[i].value + '">' + Metrics.getMetricByID(selectedOptions[i].value).getName() + '</option>');
+			 //sel.append('<tr><td valign="top" align="left">'+Metrics.getMetricByID(selectedOptions[i].value).getName() +'</td></tr>');
+		 
+	 }
+	// sel.append('<table>');
+	 
+ }
+/**
+ * 
+ * @param ind Metric id
+ * @param style_in  rgb color of the tabbed tab
+ * @param tag_id #mbodyHeatMap to generate heat map on a modal window
+ * 
+ */    
+AppState.prototype.showHeatMapGraph=function (ind,style_in, tag_id, year_in){
+	this.current_tab_style=style_in;
+	document.getElementById("graphTitleHeatMap").innerHTML ='Heat map: '+ Metrics.getMetricByID(ind).getName(); 
+	document.getElementById("graphCatHeatMap").innerHTML='Category: '+Metrics.getMetricByID(ind).binName;
+	var baseColor=colorToHex(getStyleRuleValue('background-color',style_in));
+	var degradedColor=getNewColor(baseColor,110,100);
+	console.log("error degradedColor : "+degradedColor);
+	var degradationColorWindow="rgb("+hexToRgb(degradedColor).r+","+hexToRgb(degradedColor).g+","+hexToRgb(degradedColor).b+")";
+    //this.changeColorModalWindow(tag_id.substr(1),degradationColorWindow);
+   // console.log("error2 : "+ind);
+	this.SetHeatMap(ind,baseColor, tag_id,year_in);
+
+} 
+/**
+ * 
+ * @param ind Metric id
+ * @param style_in rgb color of the tabbed tab
+ * @param tag_id #map  to generate heat map on the right side of the screen
+ */    
+AppState.prototype.setHeatMapOnHover=function (ind,style_in, tag_id, year_in){
+//	alert(getStyle('background-color',style_in));
+	var baseColor=colorToHex(getStyleRuleValue('background-color',style_in));
+	//console.log("error3 : "+ind);
+	this.SetHeatMap(ind,baseColor, tag_id,year_in);
+}
+/*
+     * Clears the heat map and restores the original US Map 
+*/
+    
+ AppState.prototype.UnSetHeatMap=function (style){
+	 //console.log("error4 : "+this.currentind);
+	var selected_states=States.getAllstates().map(function(s){
+		return s.abbr;
+	});
+	var newColor=getStyleRuleValue('background-color',style);
+	this.peerStateColor=newColor;
+
+	/** Changes the of the map to a particular color according to the tab hit**/
+	
+		for(var i=0; i<selected_states.length;i++){
+			if(i==selected_states.length-1){
+	    		 band=1;
+	    	}
+			if((selected_states[i]!='US')&&(selected_states[i]!='DC')){
+				if(this.stateAbbr==selected_states[i]){
+					$("#map").usmap('changeStateColor',selected_states[i], this.stateSelectedColor);
+				}
+				else{
+					if(States.getStateByAbbreviation(selected_states[i]).isPeerState()){
+						
+						$("#map").usmap('changeStateColor', selected_states[i], newColor);
+						
+						
+					}else{
+						
+     					$("#map").usmap('changeStateColor', selected_states[i], this.stateColor);
+							
+						
+					}
+				}
+			}
+				
+			
+			
+		}
+		
+		
+}
+
+
+
+ /*
+  * Changes the color of a state on the US Map
+  * Input: State Abbreviation and Color for the state.
+  */
 AppState.prototype.changeColor= function(stateAbbr, newColor){
 	$("#map").usmap('changeStateColor', stateAbbr, newColor);
+	
+	
 }
 
     
+/*
+ * Callback function to load the data for a clicked state. Used in click event of buttons and shapes for each states.  
+ *  
+*/
 AppState.prototype.clickCallback = function(data){
+	    if(!as.multiMode)
+	    	this.UnSetHeatMap(this.current_tab_style);
 		var stateClicked=data;
 		var changeToColor="";
-		/*if (typeof data === 'undefined') { 
-			stateClicked = $(this).attr("id").substr(3, 2); 
-		}
-		else**/
-			//stateClicked = data.name
 		if(stateClicked==as.stateAbbr)
 			return;
-			
+		
 		if (as.multiMode == false){
 			if(as.stateAbbr!=stateClicked){
 				if (States.getStateByAbbreviation(as.stateAbbr).peerState)
@@ -183,12 +427,13 @@ AppState.prototype.clickCallback = function(data){
 				as.changeColor(as.stateAbbr, changeToColor);
 				as.changeColor(stateClicked, as.stateSelectedColor);
 				as.loadState(stateClicked);
-				//as.stateAbbr=stateClicked;
 			}
 			
 		}
 		else{
+			
 	        ind = as.selected.indexOf(stateClicked);
+	      
 	        if(ind === -1){
 				as.selected.push(stateClicked);
 				as.changeColor(stateClicked, as.stateSelectedColor);
@@ -202,10 +447,59 @@ AppState.prototype.clickCallback = function(data){
 				as.changeColor(stateClicked, changeToColor);
 				$("#chk"+stateClicked).removeClass("active");
 	        }
-			
+			this.checkIfAllStatesChecked();
 			
 		}
 	}
+
+AppState.prototype.checkIfAllStatesChecked=function(){
+	var indexState;
+	var returnvalue;
+	var counter_unselected=0;
+	var size_array_states;
+	var size_array_states_t;
+	
+	var selected_states=States.getAllstates().map(function(s){
+			return s.abbr; 
+	});
+	size_array_states=selected_states.length-1;
+	for(var i=0; i<selected_states.length;i++){
+		if(selected_states[i]!='US'){
+			indexState = as.selected.indexOf(selected_states[i]);
+			if(indexState==-1){ /** Unselected tabs**/
+				counter_unselected++;
+			}
+		}
+	}
+	
+	size_array_states_t=size_array_states-2;
+	
+	if(size_array_states_t<counter_unselected){ /***If all states are unselected then only the SELECTALL Button may appear***/
+		
+		$("#selectall").prop("disabled",false);
+		$("#unselectall").prop("disabled", true);
+		$("#selectallmultiplemetric").prop("disabled",false);
+		$("#unselectallmultiplemetric").prop("disabled", true);
+		
+		
+	}
+	else if(counter_unselected==0){/** If all states are selected then the SELECTALL button gets blocked and the UNSELECTALL gets unblocked**/
+		$("#selectall").prop("disabled",true);
+		$("#unselectall").prop("disabled", false);
+		$("#selectallmultiplemetric").prop("disabled",true);
+		$("#unselectallmultiplemetric").prop("disabled", false);
+	}else{ /** some states have been selected, therefore both buttons may appear**/
+		$("#selectall").prop("disabled",false);
+		$("#unselectall").prop("disabled",false);
+		$("#selectallmultiplemetric").prop("disabled",false);
+		$("#unselectallmultiplemetric").prop("disabled",false);
+	}
+	
+}
+/*
+ * Resetting the US Map to its previously selected state when returning from Multimode.
+ * param options is kept for future use.
+*/
 AppState.prototype.reset= function(options){
 	
     as.selected.forEach(function(val){
@@ -227,32 +521,49 @@ AppState.prototype.reset= function(options){
     });
   }
     
+
+/*
+ * Initializes graph title and graph function.
+ */
 AppState.prototype.set_initializer=function(title_prefix_in, this_graph_in ) {
 	cm.graph_title_prefix = title_prefix_in;
 	cm.current_graph_function = this_graph_in;
 }
 
-
+/*
+ * This function calls the chart module for displaying the graph type for currently selected state.
+ * Input: Metric ID
+ */
  AppState.prototype.showGraph = function(ind) {
 	this.set_initializer(" ",this.showGraph); 
     this.currentind = ind;		 
 	this.selected = [ this.stateAbbr ];
 	cm.showMultiGraph(this.selected);
 	}
+
  
- 
+ /*
+  * This function calls the chart module for displaying the graph type for currently selected states when in Multimode.
+  * Input: Metric ID
+  */
  AppState.prototype.showMultiGraphOnSelected = function() {
     this.set_initializer("Compare to Selected: ",this.showMultiGraphOnSelected);
+   // console.log("error5 : "+this.currentind);
+  //  alert(this.currentind);
     cm.showMultiGraph(this.selected);
 	   
 	}
- 
- 
+
+
+ /*
+  * This function calls the chart module for displaying the graph type for TOP TEN states for the current Metric.
+  * Input: Metric ID
+  */ 
  AppState.prototype.showMultiGraphOnTopTen = function(ind) {
 	    this.set_initializer("Compare Top Ten States: ",this.showMultiGraphOnTopTen); 
 		this.currentind = ind;
 	  	this.selected = $.parseJSON($.ajax({
-			url : "data/peers/top?metric=" + Metrics.getMetricByID(ind).getId() + "&year=0",
+			url : "data/peers/top?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
 				dataType : 'text',
 				async : false,
 				success : function(data) {
@@ -266,75 +577,149 @@ AppState.prototype.set_initializer=function(title_prefix_in, this_graph_in ) {
 	    cm.showMultiGraph( this.selected);
 	}
 
-/**AppState.prototype.getData = function(url, callback) {
-    http = new XMLHttpRequest();
-    http.open("GET", url, true);
-    http.onreadystatechange = function() {
-        if (http.readyState == 4 && http.status == 200) {
-            callback(JSON.parse(http.responseText));
-        }
-    }
-    http.send(null);
-}**/
+ /*
+  * This function calls the chart module for displaying the graph type for BOTTOM TEN states for the current Metric.
+  * Input: Metric ID
+  */ 
+AppState.prototype.showMultiGraphOnBottomTen = function(ind) {
+		this.set_initializer("Compare Bottom Ten States: ",this.showMultiGraphOnBottomTen);
+	    this.currentind = ind;
+	    this.selected = $.parseJSON($.ajax({
+			url : "data/peers/bottom?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
+	           
+			dataType : 'text',
+			async : false,
+			success : function(data) {
+				return data;
+			}
+		}).responseText).map(function(s) {
+	        return s.abbr;
+	    });
+		
 
-AppState.prototype.toggleMultiSelect = function(ind) {
-	this.currentind=ind;		
-    $("#multiSelecter").toggle("slide", {
+	    cm.showMultiGraph(this.selected);
+	}
+
+ /*
+  * This function calls the chart module for comparative display of the Peers states with MA for current metric.
+  * Input: Metric ID
+  */ 
+AppState.prototype.showMultiGraphOnPeers = function(ind) {
+		this.set_initializer("Compare All Peers: ",this.showMultiGraphOnPeers);
+	    
+		
+	    this.currentind = ind;
+	    
+	    this.selected = States.getPeers().map(function(s) {
+	        return s.abbr;
+	    });
+	   
+	   cm.showMultiGraph(this.selected);
+	    
+	}
+ AppState.prototype.SelectUnSelectAllTabs=function(type_in){
+	 var indexState;
+	 var selected_states=States.getAllstates().map(function(s){
+		return s.abbr; 
+	 });
+	 
+	 for(var i=0; i<selected_states.length;i++){
+			if(selected_states[i]!='US'){
+				indexState = as.selected.indexOf(selected_states[i]);
+				if(((type_in==1)||(type_in==3))&&(indexState==-1)){/**SELECT ALL*/
+					this.clickCallback(selected_states[i]);
+				}
+				else if( ((type_in==2)||(type_in==4)) &&(indexState!=-1)){
+					this.clickCallback(selected_states[i]);
+				}
+			}
+		}
+	 switch (type_in) {
+	 	case 1: $("#selectall").prop("disabled",true);
+	 			$("#unselectall").prop("disabled", false);
+	 			break;
+	 	case 2: $("#selectall").prop("disabled",false);
+		 		$("#unselectall").prop("disabled", true);
+		 		break;
+	 	case 3: $("#selectallmultiplemetric").prop("disabled",true);
+				$("#unselectallmultiplemetric").prop("disabled", false);
+				break;
+	    case 4: $("#selectallmultiplemetric").prop("disabled",false);
+ 				$("#unselectallmultiplemetric").prop("disabled", true);
+ 				break;
+	 		
+	 }
+	
+ }
+  /*
+  * This function aids in changing color on selecting multiple states on US map and state buttons and resets to original on exit. 
+  */ 
+AppState.prototype.toggleMultiSelect = function(ind,option ) {
+	this.currentind=ind;
+	var tagoption;
+	
+	if(option==-1){
+		tagoption="#multiSelecterMetricState";
+		
+		$("#multiplequeryTab").addClass("hidden");
+		$("#multiplequeryTabDisappear").removeClass("hidden");
+		
+		
+	}else{
+		tagoption="#multiSelecter";
+		$("#multiplequeryTab").addClass("hidden");
+	}
+	
+    $(tagoption).toggle("slide", {
         direction : "right"
     }, 200);
     $("#sidebar").toggle("slide", {
         direction : "left"
     }, 200);
-
-   // $("#map").usmap('toggleMultiselect');
-    
+  
     as.multiMode=!as.multiMode;
+  
     if(!as.multiMode)
     	{
     	this.reset();
+    	$("#selectall").prop('disabled', true); 
+    	$("#unselectall").prop('disabled', true);
+    	$("#selectallmultiplemetric").prop('disabled', true); 
+    	$("#unselectallmultiplemetric").prop('disabled', true);
+    	$("#multiplequeryTab").removeClass("hidden");
     	}
-    	
     else
     	{
-    	as.changeColor(as.stateAbbr, as.defaultStateMultimodeColor);
+    	setTimeout(function(){
+    		as.UnSetHeatMap(as.current_tab_style); 
+    		as.changeColor(as.stateAbbr, as.defaultStateMultimodeColor); 
+    		$("#selectall").prop('disabled', false);
+    		$("#selectallmultiplemetric").prop('disabled', false); 
+    		}, 1500);
+    	
     	}
+    
     this.selected = [ this.stateAbbr ];
     
     if ($("#normallegend").hasClass("hidden")) {
+    	
         $("#normallegend").removeClass("hidden");
         $("#multilegend").addClass("hidden");
     } else {
+    	
         $("#normallegend").addClass("hidden");
         $("#multilegend").removeClass("hidden");
     }
-
-    /**$(".statebutton").each(function(i) {
-    	
-        var state;
-        $(this).find("input").each(function(checkbox) {
-            var id = $(this).attr("id");
-            state = id.substr(3, 2);
-            
-        });
-        
-        if ($(this).hasClass("active") && state != this.stateAbbr) {
-            $(this).removeClass("active");
-            
-        }
-
-        if (state == this.stateAbbr && !$(this).hasClass("active")) {
-            $(this).addClass("active");
-           
-        }
-    });**/
 }
 
 
 
+/*
+ * Initializes the active tab along with title and loads data for the currently selected state.
+ */
 AppState.prototype.loadState = function(stateData) {
 	
     this.stateAbbr = stateData;
-    
     if ($("#profile").hasClass("active")) {
         current_tab = 'profile';
     } else if ($("#national").hasClass("active")) {
@@ -351,75 +736,72 @@ AppState.prototype.loadState = function(stateData) {
     $.get("" + this.stateAbbr + "/table", function(data) {
         $("#stateTitle").text(States.getStateByAbbreviation(as.stateAbbr).getName());
         $("#state_container").html(data);
-        
-        
         $("#"+current_tab+"Tab").addClass("active");
         $("#"+current_tab).removeClass("fade");
         $("#"+current_tab).addClass("active");
-        
-        
-        /*if (current_tab == 'national') {
-            $("#nationalTab").addClass("active");
-            $("#national").removeClass("fade");
-            $("#national").addClass("active");
-        } else if (current_tab == 'talent') {
-            $("#talentTab").addClass("active");
-            $("#talent").removeClass("fade");
-            $("#talent").addClass("active");
-        } else if (current_tab == 'cost') {
-            $("#costTab").addClass("active");
-            $("#cost").removeClass("fade");
-            $("#cost").addClass("active");
-        } else if (current_tab == 'economy') {
-            $("#economyTab").addClass("active");
-            $("#economy").removeClass("fade");
-            $("#economy").addClass("active");
-        }*/
-
-
         $(".statebutton").click(function (){ 
         	stateClicked = $(this).attr("id").substr(3, 2); 
         	as.clickCallback(stateClicked);
         });
-     
-        
     });
 }
-AppState.prototype.showMultiGraphOnBottomTen = function(ind) {
-	this.set_initializer("Compare Bottom Ten States: ",this.showMultiGraphOnBottomTen);
-    this.currentind = ind;
-    this.selected = $.parseJSON($.ajax({
-		url : "data/peers/bottom?metric=" + Metrics.getMetricByID(ind).getId() + "&year=0",
-           
-		dataType : 'text',
-		async : false,
-		success : function(data) {
-			return data;
-		}
-	}).responseText).map(function(s) {
-        return s.abbr;
-    });
+
+/**
+ * 
+ * @param tag_id modal window tag id 
+ * @param color_in color from the tabs
+ * This color applies to the inner window of the modal window depending on the tab tabbed
+ */
+AppState.prototype.changeColorModalWindow=function(tag_id,color_in){
+	var divModalWindow=document.getElementById(tag_id);
+	divModalWindow.style.backgroundColor =color_in;
+	divModalWindow.style.borderWidth ="1px";
 	
-
-    cm.showMultiGraph(this.selected);
 }
-
-AppState.prototype.showMultiGraphOnPeers = function(ind) {
-	this.set_initializer("Compare All Peers: ",this.showMultiGraphOnPeers);
-    
+/* 
+ * This Function changes the color of all peer states once a tab is clicked.
+ */ 
+AppState.prototype.changeColorPeerStates = function(style){
+	/*this.selected =States.getPeers().map(function(s){
+		return s.abbr;
+	});*/
 	
-    this.currentind = ind;
-    this.selected = States.getPeers().map(function(s) {
-        return s.abbr;
-    });
-    cm.showMultiGraph(this.selected);
-    
+		
+	var newColor=getStyleRuleValue('background-color',style);
+	
+	this.UnSetHeatMap(style);
+	this.current_tab_style=style;
+	var divboxcolorpeerstates = document.getElementById( 'boxcolorpeerstates' );
+	divboxcolorpeerstates.style.backgroundColor =newColor;
+	
+	var modalcontentidstyle= style.replace("tab a", "");
+   
+	modalcontentidstyle=modalcontentidstyle+" tbody > tr:hover > td";
+	var newColorModalWindow= getStyleRuleValue('background-color',modalcontentidstyle);
+	this.changeColorModalWindow('mbody',newColor);
+	
+	/**var divModalWindow=document.getElementById('mbody'); 
+	divModalWindow.style.backgroundColor =newColor;
+	divModalWindow.style.borderWidth ="1px";**/
+	
+	/**var divModalWindow=document.getElementById('myTable');
+	divModalWindow.style.backgroundColor =newColorModalWindow;**/
+	
+	
+	/**this.peerStateColor=newColor;
+	for(var i=0; i<this.selected.length;i++){
+		if(this.stateAbbr!=this.selected[i])
+			$("#map").usmap('changeStateColor', this.selected[i], newColor);
+		
+	}**/
+		
 }
-
-
 
 var publicInterface = {};
 
+/*
+ * Initializes the default AppState parameters. 
+ */
 publicInterface.create = function() {
 	
 	return new AppState();
