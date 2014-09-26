@@ -50,7 +50,6 @@ public class DBLoader {
 	 * key is the metric name, value is the metric ID
 	 */
 	public static Map<String, String> getMetricInfo(String catID) throws Exception{
-		
 		HashMap<String, String> table = new HashMap<String, String>();
 		Connection conn = DBConnector.getInstance().getConn();
 		
@@ -170,26 +169,37 @@ public class DBLoader {
 			return false;
 	}
 	
+	
+	
+	
+	
+	
+	
+		/**
+	 * Retrieves all categories from the database
+	 * @return A map containing the category names as the key, and IDs as the value
+	 * @throws Exception
+	 */
+	public static Map<String, String> getCategoryInfo() throws Exception {
+		HashMap<String, String> table = new HashMap<String, String>();
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "SELECT * FROM mhtc_sch.getCategories(FALSE, NULL)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		ResultSet rs = pstatement.executeQuery();
+		
+		try {
+			while (rs.next()) {
+				String categoryID = rs.getString("Id").toLowerCase();
+				String categoryName = rs.getString("Name");
+				table.put(categoryName, categoryID);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return table;
+	}
+	
 	 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
