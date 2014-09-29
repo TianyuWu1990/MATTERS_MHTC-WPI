@@ -10,12 +10,15 @@ import java.net.URLConnection;
 import java.nio.charset.MalformedInputException;
 
 public class URLDownload {
-
 	/**
 	 * 
 	 * @param targeturl
 	 * @param filename
 	 */
+	public void setRequestData() {
+		
+	}
+	
 	public void HTTPDownload(String targeturl, String filename) {
 		URL url = null;
 		URLConnection con = null;
