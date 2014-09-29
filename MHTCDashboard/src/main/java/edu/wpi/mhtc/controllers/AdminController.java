@@ -131,6 +131,22 @@ public class AdminController {
         
     }
     
+    @RequestMapping(value = "/admin/upload/import", method=RequestMethod.POST)
+    public @ResponseBody String importURL(@RequestParam("url") String targeturl) {
+    	if (!targeturl.isEmpty()) {
+	    	try {
+	    		String filename = "temp.xlsx";
+	    		DataPipeline.download(targeturl, filename);
+	    		
+	    		return "Import the URL data file successfully.";
+    		} catch (Exception e) {
+                throw new RuntimeException(e);
+    		}
+    	} else {
+    		return "URL is empty";
+    	}
+    }
+    
     
     private int getCatId(String catname) {
     	PSqlStringMappedJdbcCall <Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
