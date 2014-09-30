@@ -50,5 +50,9 @@ public class DataWrapperMain {
 		//Bureau of Economic Analysis-all regions and years
 		bea.download("http://www.bea.gov/itable/download.cfm?ext=csv&fid=B543E5DBA3B4E53FD891B19007B42B878D129B6B2748DC214E8A4E7CABFEDCCB522F771881E09A5857B449F0B6C397CB7F09B19F65C08EDE33EDFE47038C81A4", "tmp/allbea.csv");
 	}
+	
+	public static void twenty_source_download() throws Exception {
+		DataPipeline.download("url", "temp.xlsx", "Income");
+	}
 
 }

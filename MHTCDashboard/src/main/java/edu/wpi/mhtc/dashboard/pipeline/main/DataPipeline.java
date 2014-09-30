@@ -14,15 +14,11 @@ import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
 
 public class DataPipeline {
 	
-	public static void download(String targeturl, String filename) throws Exception{
+	public static void download(String targeturl, String filename, String catId) throws Exception{
 		URLDownload down = new URLDownload();
-		String catId;
 		
 		// Download the file
 		down.HTTPDownload(targeturl, filename);
-		
-		// Determine category ID
-		catId = CategoryPicker.getCategoryByURL(targeturl);
 		
 		// Import the file into the database.
 		DataPipeline.run(new File(filename), catId);
