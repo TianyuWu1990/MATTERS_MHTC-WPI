@@ -30,11 +30,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.model.Data.Metric;
-import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
+
+import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
+//import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.service.MetricService;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
+import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
 @Controller
 public class AdminController {
@@ -51,7 +54,10 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(Locale locale, Model model) {
+    public String admin(Locale locale, Model model) throws Exception {
+        Map<String, String> categories = DBLoader.getCategoryInfo();
+        
+        model.addAttribute("categories", categories);
         
         return "admin_tool";
     }
@@ -103,25 +109,27 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file) {
+    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) {
+    	
+    	System.out.println("\n\nCategory id from admin panel: " + categoryID);
+    	
         String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
         if (!file.isEmpty()) {
             try {
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(name));
-                stream.write(bytes);
-                stream.close();
-                
-                BufferedReader br = new BufferedReader(new FileReader(name));
-                String category = br.readLine().split(",")[0];
-                
-                System.out.println("\nCategory ="+category);
-                br.close();
+            	
+            	File localFile = new File(name);
+            	file.transferTo(localFile);
+//                byte[] bytes = file.getBytes();
+//                BufferedOutputStream stream =
+//                        new BufferedOutputStream(new FileOutputStream(name));
+//                stream.write(bytes);
+//                stream.close();
 //                
-////                System.out.println("Next Error Message is here");
+//                BufferedReader br = new BufferedReader(new FileReader(name));
+////                String category = br.readLine().split(",")[0];
+//                br.close();
                 
-                DataPipeline.run(new File(name), "" + getCatId(category));
+                DataPipeline.run(localFile, categoryID);
                 
                 return "You successfully uploaded " + name + " into " + name + "-uploaded !";
             } catch (Exception e) {
@@ -136,7 +144,7 @@ public class AdminController {
     
     
     private int getCatId(String catname) {
-        JdbcProcedure<Integer> call = new JdbcProcedure<Integer>(template).withSchemaName(
+        PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
                 "mhtc_sch").withProcedureName("getcategorybyname");
 
         call.addDeclaredRowMapper(new PSqlRowMapper<Integer>() {
@@ -153,9 +161,9 @@ public class AdminController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("inname", catname);
 
-        // TODO create new category if one does not exist
+        // TODO temp while testing
         return 2;
-//        return call.execute(params).get(0);
+        //return call.execute(params).get(0);
     }
     
 }

@@ -1,10 +1,9 @@
 package edu.wpi.mhtc.dashboard.pipeline.main;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.Iterator;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.DBData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
 import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedParser;
@@ -24,12 +23,8 @@ public class DataPipeline {
 		while (iter.hasNext()) {
 			Line line = iter.next();
 			try{
-				
-				
-//			TODO: enter data in db using line objects
-//				DBSaver.saveLine(line);
-				
-			}catch(Exception e){
+				DBSaver.saveLine(line);
+			}catch(SQLException e){
 				e.printStackTrace();
 				throw new RuntimeException(e);
 			}

@@ -44,7 +44,7 @@ public class StatsServiceJDBC implements StatsService
 	{
 
 		PSqlStringMappedJdbcCall<Data> call = new PSqlStringMappedJdbcCall<Data>(template).withSchemaName(
-				"mhtc_sch").withProcedureName("getdatabymetricandstate");
+				"mhtc_sch").withProcedureName("  ");
 
 		call.addDeclaredRowMapper(new PSqlRowMapper<Data>()
 			{

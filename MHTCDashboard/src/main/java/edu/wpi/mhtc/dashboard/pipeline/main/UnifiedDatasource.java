@@ -12,8 +12,7 @@ public class UnifiedDatasource {
 	private File file;
 	private FileType fileType = FileType.xlsx;
 	private ParserType parserType = ParserType.excel;
-	private LoadInfo loadInfo;	  //not sure what this is for?
-	private Category category;	  //set by user in admin panel, passes as arg to constructor
+	private int categoryID;	//set by user in admin panel, passes as arg to constructor
 
 	
 	
@@ -22,11 +21,14 @@ public class UnifiedDatasource {
 	
 //	TODO: check metrics defined in file against those associated with category in db
 //	TODO: handle creating new category in the db
-	public UnifiedDatasource(File file, String categoryName) throws Exception{
+	public UnifiedDatasource(File file, String categoryID) throws Exception{
 		this.file = file;
-		this.category = new Category(categoryName);
+		this.categoryID = Integer.parseInt(categoryID);
 	}
 	
+	public int getCategoryID(){
+		return categoryID;
+	}
 	
 	
 	
@@ -41,13 +43,6 @@ public class UnifiedDatasource {
 		return fileType;
 	}
 
-	public LoadInfo getLoadInfo() {
-		return loadInfo;
-	}
-	public void setLoadInfo(LoadInfo loadInfo) {
-		this.loadInfo = loadInfo;
-	}
-
 	public ParserType getParserType() {
 		return parserType;
 	}
@@ -59,17 +54,4 @@ public class UnifiedDatasource {
 	public boolean isUnified() {
 		return true;
 	}
-	
-	public int getCatId() {
-	    return category.getId();
-	}
-	
-//	not sure if this is needed?
-//	public void setCategory(Category category){
-//		this.category = category;
-//	}
-	
-	
-	
-
 }
