@@ -131,7 +131,6 @@ public class AdminController {
         
     }
     
-    
     private int getCatId(String catname) {
     	PSqlStringMappedJdbcCall <Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
                 "mhtc_sch").withProcedureName("getcategorybyname");
