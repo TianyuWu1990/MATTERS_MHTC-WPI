@@ -4,14 +4,15 @@
 <title>Login Page</title>
 </head>
 <body>
-    <h2>MATTERS Administrator Tool- Login Page</h2>
+    <h2>MATTERS Administrator Tool - Login Page</h2>
     <c:if test="${'fail' eq param.auth}">
         <div style="color:red">
                 Login Failed!!!<br />
                 Reason : ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
          </div>
     </c:if>
-    <form action="${pageContext.request.contextPath}/login" method="post">
+    <form action="${pageContext.request.contextPath}/admin/login" method="post">
+    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <table>
             <tr>
                 <td>Username:</td>
