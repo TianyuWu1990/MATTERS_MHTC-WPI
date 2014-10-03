@@ -146,7 +146,7 @@
 				</ul>
 				<h1 class="centered title">Massachusetts' Technology, Talent and Economy Reporting System</h1>
 				<ul class="nav navbar-nav navbar-right">
-					<form class="navbar-form navbar-left" action="<c:url value='j_spring_security_check' />" method="POST"
+					<form class="navbar-form navbar-left" action="<c:url value='admin/login' />" method="POST"
 						role="search">
 						<div class="form-group">
 							<input type="text" class="form-control" placeholder="username" name="username"> <input type="password"

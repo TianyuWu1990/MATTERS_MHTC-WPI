@@ -16,6 +16,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
@@ -44,6 +45,14 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/js/**").addResourceLocations(
 				"/js/");
 	}
+	
+	/*@Bean
+	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
+		RequestMappingHandlerMapping handlerMapping = new RequestMappingHandlerMapping();
+		handlerMapping.setUseSuffixPatternMatch(false);
+		handlerMapping.setUseTrailingSlashMatch(false);
+		return handlerMapping;
+	}*/ 
 	
 	@Bean
 	public PropertyPlaceholderConfigurer properties() {
