@@ -14,8 +14,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			edu.wpi.mhtc.dashboard.config.GlobalConfiguration,
-			spring-security.xml
+			edu.wpi.mhtc.dashboard.config.GlobalConfiguration
 		</param-value>
 	</context-param>
 
@@ -23,17 +22,6 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
-	<!-- Spring Security -->
- 	<filter>
- 		<filter-name>springSecurityFilterChain</filter-name>
- 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
- 	</filter>
- 
- 	<filter-mapping>
- 		<filter-name>springSecurityFilterChain</filter-name>
- 		<url-pattern>/*</url-pattern>
- 	</filter-mapping>
 
 	<!-- Processes application requests -->
 	<servlet>
@@ -46,8 +34,7 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				edu.wpi.mhtc.dashboard.config.GlobalConfiguration,
-				spring-security.xml
+				edu.wpi.mhtc.dashboard.config.GlobalConfiguration
 			</param-value>
 		</init-param>
 

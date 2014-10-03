@@ -31,9 +31,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebMvc
 @ComponentScan("edu.wpi.mhtc")
 @Configuration
-@ImportResource("classpath:spring-security.xml")
 @Import({ DevelopmentConfiguration.class, LocalConfiguration.class,
-		ProductionConfiguration.class })
+		ProductionConfiguration.class, SecurityConfig.class })
 public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
