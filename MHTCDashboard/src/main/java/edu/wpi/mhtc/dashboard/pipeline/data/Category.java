@@ -1,8 +1,8 @@
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 
+import edu.wpi.mhtc.dashboard.pipeline.config.MetricInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
 public class Category {
@@ -18,7 +18,7 @@ public class Category {
 	public Category(int id) throws Exception{
 		
 		this.id = id;
-		Metrics = MetricInfoConfig.getInstance().getMetrics(id);
+		metrics = MetricInfoConfig.getInstance().getMetrics(id);
 //		metrics = DBLoader.getMetricInfo(id); 
 		
 //		System.out.println("\n\nMETRICS");
