@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.wpi.mhtc.model.Data.Metric;
+import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
@@ -63,7 +64,26 @@ public class AdminController {
         return "loginPage";
     }
     /********** End authentication pages **********/
-
+    
+    /********** Admin manager page **********/
+    @RequestMapping(value = "admin/manage", method = RequestMethod.GET)
+    public String manage() {
+        return "admin_manager";
+    }
+    
+    @RequestMapping(value = "admin/account/create", method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String account_create(@RequestParam("Username") String username, @RequestParam("Password") String password, @RequestParam("Email") String email, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) {
+        Admin newAdmin = new Admin(username, password, email, firstName, lastName);
+        
+        try {
+			newAdmin.insertToDB();
+			return "Added";
+		} catch (SQLException e) {
+			return "Error!!!";
+		}
+    }
+    /********** End authentication pages **********/
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Locale locale, Model model) {
         
