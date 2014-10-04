@@ -71,16 +71,16 @@ public class AdminController {
         return "admin_manager";
     }
     
-    @RequestMapping(value = "admin/account/create", method = RequestMethod.POST)
-    @ResponseStatus(value = HttpStatus.OK)
-    public String account_create(@RequestParam("Username") String username, @RequestParam("Password") String password, @RequestParam("Email") String email, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) {
+    @RequestMapping(value = "admin/account/create", method = RequestMethod.POST, params = { "Username", "Password", "Email", "FirstName", "LastName"})
+    public @ResponseBody String account_create(@RequestParam("Username") String username, @RequestParam("Password") String password, @RequestParam("Email") String email, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) {
         Admin newAdmin = new Admin(username, password, email, firstName, lastName);
         
         try {
 			newAdmin.insertToDB();
 			return "Added";
 		} catch (SQLException e) {
-			return "Error!!!";
+			
+			return e.toString();
 		}
     }
     /********** End authentication pages **********/
