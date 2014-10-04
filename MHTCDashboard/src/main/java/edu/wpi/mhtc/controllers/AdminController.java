@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,18 @@ public class AdminController {
         this.service = service;
         this.template = template;
     }
+    
+    /********** Authentication **********/
+    @RequestMapping(value = "admin/logout", method = RequestMethod.GET)
+    public String logoutPage() {
+        return "logoutPage";
+    }
+    
+    @RequestMapping(value = "admin/login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "loginPage";
+    }
+    /********** End authentication pages **********/
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Locale locale, Model model) {
