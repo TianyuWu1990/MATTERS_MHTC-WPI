@@ -5,7 +5,7 @@
 </head>
 <body>
     <h2>MATTERS Administrator Tool - Login Page</h2>
-    <c:if test="${'fail' eq param.auth}">
+    <c:if test="${'' eq param.error}">
         <div style="color:red">
                 Login Failed!!!<br />
                 Reason : ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
