@@ -83,6 +83,25 @@ public class AdminController {
 			return e.toString();
 		}
     }
+    
+    @RequestMapping(value = "admin/account/change-password", method = RequestMethod.POST, params = {"oldPassword", "newPassword", "confirmPassword"})
+    public @ResponseBody String account_create(Principal principal, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword) throws SQLException {
+        Admin current = new Admin(principal.getName());
+        
+        switch (current.changePassword(oldPassword, newPassword, confirmPassword)) {
+        	case -1: return "Old password does not match";
+        	case -2: return "Please reconfirm your new password.";
+        	case -3: return "Cannot change the password. Please try again.";
+        	default: return "Changed password successfully"; 
+        }
+    } 
+    
+    @RequestMapping(value = "admin/account/reset-password", method = RequestMethod.POST, params = {"resetUsername"})
+    public @ResponseBody String reset_password(@RequestParam("resetUsername") String resetUsername) throws SQLException {
+    	Admin resetAdmin = new Admin(resetUsername);
+    	String newPassword = resetAdmin.resetPassword();
+        return "The new password for " + resetUsername + " is " + newPassword;
+    }        
     /********** End authentication pages **********/
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Locale locale, Model model) {

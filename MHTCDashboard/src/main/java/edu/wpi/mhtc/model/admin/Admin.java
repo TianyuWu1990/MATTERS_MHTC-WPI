@@ -2,6 +2,7 @@ package edu.wpi.mhtc.model.admin;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
@@ -13,6 +14,10 @@ public class Admin {
 	private String firstName;
 	private String lastName;
 	private String email;
+	
+	public Admin(String username) {
+		this.username = username;
+	}
 	
 	public Admin(String username,String password, String email,String firstName,String lastName) {
 		this.id = 0;
@@ -49,6 +54,61 @@ public class Admin {
 		} else {
 			return false;
 		}
+	}
+	
+	// Change password
+	static final int SUCCESS = 0;
+	static final int ERROR = -3;
+	static final int OLD_PASSWORD_NOT_MATCHED = -1;
+	static final int NEW_PASSWORD_NOT_MATCHED = -2;
+	public int changePassword(String oldPassword, String newPassword, String confirmPassword) throws SQLException {
+		// Security validation
+		String sql = "SELECT \"UserName\", \"PasswordHash\" FROM mhtc_sch.admins WHERE \"UserName\"=? AND \"PasswordHash\"=md5(?)";
+		Connection conn = DBConnector.getInstance().getConn();
+		PreparedStatement pstatement = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		pstatement.setString(1, this.username);
+		pstatement.setString(2, oldPassword);
+		pstatement.execute();
+		if (!pstatement.getResultSet().last()) { // Check if there is any matched row
+			return OLD_PASSWORD_NOT_MATCHED;
+		}
+		
+		if (!newPassword.equals(confirmPassword)) {
+			return NEW_PASSWORD_NOT_MATCHED;
+		}
+		
+		// Begin changing the password
+		return setNewPassword(newPassword);
+	}
+	
+	public String resetPassword() throws SQLException {
+		String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%";
+		StringBuffer buffer = new StringBuffer();
+		int charactersLength = characters.length();
+
+		for (int i = 0; i < 10; i++) { // Generate a random 10-chars password
+			double index = Math.random() * charactersLength;
+			buffer.append(characters.charAt((int) index));
+		}
+		
+		String newPassword = buffer.toString();
+		
+		if (this.setNewPassword(newPassword) == 0) {
+			return newPassword;
+		}
+		
+		return "";
+	}
+	
+	private int setNewPassword(String newPassword) throws SQLException {
+		String update_sql = "UPDATE mhtc_sch.admins SET \"PasswordHash\"=md5(?) WHERE \"UserName\"=?";
+		Connection conn = DBConnector.getInstance().getConn();
+		PreparedStatement pstatement = conn.prepareStatement(update_sql);
+		pstatement.setString(1, newPassword);
+		pstatement.setString(2, this.username);
+		pstatement.execute();	
+	
+		return (pstatement.getUpdateCount() == 1) ? 0 : -3;
 	}
 
 	// Getters
