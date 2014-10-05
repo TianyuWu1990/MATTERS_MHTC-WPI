@@ -40,7 +40,7 @@ public class Line {
 		if(metric.isValid()){
 			this.metric = metric;
 		}
-		else throw new Exception("Invalid Metric");
+		else throw new Exception("Invalid Metric for category ");
 	}
 
 	public int getYear() {

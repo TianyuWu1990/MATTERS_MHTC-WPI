@@ -46,4 +46,9 @@ public class Metric {
 		return value == null;
 	}
 
+	public void clearValue() {
+		value = null;
+		
+	}
+
 }

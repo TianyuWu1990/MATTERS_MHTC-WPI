@@ -1,102 +1,86 @@
 package edu.wpi.mhtc.dashboard.pipeline.parser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import edu.wpi.mhtc.dashboard.pipeline.data.Category;
+import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.main.Category;
-import edu.wpi.mhtc.dashboard.pipeline.main.Line;
+import edu.wpi.mhtc.dashboard.pipeline.data.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.main.UnifiedDatasource;
 
 public class UnifiedParser implements IParser {
 	
-	private Category category;
-	private ArrayList<String> columnNames;
+	private ArrayList<String> columnNames;	//holds column names from header in order
 	private ArrayList<Line> lines;
 	private XSSFWorkbook workbook;
+	private Sheet sheet;			//files in unified format only have one sheet
+	private Category category;
+	private int headerRow;			//files in unified format have a header with columns "year" and "state" and one or more metric names
 	private int startRow;
 	private int endRow;
 
-//	exception comes from category creation
-	public UnifiedParser(UnifiedDatasource source) throws Exception {
+	/**
+	 * 
+	 * @param source
+	 * @throws UnifiedFormatException if file does not conform to Unified Format.
+	 * @throws CategoryException if metrics defined in file are not associated with it's category in the database.
+	 * @throws IOException 
+	 * @throws InvalidFormatException 
+	 */
+	public UnifiedParser(UnifiedDatasource source) throws UnifiedFormatException, CategoryException, InvalidFormatException, IOException{
 		
-		this.columnNames = new ArrayList<String>();
-		this.lines = new ArrayList<Line>();
 		this.workbook = (XSSFWorkbook) WorkbookFactory.create(source.getFile());
-		this.category = new Category(source.getCategoryID());
-		this.getStartAndEndRow();
+		
+		this.sheet = workbook.getSheetAt(0);	//files in unified format only have one sheet
+
+		this.headerRow = findHeader();						//find file header
+		
+		this.category = source.getCategory();
+		
+		validateMetricNames(category);			//verify that the metric column names match the metrics for this source's category
+												//also sets the columnNames
+		
+		this.lines = new ArrayList<Line>();
+		this.getStartAndEndRow(headerRow);
 		
 	}
 	
-//	for now, start on row 2. Assume row 0 is a title, row 1 is header
-	private void getStartAndEndRow() {
-		
-			Sheet sheet = this.workbook.getSheetAt(0);
-			this.startRow = 2;
-			this.endRow = sheet.getLastRowNum() + 1;
-
-	}
 	
-//	could have a check that column names match metrics for this category here
-	@Override
-	public List<String> getColumnNames() {
-		if (this.columnNames.isEmpty()) {
-			Sheet sheet = this.workbook.getSheetAt(0);
-			Row row = sheet.getRow(this.startRow - 1);
-			Cell cell = null;
-			for (int j = row.getFirstCellNum(); j < row.getLastCellNum(); j++) {
-				cell = row.getCell(j);
-				if (cell.getCellType() == 1) {
-					this.columnNames.add(cell.getStringCellValue()
-							.toLowerCase());
-				}
-			}
-		}
-		return this.columnNames;
-	}
-
 	
-//	placeholder for now
-	@Override
-	public FileData parseAll() {
-		return new FileData(null);
-	}
 	
 	
 //	this populates the lines list with Line objects. Then can call getLineIterator() to access them.
 //	TODO: data should be cleaned before it is parsed?? Where/when does that happen?
-	public void parseAll(int placeholder){
+	public void parseAll(int placeholder) throws Exception{
 
-		getColumnNames();
-		lines.clear();
-
-		for (int i = 0; i < this.workbook.getNumberOfSheets(); i++) {
-			Sheet sheet = this.workbook.getSheetAt(i);
-			
-			Line line = null;
-			for (int j = this.startRow; j < this.endRow; j++) {
+		lines.clear();		
+		Line line = null;
+			for (Row row : sheet) {
 				
-				Row row = sheet.getRow(j);
-				Cell cell;
-				
-				if (containsData(row)){
+				if (!isRowEmpty(row)){
 					
 					line = new Line();
-					for (int k = row.getFirstCellNum(); k < row.getLastCellNum(); k++) {
-						cell = row.getCell(k);
+					
+					for (Cell cell : row) {
+						
 						if (cell != null){
 							
-							String columnName = columnNames.get(k);
+							String columnName = columnNames.get(cell.getColumnIndex());
 							
-							if(columnName.equalsIgnoreCase("year")){
+							if(columnName.equalsIgnoreCase("year")){	
+								
 								if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
 									line.setYear(String.valueOf((int) cell.getNumericCellValue()));
 								}
@@ -106,12 +90,20 @@ public class UnifiedParser implements IParser {
 							}
 							
 							else if(columnName.equalsIgnoreCase("state") && (cell.getCellType() == Cell.CELL_TYPE_STRING)){
-								line.setState(cell.getStringCellValue());
+								try {
+									line.setState(cell.getStringCellValue());
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 							
 							else{
-								int id = category.getMetricID(columnName);
+								
+								Metric metric = category.getMetric(columnName);
+								
 								Float value = null;
+								
 								switch (cell.getCellType()) {
 								
 								case Cell.CELL_TYPE_NUMERIC:
@@ -121,15 +113,20 @@ public class UnifiedParser implements IParser {
 								case Cell.CELL_TYPE_STRING:
 									value = Float.parseFloat(cell.getStringCellValue());
 									break;
+									
 								case Cell.CELL_TYPE_BOOLEAN:
 //									TODO: not sure what values boolean metrics have in db, if they are ever stored
 //									value =
 									break;
+									
 								default:
 									break;
 								}
-								if(value != null)
-									line.addMetric(columnName, id, value);
+								
+								if(value != null){
+									metric.setValue(value);
+									line.addMetric(metric);
+									metric.clearValue();
 							}
 						}
 					} 
@@ -139,50 +136,102 @@ public class UnifiedParser implements IParser {
 			}
 		}
 	}
-				
-		
 	
-
-
-
-
+	
 	
 	public Iterator<Line> getLineIterator(){
 		return lines.iterator();
 	}
 	
 	
-	private boolean containsData(Row row){
+	private int findHeader() throws UnifiedFormatException{
+		for (Row row : sheet) {
+	        for (Cell cell : row) {
+	            if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+	            	
+	                if (cell.getRichStringCellValue().getString().trim().equalsIgnoreCase("year") 
+	                		|| cell.getRichStringCellValue().getString().trim().equalsIgnoreCase("state")) {
+	                	
+	                    return row.getRowNum();  
+	                }
+	            }
+	        }
+	    }
+		throw new UnifiedFormatException("No header found!!");
+	}
+	
+	
+	
+	private void getStartAndEndRow(int headerRow) {
 		
-		if (row != null ) {
-			Cell cell = row.getCell(0);
-			
-			boolean isString = cell.getCellType() == Cell.CELL_TYPE_STRING 
-					&& cell.getStringCellValue().trim().length() != 0;
-			boolean isNumeric = cell.getCellType() == Cell.CELL_TYPE_NUMERIC;
-			
-			return cell != null && (isString || isNumeric);
+		while (isRowEmpty(sheet.getRow(headerRow))){
+				headerRow++;
 		}
-		else 
-			return false;
+		this.startRow = headerRow + 1;
+		this.endRow = sheet.getLastRowNum() + 1;
+
+	}
+	
+	
+	
+	private boolean isRowEmpty(Row row) {
+	    for (int c = row.getFirstCellNum(); c <= row.getLastCellNum(); c++) {
+	        Cell cell = row.getCell(c);
+	        if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
+	            return false;
+	    }
+	    return true;
 	}
 
+	
+
+	private void validateMetricNames(Category category) throws CategoryException{
+		Row row = sheet.getRow(headerRow);
+		for (Cell cell : row) {
+			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+				String metricName = cell.getStringCellValue().trim().toLowerCase();
+				category.validateMetric(metricName);
+				this.columnNames.add(metricName);
+			}
+		}		
+	}	
+	
+
+
+
+//	placeholders
 	@Override
 	public Iterator<LineData> iterator() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Override
+	public FileData parseAll() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<String> getColumnNames() {
+		return this.columnNames;
+	}
 	
-	
-	
-	
-	
-	
-	
-
 	
 	
 	
 
 }
+
+
+
+
+class UnifiedFormatException extends Exception {
+
+	public UnifiedFormatException(String message) {
+        super(message);
+    }
+
+    public UnifiedFormatException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+}
+

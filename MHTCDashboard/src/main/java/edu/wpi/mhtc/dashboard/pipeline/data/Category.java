@@ -8,24 +8,21 @@ import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 public class Category {
 	
 	private int id;
-	
-//	key is the metric name, value is the metric ID
 	private List<Metric> metrics;
-	
-	
-//	if category is not found in db, throws an exception
-//	(I think. should chase this down and see exactly what cause of the exceptions thrown by db methods are) 
-	public Category(int id) throws Exception{
+/**
+ * 
+ * @param id
+ * @throws Exception if metrics cannot be found for Category in database.
+ */
+	public Category(int id) throws CategoryException{
 		
 		this.id = id;
-		metrics = MetricInfoConfig.getInstance().getMetrics(id);
-//		metrics = DBLoader.getMetricInfo(id); 
-		
-//		System.out.println("\n\nMETRICS");
-//		for(Entry<String, String> e: metrics.entrySet()){
-//			System.out.println(e.getKey());
-//			System.out.println(e.getValue());
-//		}
+		try{
+			metrics = MetricInfoConfig.getInstance().getMetrics(id);
+		}
+		catch(Exception e){
+			throw new CategoryException("Cannot retrieve metrics for Category "+id+ " from database", e);
+		}
 	}
 	
 	public int getId(){
@@ -42,12 +39,34 @@ public class Category {
 		return DBLoader.insertNewCategory(name, parentID, source);
 	}
 
-	
-	public int getMetricID(String name) {
+	/**
+	 * 
+	 * @param name
+	 * @return Metric
+	 * @throws Exception if the name does not match any metrics associated with this Category in the database
+	 */
+	public Metric getMetric(String name) throws CategoryException {
 		
-		String metricID = metrics.get(name);
-		System.out.println("\n\nMETRIC ID IS: " + metricID);
-		return Integer.parseInt(metricID);
+		for(Metric metric: metrics){
+			if(name.equals(metric.getName())) return metric;
+		}
+		throw new CategoryException("No metric in this category matches name "+name);
+	}
+	
+	public boolean containsMetric(String name){
+		for(Metric metric: metrics){
+			if(name.equals(metric.getName())) return true;
+		}
+		return false;
+	}
+	
+	public void validateMetric(String name) throws CategoryException{
+		for(Metric metric: metrics){
+			if(name.equals(metric.getName())) return;
+		}
+		throw new CategoryException("No metric in this category matches name "+name);	
 	}
 	
 }
+
+
