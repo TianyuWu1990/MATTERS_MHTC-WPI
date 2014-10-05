@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.wpi.mhtc.model.Data.Metric;
+import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
@@ -50,7 +52,57 @@ public class AdminController {
         this.service = service;
         this.template = template;
     }
-
+    
+    /********** Authentication **********/
+    @RequestMapping(value = "admin/logout", method = RequestMethod.GET)
+    public String logoutPage() {
+        return "logoutPage";
+    }
+    
+    @RequestMapping(value = "admin/login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "loginPage";
+    }
+    /********** End authentication pages **********/
+    
+    /********** Admin manager page **********/
+    @RequestMapping(value = "admin/manage", method = RequestMethod.GET)
+    public String manage() {
+        return "admin_manager";
+    }
+    
+    @RequestMapping(value = "admin/account/create", method = RequestMethod.POST, params = { "Username", "Password", "Email", "FirstName", "LastName"})
+    public @ResponseBody String account_create(@RequestParam("Username") String username, @RequestParam("Password") String password, @RequestParam("Email") String email, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) {
+        Admin newAdmin = new Admin(username, password, email, firstName, lastName);
+        
+        try {
+			newAdmin.insertToDB();
+			return "Added";
+		} catch (SQLException e) {
+			
+			return e.toString();
+		}
+    }
+    
+    @RequestMapping(value = "admin/account/change-password", method = RequestMethod.POST, params = {"oldPassword", "newPassword", "confirmPassword"})
+    public @ResponseBody String account_create(Principal principal, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword) throws SQLException {
+        Admin current = new Admin(principal.getName());
+        
+        switch (current.changePassword(oldPassword, newPassword, confirmPassword)) {
+        	case -1: return "Old password does not match";
+        	case -2: return "Please reconfirm your new password.";
+        	case -3: return "Cannot change the password. Please try again.";
+        	default: return "Changed password successfully"; 
+        }
+    } 
+    
+    @RequestMapping(value = "admin/account/reset-password", method = RequestMethod.POST, params = {"resetUsername"})
+    public @ResponseBody String reset_password(@RequestParam("resetUsername") String resetUsername) throws SQLException {
+    	Admin resetAdmin = new Admin(resetUsername);
+    	String newPassword = resetAdmin.resetPassword();
+        return "The new password for " + resetUsername + " is " + newPassword;
+    }        
+    /********** End authentication pages **********/
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Locale locale, Model model) {
         
