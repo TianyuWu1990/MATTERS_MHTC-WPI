@@ -7,18 +7,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.DBData;
-import edu.wpi.mhtc.dashboard.pipeline.main.Line;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 public class DBSaver {
 
 	/*
 	 * save line data into DB
 	 */
-
+	
 	public static void saveLine(Line line) throws SQLException {
 		
 		Connection conn = DBConnector.getInstance().getConn();
-		String sql = "insert into mhtc_sch.statistics values(?, ?, ?, ?) on duplicate  ";
+		String sql = "insert into mhtc_sch.statistics values(?, ?, ?, ?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
 		pstatement.setInt(2, line.getMetricID()); // set parameter 2 (ID)

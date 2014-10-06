@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.config.MetricInfoConfig;
@@ -12,18 +13,16 @@ public class Category {
 /**
  * 
  * @param id
+ * @throws SQLException 
  * @throws Exception if metrics cannot be found for Category in database.
  */
-	public Category(int id) throws CategoryException{
+	public Category(int id) throws CategoryException, SQLException{
 		
 		this.id = id;
-		try{
-			metrics = MetricInfoConfig.getInstance().getMetrics(id);
-		}
-		catch(Exception e){
-			throw new CategoryException("Cannot retrieve metrics for Category "+id+ " from database", e);
-		}
+		metrics = MetricInfoConfig.getInstance().getMetrics(id);
+		
 	}
+	
 	
 	public int getId(){
 		return id;
@@ -50,16 +49,15 @@ public class Category {
 		for(Metric metric: metrics){
 			if(name.equals(metric.getName())) return metric;
 		}
-		throw new CategoryException("No metric in this category matches name "+name);
+		throw new CategoryException("No metric in this category matches "+name);
 	}
 	
-	public boolean containsMetric(String name){
-		for(Metric metric: metrics){
-			if(name.equals(metric.getName())) return true;
-		}
-		return false;
-	}
 	
+	/**
+	 * A valid metric will be associated with this category in the database.
+	 * @param Metric name
+	 * @throws CategoryException if this is not one of the category's metrics.
+	 */
 	public void validateMetric(String name) throws CategoryException{
 		for(Metric metric: metrics){
 			if(name.equals(metric.getName())) return;

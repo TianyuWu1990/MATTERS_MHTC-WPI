@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
 
 
@@ -19,7 +20,7 @@ public class DBLoader {
 	/*
 	 * key is the state name, value is the state ID
 	 */
-	public static List<State> getStateMapper() throws Exception{
+	public static List<State> getStateMapper() throws SQLException{
 		List<State> stateList = new LinkedList<State>();
 		Connection conn = DBConnector.getInstance().getConn();
 		Statement statement = conn.createStatement();
@@ -49,7 +50,14 @@ public class DBLoader {
 	/*
 	 * key is the metric name, value is the metric ID
 	 */
-	public static Map<String, String> getMetricInfo(String catID) throws Exception{
+	/**
+	 * 
+	 * @param catID
+	 * @returnA Map of metrics associated with this category in the database.
+	 * The key is the metric name, value is the metric ID
+	 * @throws SQLException
+	 */
+	public static Map<String, String> getMetricInfo(String catID) throws SQLException{
 		HashMap<String, String> table = new HashMap<String, String>();
 		Connection conn = DBConnector.getInstance().getConn();
 		
@@ -74,9 +82,18 @@ public class DBLoader {
 	
 //	added by ck, called by category ID
 	/*
-	 * key is the metric name, value is the metric ID
+	 * 
 	 */
-	public static Map<String, String> getMetricInfo(int catID) throws Exception{
+	
+	/**
+	 * 
+	 * @param catID
+	 * @return A Map of metrics associated with this category in the database.
+	 * The key is the metric name, value is the metric ID
+	 * @throws SQLException
+	 * @throws CategoryException if no metrics are found for this category
+	 */
+	public static Map<String, String> getMetricInfo(int catID) throws SQLException, CategoryException {
 		
 		HashMap<String, String> table = new HashMap<String, String>();
 		Connection conn = DBConnector.getInstance().getConn();
@@ -87,23 +104,29 @@ public class DBLoader {
 		pstatement.setInt(1, catID); // set parameter 1 catID
 		ResultSet rs = pstatement.executeQuery();
 		
-		try {	
-			while (rs.next()) {
-				String metricID = rs.getString("Id").toLowerCase();
-				String metricName = rs.getString("Name").toLowerCase();
-				table.put(metricName, metricID);
-            }
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(!rs.next()){
+			throw new CategoryException("No metrics in DB for category "+catID);
 		}
+		
+		while (rs.next()) {
+			String metricID = rs.getString("Id").toLowerCase();
+			String metricName = rs.getString("Name").toLowerCase();
+			table.put(metricName, metricID);
+		}    
 		return table;
 	}
 	
 	
 	
 	
-
-	public static int getCategoryId(String categoryName) throws Exception{
+	/**
+	 * 
+	 * @param categoryName
+	 * @return categoryID associated with this name in database
+	 * @throws SQLException
+	 * @throws CategoryException if no categoryID is found
+	 */
+	public static int getCategoryId(String categoryName) throws SQLException, CategoryException{
 		
 		Connection conn = DBConnector.getInstance().getConn();
 		String sql = "select * from mhtc_sch.getcategorybyname(?)";
@@ -112,7 +135,7 @@ public class DBLoader {
 		ResultSet rs = pstatement.executeQuery();
 		
 		if(!rs.next()){
-			throw new Exception("No ID found in DB for category "+categoryName);
+			throw new CategoryException("No ID found in DB for category "+categoryName);
 		}
 		
 		else
@@ -124,7 +147,7 @@ public class DBLoader {
 //	If this method passed a category name that is already present in the db
 //	it will insert a duplicate with a different id
 
-	public static boolean insertNewCategory(String name, String parentID, String source) throws Exception{
+	public static boolean insertNewCategory(String name, String parentID, String source) throws SQLException {
 		
 		Connection conn = DBConnector.getInstance().getConn();
 		
@@ -149,7 +172,7 @@ public class DBLoader {
 	}
 	
 //	Category must exist in db already !!!
-	public static boolean insertNewMetric(String metricName, boolean b, int categoryID, String dataType) throws Exception{
+	public static boolean insertNewMetric(String metricName, boolean b, int categoryID, String dataType) throws SQLException {
 		
 		Connection conn = DBConnector.getInstance().getConn();
 		
@@ -180,7 +203,7 @@ public class DBLoader {
 	 * @return A map containing the category names as the key, and IDs as the value
 	 * @throws Exception
 	 */
-	public static Map<String, String> getCategoryInfo() throws Exception {
+	public static Map<String, String> getCategoryInfo() throws SQLException {
 		HashMap<String, String> table = new HashMap<String, String>();
 		Connection conn = DBConnector.getInstance().getConn();
 		

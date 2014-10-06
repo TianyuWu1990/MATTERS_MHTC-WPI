@@ -7,10 +7,11 @@ public class Metric {
 	private Float value;
 	
 	/**
-	 * 
+	 * One value stored in the database is represented as a Metric object. It is associated with only one category.
 	 * @param name
 	 * @param id metricID in database
 	 */
+	
 	public Metric(String name, int id){
 		this.name = name;		
 		this.id = id;
