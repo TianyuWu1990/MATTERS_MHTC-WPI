@@ -89,18 +89,22 @@ var CM = (function($) {
 				document.getElementById("graphTitleMultipleQuery").innerHTML = this.graph_title_prefix + "Multiple metrics selected";
 					this.kcounterexecute=0;
 					this.multiDataMultipleQuery=[];
+					
 					for(this.kcounter=0; this.kcounter<selected_multiple_metrics.length;this.kcounter++){
+						//alert("passing : this.kcounter "+this.kcounter+" "+selected_multiple_metrics[this.kcounter]);
+						this.multiDataMultipleQuery=[];
 						query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[this.kcounter]).getName());
-						
+						//alert("selected_multiple_metrics[this.kcounter]: "+selected_multiple_metrics[this.kcounter]);
 						query.execute(function(multiData) {
 							cm.multiDataMultipleQuery[cm.kcounterexecute]=multiData;
+							//alert("this.multiDataMultipleQuery[this.kcounter][0][0].metric.name: "+cm.multiDataMultipleQuery[cm.kcounterexecute][0][0].metric.name);
 							cm.kcounterexecute++;
 						});
 					}
 					
+					
+						//alert(this.multiDataMultipleQuery.length);
 					setTimeout(function() {	
-						
-						
 						var array_years=cm.getMultipleYearsMetricState(states,cm.multiDataMultipleQuery);
 					    $("#yearsMultipleQuery").removeClass("hidden");
 					    var sel = $("#yearsMultipleQuery");
@@ -117,8 +121,14 @@ var CM = (function($) {
 		    			}
 						
 						var row="<th>&nbsp;</th>";
-						for(cm.kcounter=0;cm.kcounter<cm.multiDataMultipleQuery.length;cm.kcounter++){
-							row = row + "<th>"+cm.multiDataMultipleQuery[cm.kcounter][0][0].metric.name+"</th>";
+						//alert(cm.multiDataMultipleQuery.length);
+						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
+							row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";
+							
+							//alert("cm.multiDataMultipleQuery[cm.kcounter][0][0].metric.name: "+cm.multiDataMultipleQuery[cm.kcounter][0][0].metric.name);
+							
+							//alert("k: "+k+" cm.kcounter "+cm.kcounter+" Product"+cm.multiDataMultipleQuery[cm.kcounter][0][0].metric.name);
+							
 						}
 						row = "<tr>" +row +"</tr>"; 
 						table.append(row);
@@ -126,30 +136,46 @@ var CM = (function($) {
 						var data = new Array();
 						var current_state="-1";
 						var band;
+						var foundvalue;
+						var sentinel;
+						var w;
 						for(var j=0; j<states.length; j++){
 							if(current_state!=states[j]){
 								current_state=states[j];
 								band=false;
 							}
 							
-							for(cm.kcounterexecute=0;cm.kcounterexecute<cm.multiDataMultipleQuery.length;cm.kcounterexecute++){
-								
-								for(var w=0;w<cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints.length; w++){
-									
-									if(cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints[w].year==cm.year_selected){
+							for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
+								foundvalue=false;
+								sentinel=false;
+								w=0;
+								while((w<cm.multiDataMultipleQuery[r][j][0].dataPoints.length)&&(!sentinel)){
+								//for(var w=0;w<cm.multiDataMultipleQuery[r][j][0].dataPoints.length; w++){
+									/*alert("UPPER HEADER: "+r+" "+cm.multiDataMultipleQuery[r][0][0].metric.name);
+									alert("Value: "+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value);
+									alert("Year: "+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year);
+									alert("Year selected: "+cm.year_selected);*/
+									if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year==cm.year_selected){
 										if(!band){
-											row = "<th>" + cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].state.name + "</th>";
+											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.name + "</th>";
 											band=true;
 										}
-										if(cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints[w].value!=null)	
-											row = row +"<td>"+cm.multiDataMultipleQuery[cm.kcounterexecute][j][0].dataPoints[w].value+"</td>";
-										else
-											row = row +"<td>NV</td>";
+										
+										if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value!=null){
+											row = row +"<td>"+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value+"</td>";
+											foundvalue=true;
+											//alert("VALUE NOT NULL " +cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value);	
+										}
+									sentinel=true;		
 									}
-									
-									
+								w++;
 								}
-								
+								if(!band){
+									row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.name + "</th>";
+									band=true;
+								}
+								if(!foundvalue)	
+									row = row +"<td>NV</td>";
 									
 							}
 							if(band){ 

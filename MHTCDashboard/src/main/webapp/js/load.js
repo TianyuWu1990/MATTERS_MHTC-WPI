@@ -1,5 +1,10 @@
  var global_timer = null;
-// Hack that gets called when clicking on a button or when scrolling the div, flips the dropdown if it will make it display better
+ var year_global=-1;
+
+ var globalcounter=0;
+
+ // Hack that gets called 
+ //when clicking on a button or when scrolling the div, flips the dropdown if it will make it display better
 adjustDropDown = function(e) {
     setTimeout(function() {
         var divWithScroll = $("#sidebar div.active");
@@ -76,7 +81,7 @@ getStyleRuleValue=function(styleName, className) {
 	        g: parseInt(result[2], 16),
 	        b: parseInt(result[3], 16)
 	    } : null;
-	}
+	};
   /**
    * Converts an RGB color To HEXA
    */
@@ -182,12 +187,21 @@ getNewColor=function(hexcolor,value,highest){
 };  
 
 animateHeatMap=function(){
-	var array_years=[2013,2012,2011];
-	for (var i=0; i<array_years.length; i++) {
-		//console.log("YEAR "+array_years[i]);
-		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', array_years[i]);
+	var limit=array_years_global.length;
+	if(year_global==-1)
+	
+	
+		year_global=array_years_global[globalcounter];
+		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_global);
+		globalcounter++;
+		if(globalcounter==limit){
+			year_global=-1;
+			globalcounter=0;
+		}else{
+			year_global=array_years_global[globalcounter];
+		}
 		
-	  }
+		
 
 }; 
 stopHeatMapAnimation=function() {
@@ -218,23 +232,41 @@ loadFunction = function() {
 	$("#yearHeatMap").change(function(){
 		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', this.value);
 	});
+	
+	
 	$( "#playbuttonanimation" ).click(function() {
-		///$("#yearHeatMap").prop('disabled', true);
 		
-		$("#stopbuttonanimation").prop('disabled', false); 
+			
 		if (!global_timer)
-			global_timer = setInterval(animateHeatMap,4500);
+			global_timer = setInterval(animateHeatMap,3500);
+		$("#stopbuttonanimation").prop('disabled', false); 
+		$("#playbuttonanimation").prop('disabled', true);
 
 		
 		//as.startPlayer(as.currentind,as.current_tab_style, '#mbodyHeatMap',  true);
 	});
 	$( "#stopbuttonanimation" ).click(function() {
-		$("#yearHeatMap").prop('disabled', false);
+		//$("#yearHeatMap").prop('disabled', false);
 		stopHeatMapAnimation();
-        //alert( "The animation has ended" );
+		$("#stopbuttonanimation").prop('disabled', true); 
+		$("#playbuttonanimation").prop('disabled', false);
+		global_timer = null;
+		year_global=-1;
+		globalcounter=0;
 	});
 	$("#yearsMultipleQuery").change(function(){
 		as.showMultipleMetricsStatesYears(this.value);
+	});
+	 $( "#timeline").hover( function(){
+		 for(t=1950;t<2099;t++){ // The idea is to pick whatever possible year in the time line. Since it is dynamic I could not find a better way
+			 $( "#click"+t ).click(function(){
+				 var year_in;
+				 var currentId = $(this).attr('id');
+				 year_in=currentId.substr(5, 4);
+				 as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
+			});
+		 }
+		 
 	});
 	
 };

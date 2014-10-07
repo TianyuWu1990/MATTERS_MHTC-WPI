@@ -324,15 +324,15 @@ table.table tbody tr td.tabbed_metric
  {
  background-color:#CBFFF2;	 /**#7ECB98;**/
  }
+ 
 /*
  #national tbody tr:hover tr td{
-  background-color:#D0A9F5;	 /**#7ECB98;**/
+  background-color:#D0A9F5;	 #7ECB98;  }
  
- }
-*/
+ */
 #talent tbody tr:hover td
  {
- background-color:#F27B7B;
+ background-color: #F27B7B;
  }
  #cost tbody tr:hover td
  {

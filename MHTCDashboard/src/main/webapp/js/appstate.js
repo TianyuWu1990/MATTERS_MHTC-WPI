@@ -8,7 +8,8 @@ var AS= (function($) {
     	this.currentind = 0; 
 		this.stateAbbr = "MA";	
 		this.multiMode = false; 
-		this.selected = ['MA']; 
+		this.selected = ['MA'];
+		
 		this.current_tab = 'national'; 
 		this.stateColor="#666";
 		this.stateHoverColor='purple';
@@ -19,6 +20,7 @@ var AS= (function($) {
 		this.current_tab_style="#profiletab a";
 		this.selected_multiple_metrics=[]; /********Array where multiple metrics selected are stored*********/
 		this.selected_multiple_years=[];/********Array where multiple years selected are stored*********/
+		var array_years_global=[];
     }
 
       AppState.prototype.selectState = function(state) {
@@ -145,8 +147,8 @@ var AS= (function($) {
 	             
 	            }
 	    });
-	     
-	}
+	    
+	};
     /*
      * Gets the array of year in which the metric appears. 
      */
@@ -171,10 +173,10 @@ var AS= (function($) {
     	if(!this.multiMode) /** This was causing a weird error specially because the dropdown menu was heatmapping other metrics*/
     		this.currentind=ind;
     	
-    	var selected_states= States.getAllstates().map(function(s) {
+    	var selected_states_global= States.getAllstates().map(function(s) {
     		return s.abbr;
     	});
-     	var query = DQ.create().addState(selected_states).addMetric(Metrics.getMetricByID(this.currentind).getName());
+     	var query = DQ.create().addState(selected_states_global).addMetric(Metrics.getMetricByID(this.currentind).getName());
         query.execute(function(
                 multiData) {
         		setTimeout(function() {
@@ -198,16 +200,17 @@ var AS= (function($) {
         			  */    			
 						
 					
+        			
         			var array_years=as.getYearsMetric(multiData);
-        			var sel = $("#yearHeatMap");
+        			array_years_global=as.getYearsMetric(multiData);///HAVE TO MAKE THIS CALL. WIL ELIMINATE ONE OR THE OTHER
+        			
+        			/*var sel = $("#yearHeatMap");
         			sel.empty();
         			var size_tam=array_years.length-1;
-        			/*if(year_in!=-1){
-        				//sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
-        			}*/
-        			console.log("outside "+year_in);
-        			array_years.sort(function(a,b){return b - a}); 
-        			for(var k=0; k<array_years.length; k++){
+        			*/
+        			array_years.sort(function(a,b){return b - a});
+        			array_years_global.sort(function(a,b){return a - b});
+        			/*for(var k=0; k<array_years.length; k++){
         				if(year_in!=array_years[k]){
         					console.log("array_years "+array_years[k]);
         					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
@@ -218,13 +221,30 @@ var AS= (function($) {
         					sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
         				}
         					
-        			}
+        			}*/
         			/*******************************************************************************/
         			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
         			/*******************************************************************************/
         			if(year_in==-1){
 						year_in = array_years[0];
+						//alert(year_in);
 					}
+        			
+        			var seltimeline=$("#timeline");
+					seltimeline.empty();
+				
+					seltimeline.append('<table ><tr>');
+					for(var k=array_years.length-1; k>=0; k--){
+						if(year_in!=array_years[k]){
+							seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-default" id="click'+array_years[k]+'"><li  >'+array_years[k]+'</li></button></td><td></td>');
+						}else{
+							seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-primary btn-right" ><li id="click"+'+array_years[k]+'>'+year_in+'</li></button></td><td></td>');
+						}
+					}
+					seltimeline.append('</tr></table>');
+        			
+						
+ 					
         			var j;
         			var sentinel;
         			for(var i=0; i<multiData.length; i++){
@@ -264,20 +284,24 @@ var AS= (function($) {
     			$(tag_id).usmap({
     		        
     		        'stateStyles': {
+    		        	
     		            fill: this.stateColor,
     		            stroke: "#FFF",
     		            "stroke-width": 1.1,
     		            "stroke-linejoin": "bevel",
-    		            scale: [1.1, 1.1]
+    		            scale: [1.1, 1.1],
+    		            
+    		            
     		          },
     		          'stateHoverStyles': {
     		            fill: "#FFCCFF",
     		            stroke: "#FFF",
     		            scale: [1.1, 1.1]
     		          },
-    		         
+    		          
     		          'showLabels' : false,
-    		         
+    		        
+    		          
     		          'mouseover': function(event, data){
     		        	  	  			var found = $.map(as.ordered_states_metrics, function(val,i) {
     		        	  	  			var indexcounter;
@@ -304,27 +328,194 @@ var AS= (function($) {
     		        		  }
     		        		  
     		        		}); 
+    		        	  	  		
     		        	  $("#graphStatesHeatMapPos0").text("State: "+States.getStateByAbbreviation(data.name).name);
     		        	  $("#graphStatesHeatMapPos1").text(found[0]);
     		            },
     		            
     		            'mouseout': function(event, data){
     		              $("#graphStatesHeatMapPos0").text("Selected States: All States");
-    		              $("#graphStatesHeatMapPos1").text("");
-    		            }
+    		              $("#graphStatesHeatMapPos1").text("Ranking");
+    		            },
     		    });
-        	    for(var i=0; i<as.ordered_states_metrics.length;i++){
+    			var selheatmapmeter=$("#heatmapmeter");
+				selheatmapmeter.empty();
+				var arrayNewColor=[];
+				for(var i=0; i<as.ordered_states_metrics.length;i++){
         	    	if(multiData[0][0].metric.binName!="National"){
         	    		newColor=getNewColor(baseColor,as.ordered_states_metrics[i].value_element,as.ordered_states_metrics[0].value_element);
         	    	}
         	    	else{
         	    		newColor=getNewColor(baseColor,as.ordered_states_metrics[0].value_element-as.ordered_states_metrics[i].value_element +1,as.ordered_states_metrics[0].value_element);
-        	    		
-        	    		
-        	    	}      
+        	    	}
+        	    	arrayNewColor[i]=newColor;
+        	    	//selheatmapmeter.append('<td  valign="top" bgcolor="'+newColor+'">&nbsp;&nbsp;</td>');
         	    	$(tag_id).usmap('changeStateColor',  as.ordered_states_metrics[i].state_element, newColor);
         				
         		}
+/****************************************************************************/
+/* THIS PART COULD BE IMPROVED THIS JUST SHOWS THE BAR degraded. 
+ * The only problem is the way it degrades either in increasiung order
+ * or decreseing order depending on the metric**/
+/****************************************************************************/
+ 				
+				selheatmapmeter.append('<table border="1" cellpadding=0  cellspacing="0">');
+				var r;
+				var return_value_element;
+				
+        	    if(multiData[0][0].metric.binName=="National"){
+        	    	selheatmapmeter.append('<tr>');
+        	    	for(var i=0; i<as.ordered_states_metrics.length;i++){
+        	    		if(as.ordered_states_metrics[i].metricType=="percentage")
+  	  						return_value_element= Math.round((as.ordered_states_metrics[i].value_element*100)*100)/100+"%";
+        	    		else
+        	    			return_value_element=as.ordered_states_metrics[i].value_element;
+        	    		if((i==0)||(as.ordered_states_metrics[i].state_element==as.stateAbbr)){
+            	    		selheatmapmeter.append('<td><strong>'+ as.ordered_states_metrics[i].state_element+':</strong> '+return_value_element+'&nbsp;</td>');
+            	    	}else{
+            	    		r=i+1;
+            	    		if((r==as.ordered_states_metrics.length)&&(as.ordered_states_metrics[i].state_element!=as.stateAbbr)){
+            	    			selheatmapmeter.append('<td><strong>'+ as.ordered_states_metrics[i].state_element+': </strong>'+return_value_element+'&nbsp;</td>');
+            	    		}else{
+            	    			selheatmapmeter.append('<td  valign="top">&nbsp;&nbsp;</td>');
+            	    		}
+            	    		
+            	    	}
+        	    	} 
+        	    	selheatmapmeter.append('</tr><tr>');
+        	    	for(var i=0; i<as.ordered_states_metrics.length;i++){
+        	    		selheatmapmeter.append('<td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td>');
+        	    	}   
+        	    } else{
+        	    	selheatmapmeter.append('<tr>');
+        	    	for(var i=as.ordered_states_metrics.length-1; i>=0;i--){
+        	    		if(as.ordered_states_metrics[i].metricType=="percentage")
+        	    			return_value_element= Math.round((as.ordered_states_metrics[i].value_element*100)*100)/100+"%";
+        	    		else
+        	    			return_value_element=as.ordered_states_metrics[i].value_element;
+        	    		if((i==as.ordered_states_metrics.length-1)||(as.ordered_states_metrics[i].state_element==as.stateAbbr)){
+            	    		selheatmapmeter.append('<td><strong>'+ as.ordered_states_metrics[i].state_element+':</strong> '+return_value_element+'&nbsp;</td>');
+            	    	}else{
+            	    		r=i;
+            	    		if((r==0)&&(as.ordered_states_metrics[i].state_element!=as.stateAbbr)){
+            	    			selheatmapmeter.append('<td><strong>'+ as.ordered_states_metrics[i].state_element+':</strong> '+return_value_element+'&nbsp;</td>');
+            	    		}else{
+            	    			selheatmapmeter.append('<td  valign="top">&nbsp;&nbsp;</td>');
+            	    		}
+            	    		
+            	    	}
+        	    	}
+        	    	selheatmapmeter.append('</tr><tr>');
+        	    	for(var i=as.ordered_states_metrics.length-1; i>=0;i--){
+        	    		selheatmapmeter.append('<td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td>');
+        	    	} 
+        	    }
+        	    selheatmapmeter.append('</tr></table>');
+				
+        	    
+        	    
+        	    
+        	    
+        	    /*************************************************************************************************************/
+        	    /*********************VERTICAL HEAT MAP **********************************************************************/
+        	    /*************************************************************************************************************/
+        	    $("#verticalheatmapmeter").removeClass("hidden");
+        	    $("#mapTitle").text("Heat map for "+year_in);
+        	    	    var selverticalheatmapmeter=$("#verticalheatmapmeter");
+        	    		selverticalheatmapmeter.empty();
+        	    	    
+        	    		selverticalheatmapmeter.append('<table border="1" cellpadding=0  cellspacing="0"  style="height: 10px;">');
+        	    		var r;
+        	    		var return_value_element;
+        	    	    var enter=false;
+        	    	    var state_name;
+    	    	    	var position;
+    	    	    	var written_to_detail=false;
+        	    		if(multiData[0][0].metric.binName!="National"){
+        	    	    	
+        	    	    	
+        	    	    	
+        	    	    	for(var i=0; i<as.ordered_states_metrics.length;i++){
+        	    	    		if((i==as.ordered_states_metrics.length-1)){
+        	    	    			position=i+1;
+        	    	    			selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left" nowrap="true"><strong>'+as.ordered_states_metrics[i].state_element+'</strong>Pos: '+position+'</td></tr>');
+	    	    					
+        	    	    		}else{
+        	    	    			if((i==0)||(as.ordered_states_metrics[i].state_element==as.stateAbbr)){
+            	    	    			state_name=as.ordered_states_metrics[i].state_element;
+            	    	    			position=i+1;
+            	    	    			written_to_detail=true;
+            	    	    		}else{
+            	    	    			if(!written_to_detail){
+            	    	    				state_name=null;
+            	    	    				position=null;
+            	    	    			}
+            	    	    				
+            	    	    		}
+            	    	    		if(i%2==0){
+            	    	    			if(!enter){
+            	    	    				enter=true;
+            	    	    				if(written_to_detail){
+            	    	    					selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left" nowrap="true"><strong>'+state_name+'</strong>Pos: '+position+'</td></tr>');
+            	    	    					written_to_detail=false;
+            	    	    				}else{
+            	    	    					selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left"></td></tr>');
+            	    	    				}
+        	    	    	    		}else{
+        	    	    	    			enter=false;
+        	    	    	    		}
+            	    	    		}
+        	    	    		}
+        	    	    		
+        	    	    			
+        	    	    	}   
+        	    	    } else{
+        	    	    	
+        	    	    	var pivotcounter=as.ordered_states_metrics.length;
+        	    	    	for(var i=as.ordered_states_metrics.length-1; i>=0;i--){
+        	    	    		if((i==0)){
+        	    	    			position=-1*(i-as.ordered_states_metrics.length);
+        	    	    			selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left" nowrap="true"><strong>'+as.ordered_states_metrics[i].state_element+'</strong>Pos: '+position+'</td></tr>');
+	    	    					
+        	    	    		}else{
+        	    	    			if((i==as.ordered_states_metrics.length-1)||(as.ordered_states_metrics[i].state_element==as.stateAbbr)){
+            	    	    			state_name=as.ordered_states_metrics[i].state_element;
+            	    	    			if(i==as.ordered_states_metrics.length-1)
+            	    	    				position=-1*(pivotcounter-as.ordered_states_metrics.length-1);
+            	    	    			else
+            	    	    				position=-1*(i-as.ordered_states_metrics.length);
+            	    	    			written_to_detail=true;
+            	    	    		}else{
+            	    	    			if(!written_to_detail){
+            	    	    				state_name=null;
+            	    	    				position=null;
+            	    	    			}
+            	    	    				
+            	    	    		}
+            	    	    		if(i%2==0){
+            	    	    			if(!enter){
+            	    	    				enter=true;
+            	    	    				if(written_to_detail){
+            	    	    					selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left" nowrap="true"><strong>'+state_name+'</strong>Pos: '+position+'</td></tr>');
+            	    	    					written_to_detail=false;
+            	    	    				}else{
+            	    	    					selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left"></td></tr>');
+            	    	    				}
+        	    	    	    		}else{
+        	    	    	    			enter=false;
+        	    	    	    		}
+            	    	    		}
+        	    	    		}
+        	    	    		
+        	    	    }
+        	    	    selverticalheatmapmeter.append('</table>');
+        	    	    /*************************************************************************************************************/
+        	    	    /*********************VERTICAL HEAT MAP **********************************************************************/
+        	    	    /*************************************************************************************************************/
+        	    	    }
+
+        	    
+        	    
         		});	
         });
        
@@ -359,41 +550,6 @@ var AS= (function($) {
 	// sel.append('<table>');
 	 
  };
-AppState.prototype.startPlayer=function(ind,style_in, tag_id,  starttop){
-	this.current_tab_style=style_in;
-	var baseColor=colorToHex(getStyleRuleValue('background-color',style_in));
-	var selected_states= States.getAllstates().map(function(s) {
-		return s.abbr;
-	});
- 	var query = DQ.create().addState(selected_states).addMetric(Metrics.getMetricByID(76).getName());
-    query.execute(function(multiData) {
-    	setTimeout(function() {//start
-    		
-    		var array_years=as.getYearsMetric(multiData);
-    		var size_tam=array_years.length;
-    		if(size_tam>0){
-    			array_years.sort(function(a,b){return a - b;});
-    			var current_year_in=0;
-    			var j=0;
-    			while(j<5){
-    				current_year_in=array_years[0];
-    				for(var i=0; i<size_tam;i++){
-    					current_year_in=array_years[i];
-    					setTimeout(function(){
-    						as.SetHeatMap(76,"#3d8af4", "#mbodyHeatMap",current_year_in);
-    					}, 2500);
-    					j++;
-    				}
-    				
-    			}
-    		}
-    		
-    	});//end
-    });
-    		
-	
-	
-}; 
 /**
  * 
  * @param ind Metric id
@@ -404,16 +560,25 @@ AppState.prototype.startPlayer=function(ind,style_in, tag_id,  starttop){
 AppState.prototype.showHeatMapGraph=function (ind,style_in, tag_id, year_in){
 	this.current_tab_style=style_in;
 	document.getElementById("graphTitleHeatMap").innerHTML ='Heat map: '+ Metrics.getMetricByID(ind).getName(); 
-	document.getElementById("graphCatHeatMap").innerHTML='Category: '+Metrics.getMetricByID(ind).binName;
+	//document.getElementById("graphCatHeatMap").innerHTML='Category: '+Metrics.getMetricByID(ind).binName;
 	var baseColor=colorToHex(getStyleRuleValue('background-color',style_in));
 	var degradedColor=getNewColor(baseColor,110,100);
 	console.log("error degradedColor : "+degradedColor);
 	var degradationColorWindow="rgb("+hexToRgb(degradedColor).r+","+hexToRgb(degradedColor).g+","+hexToRgb(degradedColor).b+")";
     //this.changeColorModalWindow(tag_id.substr(1),degradationColorWindow);
    // console.log("error2 : "+ind);
+	if(year_in==-1){
+		stopHeatMapAnimation();/**Users could left the animation running......**/
+		$("#stopbuttonanimation").prop('disabled', true); 
+		$("#playbuttonanimation").prop('disabled', false);
+		global_timer = null;
+		year_global=-1;
+		globalcounter=0;
+	}
+		
 	this.SetHeatMap(ind,baseColor, tag_id,year_in);
 
-} 
+};
 /**
  * 
  * @param ind Metric id
@@ -425,13 +590,15 @@ AppState.prototype.setHeatMapOnHover=function (ind,style_in, tag_id, year_in){
 	var baseColor=colorToHex(getStyleRuleValue('background-color',style_in));
 	//console.log("error3 : "+ind);
 	this.SetHeatMap(ind,baseColor, tag_id,year_in);
-}
+};
 /*
      * Clears the heat map and restores the original US Map 
 */
     
  AppState.prototype.UnSetHeatMap=function (style){
-	 //console.log("error4 : "+this.currentind);
+	
+	if(global_timer!=null)/**This is in case someone left the heatmap running**/
+		stopHeatMapAnimation();
 	var selected_states=States.getAllstates().map(function(s){
 		return s.abbr;
 	});
@@ -468,7 +635,7 @@ AppState.prototype.setHeatMapOnHover=function (ind,style_in, tag_id, year_in){
 		}
 		
 		
-}
+};
 
 
 
@@ -477,10 +644,11 @@ AppState.prototype.setHeatMapOnHover=function (ind,style_in, tag_id, year_in){
   * Input: State Abbreviation and Color for the state.
   */
 AppState.prototype.changeColor= function(stateAbbr, newColor){
+	
 	$("#map").usmap('changeStateColor', stateAbbr, newColor);
 	
 	
-}
+};
 
     
 /*
@@ -488,7 +656,8 @@ AppState.prototype.changeColor= function(stateAbbr, newColor){
  *  
 */
 AppState.prototype.clickCallback = function(data){
-	    if(!as.multiMode)
+		this.turnOffUnattendedHeatMapAnimation();//Just in case if users have left the heatmap running
+		if(!as.multiMode)
 	    	this.UnSetHeatMap(this.current_tab_style);
 		var stateClicked=data;
 		var changeToColor="";
@@ -527,7 +696,7 @@ AppState.prototype.clickCallback = function(data){
 			this.checkIfAllStatesChecked();
 			
 		}
-	}
+	};
 
 AppState.prototype.checkIfAllStatesChecked=function(){
 	var indexState;
@@ -575,7 +744,7 @@ AppState.prototype.checkIfAllStatesChecked=function(){
 		$("#selectpeerstates").prop("disabled",false);
 	}
 	
-}
+};
 /*
  * Resetting the US Map to its previously selected state when returning from Multimode.
  * param options is kept for future use.
@@ -599,7 +768,7 @@ AppState.prototype.reset= function(options){
   		  }
       
     });
-  }
+  };
     
 
 /*
@@ -608,7 +777,7 @@ AppState.prototype.reset= function(options){
 AppState.prototype.set_initializer=function(title_prefix_in, this_graph_in ) {
 	cm.graph_title_prefix = title_prefix_in;
 	cm.current_graph_function = this_graph_in;
-}
+};
 
 /*
  * This function calls the chart module for displaying the graph type for currently selected state.
@@ -619,7 +788,7 @@ AppState.prototype.set_initializer=function(title_prefix_in, this_graph_in ) {
     this.currentind = ind;		 
 	this.selected = [ this.stateAbbr ];
 	cm.showMultiGraph(this.selected);
-	}
+	};
 
  
  /*
@@ -763,7 +932,7 @@ AppState.prototype.SelectPeerStates=function(){
 AppState.prototype.toggleMultiSelect = function(ind,option ) {
 	this.currentind=ind;
 	var tagoption;
-	
+	this.turnOffUnattendedHeatMapAnimation();
 	if(option==-1){
 		tagoption="#multiSelecterMetricState";
 		
@@ -875,17 +1044,21 @@ AppState.prototype.changeColorModalWindow=function(tag_id,color_in){
 	divModalWindow.style.backgroundColor =color_in;
 	divModalWindow.style.borderWidth ="1px";
 	
-}
+};
 /* 
  * This Function changes the color of all peer states once a tab is clicked. 
  * It also changes the background color of all modal windows
  */ 
+AppState.prototype.turnOffUnattendedHeatMapAnimation=function(){
+	stopHeatMapAnimation();//User could have left the animation running;
+	$("#verticalheatmapmeter").addClass("hidden");
+	$("#mapTitle").text("Click to Select a State");
+};
 AppState.prototype.changeColorPeerStates = function(style){
 	/*this.selected =States.getPeers().map(function(s){
 		return s.abbr;
 	});*/
-	
-		
+	this.turnOffUnattendedHeatMapAnimation();
 	var newColor=getStyleRuleValue('background-color',style);
 	
 	this.UnSetHeatMap(style);

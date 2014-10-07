@@ -65,6 +65,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<select id="yearsMultipleQuery" class="btn btn-primary btn-right"></select>			
 					<h4 class="modal-title" id="graphTitleMultipleQuery">State Science and Technology Graph</h4>
+					<h6 class="modal-title" >NV: No Value for the year selected</h6>
 					<%/** <h4 class="small" id="graphStatesMultipleQuery">Selected States: Massachusetts, California, Texas</h4> */%>
 				</div>
 				<div class="modal-body" id="mbodyMultipleQuery" style="background-color: rgb(61, 38, 244);">
@@ -82,7 +83,7 @@
 		<div class="modal-dialog" >
 			<div class="modal-content" >
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					
 					<%/* <table><tr><td><select id="AllPeerTopBottomHeatMap" class="btn btn-primary btn-right">
 						<option value="0">All States</option>
 						<option value="1">Peer States</option>
@@ -93,41 +94,72 @@
 					
 					<td>
 					</td></tr></table>*/%>
-					 <table style="width:100%; height: 13%;">
+					 <table style="width:100%">
 					 	<tr>
 					 		<td valign="top" align="left">
 					 			<table><tr><td>
 				 					<h4 class="modal-title" id="graphTitleHeatMap">State Science and Technology U.S. Heatmap</h4>
-									<h4 class="modal-title" id="graphCatHeatMap"></h4>
+									<%/* <h4 class="modal-title" id="graphCatHeatMap"></h4> */%>
 									<h4 class="modal-title" id="graphStatesHeatMapPos0">Selected States: All States</h4>
-									<h4 class="modal-title" id="graphStatesHeatMapPos1"  style="height:2%;"></h4>
-								</td></tr></table>
+									<h4 class="modal-title" id="graphStatesHeatMapPos1"  style="height:2%;">Ranking</h4>
+								</td>
+								
+								</tr></table>
 							</td>
+							
 							<td  valign="top" align="right">
 								<table>
 									<tr>
 										<td></td>
-										<td valign="top" align="right">
+										<%/**<td valign="top" align="right">
 											<select id="yearHeatMap" class="btn btn-primary btn-right"></select>
-										</td>
+										</td>**/ %>
 									</tr>
-									<% /* <tr>
+									 <tr>
 										<td  valign="top" align="left">
-											<div class="btn btn-info" id="playbuttonanimation">Play</div>
-								            
+											<button type="button" id="playbuttonanimation" class="btn btn-default">Play</button>
+											
+										    
 										</td>
 										<td valign="top" align="right">
-										<div class="btn btn-info" id="stopbuttonanimation">Stop</div></td>
-									</tr>*/%>
+											<button type="button" id="stopbuttonanimation" class="btn btn-default" disabled="true">Stop </button>
+										
+									</tr>
 								</table>
-							</td> 
+							</td>
+							<td valign="top" align="right">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></td> 
 						</tr>
+						</table >
+						<table>
+						<tr>
+							<td align="right" nowrap="true">
+								<table>
+									<tr>
+										<% /**** TIMELINE**/ %>
+										<td align="left" nowrap="true"><h4 class="modal-title" >Timeline:&nbsp;&nbsp; </td>
+									
+										<td align="left" nowrap="true">
+										
+										<div id="timeline"></div></td>
+									</tr>
+									 <tr>
+										<td></td>	
+										<td align="right" nowrap="true"><div id="heatmapmeter"></div></td>
+										<% /**** TIMELINE **/ %>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						
 						
 					</table>
 				</div>
-				<div class="modal-body" id="mbodyHeatMap" style="background-color: #A7A9A9; height:100%">
+				<div class="modal-body" id="mbodyHeatMap" style="background-color: #A7A9A9; height:650px;">
+				
 					<svg style="width: 100%; height: 100%;" ></svg>
 				</div>
+				
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
@@ -238,39 +270,43 @@
 			    <td valign="top" nowrap="true" align="right">&nbsp;
 					<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect States</button>
 				</td>
+				
+				
 				</tr></table>
 				<h2 class="text-center">
 					<div id="mapTitle">Click to Select a State</div>
 				</h2>
-				<div id="map" style="width: 600px; height: 375px;"></div>
-				<% /*<ul class="nav">
-					<li id="multiplequeryTab" ><a href="#" onClick="as.toggleMultiSelect(76,-1);" data-toggle="tab"  >Multiple Selection</a></li>
-				</u> */ %>
-				<div id="legend" style="float: right">
-					<table>
-						<tr>
-							<td><div class="legendbox boxblue" id="boxcolorpeerstates"></div></td>
-							<td>Peer State</td>
-						</tr>
-					</table>
-					<table id="normallegend">
-						<tr>
-							<td><div class="legendbox boxgreen"></div></td>
-							<td>Selected State</td>
-						</tr>
-						
-					</table>
-					<table id="multilegend" class="hidden">
-						<tr>
-							<td><div class="legendbox boxgreen"></div></td>
-							<td>Selected State</td>
-						</tr>
-						<tr>
-							<td><div class="legendbox boxyellow"></div></td>
-							<td>Current State</td>
-						</tr>
-					</table>
-				</div>
+				<table>
+					<tr>
+						<td valign="top"><div id="map" style="width: 600px; height: 375px;"></div>
+						<div id="legend" style="float: right">
+							<table>
+								<tr>
+									<td><div class="legendbox boxblue" id="boxcolorpeerstates"></div></td>
+									<td>Peer State</td>
+								</tr>
+							</table>
+							<table id="normallegend">
+								<tr>
+									<td><div class="legendbox boxgreen"></div></td>
+									<td>Selected State</td>
+								</tr>
+							</table>
+							<table id="multilegend" class="hidden">
+								<tr>
+									<td><div class="legendbox boxgreen"></div></td>
+									<td>Selected State</td>
+								</tr>
+								<tr>
+									<td><div class="legendbox boxyellow"></div></td>
+									<td>Current State</td>
+								</tr>
+							</table>
+						</div>
+						</td>
+						<td valign="top" >&nbsp;&nbsp;<div id="verticalheatmapmeter"></div></td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -283,7 +319,7 @@
 		</div>
 	</div>
 	
-	<script src="js/load.js"></script>
+		<script src="js/load.js"></script>
 	
 </body>
 </html>
