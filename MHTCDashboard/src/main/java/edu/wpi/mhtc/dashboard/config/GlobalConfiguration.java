@@ -16,6 +16,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
@@ -31,9 +32,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebMvc
 @ComponentScan("edu.wpi.mhtc")
 @Configuration
-@ImportResource("classpath:spring-security.xml")
 @Import({ DevelopmentConfiguration.class, LocalConfiguration.class,
-		ProductionConfiguration.class })
+		ProductionConfiguration.class, SecurityConfig.class })
 public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override

@@ -32,11 +32,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import edu.wpi.mhtc.model.Data.Metric;
+import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.service.MetricService;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
 @Controller
@@ -52,12 +52,59 @@ public class AdminController {
         this.service = service;
         this.template = template;
     }
-
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String admin(Locale locale, Model model) throws Exception {
-        Map<String, String> categories = DBLoader.getCategoryInfo();
+    
+    /********** Authentication **********/
+    @RequestMapping(value = "admin/logout", method = RequestMethod.GET)
+    public String logoutPage() {
+        return "logoutPage";
+    }
+    
+    @RequestMapping(value = "admin/login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "loginPage";
+    }
+    /********** End authentication pages **********/
+    
+    /********** Admin manager page **********/
+    @RequestMapping(value = "admin/manage", method = RequestMethod.GET)
+    public String manage() {
+        return "admin_manager";
+    }
+    
+    @RequestMapping(value = "admin/account/create", method = RequestMethod.POST, params = { "Username", "Password", "Email", "FirstName", "LastName"})
+    public @ResponseBody String account_create(@RequestParam("Username") String username, @RequestParam("Password") String password, @RequestParam("Email") String email, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) {
+        Admin newAdmin = new Admin(username, password, email, firstName, lastName);
         
-        model.addAttribute("categories", categories);
+        try {
+			newAdmin.insertToDB();
+			return "Added";
+		} catch (SQLException e) {
+			
+			return e.toString();
+		}
+    }
+    
+    @RequestMapping(value = "admin/account/change-password", method = RequestMethod.POST, params = {"oldPassword", "newPassword", "confirmPassword"})
+    public @ResponseBody String account_create(Principal principal, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword) throws SQLException {
+        Admin current = new Admin(principal.getName());
+        
+        switch (current.changePassword(oldPassword, newPassword, confirmPassword)) {
+        	case -1: return "Old password does not match";
+        	case -2: return "Please reconfirm your new password.";
+        	case -3: return "Cannot change the password. Please try again.";
+        	default: return "Changed password successfully"; 
+        }
+    } 
+    
+    @RequestMapping(value = "admin/account/reset-password", method = RequestMethod.POST, params = {"resetUsername"})
+    public @ResponseBody String reset_password(@RequestParam("resetUsername") String resetUsername) throws SQLException {
+    	Admin resetAdmin = new Admin(resetUsername);
+    	String newPassword = resetAdmin.resetPassword();
+        return "The new password for " + resetUsername + " is " + newPassword;
+    }        
+    /********** End authentication pages **********/
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public String admin(Locale locale, Model model) {
         
         return "admin_tool";
     }
@@ -109,27 +156,21 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) {
-    	
-    	System.out.println("\n\nCategory id from admin panel: " + categoryID);
-    	
+    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file) {
         String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
         if (!file.isEmpty()) {
             try {
-            	
-            	File localFile = new File(name);
-            	file.transferTo(localFile);
-//                byte[] bytes = file.getBytes();
-//                BufferedOutputStream stream =
-//                        new BufferedOutputStream(new FileOutputStream(name));
-//                stream.write(bytes);
-//                stream.close();
-//                
-//                BufferedReader br = new BufferedReader(new FileReader(name));
-////                String category = br.readLine().split(",")[0];
-//                br.close();
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream =
+                        new BufferedOutputStream(new FileOutputStream(name));
+                stream.write(bytes);
+                stream.close();
                 
-                DataPipeline.run(localFile, categoryID);
+                BufferedReader br = new BufferedReader(new FileReader(name));
+                String category = br.readLine().split(",")[0];
+                br.close();
+                
+                DataPipeline.run(new File(name), "" + getCatId(category));
                 
                 return "You successfully uploaded " + name + " into " + name + "-uploaded !";
             } catch (Exception e) {
@@ -142,9 +183,8 @@ public class AdminController {
         
     }
     
-    
     private int getCatId(String catname) {
-        PSqlStringMappedJdbcCall<Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
+    	PSqlStringMappedJdbcCall <Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
                 "mhtc_sch").withProcedureName("getcategorybyname");
 
         call.addDeclaredRowMapper(new PSqlRowMapper<Integer>() {
