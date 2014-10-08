@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,39 +50,17 @@ public class DBLoader {
 	 * key is the metric name, value is the metric ID
 	 */
 	/**
-	 * 
+	 * Will change Category ID string to int
 	 * @param catID
 	 * @returnA Map of metrics associated with this category in the database.
 	 * The key is the metric name, value is the metric ID
 	 * @throws SQLException
+	 * @throws CategoryException 
 	 */
-	public static Map<String, String> getMetricInfo(String catID) throws SQLException{
-		HashMap<String, String> table = new HashMap<String, String>();
-		Connection conn = DBConnector.getInstance().getConn();
-		
-		//String sql = "select * from mhtc_sch.getMetrics(5,FALSE)";
-		String sql = "select * from mhtc_sch.getMetrics(?, FALSE)";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
+	public static Map<String, String> getMetricInfo(String catID) throws SQLException, CategoryException{
 		int cid = Integer.parseInt(catID); 
-		pstatement.setInt(1, cid); // set parameter 1 catID
-		ResultSet rs = pstatement.executeQuery();
-		
-		try {	
-			while (rs.next()) {
-				String metricID = rs.getString("Id").toLowerCase();
-				String metricName = rs.getString("Name").toLowerCase();
-				table.put(metricName, metricID);
-            }
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return table;
+		return getMetricInfo(cid);
 	}
-	
-//	added by ck, called by category ID
-	/*
-	 * 
-	 */
 	
 	/**
 	 * 
@@ -116,9 +93,6 @@ public class DBLoader {
 		return table;
 	}
 	
-	
-	
-	
 	/**
 	 * 
 	 * @param categoryName
@@ -143,62 +117,7 @@ public class DBLoader {
 		
 	}
 	
-//	check for category before calling!!	
-//	If this method passed a category name that is already present in the db
-//	it will insert a duplicate with a different id
-
-	public static boolean insertNewCategory(String name, String parentID, String source) throws SQLException {
-		
-		Connection conn = DBConnector.getInstance().getConn();
-		
-		String sql = "select * from mhtc_sch.insertcategory(?,?,?)";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-		pstatement.setString(1, name); 
-		
-		if(parentID == null){
-			pstatement.setNull(2, Types.INTEGER);
-		}
-		else
-			pstatement.setInt(2, Integer.parseInt(parentID));
-		pstatement.setString(3, source); 
-		ResultSet rs = pstatement.executeQuery();
-		
-		rs.next();
-		
-		if (Integer.parseInt(rs.getString("insertcategory")) == 1)
-				return true;
-		else 
-			return false;
-	}
-	
-//	Category must exist in db already !!!
-	public static boolean insertNewMetric(String metricName, boolean b, int categoryID, String dataType) throws SQLException {
-		
-		Connection conn = DBConnector.getInstance().getConn();
-		
-		String sql = "select * from mhtc_sch.insertmetric(?,?,?,?)";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-		pstatement.setString(1, metricName); 
-		pstatement.setBoolean(2, b);
-		pstatement.setInt(3,categoryID);
-		pstatement.setString(4, dataType);
-		ResultSet rs = pstatement.executeQuery();
-		rs.next();
-		String tableHeader = rs.getString(1);
-		
-		if (Integer.parseInt(tableHeader) == 1)
-				return true;
-		else 
-			return false;
-	}
-	
-	
-	
-	
-	
-	
-	
-		/**
+	/**
 	 * Retrieves all categories from the database
 	 * @return A map containing the category names as the key, and IDs as the value
 	 * @throws Exception

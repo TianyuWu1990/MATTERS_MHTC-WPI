@@ -192,12 +192,17 @@ public class UnifiedParser implements IParser {
 
 
 	private boolean isRowEmpty(Row row) {
-		for (int c = row.getFirstCellNum(); c <= row.getLastCellNum(); c++) {
+		if (row.getLastCellNum() == -1) {
+			return true;
+		}
+		
+		/*for (int c = row.getFirstCellNum(); c <= row.getLastCellNum(); c++) {
 			Cell cell = row.getCell(c);
 			if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
 				return false;
-		}
-		return true;
+		}*/
+		
+		return false;
 	}
 
 
@@ -207,14 +212,11 @@ public class UnifiedParser implements IParser {
 		for (Cell cell : row) {
 			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 				String metricName = cell.getStringCellValue().trim().toLowerCase();
-				category.validateMetric(metricName);
+				category.getMetric(metricName);
 				this.columnNames.add(metricName);
 			}
 		}		
 	}	
-
-
-
 
 	//	placeholders
 	@Override
@@ -232,23 +234,4 @@ public class UnifiedParser implements IParser {
 		return this.columnNames;
 	}
 
-
-
-
-
 }
-
-
-
-
-class UnifiedFormatException extends Exception {
-
-	public UnifiedFormatException(String message) {
-		super(message);
-	}
-
-	public UnifiedFormatException(String message, Throwable throwable) {
-		super(message, throwable);
-	}
-}
-

@@ -27,16 +27,6 @@ public class Category {
 	public int getId(){
 		return id;
 	}
-	
-	
-//	TODO: maybe use CatInfoConfig??
-	public boolean insertNewCategory(String name, String parentID, String source) throws Exception{
-//		check for category before calling!!	
-//		If this method passed a category name that is already present in the db
-//		it will insert a duplicate with a different id
-
-		return DBLoader.insertNewCategory(name, parentID, source);
-	}
 
 	/**
 	 * 
