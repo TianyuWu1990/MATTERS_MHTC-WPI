@@ -10,7 +10,6 @@ import org.w3c.dom.Document;
 
 
 public class DataGovDownload {
-	private String resource_id;
 	private String base_url = "https://inventory.data.gov/api/action/";
 	private URLDownload downloader;
 	
@@ -18,6 +17,10 @@ public class DataGovDownload {
 		downloader = new URLDownload();
 	}
 	
+	
+	// Performs query on select database
+	// query = SELECT * from "resource_id";
+	// PostgreSQL query!
 	public void QueryDownload(String sql, String filename) {
 		String download_url = base_url + "datastore_search_sql?sql=" + sql;
 		URLDownload downloader = new URLDownload();
