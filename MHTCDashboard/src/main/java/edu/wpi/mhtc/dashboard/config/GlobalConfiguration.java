@@ -46,14 +46,6 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 				"/js/");
 	}
 	
-	/*@Bean
-	public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-		RequestMappingHandlerMapping handlerMapping = new RequestMappingHandlerMapping();
-		handlerMapping.setUseSuffixPatternMatch(false);
-		handlerMapping.setUseTrailingSlashMatch(false);
-		return handlerMapping;
-	}*/ 
-	
 	@Bean
 	public PropertyPlaceholderConfigurer properties() {
 		PropertyPlaceholderConfigurer props = new PropertyPlaceholderConfigurer();

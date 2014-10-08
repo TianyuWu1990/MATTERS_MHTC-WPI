@@ -15,6 +15,11 @@ import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
 import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
 import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
 
+
+/**
+ * IPEDS parser
+ *
+ */
 public class Type2Parser implements IParser {
 
 	private FileInfo fileInfo;
