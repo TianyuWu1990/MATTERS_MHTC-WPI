@@ -2,6 +2,7 @@ package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 // Download JSON data from DataGov
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -21,8 +22,8 @@ public class DataGovDownload {
 	// Performs query on select database
 	// query = SELECT * from "resource_id";
 	// PostgreSQL query!
-	public void QueryDownload(String sql, String filename) {
-		String download_url = base_url + "datastore_search_sql?sql=" + sql;
+	public void queryDownload(String sql, String filename) {
+		String download_url = base_url + "datastore_search_sql?sql=" + URLEncoder.encode(sql);
 		URLDownload downloader = new URLDownload();
 		downloader.HTTPDownload(download_url, filename);
 	}
