@@ -35,9 +35,9 @@ import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
+import edu.wpi.mhtc.pipeline.main.DataPipeline;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.service.MetricService;
-import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
 @Controller
 public class AdminController {

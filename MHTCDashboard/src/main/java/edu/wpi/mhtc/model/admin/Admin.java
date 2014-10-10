@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
+import edu.wpi.mhtc.pipeline.db.DBConnector;
 
 public class Admin {
 	private int id;
