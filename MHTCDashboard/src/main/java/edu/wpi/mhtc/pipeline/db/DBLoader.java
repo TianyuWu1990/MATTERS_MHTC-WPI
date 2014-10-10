@@ -76,7 +76,7 @@ public class DBLoader {
 		Connection conn = DBConnector.getInstance().getConn();
 		
 		//String sql = "select * from mhtc_sch.getMetrics(5,FALSE)";
-		String sql = "select * from mhtc_sch.getMetrics(?, FALSE)";
+		String sql = "select * from mhtc_sch.getMetrics(?, TRUE)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setInt(1, catID); // set parameter 1 catID
 		ResultSet rs = pstatement.executeQuery();
@@ -84,12 +84,14 @@ public class DBLoader {
 		if(!rs.next()){
 			throw new CategoryException("No metrics in DB for category "+catID);
 		}
-		
-		while (rs.next()) {
-			String metricID = rs.getString("Id").toLowerCase();
-			String metricName = rs.getString("Name").toLowerCase();
-			table.put(metricName, metricID);
-		}    
+		else{
+			do {
+				String metricID = rs.getString("Id").toLowerCase();
+				String metricName = rs.getString("Name").toLowerCase();
+				table.put(metricName, metricID);
+			}
+			while (rs.next());  
+		}
 		return table;
 	}
 	

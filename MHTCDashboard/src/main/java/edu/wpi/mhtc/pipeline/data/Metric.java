@@ -44,7 +44,7 @@ public class Metric {
 	 */
 	
 	public boolean isValid(){
-		return value == null;
+		return value != null;
 	}
 
 	public void clearValue() {

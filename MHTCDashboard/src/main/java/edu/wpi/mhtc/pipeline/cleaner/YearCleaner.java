@@ -6,17 +6,18 @@ public class YearCleaner implements ICleaner {
 	
 	
 	@Override
-	public String clean(String val) throws Exception {
+	public String clean(String val) {
 		double year = Double.parseDouble(val);
 		return clean(year);
 	}
 	
-	public String clean(double val) throws Exception{
+	public String clean(double val) {
 		if(1900 <= val && val <= 2100) {
 			return String.valueOf((int) val);
 		}
+		return null;
 		
-		throw new Exception("Not a valid year");
+		
 		
 	}
 
