@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public class DBLoader {
 	 * key is the state name, value is the state ID
 	 */
 	public static List<State> getStateMapper() throws SQLException{
-		List<State> stateList = new LinkedList<State>();
+		List<State> stateList = new ArrayList<State>(52);
 		Connection conn = DBConnector.getInstance().getConn();
 		Statement statement = conn.createStatement();
 		

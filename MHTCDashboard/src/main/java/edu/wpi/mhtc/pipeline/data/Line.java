@@ -36,11 +36,11 @@ public class Line {
 		this.year = Integer.parseInt(year);
 	}
 	
-	public void addMetric(Metric metric) throws Exception{
+	public void addMetric(Metric metric) throws CategoryException{
 		if(metric.isValid()){
 			this.metric = metric;
 		}
-		else throw new Exception("Invalid Metric for category ");
+		else throw new CategoryException("Invalid Metric for category ");
 	}
 
 	public int getYear() {

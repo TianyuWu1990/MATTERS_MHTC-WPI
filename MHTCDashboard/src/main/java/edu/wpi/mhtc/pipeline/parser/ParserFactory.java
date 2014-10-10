@@ -12,12 +12,14 @@ public class ParserFactory {
 		switch (source.getParserType()) {
 			case excel:
 				return new ExcelParser(source);
+			case text:
+				return new TextParser(source);
 			case type1:
-				return new Type1Parser(source);
+//				return new Type1Parser(source);
 			case type2:
 				return new Type2Parser(source);
 			case type3:
-				return new Type3Parser(source);
+//				return new Type3Parser(source);
 			case type4:
 				return new Type4Parser(source);
 			case type5:
