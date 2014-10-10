@@ -109,7 +109,7 @@ public class CatInfoGenerator {
 
 		// metric elements
 		IParser parser = ParserFactory.getInstance(fileInfo);
-		List<String> list = parser.getColumnNames();
+		List<String> list = parser.validateMetrics();
 
 		for (String str : list) {
 

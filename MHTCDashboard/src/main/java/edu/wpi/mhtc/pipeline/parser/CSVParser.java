@@ -29,7 +29,7 @@ public class CSVParser implements IParser {
 	}
 
 	@Override
-	public void validateMetricNames(Category category) throws CategoryException{
+	public void validateMetrics(Category category) throws CategoryException{
 		if (this.columnNames.isEmpty()) {
 			if (this.source.getFileType() == FileType.csv) {
 				this.csvFile = this.source.getFileName();
@@ -57,7 +57,7 @@ public class CSVParser implements IParser {
 
 	@Override
 	public boolean parseAll() throws Exception {
-		this.validateMetricNames(source.getCategory());
+		this.validateMetrics(source.getCategory());
 		if (this.source.getFileType() == FileType.csv) {
 			this.csvFile = this.source.getFileName();
 		}

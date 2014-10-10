@@ -8,6 +8,6 @@ public interface IParser extends Iterable<Line> {
 	
 	public boolean parseAll() throws Exception;
 
-	public void validateMetricNames(Category category) throws CategoryException;
+	public void validateMetrics(Category category) throws CategoryException;
 }
 

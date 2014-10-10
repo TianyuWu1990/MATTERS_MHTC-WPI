@@ -87,7 +87,7 @@ public class Type2Parser implements IParser {
 	}
 
 	@Override
-	public List<String> getColumnNames() {
+	public List<String> validateMetrics() {
 		if (this.columnNames.isEmpty()) {
 			BufferedReader br = null;
 			String line;

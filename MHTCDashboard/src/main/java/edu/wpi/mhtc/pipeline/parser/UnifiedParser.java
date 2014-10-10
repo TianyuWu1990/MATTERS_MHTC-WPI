@@ -58,7 +58,7 @@ public class UnifiedParser implements IParser {
 
 		this.category = source.getCategory();
 
-		validateMetricNames(category);			//verify that the metric column names match the metrics for this source's category
+		validateMetrics(category);			//verify that the metric column names match the metrics for this source's category
 		//also sets the columnNames
 
 		this.lines = new ArrayList<Line>();
@@ -209,7 +209,7 @@ public class UnifiedParser implements IParser {
 
 
 	@Override
-	public void validateMetricNames(Category category) throws CategoryException{
+	public void validateMetrics(Category category) throws CategoryException{
 		Row row = sheet.getRow(headerRow);
 		for (Cell cell : row) {
 			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {

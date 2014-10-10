@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.wpi.mhtc.pipeline.config.StateInfoConfig;
 import edu.wpi.mhtc.pipeline.data.State;
+import com.swabunga.spell.engine.Word;
 
 public class StateCleaner implements ICleaner {
 
@@ -29,16 +30,19 @@ public class StateCleaner implements ICleaner {
 			val = getFullName(val);	// check if val is in the stateList, if so return state full name, if not return val
 			return val;
 		}
-		else {	// if the val does not match a state name
-			val = getFullNameBySubstring(val); // for every substring in val, check if they contain state full name or match state abbreviation
-			if(!this.flag){
-				val = getFullNameByConcatenation(val); // concatenate all the substring together, and check if they match state full name state abbreviation
-				if(!this.flag){
-					val = getFullNameBySpellCheck(val); // concatenate all the substring together, do the spell check
-				}
-			}
+		
+		String cleanedVal = getFullNameBySpellCheck(val); // concatenate all the substring together, do the spell check
+		
+		if(cleanedVal == null){
+			cleanedVal = getFullNameBySubstring(val); // for every substring in val, check if they contain state full name or match state abbreviation
+		}
+		if(cleanedVal == null){
+			cleanedVal = getFullNameByConcatenation(val); // concatenate all the substring together, and check if they match state full name state abbreviation
+		}
+		if(cleanedVal == null){
 			return val;
 		}
+		return cleanedVal;
 			
 	}
 	/*
@@ -107,7 +111,7 @@ public class StateCleaner implements ICleaner {
 				}
 			}
 		}
-		return val;
+		return null;
 	}
 
 	/*
@@ -115,7 +119,7 @@ public class StateCleaner implements ICleaner {
 	 * full name state abbreviation
 	 */
 	public String getFullNameByConcatenation(String val) throws Exception {
-		val = val.replaceAll(",", "");
+		val = val.replaceAll("[^a-z]", "");
 		List<State> stateList = StateInfoConfig.getInstance().getStateList();
 		for (State state : stateList) {
 			if (val.equals(state.getFullName())) {
@@ -127,7 +131,7 @@ public class StateCleaner implements ICleaner {
 				return state.getFullName();
 			}
 		}
-		return val;
+		return null;
 	}
 
 	/*
@@ -136,18 +140,15 @@ public class StateCleaner implements ICleaner {
 	public String getFullNameBySpellCheck(String val) throws Exception {
 		int thres = 10;
 		List result = SpellCheckManager.getSuggestions(val, thres);
-		if (result.size() > 1) { // if get more than one suggestions, return val
-			return val;
-		} else if (result.isEmpty()) { // if get less than one suggestion, return val
-			return val;
-		} else {
-			val = result.get(0).toString().toLowerCase();
-			State state = StateInfoConfig.getInstance().getStateByFullName(val);
-			if(state == null){
-				return val;
+		
+		
+		for(Object o : result){
+			State state = StateInfoConfig.getInstance().getStateByFullName(((Word) o).getWord());
+			if (state != null){
+				return state.getFullName();
 			}
-			return state.getFullName();
 		}
+		return null;
 	}
 
 }
