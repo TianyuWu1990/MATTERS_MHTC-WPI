@@ -1,6 +1,7 @@
 package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.dashboard.pipeline.main.UnifiedDatasource;
 
 public class ParserFactory {
 
@@ -29,5 +30,9 @@ public class ParserFactory {
 				break;
 		}
 		return null;
+	}
+	
+	public static IParser getInstance(UnifiedDatasource unifiedSource) throws Exception {
+		return new UnifiedParser(unifiedSource);
 	}
 }

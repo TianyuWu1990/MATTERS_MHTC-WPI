@@ -2,19 +2,37 @@ package edu.wpi.mhtc.dashboard.pipeline.db;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.DBData;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 public class DBSaver {
 
 	/*
 	 * save line data into DB
 	 */
+	
+	public static void saveLine(Line line) throws SQLException {
+		
+		Connection conn = DBConnector.getInstance().getConn();
+		String sql = "insert into mhtc_sch.statistics values(?, ?, ?, ?)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
+		pstatement.setInt(2, line.getMetricID()); // set parameter 2 (ID)
+		pstatement.setInt(3, line.getYear());
+		pstatement.setFloat(4, line.getMetricValue());
+		pstatement.execute();
+	}
+	
 	public static boolean saveLineData(DBData dbData) throws SQLException {
+		
 		if(!isDBDataValid(dbData)){
+			System.out.println("Data is not valid");
 			return false;
 		}
 		int year = Integer.parseInt(dbData.getYear());
@@ -28,7 +46,10 @@ public class DBSaver {
 			int metricID = Integer.parseInt(entry.getKey());
 			
 			if(entry.getKey() == null || entry.getValue() == null){
-				continue;
+				
+				System.out.println("there is nothing in this map - dbData.getMap() \n Data never made it here");
+				return false;
+//				continue; this is a bad trap
 			}
 			float metricValue = Float.parseFloat(entry.getValue());
 
@@ -43,6 +64,51 @@ public class DBSaver {
 
 	public static boolean isDBDataValid(DBData dbData){
 		return dbData.getState() != null && !dbData.getYear().isEmpty();
+	}
+
+	public static boolean insertNewCategory(String name, String parentID, String source) throws SQLException {
+		
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "select * from mhtc_sch.insertcategory(?,?,?)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, name); 
+		
+		if(parentID == null){
+			pstatement.setNull(2, Types.INTEGER);
+		}
+		else
+			pstatement.setInt(2, Integer.parseInt(parentID));
+		pstatement.setString(3, source); 
+		ResultSet rs = pstatement.executeQuery();
+		
+		rs.next();
+		
+		if (Integer.parseInt(rs.getString("insertcategory")) == 1)
+				return true;
+		else 
+			return false;
+	}
+
+	//	Category must exist in db already !!!
+	public static boolean insertNewMetric(String metricName, boolean b, int categoryID, String dataType) throws SQLException {
+		
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "select * from mhtc_sch.insertmetric(?,?,?,?)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, metricName); 
+		pstatement.setBoolean(2, b);
+		pstatement.setInt(3,categoryID);
+		pstatement.setString(4, dataType);
+		ResultSet rs = pstatement.executeQuery();
+		rs.next();
+		String tableHeader = rs.getString(1);
+		
+		if (Integer.parseInt(tableHeader) == 1)
+				return true;
+		else 
+			return false;
 	}
 	
 }
