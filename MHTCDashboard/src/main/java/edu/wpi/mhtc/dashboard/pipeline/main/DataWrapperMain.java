@@ -23,7 +23,7 @@ public class DataWrapperMain {
 
 		//US Census-State and Local Tax Burden
 		down.HTTPDownload("http://www2.census.gov/govs/statetax/state_tax_collections.zip", "tmp/state_tax_collections_1.zip");
-		unZip.unZipIt("C:/temp/state_tax_collections_1.zip","C:/temp");
+		unZip.unZipIt("tmp/state_tax_collections_1.zip","tmp");
 		
 		//NSF-TechEmployment
 		down.HTTPDownload("http://www.nsf.gov/statistics/seind12/c8/tt08-54.xls", "tmp/techemployment.xls");

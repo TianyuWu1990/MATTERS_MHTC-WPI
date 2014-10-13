@@ -13,6 +13,8 @@ public class StateCleaner implements ICleaner {
 	 * full name
 	 */
 	
+	
+//	TODO: test cases for state cleaner. 
 	private boolean flag;
 	
 	public StateCleaner(){
