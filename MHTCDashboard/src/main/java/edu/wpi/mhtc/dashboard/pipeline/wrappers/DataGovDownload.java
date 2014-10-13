@@ -24,16 +24,21 @@ public class DataGovDownload {
 	}
 	
 	
-	// Performs query on select database
-	// query = SELECT * from "resource_id";
-	// PostgreSQL query!
+	/**
+	 * Perform SQL data extraction from data.gov website.
+	 * @param sql: A PostgreSQL query that can be performed on the API
+	 * @param filename
+	 */
 	public void queryDownload(String sql, String filename) {
 		String download_url = base_url + "datastore_search_sql?sql=" + URLEncoder.encode(sql);
 		URLDownload downloader = new URLDownload();
 		downloader.HTTPDownload(download_url, filename);
 	}
 	
-	// This will login into inventory page. Magic. Don't change.
+	/**
+	 * This will login into data.gov page with username/password wpimhtc/wpimhtc
+	 * @throws IOException
+	 */
 	private void loginInventoryPage() throws IOException {
 		Response document    = Jsoup.connect("https://inventory.data.gov/login_generic?came_from=/user/logged_in")
 									.data("login", "wpimhtc", "password", "wpimhtc", "remember", "63072000")
@@ -42,10 +47,14 @@ public class DataGovDownload {
 		cookies = document.cookies();
 	}
 	
-	// Smart file downloader, it goes into the government data API site,
-	// looks for the CSV URL of the download button, grabs and download that CSV file
-	// Tested for : https://inventory.data.gov/dataset/032e19b4-5a90-41dc-83ff-6e4cd234f565/resource/38625c3d-5388-4c16-a30f-d105432553a4
-	
+
+	/**
+	 * Smart file downloader, it goes into the government data API site,
+	 * looks for the CSV URL of the download button, grabs and download that CSV file
+	 * @param url: The URL of data.gov
+	 * @param filename: File name to be saved
+	 * @throws IOException
+	 */
 	public void smartDownload(String url, String filename) throws IOException {
 		try {
 			org.jsoup.nodes.Document doc = Jsoup.connect(url).cookies(cookies).get();
