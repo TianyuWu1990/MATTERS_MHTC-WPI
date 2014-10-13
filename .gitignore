@@ -1,8 +1,5 @@
 MHTCDashboard/target/
 .class
 /target/
-MHTCDashBoard/MHTCDashboard/tmp/
-MHTCDashBoard/tmp/
+
 MHTCDashboard/pom.xml
-MHTCDashboard/src/main/java/edu/wpi/mhtc/dashboard/pipeline/db/DBConnector.java
-MHTCDashboard/MHTCDashboard/src/main/java/edu/wpi/mhtc/dashboard/pipeline/db/DBConnector.java
