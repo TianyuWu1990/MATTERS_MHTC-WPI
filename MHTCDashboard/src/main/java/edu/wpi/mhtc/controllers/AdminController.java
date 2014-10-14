@@ -156,21 +156,27 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file) {
+    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) {
+    	
+    	System.out.println("\n\nCategory id from admin panel: " + categoryID);
+    	
         String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
         if (!file.isEmpty()) {
             try {
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(name));
-                stream.write(bytes);
-                stream.close();
+            	
+            	File localFile = new File(name);
+            	file.transferTo(localFile);
+//                byte[] bytes = file.getBytes();
+//                BufferedOutputStream stream =
+//                        new BufferedOutputStream(new FileOutputStream(name));
+//                stream.write(bytes);
+//                stream.close();
+//                
+//                BufferedReader br = new BufferedReader(new FileReader(name));
+////                String category = br.readLine().split(",")[0];
+//                br.close();
                 
-                BufferedReader br = new BufferedReader(new FileReader(name));
-                String category = br.readLine().split(",")[0];
-                br.close();
-                
-                DataPipeline.run(new File(name), "" + getCatId(category));
+                DataPipeline.run(localFile, categoryID);
                 
                 return "You successfully uploaded " + name + " into " + name + "-uploaded !";
             } catch (Exception e) {
