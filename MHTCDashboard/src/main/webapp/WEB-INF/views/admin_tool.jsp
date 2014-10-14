@@ -28,6 +28,11 @@
                 <a id="addNewMetricBtn" href="#" class="ui-button">Add New Metric</a>
                 <div id="btnDiv">
                 	<form method="POST" enctype="multipart/form-data" action="admin/upload/add/">
+                		<select name="category">
+                			<c:forEach items="${categories}" var="category">
+                				<option value="${category.value}">${category.key}</option>
+                			</c:forEach> 
+                		</select>
 						<input type="file" name="file" ><br /> 
 						<!--<input type="text" name="name" class="hidden">!-->
 						<input type="submit" value="Upload"> Press here to upload the file!		
