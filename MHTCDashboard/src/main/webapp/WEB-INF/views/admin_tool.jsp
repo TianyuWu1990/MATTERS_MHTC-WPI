@@ -27,10 +27,11 @@
                 |
                 <a id="addNewMetricBtn" href="#" class="ui-button">Add New Metric</a>
                 <div id="btnDiv">
-                	<form method="POST" enctype="multipart/form-data" action="upload/add/">
+                	<form method="POST" enctype="multipart/form-data" action="admin/upload/add/">
 						<input type="file" name="file" ><br /> 
 						<!--<input type="text" name="name" class="hidden">!-->
-						<input type="submit" value="Upload"> Press here to upload the file!
+						<input type="submit" value="Upload"> Press here to upload the file!		
+    					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     	<!--<a id="uploadFileBtn" href="#" class="ui-button">Upload File</a>
                     	<a id="deleteFileBtn" href="#" class="ui-button">Delete File</a>
                     	<a id="updateFileBtn" href="#" class="ui-button">Update File</a>-->

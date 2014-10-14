@@ -21,7 +21,6 @@ import org.w3c.dom.Element;
 
 import edu.wpi.mhtc.pipeline.config.FileInfoConfig;
 import edu.wpi.mhtc.pipeline.config.IConfigFilePath;
-import edu.wpi.mhtc.pipeline.data.FileInfo;
 import edu.wpi.mhtc.pipeline.parser.IParser;
 import edu.wpi.mhtc.pipeline.parser.ParserFactory;
 
