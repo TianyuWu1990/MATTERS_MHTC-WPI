@@ -1,10 +1,7 @@
 package edu.wpi.mhtc.controllers;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
+import java.security.Principal;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.DateFormat;
@@ -14,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +19,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,14 +28,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
+import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.service.MetricService;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
-import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 
 @Controller
 public class AdminController {
@@ -216,4 +214,8 @@ public class AdminController {
         //return call.execute(params).get(0);
     }
     
+    @ExceptionHandler(CategoryException.class)
+    public String handleCategoryException(Exception e){
+    	return e.getMessage();
+    }
 }
