@@ -23,6 +23,7 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,7 @@ import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
+import edu.wpi.mhtc.pipeline.data.CategoryException;
 import edu.wpi.mhtc.pipeline.main.DataPipeline;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.service.MetricService;
@@ -204,6 +206,11 @@ public class AdminController {
         // TODO temp while testing
         return 2;
         //return call.execute(params).get(0);
+    }
+    
+    @ExceptionHandler(CategoryException.class)
+    public String handleCategoryException(Exception e){
+    	return e.getMessage();
     }
     
 }
