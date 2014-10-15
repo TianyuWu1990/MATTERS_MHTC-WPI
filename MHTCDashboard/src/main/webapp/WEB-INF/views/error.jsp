@@ -14,7 +14,7 @@
 		</tr>
 		<tr valign="top">
 			<td><b>URI:</b></td>
-			<td></td>
+			<td>${url}</td>
 		</tr>
 		<tr valign="top">
 			<td><b>Status code:</b></td>
@@ -22,10 +22,10 @@
 		</tr>
 		<tr valign="top">
 			<td><b>Stack trace:</b></td>
-			<!-- <td><c:forEach var="trace"
-					items="${exception.stackTrace}">
+			<td><c:forEach items="${exception.stackTrace}" var="trace">
 					<p>${trace}</p>
-				</c:forEach></td> -->
+				</c:forEach>
+			</td>
 		</tr>
 	</table>
 </body>

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -214,10 +216,12 @@ public class AdminController {
      * @return the appropriate error view
      */
     @ExceptionHandler(MHTCException.class)
-    public ModelAndView handleCategoryException(Exception e){
+    public ModelAndView handleCategoryException(HttpServletRequest req, Exception e){
+    	
     	ModelAndView mav = new ModelAndView();
     	
     	mav.addObject("exception", e);
+    	mav.addObject("url", req.getRequestURL());
     	mav.setViewName("error");
     	
     	return mav;
