@@ -10,22 +10,22 @@
 	<table width="100%" border="1">
 		<tr valign="top">
 			<td width="40%"><b>Error:</b></td>
-			<td>${e.message}</td>
+			<td>${exception.message}</td>
 		</tr>
 		<tr valign="top">
 			<td><b>URI:</b></td>
-			<td>${e.errorData.requestURI}</td>
+			<td></td>
 		</tr>
 		<tr valign="top">
 			<td><b>Status code:</b></td>
-			<td>${e.statusCode}</td>
+			<td></td>
 		</tr>
 		<tr valign="top">
 			<td><b>Stack trace:</b></td>
-			<td><c:forEach var="trace"
-					items="${e.stackTrace}">
+			<!-- <td><c:forEach var="trace"
+					items="${exception.stackTrace}">
 					<p>${trace}</p>
-				</c:forEach></td>
+				</c:forEach></td> -->
 		</tr>
 	</table>
 </body>
