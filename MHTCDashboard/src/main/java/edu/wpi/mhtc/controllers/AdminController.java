@@ -214,8 +214,15 @@ public class AdminController {
         //return call.execute(params).get(0);
     }
     
+    /**
+     * Handles all MHTCExceptions that could occur during the pipeline excution
+     * @param e the exception to catch and pass to the view
+     * @return the appropriate error view
+     */
     @ExceptionHandler(CategoryException.class)
-    public String handleCategoryException(Exception e){
-    	return e.getMessage();
+    public String handleCategoryException(Model model, Exception e){
+    	model.addAttribute(e);
+    	
+    	return "error";
     }
 }
