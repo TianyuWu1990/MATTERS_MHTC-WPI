@@ -27,10 +27,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
+import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
@@ -158,15 +159,13 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) {
+    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) throws Exception {
     	
     	System.out.println("\n\nCategory id from admin panel: " + categoryID);
     	
         String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
         if (!file.isEmpty()) {
-            try {
-            	
-            	File localFile = new File(name);
+               	File localFile = new File(name);
             	file.transferTo(localFile);
 //                byte[] bytes = file.getBytes();
 //                BufferedOutputStream stream =
@@ -180,14 +179,9 @@ public class AdminController {
                 
                 DataPipeline.run(localFile, categoryID);
                 
-                return "You successfully uploaded " + name + " into " + name + "-uploaded !";
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-                //return "You failed to upload " + name + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + name + " because the file was empty.";
         }
+        
+        return "You successfully uploaded " + name + " into " + name + "-uploaded !";
         
     }
     
@@ -215,14 +209,17 @@ public class AdminController {
     }
     
     /**
-     * Handles all MHTCExceptions that could occur during the pipeline excution
+     * Handles all MHTCExceptions that could occur during the pipeline execution
      * @param e the exception to catch and pass to the view
      * @return the appropriate error view
      */
-    @ExceptionHandler(CategoryException.class)
-    public String handleCategoryException(Model model, Exception e){
-    	model.addAttribute(e);
+    @ExceptionHandler(MHTCException.class)
+    public ModelAndView handleCategoryException(Exception e){
+    	ModelAndView mav = new ModelAndView();
     	
-    	return "error";
+    	mav.addObject("exception", e);
+    	mav.setViewName("error");
+    	
+    	return mav;
     }
 }

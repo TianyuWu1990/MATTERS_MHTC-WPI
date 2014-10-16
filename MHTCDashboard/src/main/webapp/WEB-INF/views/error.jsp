@@ -10,7 +10,7 @@
 	<table width="100%" border="1">
 		<tr valign="top">
 			<td width="40%"><b>Error:</b></td>
-			<td>${e.exception}</td>
+			<td>${e.message}</td>
 		</tr>
 		<tr valign="top">
 			<td><b>URI:</b></td>
@@ -18,12 +18,12 @@
 		</tr>
 		<tr valign="top">
 			<td><b>Status code:</b></td>
-			<td>${e.errorData.statusCode}</td>
+			<td>${e.statusCode}</td>
 		</tr>
 		<tr valign="top">
 			<td><b>Stack trace:</b></td>
 			<td><c:forEach var="trace"
-					items="${e.exception.stackTrace}">
+					items="${e.stackTrace}">
 					<p>${trace}</p>
 				</c:forEach></td>
 		</tr>
