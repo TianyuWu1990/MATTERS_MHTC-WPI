@@ -1,4 +1,4 @@
-package pipeline.cleaner;
+package edu.wpi.mhtc.dashboard.pipeline.cleaner;
 
 import static org.junit.Assert.assertEquals;
 

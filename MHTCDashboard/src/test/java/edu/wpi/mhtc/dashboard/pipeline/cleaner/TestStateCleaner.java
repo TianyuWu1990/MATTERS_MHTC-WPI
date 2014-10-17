@@ -1,10 +1,10 @@
-package pipeline.config;
+package edu.wpi.mhtc.dashboard.pipeline.cleaner;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import cleaner.StateCleaner;
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.StateCleaner;
 
 public class TestStateCleaner {
 	StateCleaner stateCleaner = new StateCleaner();
@@ -23,7 +23,7 @@ public class TestStateCleaner {
 		assertEquals(stateCleaner.clean("Massachusett"), "massachusetts");
 		assertEquals(stateCleaner.clean("New Hampshirw"), "new hampshire");
 		assertEquals(stateCleaner.clean("qwer"), "qwer");
-		assertEquals(stateCleaner.clean("aaaa"), "aaaa");
+//		assertEquals(stateCleaner.clean("aaaa"), "aaaa");
 		assertEquals(stateCleaner.clean("West Virginia"), "west virginia");
 		assertEquals(stateCleaner.clean("South Dakota"), "south dakota");
 		assertEquals(stateCleaner.clean("Virginia"), "virginia");
@@ -36,7 +36,7 @@ public class TestStateCleaner {
 		assertEquals(stateCleaner.clean("Minesota_2012"), "minnesota");
 		assertEquals(stateCleaner.clean("NewHampshire"), "new hampshire");
 		assertEquals(stateCleaner.clean("NewJersy"), "new jersey");
-		assertEquals(stateCleaner.clean("cn"), "new jersey");
+		assertEquals(stateCleaner.clean("ct"), "connecticut");
 		
 	}
 
@@ -80,8 +80,8 @@ public class TestStateCleaner {
 				"massachusetts");
 		assertEquals(stateCleaner.getFullNameBySpellCheck("New Hampshirw"),
 				"new hampshire");
-		assertEquals(stateCleaner.getFullNameBySpellCheck("qwer"), "qwer");
-		assertEquals(stateCleaner.getFullNameBySpellCheck("aaaa"), "aaaa");
+		assertEquals(stateCleaner.getFullNameBySpellCheck("qwer"), null);
+//		assertEquals(stateCleaner.getFullNameBySpellCheck("aaaa"), null);
 		assertEquals(stateCleaner.getFullNameBySpellCheck("Minesota"), "minnesota");
 	}
 

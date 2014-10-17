@@ -1,4 +1,4 @@
-package pipeline.parser;
+package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import java.io.BufferedWriter;
 import java.io.File;

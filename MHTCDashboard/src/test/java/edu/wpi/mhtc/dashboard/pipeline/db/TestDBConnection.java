@@ -1,4 +1,4 @@
-package pipeline.db;
+package edu.wpi.mhtc.dashboard.pipeline.db;
 
 import static org.junit.Assert.assertNotNull;
 

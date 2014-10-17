@@ -1,6 +1,5 @@
-package pipeline.parser;
+package edu.wpi.mhtc.dashboard.pipeline.parser;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
@@ -9,15 +8,11 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import parser.IParser;
-import parser.ParserFactory;
-import parser.ParserType;
-import parser.Type1Parser;
-import data.FileData;
-import data.LineData;
-import fileInfo.FileInfo;
-import fileInfo.FileType;
-import fileInfo.LoadInfo;
+import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.data.LoadInfo;
+import edu.wpi.mhtc.dashboard.pipeline.parsers.IParser;
+import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserFactory;
+import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserType;
 
 @SuppressWarnings("unused")
 public class TestExcelParser {
