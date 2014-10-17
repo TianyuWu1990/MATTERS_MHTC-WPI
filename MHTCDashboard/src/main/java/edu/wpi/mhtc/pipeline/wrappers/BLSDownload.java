@@ -12,17 +12,10 @@ import java.util.HashMap;
 //test push into git
 //Downloads Unemployment (Not Seasonally adjusted) Data from Bureau of Labor Statistics
 public class BLSDownload {
-
-	/**
-	 * 
-	 * @param state
-	 * @param beginyear
-	 * @param endyear
-	 * @param directory
-	 * @throws IOException
-	 */
-	public void getBLS(String state, String beginyear, String endyear, String directory) throws IOException {
-		HashMap<String, String[]> map = new HashMap<String,String[]>();
+	
+	static final HashMap<String, String[]> map;
+	static{
+		map = new HashMap<String,String[]>();
 		
 		// All States/Regions are assigned a stateID as well as a excel file name
 		map.put("AL", new String[]{"01","AL-BLS.xls"});
@@ -76,7 +69,28 @@ public class BLSDownload {
 		map.put("WV", new String[]{"49","WV-BLS.xls"});
 		map.put("WI", new String[]{"50","WI-BLS.xls"});
 		map.put("WY", new String[]{"51","WY-BLS.xls"});
+	}
 
+
+	
+	
+	
+	public void getBLSAllStates(String beginyear, String endyear, String directory) throws IOException {
+		for(String state : map.keySet()){
+			getBLS(state, beginyear, endyear, directory);
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param state
+	 * @param beginyear
+	 * @param endyear
+	 * @param directory
+	 * @throws IOException
+	 */
+	public void getBLS(String state, String beginyear, String endyear, String directory) throws IOException {
 		
 		URL url = new URL("http://data.bls.gov/pdq/SurveyOutputServlet"); // http://data.bls.gov/pdq/SurveyOutputServlet,
 																			// http://data.bls.gov/cgi-bin/dsrv
