@@ -25,7 +25,11 @@ public class DataWrapperMain {
 		unZip.unZipIt("tmp/state_tax_collections_1.zip","tmp");
 		
 		//NSF-TechEmployment
-		down.HTTPDownload("http://www.nsf.gov/statistics/seind12/c8/tt08-54.xls", "tmp/techemployment.xls");
+//	CK-10/2014 this is original source:	
+//		down.HTTPDownload("http://www.nsf.gov/statistics/seind12/c8/tt08-54.xls", "tmp/techemployment.xls");
+		
+//	The nsf site has changed, and new years are available here:
+		down.HTTPDownload("http://www.nsf.gov/statistics/seind14/content/chapter-8/8-55_all.xls ", "tmp/techemployment.xls");
 		
 		//Unemployment Insurance Payroll Tax
 		down.HTTPDownload("http://www.taxpolicycenter.org/taxfacts/Content/Excel/state_unemp_rate.xls", "tmp/state_unemp_rate.xls");
