@@ -49,7 +49,6 @@ public class ExcelParser implements IParser {
 		this.getStartAndEndRow();
 	}
 
-	@Override
 	public List<String> getColumnNames() {
 		if (this.columnNames.isEmpty()) {
 			Sheet sheet = this.workbook.getSheetAt(0);
@@ -66,7 +65,6 @@ public class ExcelParser implements IParser {
 		return this.columnNames;
 	}
 
-	@Override
 	public FileData parseAll() {
 		this.getColumnNames();
 		for (int i = 0; i < this.workbook.getNumberOfSheets(); i++) {
