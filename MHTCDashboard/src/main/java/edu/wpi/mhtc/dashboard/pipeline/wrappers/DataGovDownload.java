@@ -9,8 +9,6 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 
-import edu.wpi.mhtc.pipeline.wrappers.URLDownload;
-
 
 public class DataGovDownload {
 	private String base_url = "https://inventory.data.gov/api/action/";

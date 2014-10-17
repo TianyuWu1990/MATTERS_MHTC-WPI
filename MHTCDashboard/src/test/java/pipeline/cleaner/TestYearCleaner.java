@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import edu.wpi.mhtc.pipeline.cleaner.YearCleaner;
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.YearCleaner;
 
 public class TestYearCleaner {
 

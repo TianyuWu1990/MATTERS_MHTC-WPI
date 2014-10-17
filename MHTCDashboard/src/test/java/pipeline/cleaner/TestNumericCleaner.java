@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import edu.wpi.mhtc.pipeline.cleaner.NumericCleaner;
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.NumericCleaner;
 
 
 public class TestNumericCleaner {

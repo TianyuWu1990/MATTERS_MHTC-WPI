@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
-import edu.wpi.mhtc.pipeline.db.DBConnector;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 
 public class TestDBConnection {
 

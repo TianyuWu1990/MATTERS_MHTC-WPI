@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import edu.wpi.mhtc.pipeline.cleaner.StateCleaner;
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.StateCleaner;
 
 public class TestStateCleaner {
 	StateCleaner stateCleaner = new StateCleaner();

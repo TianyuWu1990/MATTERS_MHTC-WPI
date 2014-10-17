@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import edu.wpi.mhtc.pipeline.config.StateInfoConfig;
-import edu.wpi.mhtc.pipeline.db.DBLoader;
+import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
 public class TestDBLoader {
 

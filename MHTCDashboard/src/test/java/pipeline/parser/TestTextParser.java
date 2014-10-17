@@ -6,11 +6,11 @@ import java.io.File;
 
 import org.junit.Test;
 
-import edu.wpi.mhtc.pipeline.data.Category;
-import edu.wpi.mhtc.pipeline.data.DataSource;
-import edu.wpi.mhtc.pipeline.data.UnifiedCSVDataSource;
-import edu.wpi.mhtc.pipeline.parser.IParser;
-import edu.wpi.mhtc.pipeline.parser.ParserFactory;
+import edu.wpi.mhtc.dashboard.pipeline.data.Category;
+import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedCSVDataSource;
+import edu.wpi.mhtc.dashboard.pipeline.parsers.IParser;
+import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserFactory;
 
 public class TestTextParser {
 	

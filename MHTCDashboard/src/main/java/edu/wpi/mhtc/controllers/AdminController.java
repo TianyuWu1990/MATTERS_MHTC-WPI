@@ -1,6 +1,7 @@
 package edu.wpi.mhtc.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -28,13 +29,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
+import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
-import edu.wpi.mhtc.pipeline.data.CategoryException;
-import edu.wpi.mhtc.pipeline.db.DBLoader;
-import edu.wpi.mhtc.pipeline.main.DataPipeline;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
 import edu.wpi.mhtc.service.MetricService;
 
@@ -159,14 +160,13 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) {
+    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) throws Exception {
     	
     	System.out.println("\n\nCategory id from admin panel: " + categoryID);
     	
         String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
         if (!file.isEmpty()) {
-            try {
-            	
+
             	File localFile = new File(name);
             	file.transferTo(localFile);
 //                byte[] bytes = file.getBytes();
@@ -182,10 +182,6 @@ public class AdminController {
                 DataPipeline.run(localFile, categoryID);
                 
                 return "You successfully uploaded " + name + " into " + name + "-uploaded !";
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-                //return "You failed to upload " + name + " => " + e.getMessage();
-            }
         } else {
             return "You failed to upload " + name + " because the file was empty.";
         }
@@ -215,9 +211,9 @@ public class AdminController {
         //return call.execute(params).get(0);
     }
     
-    @ExceptionHandler(CategoryException.class)
-    public String handleCategoryException(Exception e){
-    	return e.getMessage();
-    }
+//    @ExceptionHandler(Exception.class)
+//    public String handleCategoryException(Exception e){
+//    	return e.getMessage();
+//    }
     
 }

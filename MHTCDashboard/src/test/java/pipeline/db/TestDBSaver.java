@@ -2,9 +2,9 @@ package pipeline.db;
 
 import org.junit.Test;
 
-import edu.wpi.mhtc.pipeline.data.Line;
-import edu.wpi.mhtc.pipeline.data.Metric;
-import edu.wpi.mhtc.pipeline.db.DBSaver;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
+import edu.wpi.mhtc.dashboard.pipeline.data.Metric;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 
 public class TestDBSaver {
 	
