@@ -17,7 +17,9 @@ public class DataWrapperMain {
 	 */
 	public static void main(String[] args) throws IOException {
 		
-		System.out.println (new File(DATA_DIRECTORY).mkdir());
+		File dir = new File(DATA_DIRECTORY);
+//		create this directory if it doesn't already exist
+		dir.mkdir();
 	
 		
 		URLDownload down = new URLDownload();
@@ -41,7 +43,7 @@ public class DataWrapperMain {
 		down.HTTPDownload("http://www.taxpolicycenter.org/taxfacts/Content/Excel/state_unemp_rate.xls", DATA_DIRECTORY+"/state_unemp_rate.xls");
 		
 		//Bureau of Labor Statistics-Unemployment rate
-		bls.getBLSAllStates("2004", "2014", DATA_DIRECTORY);
+		bls.getBLSAllStates("2004", "2014", dir);
 		
 		
 		//Bureau of Economic Analysis-all regions and years

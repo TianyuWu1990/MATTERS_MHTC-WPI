@@ -75,7 +75,7 @@ public class BLSDownload {
 	
 	
 	
-	public void getBLSAllStates(String beginyear, String endyear, String directory) throws IOException {
+	public void getBLSAllStates(String beginyear, String endyear, File directory) throws IOException {
 		for(String state : map.keySet()){
 			getBLS(state, beginyear, endyear, directory);
 		}
@@ -90,7 +90,7 @@ public class BLSDownload {
 	 * @param directory
 	 * @throws IOException
 	 */
-	public void getBLS(String state, String beginyear, String endyear, String directory) throws IOException {
+	public void getBLS(String state, String beginyear, String endyear, File directory) throws IOException {
 		
 		URL url = new URL("http://data.bls.gov/pdq/SurveyOutputServlet"); // http://data.bls.gov/pdq/SurveyOutputServlet,
 																			// http://data.bls.gov/cgi-bin/dsrv
@@ -134,7 +134,7 @@ public class BLSDownload {
 
 		//get input stream
 		InputStream is = httpCon.getInputStream();
-		FileOutputStream fos = new FileOutputStream(new File(directory+map.get(state.toUpperCase())[1]));
+		FileOutputStream fos = new FileOutputStream(new File(directory, map.get(state.toUpperCase())[1]));
 
 		byte[] buffer = new byte[4096];
 		int length;
