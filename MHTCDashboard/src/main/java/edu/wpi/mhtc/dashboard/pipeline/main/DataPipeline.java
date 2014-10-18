@@ -9,8 +9,8 @@ import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedDataSource;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserFactory;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.UnifiedParser;
+import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
+import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedParser;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
 
 public class DataPipeline {

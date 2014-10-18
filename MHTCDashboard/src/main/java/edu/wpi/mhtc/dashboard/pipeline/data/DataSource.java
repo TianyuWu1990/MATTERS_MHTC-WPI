@@ -2,7 +2,7 @@ package edu.wpi.mhtc.dashboard.pipeline.data;
 
 import java.io.File;
 
-import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserType;
+import edu.wpi.mhtc.dashboard.pipeline.parser.ParserType;
 
 public abstract class DataSource {
 	

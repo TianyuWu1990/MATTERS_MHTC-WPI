@@ -21,8 +21,8 @@ import org.w3c.dom.Element;
 
 import edu.wpi.mhtc.dashboard.pipeline.config.FileInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.config.IConfigFilePath;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.IParser;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserFactory;
+import edu.wpi.mhtc.dashboard.pipeline.parser.IParser;
+import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
 
 public class CatInfoGenerator {
 	private DocumentBuilderFactory docFactory;

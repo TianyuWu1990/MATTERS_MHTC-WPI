@@ -1,4 +1,4 @@
-package edu.wpi.mhtc.dashboard.pipeline.parsers;
+package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;

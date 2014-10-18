@@ -7,8 +7,8 @@ import edu.wpi.mhtc.dashboard.pipeline.config.CatInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.config.FileInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.IParser;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserFactory;
+import edu.wpi.mhtc.dashboard.pipeline.parser.IParser;
+import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
 
 public class Main {
 

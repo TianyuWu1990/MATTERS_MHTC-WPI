@@ -35,7 +35,7 @@ public class DBLoader {
 		 * index 3 : StateName
 		 */
         while (rs.next()) {
-        	String stateID = rs.getString(1).toLowerCase();
+        	int stateID = rs.getInt(1);
         	String initial = rs.getString(2).toLowerCase();
         	String stateName = rs.getString(3).toLowerCase();
         	State state = new State(stateID, stateName, initial);

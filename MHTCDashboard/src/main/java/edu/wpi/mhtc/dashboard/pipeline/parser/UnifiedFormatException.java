@@ -1,4 +1,4 @@
-package edu.wpi.mhtc.dashboard.pipeline.parsers;
+package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 public class UnifiedFormatException extends Exception {
 

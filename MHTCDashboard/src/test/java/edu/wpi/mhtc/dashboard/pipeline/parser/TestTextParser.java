@@ -9,8 +9,8 @@ import org.junit.Test;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedCSVDataSource;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.IParser;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserFactory;
+import edu.wpi.mhtc.dashboard.pipeline.parser.IParser;
+import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
 
 public class TestTextParser {
 	
@@ -25,7 +25,7 @@ public class TestTextParser {
 	public void test() throws Exception {
 		
 		Category cat = new Category(6);
-		File file = new File("testfiles/Text/test.csv");
+		File file = new File("testfiles/TextParser/test.csv");
 		DataSource source = new UnifiedCSVDataSource(file, cat);
 		IParser parser = ParserFactory.getInstance(source); 
 		

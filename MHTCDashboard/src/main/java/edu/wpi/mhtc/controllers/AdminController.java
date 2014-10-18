@@ -158,15 +158,13 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) {
+    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) throws Exception {
     	
     	System.out.println("\n\nCategory id from admin panel: " + categoryID);
     	
         String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
         if (!file.isEmpty()) {
-            try {
-            	
-            	File localFile = new File(name);
+               	File localFile = new File(name);
             	file.transferTo(localFile);
 //                byte[] bytes = file.getBytes();
 //                BufferedOutputStream stream =
@@ -180,14 +178,9 @@ public class AdminController {
                 
                 DataPipeline.run(localFile, categoryID);
                 
-                return "You successfully uploaded " + name + " into " + name + "-uploaded !";
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-                //return "You failed to upload " + name + " => " + e.getMessage();
-            }
-        } else {
-            return "You failed to upload " + name + " because the file was empty.";
         }
+        
+        return "You successfully uploaded " + name + " into " + name + "-uploaded !";
         
     }
     

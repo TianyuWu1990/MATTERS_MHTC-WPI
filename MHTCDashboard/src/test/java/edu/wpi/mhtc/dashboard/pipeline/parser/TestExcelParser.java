@@ -10,9 +10,9 @@ import org.junit.Test;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
 import edu.wpi.mhtc.dashboard.pipeline.data.LoadInfo;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.IParser;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserFactory;
-import edu.wpi.mhtc.dashboard.pipeline.parsers.ParserType;
+import edu.wpi.mhtc.dashboard.pipeline.parser.IParser;
+import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
+import edu.wpi.mhtc.dashboard.pipeline.parser.ParserType;
 
 @SuppressWarnings("unused")
 public class TestExcelParser {
