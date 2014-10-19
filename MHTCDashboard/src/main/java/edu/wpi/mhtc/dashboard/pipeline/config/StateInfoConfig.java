@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.dashboard.pipeline.config;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
@@ -49,6 +50,19 @@ public class StateInfoConfig implements IConfig{
 	 */
 	public List<State> getStateList(){
 		return stateList;
+	}
+	
+	/**
+	 * Get state initial list
+	 */
+	public List<String> getStateInitialsList() {
+		LinkedList<String> stateInitialList = new LinkedList<String>();
+		
+		for(State s: stateList) {
+			stateInitialList.add(s.getInitial());
+		}
+		
+		return stateInitialList;
 	}
 	
 	@Override
