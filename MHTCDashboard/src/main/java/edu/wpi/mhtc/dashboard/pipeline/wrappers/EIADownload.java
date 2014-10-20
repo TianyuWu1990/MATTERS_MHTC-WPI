@@ -2,13 +2,17 @@ package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
 
-public class EIADownload {
+public class EIADownload implements IWrapper {
 	final private String apiKey = "606B66BBE8BB7EDF94953ADF6430E182";
 	final private String apiUrl = "http://api.eia.gov/series/?api_key=" + apiKey;
 	
 	public EIADownload() throws Exception {
+		this.download();
+	}
+	
+	public void download() throws Exception {
 		System.out.println("==== eiv.gov API downloader started ====");
-		this.DownloadAverageElectricityCost();
+		this.DownloadAverageElectricityCost();	
 	}
 	
 	/**
