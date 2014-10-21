@@ -15,39 +15,36 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 public class Type7Parser implements IParser {
 
-	private FileInfo fileInfo;
-	private FileData fileData;
+	private DataSource source;
 	private List<String> columnNames;
-	private List<LineData> lineDatalist;
+	private List<Line> lines;
 	private Workbook workbook;
 	private Sheet sheet;
 	private int startRow;
 	private int endRow;
 	private List<String> years;
 
-	public Type7Parser(FileInfo fileInfo) throws InvalidFormatException,
+	public Type7Parser(DataSource source) throws InvalidFormatException,
 			IOException {
-		this.fileInfo = fileInfo;
-		this.fileData = new FileData(this.fileInfo);
+		this.source = source;
 		this.columnNames = new LinkedList<String>();
-		this.lineDatalist = new LinkedList<LineData>();
+		this.lines = new LinkedList<Line>();
 		this.years = new LinkedList<String>();
 		this.init();
 	}
 
 	private void init() throws InvalidFormatException, IOException {
-		this.workbook = WorkbookFactory.create(new File(this.fileInfo
+		this.workbook = WorkbookFactory.create(new File(this.source
 				.getFileName()));
 		this.sheet = this.workbook.getSheetAt(0);
-		if (this.fileInfo.getLoadInfo().isRowSpecified()) {
-			this.startRow = this.fileInfo.getLoadInfo().getStartRow();
-			this.endRow = this.fileInfo.getLoadInfo().getEndRow();
+		if (this.source.getLoadInfo().isRowSpecified()) {
+			this.startRow = this.source.getLoadInfo().getStartRow();
+			this.endRow = this.source.getLoadInfo().getEndRow();
 		} else {
 			this.startRow = 2;
 			this.endRow = 57;
@@ -55,7 +52,7 @@ public class Type7Parser implements IParser {
 	}
 
 	@Override
-	public Iterator<LineData> iterator() {
+	public Iterator<Line> iterator() {
 		return new Type7Iterator();
 	}
 
@@ -96,11 +93,11 @@ public class Type7Parser implements IParser {
 							}
 						}
 					}
-					this.lineDatalist.add(new LineData(map, this.fileInfo));
+					this.lines.add(new Line(map, this.source));
 				}
 			}
 		}
-		this.fileData.setLineDataList(this.lineDatalist);
+		this.fileData.setLineList(this.lines);
 		return this.fileData;
 	}
 
@@ -141,9 +138,9 @@ public class Type7Parser implements IParser {
 		return this.columnNames;
 	}
 
-	public class Type7Iterator implements Iterator<LineData> {
+	public class Type7Iterator implements Iterator<Line> {
 
-		private FileInfo fileInfo;
+		private DataSource source;
 		private List<String> columnNames;
 		private Workbook workbook;
 		private Sheet sheet;
@@ -153,7 +150,7 @@ public class Type7Parser implements IParser {
 		private int currentYearIndex;
 
 		public Type7Iterator() {
-			this.fileInfo = Type7Parser.this.fileInfo;
+			this.source = Type7Parser.this.source;
 			this.endRow = Type7Parser.this.endRow;
 			this.currentRow = Type7Parser.this.startRow + 1;
 			this.columnNames = Type7Parser.this.getColumnNames();
@@ -169,7 +166,7 @@ public class Type7Parser implements IParser {
 		}
 
 		private void init() throws InvalidFormatException, IOException {
-			this.workbook = WorkbookFactory.create(new File(this.fileInfo
+			this.workbook = WorkbookFactory.create(new File(this.source
 					.getFileName()));
 			this.sheet = this.workbook.getSheetAt(0);
 		}
@@ -180,8 +177,8 @@ public class Type7Parser implements IParser {
 		}
 
 		@Override
-		public LineData next() {
-			LineData lineData = null;
+		public Line next() {
+			Line lineData = null;
 			int nextLine;
 			if ((nextLine = this.findNextLegalLine()) != -1) {
 				Map<String, String> map = new HashMap<String, String>();
@@ -215,7 +212,7 @@ public class Type7Parser implements IParser {
 						}
 					}
 				}
-				lineData = new LineData(map, this.fileInfo);
+				lineData = new Line(map, this.source);
 			}
 			return lineData;
 		}

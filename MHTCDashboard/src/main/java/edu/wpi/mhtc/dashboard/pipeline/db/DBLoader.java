@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public class DBLoader {
 	 * key is the state name, value is the state ID
 	 */
 	public static List<State> getStateMapper() throws SQLException{
-		List<State> stateList = new LinkedList<State>();
+		List<State> stateList = new ArrayList<State>(52);
 		Connection conn = DBConnector.getInstance().getConn();
 		Statement statement = conn.createStatement();
 		
@@ -35,7 +35,7 @@ public class DBLoader {
 		 * index 3 : StateName
 		 */
         while (rs.next()) {
-        	String stateID = rs.getString(1).toLowerCase();
+        	int stateID = rs.getInt(1);
         	String initial = rs.getString(2).toLowerCase();
         	String stateName = rs.getString(3).toLowerCase();
         	State state = new State(stateID, stateName, initial);
@@ -76,7 +76,7 @@ public class DBLoader {
 		Connection conn = DBConnector.getInstance().getConn();
 		
 		//String sql = "select * from mhtc_sch.getMetrics(5,FALSE)";
-		String sql = "select * from mhtc_sch.getMetrics(?, FALSE)";
+		String sql = "select * from mhtc_sch.getMetrics(?, TRUE)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setInt(1, catID); // set parameter 1 catID
 		ResultSet rs = pstatement.executeQuery();
@@ -84,12 +84,14 @@ public class DBLoader {
 		if(!rs.next()){
 			throw new CategoryException("No metrics in DB for category "+catID);
 		}
-		
-		while (rs.next()) {
-			String metricID = rs.getString("Id").toLowerCase();
-			String metricName = rs.getString("Name").toLowerCase();
-			table.put(metricName, metricID);
-		}    
+		else{
+			do {
+				String metricID = rs.getString("Id").toLowerCase();
+				String metricName = rs.getString("Name").toLowerCase();
+				table.put(metricName, metricID);
+			}
+			while (rs.next());  
+		}
 		return table;
 	}
 	

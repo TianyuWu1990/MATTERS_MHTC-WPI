@@ -14,10 +14,10 @@ import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
  */
 public class Line {
 
-	private int year;
-	private State state;
-	private Metric metric;
-	
+	int stateID;
+	int metricID;
+	int year;
+	Float value;	
 
 	public Line(){
 	}
@@ -28,19 +28,18 @@ public class Line {
 	 * @throws Exception if the stateName cannot be found in the database
 	 */
 	public void setState(String stateName) throws Exception{
-		state = StateInfoConfig.getInstance().getStateByFullName(stateName);
+		stateID = State.getStateID(stateName);
 	}
 	
-//	TODO: do we ever check for a valid year?
 	public void setYear(String year){
 		this.year = Integer.parseInt(year);
 	}
 	
-	public void addMetric(Metric metric) throws Exception{
+	public void addMetric(Metric metric){
 		if(metric.isValid()){
-			this.metric = metric;
+			metricID = metric.getID();
+			value = new Float(metric.getValue());	
 		}
-		else throw new Exception("Invalid Metric for category ");
 	}
 
 	public int getYear() {
@@ -49,16 +48,16 @@ public class Line {
 	
 	
 	public int getStateID() {
-		return Integer.parseInt(state.getStateID());
+		return stateID;
 	}
 	
 
 	public int getMetricID(){
-		return metric.getID();
+		return metricID;
 	}
 	
 	public Float getMetricValue(){
-		return metric.getValue();
+		return value;
 	}
 	/**
 	 * 
@@ -66,9 +65,14 @@ public class Line {
 	 */
 	
 	public boolean isValid(){
-		return (year!=0 && state!=null && metric!=null);
+		return (year!=0 && stateID != 0 && value!=null);
 	}
 
-
+//	for testing
+	@Override
+	public String toString(){
+		return stateID + ", " + metricID + "," + year + ", "+value ;
+		
+	}
 }
 

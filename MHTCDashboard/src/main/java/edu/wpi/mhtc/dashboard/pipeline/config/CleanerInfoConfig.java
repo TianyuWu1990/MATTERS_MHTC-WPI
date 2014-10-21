@@ -12,7 +12,7 @@ import org.dom4j.io.SAXReader;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.CleanType;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.CleanerFactory;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.ICleaner;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.pipeline.data.FileInfo;
 
 public class CleanerInfoConfig implements IConfig{
 

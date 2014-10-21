@@ -10,8 +10,8 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.CatInfo;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.dashboard.pipeline.data.CatInfo;
+import edu.wpi.mhtc.pipeline.data.FileInfo;
 
 public class CatInfoConfig implements IConfig{
 	private static CatInfoConfig catInfoConfig;

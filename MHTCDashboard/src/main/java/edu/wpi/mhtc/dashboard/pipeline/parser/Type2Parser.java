@@ -11,9 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 
 /**
@@ -22,22 +21,20 @@ import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
  */
 public class Type2Parser implements IParser {
 
-	private FileInfo fileInfo;
-	private FileData fileData;
+	private DataSource source;
 	private List<String> columnNames;
 	private HashMap<String, String> map;
-	private List<LineData> lineDataList;
+	private List<Line> lines;
 	private String csvFile;
 	private int year;
 	private String state;
 
-	public Type2Parser(FileInfo fileInfo) {
-		this.fileInfo = fileInfo;
-		this.fileData = new FileData(this.fileInfo);
+	public Type2Parser(DataSource source) {
+		this.source = source;
 		this.columnNames = new LinkedList<String>();
 		this.map = new HashMap<String, String>();
-		this.lineDataList = new LinkedList<LineData>();
-		this.csvFile = this.fileInfo.getFileName();
+		this.lines = new LinkedList<Line>();
+		this.csvFile = this.source.getFileName();
 		this.year = Integer.parseInt(this.csvFile.substring(
 				this.csvFile.lastIndexOf(".") - 4,
 				this.csvFile.lastIndexOf(".")));
@@ -47,8 +44,8 @@ public class Type2Parser implements IParser {
 	}
 
 	@Override
-	public Iterator<LineData> iterator() {
-		if (this.lineDataList.isEmpty()) {
+	public Iterator<Line> iterator() {
+		if (this.lines.isEmpty()) {
 			try {
 				this.parseAll();
 			} catch (Exception e) {
@@ -84,13 +81,13 @@ public class Type2Parser implements IParser {
 		for (Entry<String, Integer> entry : map.entrySet()) {
 			this.map.put(entry.getKey(), Integer.toString(entry.getValue()));
 		}
-		this.lineDataList.add(new LineData(this.map, this.fileInfo));
-		this.fileData.setLineDataList(this.lineDataList);
+		this.lines.add(new Line(this.map, this.source));
+		this.fileData.setLineList(this.lines);
 		return this.fileData;
 	}
 
 	@Override
-	public List<String> getColumnNames() {
+	public List<String> validateMetrics() {
 		if (this.columnNames.isEmpty()) {
 			BufferedReader br = null;
 			String line;
@@ -119,13 +116,13 @@ public class Type2Parser implements IParser {
 		return this.columnNames;
 	}
 
-	public class Type2Iterator implements Iterator<LineData> {
+	public class Type2Iterator implements Iterator<Line> {
 
-		private List<LineData> lineDataList;
+		private List<Line> lineDataList;
 		private int currentLine;
 
 		public Type2Iterator() {
-			this.lineDataList = Type2Parser.this.lineDataList;
+			this.lineDataList = Type2Parser.this.lines;
 			this.currentLine = 0;
 		}
 
@@ -135,7 +132,7 @@ public class Type2Parser implements IParser {
 		}
 
 		@Override
-		public LineData next() {
+		public Line next() {
 			this.currentLine++;
 			return this.lineDataList.get(0);
 		}
