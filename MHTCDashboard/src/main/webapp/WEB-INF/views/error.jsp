@@ -17,8 +17,8 @@
 			<td>${url}</td>
 		</tr>
 		<tr valign="top">
-			<td><b>Status code:</b></td>
-			<td></td>
+			<td><b>Possible solution:</b></td>
+			<td>${exception.solution}</td>
 		</tr>
 		<tr valign="top">
 			<td><b>Stack trace:</b></td>
@@ -28,5 +28,7 @@
 			</td>
 		</tr>
 	</table>
+	
+	<!--  Add in button to go back to previous page -->
 </body>
 </html>

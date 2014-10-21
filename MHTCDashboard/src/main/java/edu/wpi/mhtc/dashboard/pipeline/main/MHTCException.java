@@ -8,7 +8,9 @@ package edu.wpi.mhtc.dashboard.pipeline.main;
  * @version Oct 15, 2014
  *
  */
-public class MHTCException  extends Exception {
+public abstract class MHTCException extends Exception {
+	
+	private StringBuffer solution = new StringBuffer();
 	
 	/**
 	 * Every instance of this exception must have a message describing the exception.
@@ -19,12 +21,28 @@ public class MHTCException  extends Exception {
 	}
 	
 	/**
-	 * An excaption that was caused by some other exception
+	 * An exception that was caused by some other exception.
 	 * @param message the string describing the error
 	 * @param cause the error that cause this exception
 	 */
 	public MHTCException(String message, Throwable cause) {
 		super(message, cause);
+	}
+	
+	/**
+	 * Setter for solution. Should contain possible solution for fixing error.
+	 * @param message
+	 */
+	public void setSolution(String message) {
+		solution.append(message);
+	}
+	
+	/**
+	 * Gets the possible solution for the given error.
+	 * @return
+	 */
+	public String getSolution() {
+		return solution.toString();
 	}
 	
 }

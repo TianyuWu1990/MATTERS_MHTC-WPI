@@ -205,8 +205,6 @@ public class UnifiedParser implements IParser {
 		return false;
 	}
 
-
-
 	private void validateMetricNames(Category category) throws CategoryException{
 		Row row = sheet.getRow(headerRow);
 		for (Cell cell : row) {

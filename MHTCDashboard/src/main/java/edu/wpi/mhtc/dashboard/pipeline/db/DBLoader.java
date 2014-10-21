@@ -94,27 +94,49 @@ public class DBLoader {
 	}
 	
 	/**
-	 * 
+	 * Returns the category ID given a category name
 	 * @param categoryName
 	 * @return categoryID associated with this name in database
 	 * @throws SQLException
-	 * @throws CategoryException if no categoryID is found
+	 * @throws CategoryException if no category with categoryName is found
 	 */
-	public static int getCategoryId(String categoryName) throws SQLException, CategoryException{
-		
+	public static int getCategoryId(String categoryName) throws SQLException, CategoryException {
 		Connection conn = DBConnector.getInstance().getConn();
 		String sql = "select * from mhtc_sch.getcategorybyname(?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setString(1, categoryName); 
 		ResultSet rs = pstatement.executeQuery();
 		
-		if(!rs.next()){
+		if (!rs.next()) {
 			throw new CategoryException("No ID found in DB for category "+categoryName);
 		}
-		
-		else
+		else {
 			return Integer.parseInt(rs.getString("Id"));
+		}
 		
+	}
+	
+	/**
+	 * Returns the category name given a category ID
+	 * @param id
+	 * @return category name associated with ID`
+	 * @throws SQLException
+	 * @throws CategoryException if no category with id is found
+	 */
+	public static String getCategoryNameFromID(int id) throws SQLException, CategoryException {
+		Connection conn = DBConnector.getInstance().getConn();
+		// TODO should be using one of the stored procedures, but below one is broken
+		// String sql = "SELECT * FROM mhtc_sch.getcategorybyid(?)";
+		String sql = "SELECT * FROM mhtc_sch.categories WHERE \"Id\" = "+id;
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		ResultSet rs = pstatement.executeQuery();
+				
+		if (!rs.next()) {
+			throw new CategoryException("No category found in DB for category ID: "+id);
+		}
+		else {
+			return rs.getString("Name");
+		}
 	}
 	
 	/**

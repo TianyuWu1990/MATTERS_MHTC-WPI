@@ -10,21 +10,25 @@ public class Category {
 	
 	private int id;
 	private List<Metric> metrics;
-/**
- * 
- * @param id
- * @throws SQLException 
- * @throws Exception if metrics cannot be found for Category in database.
- */
-	public Category(int id) throws CategoryException, SQLException{
-		
+	private String name;
+	
+	/**
+	 * Constructor for Category
+	 * @param id
+	 * @throws SQLException 
+	 * @throws Exception if metrics cannot be found for Category in database.
+	 */
+	public Category(int id) throws CategoryException, SQLException {
 		this.id = id;
 		metrics = MetricInfoConfig.getInstance().getMetrics(id);
-		
+		name = DBLoader.getCategoryNameFromID(id);
 	}
 	
-	
-	public int getId(){
+	/**
+	 * Return the ID of the category
+	 * @return
+	 */
+	public int getId() {
 		return id;
 	}
 
@@ -36,23 +40,23 @@ public class Category {
 	 */
 	public Metric getMetric(String name) throws CategoryException {
 		
-		for(Metric metric: metrics){
-			if(name.equals(metric.getName())) return metric;
+		for (Metric metric: metrics) {
+			if (name.equals(metric.getName())) {
+				return metric;
+			}
 		}
-		throw new CategoryException("No metric in this category matches "+name);
-	}
-	
-	
-	/**
-	 * A valid metric will be associated with this category in the database.
-	 * @param Metric name
-	 * @throws CategoryException if this is not one of the category's metrics.
-	 */
-	public void validateMetric(String name) throws CategoryException{
-		for(Metric metric: metrics){
-			if(name.equals(metric.getName())) return;
+		
+		// Metric wasn't found in the DB, let user know
+		CategoryException c = new CategoryException("No metric in category \"" + this.name + "\" matches metric \""+name+"\"");
+		c.setSolution("The possible metrics are: <br />");
+		
+		for (Metric metric: metrics) {
+			c.setSolution("     " + metric.getName() + "<br />");
 		}
-		throw new CategoryException("No metric in this category matches name "+name);	
+		
+		c.setSolution("Please confirm that you are uploading the right metric to the right category");
+				
+		throw c;
 	}
 	
 }
