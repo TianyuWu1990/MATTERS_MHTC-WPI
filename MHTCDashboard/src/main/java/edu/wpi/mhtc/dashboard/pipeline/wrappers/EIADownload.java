@@ -16,7 +16,7 @@ public class EIADownload implements IWrapper {
 	}
 	
 	/**
-	 * Download the average electricity cost into JSON files for each state.
+	 * Download the average annual commercial electricity cost into JSON files for each state.
 	 * Data-structure: 
 	 
 		Units: json.series[0].units
