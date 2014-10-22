@@ -18,6 +18,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
+//No notes available - don't know what this parser is for.
 public class Type7Parser implements IParser {
 
 	private DataSource source;

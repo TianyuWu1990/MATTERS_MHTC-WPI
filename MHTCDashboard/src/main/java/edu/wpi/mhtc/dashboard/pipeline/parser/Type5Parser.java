@@ -18,6 +18,17 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
+
+//Parser for Tech Employment metric.
+// The file with this metric is called "techemployment.xls" and is downloaded from the nsf site in DataWrapperMain using URLDownload
+//TODO:update to use new datatypes and verify that it parsers correctly
+//notes:
+//3 files from State and Local Tax Burden “personal income”, 
+//“personal_income per capita”, 
+//“population” 
+//and ignore the file “personal_income_population_state 2008-2012”
+//Ignore the first column “Fips”
+
 public class Type5Parser implements IParser {
 
 	private DataSource source;

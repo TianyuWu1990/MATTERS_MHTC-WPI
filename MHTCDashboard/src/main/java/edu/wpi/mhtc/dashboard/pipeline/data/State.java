@@ -1,7 +1,11 @@
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
 import java.sql.SQLException;
+import java.util.List;
 
+import com.swabunga.spell.engine.Word;
+
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.SpellCheckManager;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
 public class State implements Cloneable{
@@ -56,6 +60,20 @@ public class State implements Cloneable{
 		}
 		return id;
 	}
+
+	public static List<State> getList() throws SQLException {
+		return DBLoader.getStateMapper();
+	}
 	
+	public static State getStateByName(String name) throws Exception {
+		List<State> stateList = getList();
+		for(State state : stateList){
+			if(name.equalsIgnoreCase(state.getFullName())){
+				return state;
+			}
+		}
+
+		return null;
+	}
 
 }

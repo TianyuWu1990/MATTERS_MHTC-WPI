@@ -18,7 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
-import edu.wpi.mhtc.pipeline.data.FileData;
 
 public class ExcelParser implements IParser {
 

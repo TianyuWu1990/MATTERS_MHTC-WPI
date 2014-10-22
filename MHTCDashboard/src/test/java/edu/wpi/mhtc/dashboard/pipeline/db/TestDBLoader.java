@@ -7,16 +7,14 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
+import edu.wpi.mhtc.dashboard.pipeline.data.State;
 
 public class TestDBLoader {
 
 	@Test
 	public void testDBStateLoader() throws Exception {
-		StateInfoConfig.getInstance();
-		assertEquals(StateInfoConfig.getInstance().getStateByFullName("alabama").getStateID(), "1");
-		assertEquals(StateInfoConfig.getInstance().getStateByFullName("new york").getStateID(), "32");
+		assertEquals(State.getStateByName("alabama").getStateID(), 1);
+		assertEquals(State.getStateByName("new york").getStateID(), 32);
 	}
 	
 	@Test

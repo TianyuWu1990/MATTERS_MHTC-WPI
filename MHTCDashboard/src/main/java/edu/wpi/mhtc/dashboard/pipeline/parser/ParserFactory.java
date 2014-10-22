@@ -17,11 +17,11 @@ public class ParserFactory {
 			case type1:
 //				return new Type1Parser(source);
 			case type2:
-				return new Type2Parser(source);
+//				return new Type2Parser(source);
 			case type3:
 //				return new Type3Parser(source);
 			case type4:
-				return new Type4Parser(source);
+//				return new Type4Parser(source);
 			case type5:
 				return new Type5Parser(source);
 			case type6:

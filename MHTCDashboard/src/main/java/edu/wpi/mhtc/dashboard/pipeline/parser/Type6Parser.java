@@ -17,6 +17,16 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
+
+
+//notes:
+//This is just for this file for historical data, for rest of the years it will not be in this file format.
+//“Gov_Tax_Collections_Historical_DB” in State and Local Tax Burden
+//Column 1: Year
+//Column 3: State (Can ignore 2nd column)
+//Ignore 4th Column i.e. FY Ending Date
+//Rest columns include tax amounts. Ignore anything in  () in column names
+
 public class Type6Parser implements IParser {
 
 	private DataSource source;
