@@ -1,5 +1,4 @@
 package edu.wpi.mhtc.dashboard.pipeline.parser;
-/**package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,9 +15,16 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import com.sun.media.sound.InvalidFormatException;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+//This is the parser for the Total employment metric. 
+//This data comes from files downloaded from the BLS site. The files are called Employment_state__2008_dl.xls (for each year)
+// the files are in dropbox under data files organized by data source. 
+// I don't think they were ever downloaded with a wrapper - they are not downloaded in DataWraperMain
+//TODO: updatae this parser to use new datatypes, and verify that it parses correctly
+//notes:
+//All data files in folder for Economy-Total Employment folder
+//1st column state, pick only the rows that have “All Occupations” or 00-0000 code in OCC_CODE column, 
+//only need to save the value of “TOT_EMP” Column. No other values to be saved.
+
 
 public class Type3Parser implements IParser {
 

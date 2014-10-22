@@ -1,10 +1,5 @@
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
 
 
 /**

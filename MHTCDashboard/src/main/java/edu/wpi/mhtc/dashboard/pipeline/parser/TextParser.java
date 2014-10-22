@@ -2,13 +2,10 @@ package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -32,6 +29,8 @@ public class TextParser implements IParser {
 	private ArrayList<Metric> metrics;
 	private Integer stateColumnNum;
 	private Integer yearColumnNum;
+	private HashMap<String, Integer> columnNames;
+	private long headerRecordNumber;
 	/**
 	 * 
 	 * @param source
@@ -44,52 +43,81 @@ public class TextParser implements IParser {
 		}
 		
 		this.source = source;
-		parser = new CSVParser(new BufferedReader(new FileReader(source.getFileName())), CSVFormat.DEFAULT);
+		parser = new CSVParser(new BufferedReader(new FileReader(source.getFile())), CSVFormat.DEFAULT);
 		this.lines = new ArrayList<Line>();
 		
 	}
 	
 	/**
-	 *  
-	 * @throws Category exception if the column names do not match the metrics in the the db.
+	 * 
+	 * @return the row number of the header
+	 * @throws UnifiedFormatException if a header row containing column headers for "state" and "year" is not found
+	 */
+	CSVRecord findHeader() throws UnifiedFormatException{
+		
+		boolean foundYear = false;
+		boolean foundState = false;
+		
+		for(CSVRecord record : parser){
+			record.toMap()
+			for (String cellValue : record) {
+				if(cellValue.equalsIgnoreCase("year")){
+					foundYear = true;
+				}
+				else if(cellValue.equalsIgnoreCase("state")){
+					foundState = true;
+				}
+			}
+			if(foundState && foundYear){
+				return record;
+			}
+		}
+		throw new UnifiedFormatException("No header found!!");
+	}
+
+
+
+//TODO: test this
+	boolean isRecordEmpty(CSVRecord record) {
+		return record.size()==0;
+	}
+
+
+	/**
+	 * @throws CategoryException if the metric header names do not match the metrics for this category
+	 * @throws UnifiedFormatException 
 	 */
 	@Override
-	public void validateMetrics(Category category) throws CategoryException{
-		
-		Map<String,Integer> map = parser.getHeaderMap();
-		
-		stateColumnNum = map.remove("state");
-		if( stateColumnNum == null){
-			
-			stateColumnNum = map.remove("State");
-			
-			if( stateColumnNum == null){
-				throw new CategoryException("no state for this category");
+	public void validateMetrics(Category category) throws CategoryException, UnifiedFormatException{
+
+		columnNames = new HashMap<String, Integer>();
+		CSVRecord record = findHeader();
+		if(record.getRecordNumber()==headerRecordNumber){
+			for(int i = 0 ; i<record.size() ; i++ ){
+				String cellValue = record.get(i);
+				if(cellValue.equalsIgnoreCase("year") || cellValue.equalsIgnoreCase("state")){
+					columnNames.put(cellValue, i);
+				}
+				else{
+					category.getMetric(cellValue);	//make sure valid metric
+					columnNames.put(cellValue, i);
+				}
 			}
 		}
-		
-		yearColumnNum = map.remove("year");
-		
-		if(yearColumnNum == null){
-			
-			yearColumnNum = map.remove("Year");
-			
-			if(yearColumnNum == null){
-				throw new CategoryException("no year for this category");
-			}
-		}
-		
-		metrics = new ArrayList<Metric>();
-		for(String s : map.keySet()){
-			metrics.add(source.getCategory().getMetric(s));
-		}
+
 	}
+	
 
 	
 	@Override
-	public boolean parseAll() throws CategoryException {
+	public boolean parseAll() throws CategoryException, UnifiedFormatException {
 		
-		this.validateMetrics(source.getCategory());
+		
+		validateMetrics(source.getCategory());
+		
+		yearColumnNum = columnNames.remove("year");
+		stateColumnNum = columnNames.remove("state");
+		
 		NumericCleaner numCleaner = new NumericCleaner();
 		StateCleaner stateCleaner = new StateCleaner();
 		YearCleaner yearCleaner = new YearCleaner();
