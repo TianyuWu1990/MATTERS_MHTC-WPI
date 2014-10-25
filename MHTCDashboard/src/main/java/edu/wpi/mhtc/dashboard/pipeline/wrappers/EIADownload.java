@@ -35,7 +35,7 @@ public class EIADownload implements IWrapper {
 	 * @throws Exception
 	 */
 	public void DownloadAverageElectricityCost() throws Exception {
-		System.out.println("* Downloading Average Electricity Cost from eia.gov...");
+		System.out.println("* Downloading Average Electricity Rate from eia.gov...");
 		URLDownload downloader = new URLDownload();
 		writerRate = new PrintWriter("tmp/eia-rate.txt", "UTF-8");
 		
