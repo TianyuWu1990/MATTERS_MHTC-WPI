@@ -9,6 +9,7 @@ import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedDataSource;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
+import edu.wpi.mhtc.dashboard.pipeline.db.TransactionManager;
 import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
 import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedParser;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
@@ -34,17 +35,9 @@ public class DataPipeline {
 		UnifiedParser parser = (UnifiedParser) ParserFactory.getInstance(source);
 		parser.parseAll();
 		
-		Iterator<Line> iter = parser.iterator();
-		while (iter.hasNext()) {
-			Line line = iter.next();
-			try{
-				DBSaver.saveLine(line);
-			}catch(SQLException e){
-				e.printStackTrace();
-				throw new RuntimeException(e);
-			}
-		}
+		TransactionManager.insertData(parser.getLines());
 	}
+	
 }
 	
 	

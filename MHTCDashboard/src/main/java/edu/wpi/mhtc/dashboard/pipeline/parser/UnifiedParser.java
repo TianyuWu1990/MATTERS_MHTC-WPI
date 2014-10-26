@@ -173,7 +173,7 @@ public class UnifiedParser implements IParser {
 	
 //	Once source has been parsed, can iterate over the lines to be added to db
 	@Override
-	public Iterator<Line>  iterator(){
+	public Iterator<Line> iterator(){
 		return lines.iterator();
 	}
 
@@ -231,7 +231,7 @@ public class UnifiedParser implements IParser {
 	 * @throws CategoryException if the metric header names do not match the metrics for this category
 	 */
 	@Override
-	public void validateMetrics(Category category) throws CategoryException{
+	public void validateMetrics(Category category) throws CategoryException {
 		
 		columnNames = new HashMap<String, Integer>();
 		for (Cell cell : sheet.getRow(headerRow)) {
@@ -246,6 +246,14 @@ public class UnifiedParser implements IParser {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Simple getter for lines, which contains all data tuples
+	 * @return
+	 */
+	public ArrayList<Line> getLines() {
+		return lines;
 	}
 
 }
