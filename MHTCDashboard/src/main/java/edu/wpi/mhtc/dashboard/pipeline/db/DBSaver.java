@@ -14,9 +14,7 @@ public class DBSaver {
 	 * save line data into DB
 	 */
 	
-	public static void saveLine(Line line) throws SQLException {
-		
-		Connection conn = DBConnector.getInstance().getConn();
+	public static void saveLine(Connection conn, Line line) throws SQLException {
 		String sql = "insert into mhtc_sch.statistics values(?, ?, ?, ?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
@@ -24,6 +22,7 @@ public class DBSaver {
 		pstatement.setInt(3, line.getYear());
 		pstatement.setFloat(4, line.getMetricValue());
 		pstatement.execute();
+		pstatement.close();
 	}
 
 	public static boolean insertNewCategory(String name, String parentID, String source) throws SQLException {
@@ -34,11 +33,13 @@ public class DBSaver {
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setString(1, name); 
 		
-		if(parentID == null){
+		if (parentID == null) {
 			pstatement.setNull(2, Types.INTEGER);
 		}
-		else
+		else {
 			pstatement.setInt(2, Integer.parseInt(parentID));
+		}
+		
 		pstatement.setString(3, source); 
 		ResultSet rs = pstatement.executeQuery();
 		
