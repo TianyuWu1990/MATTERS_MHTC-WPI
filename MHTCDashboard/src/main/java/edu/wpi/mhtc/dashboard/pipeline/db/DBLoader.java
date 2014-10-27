@@ -81,10 +81,16 @@ public class DBLoader {
 		pstatement.setInt(1, catID); // set parameter 1 catID
 		ResultSet rs = pstatement.executeQuery();
 		
-		if(!rs.next()){
-			throw new CategoryException("No metrics in DB for category "+catID);
+		if (!rs.next()) {
+			// Oops! What went wrong?
+			
+			String categoryName = DBLoader.getCategoryNameFromID(catID);
+			CategoryException c = new CategoryException("No metrics found for category \"" + categoryName + "\" with ID: " + catID);
+			c.setSolution("Please confirm that this category has at least one metric associated with it");
+			
+			throw c;
 		}
-		else{
+		else {
 			do {
 				String metricID = rs.getString("Id").toLowerCase();
 				String metricName = rs.getString("Name").toLowerCase();
@@ -110,7 +116,10 @@ public class DBLoader {
 		ResultSet rs = pstatement.executeQuery();
 		
 		if (!rs.next()) {
-			throw new CategoryException("No ID found in DB for category "+categoryName);
+			CategoryException c = new CategoryException("No ID found in database for category \"" + categoryName + "\"");
+			c.setSolution("Please confirm you have spelled the category correctly");
+			
+			throw c;
 		}
 		else {
 			return Integer.parseInt(rs.getString("Id"));
@@ -134,7 +143,9 @@ public class DBLoader {
 		ResultSet rs = pstatement.executeQuery();
 				
 		if (!rs.next()) {
-			throw new CategoryException("No category found in DB for category ID: "+id);
+			// This should almost never get thrown, since we are making sure they select
+			// the correct category by using the dropdown on the upload tool
+			throw new CategoryException("No category found in the database for category ID: "+id);
 		}
 		else {
 			return rs.getString("Name");
@@ -154,14 +165,10 @@ public class DBLoader {
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		ResultSet rs = pstatement.executeQuery();
 		
-		try {
-			while (rs.next()) {
-				String categoryID = rs.getString("Id").toLowerCase();
-				String categoryName = rs.getString("Name");
-				table.put(categoryName, categoryID);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		while (rs.next()) {
+			String categoryID = rs.getString("Id").toLowerCase();
+			String categoryName = rs.getString("Name");
+			table.put(categoryName, categoryID);
 		}
 		
 		return table;

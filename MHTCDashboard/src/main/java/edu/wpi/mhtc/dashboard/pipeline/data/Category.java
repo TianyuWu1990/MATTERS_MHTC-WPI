@@ -20,8 +20,8 @@ public class Category {
 	 */
 	public Category(int id) throws CategoryException, SQLException {
 		this.id = id;
-		metrics = MetricInfoConfig.getInstance().getMetrics(id);
 		name = DBLoader.getCategoryNameFromID(id);
+		metrics = MetricInfoConfig.getInstance().getMetrics(id);
 	}
 	
 	/**
@@ -30,6 +30,14 @@ public class Category {
 	 */
 	public int getId() {
 		return id;
+	}
+	
+	/**
+	 * Return the name of the category
+	 * @return
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**

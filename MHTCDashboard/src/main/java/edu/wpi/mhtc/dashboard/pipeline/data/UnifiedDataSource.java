@@ -5,9 +5,9 @@ import java.io.File;
 import edu.wpi.mhtc.dashboard.pipeline.parser.ParserType;
 import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedFormatException;
 
-public class UnifiedDataSource extends DataSource{
+public class UnifiedDataSource extends DataSource {
 	
-	public UnifiedDataSource(File file, Category category) throws UnifiedFormatException{
+	public UnifiedDataSource(File file, Category category) throws UnifiedFormatException {
 		super(file, category);
 		if(file.getName().endsWith("xls")){
 			this.fileType = FileType.xls;
@@ -15,7 +15,12 @@ public class UnifiedDataSource extends DataSource{
 		else if(file.getName().endsWith("xlsx")){
 			this.fileType = FileType.xlsx;
 		}
-		else throw new UnifiedFormatException("File must be an Excel spreadsheet. File was "+file.getName());
+		else {
+			UnifiedFormatException u = new UnifiedFormatException("File must be an Excel spreadsheet. File was "+file.getName());
+			u.setSolution("Please convert the uploaded file to .xlsx or .xls format");
+			
+			throw u;
+		}
 		
 		parserType = ParserType.excel;
 		 

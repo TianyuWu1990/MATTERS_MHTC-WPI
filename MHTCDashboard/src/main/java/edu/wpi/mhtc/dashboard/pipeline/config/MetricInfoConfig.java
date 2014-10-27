@@ -53,23 +53,17 @@ public class MetricInfoConfig implements IConfig{
 		
 		List<Metric> metrics;
 		
-		try{
-//			key is the metric name, value is the metric ID
-			Map<String, String> metricMap = DBLoader.getMetricInfo(catID);
-			metrics = new ArrayList<Metric>(metricMap.size());
-			
-			for(String name : metricMap.keySet()){
-				metrics.add(new Metric(name, Integer.parseInt(metricMap.get(name))));
-			}
-			
-			if(metrics.isEmpty()){
-				throw new CategoryException("No metrics found for Category " + catID);
-			}
-			return metrics;
+//		key is the metric name, value is the metric ID
+		Map<String, String> metricMap = DBLoader.getMetricInfo(catID);
+
+		metrics = new ArrayList<Metric>(metricMap.size());
+		
+		for(String name : metricMap.keySet()){
+			metrics.add(new Metric(name, Integer.parseInt(metricMap.get(name))));
 		}
-		catch (Exception e){
-			throw new CategoryException("Could not retrieve metrics for catID "+ catID + " from db", e);
-		}
+		
+		return metrics;
+				
 	}
 	
 }
