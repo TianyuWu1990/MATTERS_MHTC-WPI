@@ -7,6 +7,7 @@ import edu.wpi.mhtc.dashboard.pipeline.wrappers.BEADownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BLSDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.DataGovDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.EIADownload;
+import edu.wpi.mhtc.dashboard.pipeline.wrappers.NSFDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 
@@ -57,8 +58,12 @@ public class DataWrapperMain {
 		data_gov_downloader.smartDownload("https://inventory.data.gov/dataset/usaid-development-credit-authority-guarantee-data-utilization-and-claims", "tmp/dev_credit.csv");
 		data_gov_downloader.smartDownload("https://inventory.data.gov/dataset/032e19b4-5a90-41dc-83ff-6e4cd234f565/resource/38625c3d-5388-4c16-a30f-d105432553a4", "tmp/ipeds.csv");
 		data_gov_downloader.queryDownload("SELECT \"STABBR\", COUNT(*) from \"38625c3d-5388-4c16-a30f-d105432553a4\" GROUP BY \"STABBR\"", "tmp/ipeds_count.json");
-		*/
+		
 		EIADownload eiaDownloader = new EIADownload();
+		*/
+		NSFDownload nsfDownloader = new NSFDownload();
+		nsfDownloader.downloadSingle("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=8", "tmp/8th_grade_performance.txt");
+		nsfDownloader.downloadSingle("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "tmp/bs_workforce.txt");
 	}
 	
 	public static void twenty_source_download() throws Exception {

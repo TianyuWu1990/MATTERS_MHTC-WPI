@@ -6,8 +6,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class NSFDownloader{
-	public NSFDownloader() throws Exception {
+public class NSFDownload{
+	public NSFDownload() throws Exception {
 
 	}
 	
@@ -19,8 +19,8 @@ public class NSFDownloader{
 		PrintWriter writer = new PrintWriter(filename, "UTF-8");
 		
 		try {
-			org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
-			
+			org.jsoup.nodes.Document doc = Jsoup.connect(url).timeout(0).get();
+
 			/* Scrap years data */
 			Elements years = doc.select("#my_table th");
 			
@@ -31,13 +31,14 @@ public class NSFDownloader{
 			}
 			writer.println();
 			/* Now, scrap data */
+			doc.select("td span").empty(); // Clean up the trend graphs in span tags
 			Elements rowData = doc.select("#my_table tbody tr");
 			
 			for (Element row : rowData) {
 				Elements rowInfo = row.select("td");
 				String rowLine = "";
 				for (Element cell: rowInfo) {
-					rowLine += cell.text();					
+					rowLine += cell.text() + " ";					
 				}
 				writer.println(rowLine);
 			}
