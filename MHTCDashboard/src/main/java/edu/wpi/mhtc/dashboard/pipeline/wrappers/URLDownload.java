@@ -2,9 +2,11 @@ package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.MalformedInputException;
@@ -45,6 +47,30 @@ public class URLDownload {
 			ioException.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Get the HTML source code/content of the URL
+	 * @param url: The URL
+	 * @return: String HTML source code
+	 * @throws Exception
+	 */
+    public static String getText(String url) throws Exception {
+        URL website = new URL(url);
+        URLConnection connection = website.openConnection();
+        BufferedReader in = new BufferedReader(
+                                new InputStreamReader(
+                                    connection.getInputStream()));
+
+        StringBuilder response = new StringBuilder();
+        String inputLine;
+
+        while ((inputLine = in.readLine()) != null) 
+            response.append(inputLine);
+
+        in.close();
+
+        return response.toString();
+    }
 	
 	/**
 	 * This function sets request data to a hashmap to be configured in HTTPDownload method.

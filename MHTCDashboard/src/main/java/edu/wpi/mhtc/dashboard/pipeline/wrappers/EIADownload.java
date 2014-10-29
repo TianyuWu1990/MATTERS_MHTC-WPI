@@ -1,12 +1,18 @@
 package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
+import java.io.PrintWriter;
+
 import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
+import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONArray;
+import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONObject;
 
 public class EIADownload implements IWrapper {
 	final private String apiKey = "606B66BBE8BB7EDF94953ADF6430E182";
 	final private String apiUrl = "http://api.eia.gov/series/?api_key=" + apiKey;
+	private PrintWriter writerRate;
 	
 	public EIADownload() throws Exception {
+		
 		this.download();
 	}
 	
@@ -16,10 +22,10 @@ public class EIADownload implements IWrapper {
 	}
 	
 	/**
-	 * Download the average annual commercial electricity cost into JSON files for each state.
+	 * Download the average electricity rate into JSON file for each state.
 	 * Data-structure: 
 	 
-		Units: json.series[0].units
+		Units: json.series[0].units = cents per kilowatthour
 		Data: json.series.data[x][y]
 		
 		x: array indexes. Use for loops and get them all
@@ -29,36 +35,31 @@ public class EIADownload implements IWrapper {
 	 * @throws Exception
 	 */
 	public void DownloadAverageElectricityCost() throws Exception {
-		System.out.println("* Downloading Average Electricity Cost from eia.gov...");
+		System.out.println("* Downloading Average Electricity Rate from eia.gov...");
 		URLDownload downloader = new URLDownload();
+		writerRate = new PrintWriter("tmp/eia-rate.txt", "UTF-8");
 		
 		for (String state: StateInfoConfig.getInstance().getStateInitialsList()) {
 			String url = apiUrl + String.format("&series_id=ELEC.PRICE.%s-COM.A", state.toUpperCase());
 			
-			downloader.HTTPDownload(url, "tmp/eia-cost-" + state + ".json");
-			System.out.println("Downloaded Average Electricity Cost for " + state.toUpperCase() + ".");
+			String jsonStr = downloader.getText(url);
+
+			processJsonToFile(state.toUpperCase(), jsonStr, writerRate);
+		}
+		System.out.println("Completed.");
+		writerRate.close();
+	}
+	
+	private void processJsonToFile(String state, String jsonStr, PrintWriter writer) {
+		JSONObject json = new JSONObject(jsonStr);
+		JSONArray seriesData =  json.getJSONArray("series").getJSONObject(0).getJSONArray("data");
+		
+		for (int i = 0; i < seriesData.length(); i++) {
+			String year = seriesData.getJSONArray(i).getString(0);
+			String data = seriesData.getJSONArray(i).get(1).toString();
+			
+			writer.println(state + " " + year + " " + data);
 		}
 	}
 	
-	/**
-	 * NOT COMPLETED, NEED URL.
-	 * Download the average electricity rate into JSON file
-	 * Data-structure: 
-	 
-		Units: json.series[0].units
-		Data: json.series.data[x][y]
-
-	 * @throws Exception
-	 */
-	public void DownloadAverageElectricityRate() throws Exception {
-		System.out.println("* Downloading Average Electricity Rate from eia.gov...");
-		URLDownload downloader = new URLDownload();
-		
-		for (String state: StateInfoConfig.getInstance().getStateInitialsList()) {
-			String url = apiUrl + String.format("&series_id=ELEC.PRICE.%s-COM.A", state.toUpperCase());
-			
-			downloader.HTTPDownload(url, "tmp/eia-rate-" + state + ".json");
-			System.out.println("Downloaded Average Electricity Rate for " + state.toUpperCase() + ".");
-		}
-	}
 }
