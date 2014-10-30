@@ -22,12 +22,15 @@
 <script src="js/metric.js"></script>
 <script src="js/chart.js"></script>
 <script src="js/appstate.js"></script>
-
-
+<script src="js/funct.js"></script>
 <link rel="stylesheet" href="css/local_style.css">
+
 <title>MATTERS: Massachusetts' Technology, Talent and Economy Reporting System</title>
 </head>
 <body onLoad="loadFunction()">
+ <script type="text/javascript">
+      
+    </script>
 	<!-- a graph -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 		<div class="modal-dialog" >
@@ -264,9 +267,9 @@
 				<td valign="top" nowrap="true" align="right">	
 					<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">All States</button>
 				</td>
-				  <td valign="top" nowrap="true" align="right">&nbsp;
+				  <% /* <td valign="top" nowrap="true" align="right">&nbsp;
 					<button class="btn btn-info" onClick="as.SelectPeerStates()" id="selectpeerstates" disabled="true">Peer States</button>
-				</td>
+				</td> */%>
 			    <td valign="top" nowrap="true" align="right">&nbsp;
 					<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect States</button>
 				</td>

@@ -257,6 +257,25 @@ loadFunction = function() {
 	$("#yearsMultipleQuery").change(function(){
 		as.showMultipleMetricsStatesYears(this.value);
 	});
+	
+/**********************************************************************/
+
+	$("#selectedmultiplemetrics").addClass("hidden");//make the selection box hidden.But it is used in the multiple metric selection
+
+    window.asd = $('.SlectBox').SumoSelect({ csvDispCount: 3 });
+    window.test = $('.testsel').SumoSelect({okCancelInMulti:true });
+	
+	 $("#multiplemetrics").change(function(){
+		
+		as.getMetricMultipleSelect(this.options);
+		
+
+});
+
+
+/********************************************************************/	
+	
+	
 	 $( "#timeline").hover( function(){
 		 for(t=1950;t<2099;t++){ // The idea is to pick whatever possible year in the time line. Since it is dynamic I could not find a better way
 			 $( "#click"+t ).click(function(){

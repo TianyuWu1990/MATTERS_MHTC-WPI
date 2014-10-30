@@ -541,9 +541,10 @@ var AS= (function($) {
 	 for (var i=0; i<selectedOptions.length;i++){
 		 if(selectedOptions[i].selected)
 			 {
-			 sel.append('<option value="' + selectedOptions[i].value + '">' + Metrics.getMetricByID(selectedOptions[i].value).getName() + '</option>');
+			// sel.append('<option value="' + selectedOptions[i].value + '">' + Metrics.getMetricByID(selectedOptions[i].value).getName() + '</option>');
 			 //sel.append('<tr><td valign="top" align="left">'+Metrics.getMetricByID(selectedOptions[i].value).getName() +'</td></tr>');
 			 this.selected_multiple_metrics[j]=selectedOptions[i].value;
+			 
 			 j++;
 			 }
 	 }
@@ -997,7 +998,7 @@ AppState.prototype.toggleMultiSelect = function(ind,option ) {
         $("#normallegend").addClass("hidden");
         $("#multilegend").removeClass("hidden");
     }
-}
+};
 
 
 

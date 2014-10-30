@@ -4,14 +4,24 @@
  * ADDED BY Alexis Espinoza
  * 
  * **/
- 
-$( document ).ready(function() {
-	 $("#multiplemetrics").change(function(){
+ 	$("#selectedmultiplemetrics").addClass("hidden");//make the selection box hidden.But it is used in the multiple metric selection
+
+          window.asd = $('.SlectBox').SumoSelect({ csvDispCount: 3 });
+          window.test = $('.testsel').SumoSelect({okCancelInMulti:true });
+      	
+      	 $("#multiplemetrics").change(function(){
+      		
 			as.getMetricMultipleSelect(this.options);
+			
 	
 	 });
 	
-	/* $("#yearmultiplemetric").change(function(){
-		 as.getYearMultipleSelect(this.options);
-	});*/
-  });
+ 
+$(function() {
+	
+    $('#ms').change(function() {
+        console.log($(this).val());
+    }).multipleSelect({
+        width: '280%'
+    });
+});

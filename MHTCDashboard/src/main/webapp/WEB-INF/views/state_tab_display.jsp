@@ -5,6 +5,11 @@
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.GregorianCalendar"%>
 <script src="js/funct.js"></script>
+
+<script src="js/jquery.multiple.select.js"></script>
+
+<link rel="stylesheet" href="css/sumoselect.css"></link>
+
 <div id="sidebar" class="col-md-12">
 
 <ul class="nav nav-tabs">
@@ -329,8 +334,10 @@
 				    <tr><td>Metrics (National, Talent,Cost, Economy)</td></tr>
 					<tr>
 						<td valign="top" align="left">
-							<select  id='multiplemetrics' name="multiplemetrics" multiple="multiple" size=130 style='height:400px; width:340px;'>
- 				 				<c:forEach items="${jv_stats_national}" var="stat">
+						
+						
+							<select multiple="multiple" placeholder="Select Metrics" class="SlectBox"  id='multiplemetrics' name="multiplemetrics">
+								<c:forEach items="${jv_stats_national}" var="stat">
        			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
     							</c:forEach>
     							<c:forEach items="${jv_stats_talent}" var="stat">
@@ -343,18 +350,38 @@
        			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
     							</c:forEach>
 							</select>
+							
+       					 
+    
+							<%/* <select  id='multiplemetrics' name="multiplemetrics" multiple="multiple" size=130 style='height:400px; width:340px;'>
+ 				 				<c:forEach items="${jv_stats_national}" var="stat">
+       			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
+    							</c:forEach>
+    							<c:forEach items="${jv_stats_talent}" var="stat">
+       			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
+    							</c:forEach>
+    							<c:forEach items="${jv_stats_cost}" var="stat">
+       			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
+    							</c:forEach>
+    							<c:forEach items="${jv_stats_economy}" var="stat">
+       			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
+    							</c:forEach>
+							</select>*/%>
 			       		</td>
 			     </tr>
 				</table>
 			</div>
 		</td>
 		
-		<td valign="top" align="left">
+	<td valign="top" align="left">
 			<div >
 			<table>
-				<tr><td>Selected metrics to compare</td></tr>
-				<tr><td  valign="top"  align="left">
-					<select  id='selectedmultiplemetrics' multiple="multiple" size=130 style='height:400px; width:340px;' disabled="true" ></select>
+				<% /* <tr><td>Selected metrics to compare</td></tr>*/%>
+				<tr><td>&nbsp;</td></tr>
+				<tr>
+				<td valign="top"><button data-toggle="modal" data-target="#myModalMultipleQuery" class="btn btn-info" onClick="as.showMultipleMetricsStatesYears(-1)">Compare</button></td>
+					<td  valign="top"  align="left">
+					<select  id='selectedmultiplemetrics' multiple="multiple" size=130 style='height:400px; width:140px;' disabled="true" ></select>
 				</td></tr>
 			</table>
 			</div>
@@ -389,11 +416,11 @@
 				</tr>*/%>
 				
 				<tr><td><br /><br /><br /><br /><br /><br /><br /><br /><br /></td></tr>
-				<tr>
+					<% /*<tr>
 					<td valign="top" nowrap="true" align="right">
 						<button data-toggle="modal" data-target="#myModalMultipleQuery" class="btn btn-info" onClick="as.showMultipleMetricsStatesYears(-1)">Compare</button>
 					</td>	
-				</tr> 
+				</tr> */%>
 			</table>
 		</td>
 		</tr>
@@ -401,3 +428,4 @@
 	</table>
 	
 </div>
+
