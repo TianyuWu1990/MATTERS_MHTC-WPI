@@ -1,6 +1,7 @@
 package edu.wpi.mhtc.dashboard.pipeline.main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BEADownload;
@@ -10,6 +11,7 @@ import edu.wpi.mhtc.dashboard.pipeline.wrappers.EIADownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.NSFDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
+import edu.wpi.mhtc.dashboard.pipeline.wrappers.WebTableWrapper;
 
 public class DataWrapperMain {
 
@@ -60,10 +62,13 @@ public class DataWrapperMain {
 		data_gov_downloader.queryDownload("SELECT \"STABBR\", COUNT(*) from \"38625c3d-5388-4c16-a30f-d105432553a4\" GROUP BY \"STABBR\"", "tmp/ipeds_count.json");
 		
 		EIADownload eiaDownloader = new EIADownload();
-		*/
+		
 		NSFDownload nsfDownloader = new NSFDownload();
 		nsfDownloader.downloadSingle("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=8", "tmp/8th_grade_performance.txt");
 		nsfDownloader.downloadSingle("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "tmp/bs_workforce.txt");
+		*/
+		
+		WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.txt", ",", new ArrayList<Integer>());
 	}
 	
 	public static void twenty_source_download() throws Exception {
