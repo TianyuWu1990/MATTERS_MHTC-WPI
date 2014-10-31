@@ -9,7 +9,6 @@ import edu.wpi.mhtc.dashboard.pipeline.wrappers.BEADownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BLSDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.DataGovDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.EIADownload;
-import edu.wpi.mhtc.dashboard.pipeline.wrappers.NSFDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.WebTableWrapper;
@@ -63,12 +62,9 @@ public class DataWrapperMain {
 		data_gov_downloader.queryDownload("SELECT \"STABBR\", COUNT(*) from \"38625c3d-5388-4c16-a30f-d105432553a4\" GROUP BY \"STABBR\"", "tmp/ipeds_count.json");
 		
 		EIADownload eiaDownloader = new EIADownload();
-		
-		NSFDownload nsfDownloader = new NSFDownload();
-		nsfDownloader.downloadSingle("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=8", "tmp/8th_grade_performance.txt");
-		nsfDownloader.downloadSingle("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "tmp/bs_workforce.txt");
 		*/
-		
+		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=8", "#my_table", "tmp/8th_grade_performance.txt", ",", Arrays.asList(-1));
+		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "#my_table", "tmp/bs_workforce.txt", ",", Arrays.asList(13));
 		WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.txt", ",", Arrays.asList(-1));
 	}
 	

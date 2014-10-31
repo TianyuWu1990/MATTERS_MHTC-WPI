@@ -38,25 +38,21 @@ public final class WebTableWrapper {
 				headerCells = headerCells.isEmpty() ? rows.get(0).select("td") : headerCells;
 				
 				// Print the header out first
+				String headerTextOutput = "";
 				for (int i = 0; i < headerCells.size(); i++) 
 					if (!list.contains(i)) { // Ignore the column or not?
-						writer.print(headerCells.get(i).text());
-						if (i < headerCells.size() - 1) {
-							writer.print(separator);
-						}
+						headerTextOutput += headerCells.get(i).text() + separator;
 					}
-				writer.println();
+				writer.println(headerTextOutput.substring(0, headerTextOutput.length() - separator.length()));
 				// Print out data
 				for (int i = 1; i < rows.size(); i++) {
 					Elements currentRow = rows.get(i).select("td");
+					String rowTextOutput = "";
 					for (int j = 0; j < currentRow.size(); j++) 
 						if (!list.contains(j)) { // Ignore the column or not?
-							writer.print(currentRow.get(j).text());
-							if (j < currentRow.size() - 1) {
-								writer.print(separator);
-							}
+							rowTextOutput += currentRow.get(j).text() + separator;
 						}
-					writer.println();
+					writer.println(rowTextOutput.substring(0, rowTextOutput.length() - separator.length()));
 				}
 				writer.close();
 				System.out.println("Saved table " + tblSelector + " data from " + url);		
