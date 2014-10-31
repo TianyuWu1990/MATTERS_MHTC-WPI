@@ -26,7 +26,9 @@ public final class WebTableWrapper {
 			Elements tbl = doc.select(tblSelector);
 
 			if (tbl.isEmpty()) {
-				System.out.println("Can't find any table with CSS selector: " + tblSelector);
+				System.out.println("==== HTML content retrieved =====");
+				System.out.println(doc);
+				System.out.println("================================");
 				throw new IOException("Can't find any table with CSS selector");
 			} else {
 				PrintWriter writer = new PrintWriter(filename, "UTF-8");
