@@ -22,7 +22,7 @@ public class EIADownload implements IWrapper {
 	}
 	
 	/**
-	 * Download the average electricity rate into JSON files for each state.
+	 * Download the average electricity rate into JSON file for each state.
 	 * Data-structure: 
 	 
 		Units: json.series[0].units = cents per kilowatthour
