@@ -2,6 +2,7 @@ package edu.wpi.mhtc.dashboard.pipeline.main;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BEADownload;
@@ -68,7 +69,7 @@ public class DataWrapperMain {
 		nsfDownloader.downloadSingle("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "tmp/bs_workforce.txt");
 		*/
 		
-		WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.txt", ",", new ArrayList<Integer>());
+		WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.txt", ",", Arrays.asList(-1));
 	}
 	
 	public static void twenty_source_download() throws Exception {
