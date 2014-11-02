@@ -27,7 +27,7 @@ public final class WebTableWrapper {
 	 * @param separator: String Separator for each data value. Preferred "," or " ".
 	 * @param ignoreColumnIndexes: Array of column to ignore. Starts from 0.
 	 */
-	public static void download(String url, String tblSelector, String filename, String separator, List<Integer> list) {
+	public static void download(String url, String tblSelector, String filename, List<Integer> list) {
 		try {
 			org.jsoup.nodes.Document doc = Jsoup.connect(url).timeout(0).get();
 			Elements tbl = doc.select(tblSelector);
