@@ -63,10 +63,10 @@ public class DataWrapperMain {
 		
 		EIADownload eiaDownloader = new EIADownload();
 		*/
-		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=8", "#my_table", "tmp/8th_grade_performance.txt", ",", Arrays.asList(-1));
-		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "#my_table", "tmp/bs_workforce.txt", ",", Arrays.asList(13));
-		WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.txt", ",", Arrays.asList(-1));
-		WebTableWrapper.download("http://www.cnbc.com/id/100824779", ".csvData.data", "tmp/cnbc-13-overall-ranks.txt", ",", Arrays.asList(-1));
+		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=8", "#my_table", "tmp/8th_grade_performance.xls", Arrays.asList(-1));
+		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "#my_table", "tmp/bs_workforce.xls", Arrays.asList(13));
+		WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.xls", Arrays.asList(-1));
+		WebTableWrapper.download("http://www.cnbc.com/id/100824779", ".csvData.data", "tmp/cnbc-13-overall-ranks.xls", Arrays.asList(-1));
 	}
 	
 	public static void twenty_source_download() throws Exception {
