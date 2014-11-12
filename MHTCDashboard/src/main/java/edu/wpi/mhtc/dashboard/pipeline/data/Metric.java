@@ -2,9 +2,9 @@ package edu.wpi.mhtc.dashboard.pipeline.data;
 
 public class Metric {
 	
-	private int id;
-	private String name;
-	private Float value;
+	int id;
+	String name;
+	Float value;
 	
 	/**
 	 * One value stored in the database is represented as a Metric object. It is associated with only one category.
@@ -44,7 +44,7 @@ public class Metric {
 	 */
 	
 	public boolean isValid(){
-		return value == null;
+		return value != null;
 	}
 
 	public void clearValue() {

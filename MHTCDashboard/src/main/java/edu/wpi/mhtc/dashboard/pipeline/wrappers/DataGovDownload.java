@@ -8,9 +8,6 @@ import java.util.Map;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.w3c.dom.Document;
 
 
 public class DataGovDownload {

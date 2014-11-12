@@ -15,47 +15,40 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
+import edu.wpi.mhtc.pipeline.data.FileData;
 
 public class ExcelParser implements IParser {
 
-	public FileInfo fileInfo;
-	private FileData fileData;
+	private DataSource source;
 	private ArrayList<String> columnNames;
-	private ArrayList<LineData> lineDatalist;
+	private ArrayList<Line> lines;
 	private Workbook workbook;
 	private int startRow;
 	private int endRow;
 
-	public ExcelParser(FileInfo fileInfo) {
-		this.fileInfo = fileInfo;
-		this.fileData = new FileData(this.fileInfo);
+	public ExcelParser(DataSource source) throws InvalidFormatException, IOException {
+		this.source = source;
 		this.columnNames = new ArrayList<String>();
-		this.lineDatalist = new ArrayList<LineData>();
+		this.lines = new ArrayList<Line>();
 		this.init();
 	}
 
-	private void init() {
-		try {
-			if (this.fileInfo.getFileType() == FileType.xlsx) {
-				this.workbook = (XSSFWorkbook) WorkbookFactory.create(
-						this.fileInfo.getFile());
-			}
-			if (this.fileInfo.getFileType() == FileType.xls) {
-				this.workbook = WorkbookFactory.create(this.fileInfo.getFile());
-			}
-		} catch (InvalidFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+	private void init() throws InvalidFormatException, IOException {
+
+		if (this.source.getFileType() == FileType.xlsx) {
+			this.workbook = (XSSFWorkbook) WorkbookFactory.create(
+					this.source.getFile());
 		}
+		if (this.source.getFileType() == FileType.xls) {
+			this.workbook = WorkbookFactory.create(this.source.getFile());
+		}
+
 		this.getStartAndEndRow();
 	}
 
-	@Override
 	public List<String> getColumnNames() {
 		if (this.columnNames.isEmpty()) {
 			Sheet sheet = this.workbook.getSheetAt(0);
@@ -72,7 +65,6 @@ public class ExcelParser implements IParser {
 		return this.columnNames;
 	}
 
-	@Override
 	public FileData parseAll() {
 		this.getColumnNames();
 		for (int i = 0; i < this.workbook.getNumberOfSheets(); i++) {
@@ -122,17 +114,17 @@ public class ExcelParser implements IParser {
 						}
 					}
 				}
-				lineDatalist.add(new LineData(table, fileInfo));
+				lines.add(new Line());
 			}
 		}
-		this.fileData.setLineDataList(this.lineDatalist);
+		this.fileData.setLineList(this.lines);
 		return this.fileData;
 	}
 
 	private void getStartAndEndRow() {
-		if (this.fileInfo.getLoadInfo().isRowSpecified()) {
-			this.startRow = this.fileInfo.getLoadInfo().getStartRow();
-			this.endRow = this.fileInfo.getLoadInfo().getEndRow();
+		if (this.source.getLoadInfo().isRowSpecified()) {
+			this.startRow = this.source.getLoadInfo().getStartRow();
+			this.endRow = this.source.getLoadInfo().getEndRow();
 		} else {
 			Sheet sheet = this.workbook.getSheetAt(0);
 			this.startRow = 2;
@@ -141,21 +133,21 @@ public class ExcelParser implements IParser {
 	}
 
 	@Override
-	public Iterator<LineData> iterator() {
-		return new ExcelIterator();
+	public Iterator<Line> iterator() {
+		return lines.iterator();
 	}
 
-	private class ExcelIterator implements Iterator<LineData> {
+	private class ExcelIterator implements Iterator<Line> {
 
 		private List<String> columnNames;
 		private Workbook workbook;
-		private FileInfo fileInfo;
+		private DataSource source;
 		private int startRow;
 		private int endRow;
 		private int currentRow;
 
 		public ExcelIterator() {
-			this.fileInfo = ExcelParser.this.fileInfo;
+			this.source = ExcelParser.this.source;
 			this.columnNames = ExcelParser.this.getColumnNames();
 			this.init();
 		}
@@ -166,7 +158,7 @@ public class ExcelParser implements IParser {
 		}
 
 		@Override
-		public LineData next() {
+		public Line next() {
 			Sheet sheet = this.workbook.getSheetAt(0);
 			Row row = sheet.getRow(this.currentRow - 1);
 			Cell cell = null;
@@ -198,7 +190,7 @@ public class ExcelParser implements IParser {
 				}
 			}
 			this.currentRow++;
-			return new LineData(map, this.fileInfo);
+			return new Line(map, this.source);
 		}
 
 		@Override
@@ -207,14 +199,14 @@ public class ExcelParser implements IParser {
 
 		private void init() {
 			try {
-				if (ExcelParser.this.fileInfo.getFileType() == FileType.xlsx) {
+				if (ExcelParser.this.source.getFileType() == FileType.xlsx) {
 					this.workbook = (XSSFWorkbook) WorkbookFactory
-							.create(new File(ExcelParser.this.fileInfo
+							.create(new File(ExcelParser.this.source
 									.getFileName()));
 				}
-				if (ExcelParser.this.fileInfo.getFileType() == FileType.xls) {
+				if (ExcelParser.this.source.getFileType() == FileType.xls) {
 					this.workbook = WorkbookFactory.create(new File(
-							ExcelParser.this.fileInfo.getFileName()));
+							ExcelParser.this.source.getFileName()));
 				}
 			} catch (InvalidFormatException e) {
 				e.printStackTrace();
@@ -239,9 +231,9 @@ public class ExcelParser implements IParser {
 		}
 
 		private void getStartAndEndRow() {
-			if (this.fileInfo.getLoadInfo().isRowSpecified()) {
-				this.startRow = this.fileInfo.getLoadInfo().getStartRow();
-				this.endRow = this.fileInfo.getLoadInfo().getEndRow();
+			if (this.source.getLoadInfo().isRowSpecified()) {
+				this.startRow = this.source.getLoadInfo().getStartRow();
+				this.endRow = this.source.getLoadInfo().getEndRow();
 			} else {
 				Sheet sheet = this.workbook.getSheetAt(0);
 				this.startRow = 1;

@@ -1,6 +1,8 @@
 package edu.wpi.mhtc.dashboard.pipeline.parser;
 
-public class UnifiedFormatException extends Exception {
+import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
+
+public class UnifiedFormatException extends MHTCException {
 
 	public UnifiedFormatException(String message) {
 		super(message);

@@ -1,4 +1,4 @@
-package edu.wpi.mhtc.dashboard.pipeline.config.generator;
+package edu.wpi.mhtc.dashboard.config.generator;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import edu.wpi.mhtc.dashboard.pipeline.config.IConfigFilePath;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
 
 public class FileInfoConfigGenerator {
 	private File directory;

@@ -14,37 +14,34 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 public class Type6Parser implements IParser {
 
-	private FileInfo fileInfo;
-	private FileData fileData;
+	private DataSource source;
 	private List<String> columnNames;
-	private List<LineData> lineDatalist;
+	private List<Line> lines;
 	private Workbook workbook;
 	private Sheet sheet;
 	private int startRow;
 	private int endRow;
 
-	public Type6Parser(FileInfo fileInfo) throws InvalidFormatException,
+	public Type6Parser(DataSource source) throws InvalidFormatException,
 			IOException {
-		this.fileInfo = fileInfo;
-		this.fileData = new FileData(this.fileInfo);
+		this.source = source;
 		this.columnNames = new LinkedList<String>();
-		this.lineDatalist = new LinkedList<LineData>();
+		this.lines = new LinkedList<Line>();
 		this.init();
 	}
 
 	private void init() throws InvalidFormatException, IOException {
-		this.workbook = WorkbookFactory.create(new File(this.fileInfo
+		this.workbook = WorkbookFactory.create(new File(this.source
 				.getFileName()));
 		this.sheet = this.workbook.getSheetAt(0);
-		if (this.fileInfo.getLoadInfo().isRowSpecified()) {
-			this.startRow = this.fileInfo.getLoadInfo().getStartRow();
-			this.endRow = this.fileInfo.getLoadInfo().getEndRow();
+		if (this.source.getLoadInfo().isRowSpecified()) {
+			this.startRow = this.source.getLoadInfo().getStartRow();
+			this.endRow = this.source.getLoadInfo().getEndRow();
 		} else {
 			this.startRow = 1;
 			this.endRow = this.sheet.getLastRowNum();
@@ -52,7 +49,7 @@ public class Type6Parser implements IParser {
 	}
 
 	@Override
-	public Iterator<LineData> iterator() {
+	public Iterator<Line> iterator() {
 		return new Type6Iterator();
 	}
 
@@ -81,9 +78,9 @@ public class Type6Parser implements IParser {
 					}
 				}
 			}
-			this.lineDatalist.add(new LineData(map, this.fileInfo));
+			this.lines.add(new Line(map, this.source));
 		}
-		this.fileData.setLineDataList(this.lineDatalist);
+		this.fileData.setLineList(this.lines);
 		return this.fileData;
 	}
 
@@ -109,17 +106,17 @@ public class Type6Parser implements IParser {
 		return this.columnNames;
 	}
 
-	public class Type6Iterator implements Iterator<LineData> {
+	public class Type6Iterator implements Iterator<Line> {
 
 		private Workbook workbook;
 		private Sheet sheet;
-		private FileInfo fileInfo;
+		private DataSource source;
 		private List<String> columnNames;
 		private int currentRow;
 		private int endRow;
 
 		public Type6Iterator() {
-			this.fileInfo = Type6Parser.this.fileInfo;
+			this.source = Type6Parser.this.source;
 			this.endRow = Type6Parser.this.endRow;
 			this.currentRow = Type6Parser.this.startRow - 1;
 			this.columnNames = Type6Parser.this.getColumnNames();
@@ -133,7 +130,7 @@ public class Type6Parser implements IParser {
 		}
 
 		private void init() throws InvalidFormatException, IOException {
-			this.workbook = WorkbookFactory.create(new File(this.fileInfo
+			this.workbook = WorkbookFactory.create(new File(this.source
 					.getFileName()));
 			this.sheet = this.workbook.getSheetAt(0);
 		}
@@ -144,7 +141,7 @@ public class Type6Parser implements IParser {
 		}
 
 		@Override
-		public LineData next() {
+		public Line next() {
 			Iterator<String> iter = this.columnNames.iterator();
 			Row row = this.sheet.getRow(++this.currentRow);
 			HashMap<String, String> map = new HashMap<String, String>();
@@ -163,7 +160,7 @@ public class Type6Parser implements IParser {
 					}
 				}
 			}
-			return new LineData(map, this.fileInfo);
+			return new Line(map, this.source);
 		}
 
 		@Override

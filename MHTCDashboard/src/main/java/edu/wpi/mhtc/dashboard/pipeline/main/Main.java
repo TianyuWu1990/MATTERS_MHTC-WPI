@@ -1,17 +1,12 @@
 package edu.wpi.mhtc.dashboard.pipeline.main;
 
-import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.config.CatInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.config.FileInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
-import edu.wpi.mhtc.dashboard.pipeline.data.DBData;
-import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
 import edu.wpi.mhtc.dashboard.pipeline.parser.IParser;
 import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
 

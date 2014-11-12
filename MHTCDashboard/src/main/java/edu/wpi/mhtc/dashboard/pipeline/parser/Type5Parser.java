@@ -15,39 +15,36 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 public class Type5Parser implements IParser {
 
-	private FileInfo fileInfo;
-	private FileData fileData;
+	private DataSource source;
 	private List<String> columnNames;
-	private List<LineData> lineDatalist;
+	private List<Line> lines;
 	private Workbook workbook;
 	private Sheet sheet;
 	private int startRow;
 	private int endRow;
 	private List<String> years;
 
-	public Type5Parser(FileInfo fileInfo) throws InvalidFormatException,
+	public Type5Parser(DataSource source) throws InvalidFormatException,
 			IOException {
-		this.fileInfo = fileInfo;
-		this.fileData = new FileData(this.fileInfo);
+		this.source = source;
 		this.columnNames = new LinkedList<String>();
-		this.lineDatalist = new LinkedList<LineData>();
+		this.lines = new LinkedList<Line>();
 		this.years = new LinkedList<String>();
 		this.init();
 	}
 
 	private void init() throws InvalidFormatException, IOException {
-		this.workbook = WorkbookFactory.create(new File(this.fileInfo
+		this.workbook = WorkbookFactory.create(new File(this.source
 				.getFileName()));
 		this.sheet = this.workbook.getSheetAt(0);
-		if (this.fileInfo.getLoadInfo().isRowSpecified()) {
-			this.startRow = this.fileInfo.getLoadInfo().getStartRow();
-			this.endRow = this.fileInfo.getLoadInfo().getEndRow();
+		if (this.source.getLoadInfo().isRowSpecified()) {
+			this.startRow = this.source.getLoadInfo().getStartRow();
+			this.endRow = this.source.getLoadInfo().getEndRow();
 		} else {
 			this.startRow = 5;
 			this.endRow = 19;
@@ -55,7 +52,7 @@ public class Type5Parser implements IParser {
 	}
 
 	@Override
-	public Iterator<LineData> iterator() {
+	public Iterator<Line> iterator() {
 		return new Type5Iterator();
 	}
 
@@ -82,12 +79,12 @@ public class Type5Parser implements IParser {
 						map.put(this.columnNames.get(0), this.years.get(j - 2));
 						map.put(this.columnNames.get(2), Integer
 								.toString((int) cell.getNumericCellValue()));
-						this.lineDatalist.add(new LineData(map, this.fileInfo));
+						this.lines.add(new Line(map, this.source));
 					}
 				}
 			}
 		}
-		this.fileData.setLineDataList(this.lineDatalist);
+		this.fileData.setLineList(this.lines);
 		return this.fileData;
 	}
 
@@ -106,9 +103,9 @@ public class Type5Parser implements IParser {
 		return this.columnNames;
 	}
 
-	public class Type5Iterator implements Iterator<LineData> {
+	public class Type5Iterator implements Iterator<Line> {
 
-		private FileInfo fileInfo;
+		private DataSource source;
 		private List<String> columnNames;
 		private Workbook workbook;
 		private Sheet sheet;
@@ -118,7 +115,7 @@ public class Type5Parser implements IParser {
 		private int currentCell;
 
 		public Type5Iterator() {
-			this.fileInfo = Type5Parser.this.fileInfo;
+			this.source = Type5Parser.this.source;
 			this.endRow = Type5Parser.this.endRow;
 			this.currentRow = Type5Parser.this.startRow + 1;
 			this.columnNames = Type5Parser.this.getColumnNames();
@@ -134,7 +131,7 @@ public class Type5Parser implements IParser {
 		}
 
 		private void init() throws InvalidFormatException, IOException {
-			this.workbook = WorkbookFactory.create(new File(this.fileInfo
+			this.workbook = WorkbookFactory.create(new File(this.source
 					.getFileName()));
 			this.sheet = this.workbook.getSheetAt(0);
 			Row row = this.sheet.getRow(this.currentRow - 1);
@@ -160,10 +157,10 @@ public class Type5Parser implements IParser {
 		}
 
 		@Override
-		public LineData next() {
+		public Line next() {
 			Row row = this.sheet.getRow(this.currentRow);
 			Cell firstCell = row.getCell(1);
-			LineData lineData = null;
+			Line lineData = null;
 			if (firstCell.getCellType() == 1) {
 				Cell cell = row.getCell(this.currentCell);
 				Map<String, String> map = new HashMap<String, String>();
@@ -174,7 +171,7 @@ public class Type5Parser implements IParser {
 							this.years.get(this.currentCell - 2));
 					map.put(this.columnNames.get(2),
 							Integer.toString((int) cell.getNumericCellValue()));
-					lineData = new LineData(map, this.fileInfo);
+					lineData = new Line(map, this.source);
 				}
 			}
 			if (this.currentCell < row.getLastCellNum() - 1) {

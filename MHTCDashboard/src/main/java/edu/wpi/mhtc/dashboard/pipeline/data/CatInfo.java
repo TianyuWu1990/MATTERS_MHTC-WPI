@@ -1,4 +1,4 @@
-package edu.wpi.mhtc.dashboard.pipeline.fileInfo;
+package edu.wpi.mhtc.dashboard.pipeline.data;
 
 import java.util.HashMap;
 import java.util.Map;
