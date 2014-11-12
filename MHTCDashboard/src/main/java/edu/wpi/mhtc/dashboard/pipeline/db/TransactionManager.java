@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
@@ -19,7 +20,7 @@ public class TransactionManager {
 	 * @param parser
 	 * @throws SQLException 
 	 */
-	public static void insertData(ArrayList<Line> data) throws SQLException {
+	public static void insertData(List<Line> data) throws SQLException {
 		// Get the connection singleton
 		Connection conn = DBConnector.getInstance().getConn();
 		conn.setAutoCommit(false);
@@ -31,6 +32,7 @@ public class TransactionManager {
 			DBSaver.saveLine(conn, line);
 		}
 		
+		// If exception isn't thrown, data is good to go
 		conn.commit();
 		
 	}
