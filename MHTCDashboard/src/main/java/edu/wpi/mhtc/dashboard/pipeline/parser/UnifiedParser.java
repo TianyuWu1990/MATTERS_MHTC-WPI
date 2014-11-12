@@ -53,6 +53,9 @@ public class UnifiedParser implements IParser {
 			throw new UnifiedFormatException("File must be in excel format, but file type was: "+ source.getFileType());
 		}
 		
+		if(workbook == null){
+			throw new UnifiedFormatException("bad workbook");
+		}
 		
 		this.category = source.getCategory();
 		this.sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());	//files in unified format only have one sheet
