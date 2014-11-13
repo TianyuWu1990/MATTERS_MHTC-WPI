@@ -23,6 +23,10 @@
                 </div>
              </div>
         </div>
+        
+    </div>
+    <!-- /#wrapper from navigation_bar.jsp -->
+     
 
 <%@ include file="admin_footer.jsp" %> 
 

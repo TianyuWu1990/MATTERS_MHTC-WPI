@@ -63,7 +63,7 @@ public class AdminController {
     
     @RequestMapping(value = "admin/login", method = RequestMethod.GET)
     public String loginPage() {
-        return "loginPage";
+        return "admin_login";
     }
     /********** End authentication pages **********/
     
