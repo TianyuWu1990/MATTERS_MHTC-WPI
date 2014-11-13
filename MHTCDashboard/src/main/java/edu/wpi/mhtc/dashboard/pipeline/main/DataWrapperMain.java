@@ -9,6 +9,7 @@ import edu.wpi.mhtc.dashboard.pipeline.wrappers.BEADownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BLSDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.DataGovDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.EIADownload;
+import edu.wpi.mhtc.dashboard.pipeline.wrappers.IPEDSDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.WebTableWrapper;
@@ -62,11 +63,13 @@ public class DataWrapperMain {
 		data_gov_downloader.queryDownload("SELECT \"STABBR\", COUNT(*) from \"38625c3d-5388-4c16-a30f-d105432553a4\" GROUP BY \"STABBR\"", "tmp/ipeds_count.json");
 		
 		EIADownload eiaDownloader = new EIADownload();
-		*/
+		
 		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=8", "#my_table", "tmp/8th_grade_performance.xls", Arrays.asList(-1));
 		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "#my_table", "tmp/bs_workforce.xls", Arrays.asList(13));
 		WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.xls", Arrays.asList(-1));
 		WebTableWrapper.download("http://www.cnbc.com/id/100824779", ".csvData.data", "tmp/cnbc-13-overall-ranks.xls", Arrays.asList(-1));
+		*/
+		IPEDSDownload ipeds = new IPEDSDownload();
 	}
 	
 	public static void twenty_source_download() throws Exception {
