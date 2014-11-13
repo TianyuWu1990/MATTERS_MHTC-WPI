@@ -7,7 +7,7 @@
 				<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
 				<span class="icon-bar"></span> <span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="<c:url value="admin/"/>">MATTERS: Administration Center</a>
+			<a class="navbar-brand" href="<c:url value="admin"/>">MATTERS: Administration Center</a>
 		</div>
 		<!-- /.navbar-header -->
 	
@@ -29,7 +29,10 @@
 			<div class="sidebar-nav navbar-collapse">
 				<ul class="nav nav-sidebar" id="side-menu">
 					<li class="divider"></li>
-					<li><a class="active" href="<c:url value="admin/"/>"><i class="fa fa-dashboard fa-fw"></i>  Admin Dashboard</a></li>
+					<li><a class="active" href="<c:url value="admin"/>"><i class="fa fa-dashboard fa-fw"></i>  Admin Dashboard</a></li>
+					<li><a href="#"><i class="fa fa-upload fa-fw"></i>  Manual Upload</a></li>
+					<li><a href="#"><i class="fa fa-clock-o fa-fw"></i>  Scheduler</a></li>
+					<li><a href="#"><i class="fa fa-file-text-o fa-fw"></i>  Reports</a></li>
 				</ul>
 			</div>
 			<!-- /.sidebar-collapse -->
