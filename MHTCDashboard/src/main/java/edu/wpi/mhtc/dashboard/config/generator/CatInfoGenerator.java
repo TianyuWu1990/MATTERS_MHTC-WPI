@@ -1,4 +1,4 @@
-package edu.wpi.mhtc.dashboard.pipeline.config.generator;
+package edu.wpi.mhtc.dashboard.config.generator;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,6 @@ import org.w3c.dom.Element;
 
 import edu.wpi.mhtc.dashboard.pipeline.config.FileInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.config.IConfigFilePath;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
 import edu.wpi.mhtc.dashboard.pipeline.parser.IParser;
 import edu.wpi.mhtc.dashboard.pipeline.parser.ParserFactory;
 
@@ -109,7 +108,7 @@ public class CatInfoGenerator {
 
 		// metric elements
 		IParser parser = ParserFactory.getInstance(fileInfo);
-		List<String> list = parser.getColumnNames();
+		List<String> list = parser.validateMetrics();
 
 		for (String str : list) {
 

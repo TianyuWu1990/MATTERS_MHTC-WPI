@@ -8,10 +8,10 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileType;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.LoadInfo;
+import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.data.LoadInfo;
 import edu.wpi.mhtc.dashboard.pipeline.parser.ParserType;
+import edu.wpi.mhtc.pipeline.data.FileInfo;
 
 public class FileInfoConfig implements IConfig{
 	

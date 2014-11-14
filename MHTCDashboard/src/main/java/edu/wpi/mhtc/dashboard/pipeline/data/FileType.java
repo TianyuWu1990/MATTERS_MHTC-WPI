@@ -1,4 +1,4 @@
-package edu.wpi.mhtc.dashboard.pipeline.fileInfo;
+package edu.wpi.mhtc.dashboard.pipeline.data;
 
 public enum FileType {
 	csv, xls, xlsx, xml;

@@ -14,43 +14,40 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.FileData;
-import edu.wpi.mhtc.dashboard.pipeline.data.LineData;
-import edu.wpi.mhtc.dashboard.pipeline.fileInfo.FileInfo;
+import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
+
 
 public class Type4Parser implements IParser {
 
-	private FileInfo fileInfo;
-	private FileData fileData;
+	private DataSource source;
 	private List<String> columnNames;
-	private List<LineData> lineDatalist;
+	private List<Line> lines;
 	private Workbook workbook;
 	private Sheet sheet;
 	private int startRow;
 	private int endRow;
 	private String state;
 
-	public Type4Parser(FileInfo fileInfo) throws InvalidFormatException,
+	public Type4Parser(DataSource source) throws InvalidFormatException,
 			IOException {
-		this.fileInfo = fileInfo;
-		this.fileData = new FileData(this.fileInfo);
+		this.source = source;
 		this.columnNames = new LinkedList<String>();
-		this.lineDatalist = new LinkedList<LineData>();
+		this.lines = new LinkedList<Line>();
 		this.init();
 	}
 
 	private void init() throws InvalidFormatException, IOException {
-		this.workbook = WorkbookFactory.create( new FileInputStream(this.fileInfo.getFileName()));
+		this.workbook = WorkbookFactory.create( new FileInputStream(this.source.getFileName()));
 		this.sheet = this.workbook.getSheetAt(0);
-		String fileName = this.fileInfo.getFileName();
+		String fileName = this.source.getFileName();
 		this.state = fileName.substring(
 				fileName.lastIndexOf(File.separator) + 1,
 				fileName.lastIndexOf("_"));
-		if (this.fileInfo.getLoadInfo().isRowSpecified()) {
-			this.startRow = this.fileInfo.getLoadInfo().getStartRow();
-			this.endRow = this.fileInfo.getLoadInfo().getEndRow();
+		if (this.source.getLoadInfo().isRowSpecified()) {
+			this.startRow = this.source.getLoadInfo().getStartRow();
+			this.endRow = this.source.getLoadInfo().getEndRow();
 		} else {
 			this.startRow = 12;
 			this.endRow = 23;
@@ -61,7 +58,7 @@ public class Type4Parser implements IParser {
 	}
 
 	@Override
-	public Iterator<LineData> iterator() {
+	public Iterator<Line> iterator() {
 		return new Type4Iterator();
 	}
 
@@ -86,9 +83,9 @@ public class Type4Parser implements IParser {
 			}
 			average /= 12;
 			map.put(this.columnNames.get(2), Double.toString(average));
-			this.lineDatalist.add(new LineData(map, this.fileInfo));
+			this.lines.add(new Line(map, this.source));
 		}
-		this.fileData.setLineDataList(this.lineDatalist);
+		this.fileData.setLineList(this.lines);
 		return this.fileData;
 	}
 
@@ -102,18 +99,18 @@ public class Type4Parser implements IParser {
 		return this.columnNames;
 	}
 
-	public class Type4Iterator implements Iterator<LineData> {
+	public class Type4Iterator implements Iterator<Line> {
 
 		private Workbook workbook;
 		private Sheet sheet;
-		private FileInfo fileInfo;
+		private DataSource source;
 		private List<String> columnNames;
 		private int currentRow;
 		private int endRow;
 		private String state;
 
 		public Type4Iterator() {
-			this.fileInfo = Type4Parser.this.fileInfo;
+			this.source = Type4Parser.this.source;
 			this.endRow = Type4Parser.this.endRow;
 			this.currentRow = Type4Parser.this.startRow;
 			this.state = Type4Parser.this.state;
@@ -128,7 +125,7 @@ public class Type4Parser implements IParser {
 		}
 
 		private void init() throws InvalidFormatException, IOException {
-			this.workbook = WorkbookFactory.create(new FileInputStream(this.fileInfo
+			this.workbook = WorkbookFactory.create(new FileInputStream(this.source
 					.getFileName()));
 			this.sheet = this.workbook.getSheetAt(0);
 		}
@@ -139,7 +136,7 @@ public class Type4Parser implements IParser {
 		}
 
 		@Override
-		public LineData next() {
+		public Line next() {
 			HashMap<String, String> map = new HashMap<String, String>();
 			map.put(this.columnNames.get(0), this.state);
 			Row row = this.sheet.getRow(this.currentRow++);
@@ -158,7 +155,7 @@ public class Type4Parser implements IParser {
 			}
 			average /= 12;
 			map.put(this.columnNames.get(2), Double.toString(average));
-			return new LineData(map, this.fileInfo);
+			return new Line(map, this.source);
 		}
 
 		@Override

@@ -1,6 +1,8 @@
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
-public class CategoryException extends Exception{
+import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
+
+public class CategoryException extends MHTCException {
 
 	public CategoryException(String message) {
         super(message);

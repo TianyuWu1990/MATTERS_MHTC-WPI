@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public class DBLoader {
 	 * key is the state name, value is the state ID
 	 */
 	public static List<State> getStateMapper() throws SQLException{
-		List<State> stateList = new LinkedList<State>();
+		List<State> stateList = new ArrayList<State>(52);
 		Connection conn = DBConnector.getInstance().getConn();
 		Statement statement = conn.createStatement();
 		
@@ -35,7 +35,7 @@ public class DBLoader {
 		 * index 3 : StateName
 		 */
         while (rs.next()) {
-        	String stateID = rs.getString(1).toLowerCase();
+        	int stateID = rs.getInt(1);
         	String initial = rs.getString(2).toLowerCase();
         	String stateName = rs.getString(3).toLowerCase();
         	State state = new State(stateID, stateName, initial);
@@ -76,45 +76,80 @@ public class DBLoader {
 		Connection conn = DBConnector.getInstance().getConn();
 		
 		//String sql = "select * from mhtc_sch.getMetrics(5,FALSE)";
-		String sql = "select * from mhtc_sch.getMetrics(?, FALSE)";
+		String sql = "select * from mhtc_sch.getMetrics(?, TRUE)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setInt(1, catID); // set parameter 1 catID
 		ResultSet rs = pstatement.executeQuery();
 		
-		if(!rs.next()){
-			throw new CategoryException("No metrics in DB for category "+catID);
+		if (!rs.next()) {
+			// Oops! What went wrong?
+			
+			String categoryName = DBLoader.getCategoryNameFromID(catID);
+			CategoryException c = new CategoryException("No metrics found for category \"" + categoryName + "\" with ID: " + catID);
+			c.setSolution("Please confirm that this category has at least one metric associated with it");
+			
+			throw c;
 		}
-		
-		while (rs.next()) {
-			String metricID = rs.getString("Id").toLowerCase();
-			String metricName = rs.getString("Name").toLowerCase();
-			table.put(metricName, metricID);
-		}    
+		else {
+			do {
+				String metricID = rs.getString("Id").toLowerCase();
+				String metricName = rs.getString("Name").toLowerCase();
+				table.put(metricName, metricID);
+			}
+			while (rs.next());  
+		}
 		return table;
 	}
 	
 	/**
-	 * 
+	 * Returns the category ID given a category name
 	 * @param categoryName
 	 * @return categoryID associated with this name in database
 	 * @throws SQLException
-	 * @throws CategoryException if no categoryID is found
+	 * @throws CategoryException if no category with categoryName is found
 	 */
-	public static int getCategoryId(String categoryName) throws SQLException, CategoryException{
-		
+	public static int getCategoryId(String categoryName) throws SQLException, CategoryException {
 		Connection conn = DBConnector.getInstance().getConn();
 		String sql = "select * from mhtc_sch.getcategorybyname(?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setString(1, categoryName); 
 		ResultSet rs = pstatement.executeQuery();
 		
-		if(!rs.next()){
-			throw new CategoryException("No ID found in DB for category "+categoryName);
+		if (!rs.next()) {
+			CategoryException c = new CategoryException("No ID found in database for category \"" + categoryName + "\"");
+			c.setSolution("Please confirm you have spelled the category correctly");
+			
+			throw c;
+		}
+		else {
+			return Integer.parseInt(rs.getString("Id"));
 		}
 		
-		else
-			return Integer.parseInt(rs.getString("Id"));
-		
+	}
+	
+	/**
+	 * Returns the category name given a category ID
+	 * @param id
+	 * @return category name associated with ID`
+	 * @throws SQLException
+	 * @throws CategoryException if no category with id is found
+	 */
+	public static String getCategoryNameFromID(int id) throws SQLException, CategoryException {
+		Connection conn = DBConnector.getInstance().getConn();
+		// TODO should be using one of the stored procedures, but below one is broken
+		// String sql = "SELECT * FROM mhtc_sch.getcategorybyid(?)";
+		String sql = "SELECT * FROM mhtc_sch.categories WHERE \"Id\" = "+id;
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		ResultSet rs = pstatement.executeQuery();
+				
+		if (!rs.next()) {
+			// This should almost never get thrown, since we are making sure they select
+			// the correct category by using the dropdown on the upload tool
+			throw new CategoryException("No category found in the database for category ID: "+id);
+		}
+		else {
+			return rs.getString("Name");
+		}
 	}
 	
 	/**
@@ -130,14 +165,10 @@ public class DBLoader {
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		ResultSet rs = pstatement.executeQuery();
 		
-		try {
-			while (rs.next()) {
-				String categoryID = rs.getString("Id").toLowerCase();
-				String categoryName = rs.getString("Name");
-				table.put(categoryName, categoryID);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		while (rs.next()) {
+			String categoryID = rs.getString("Id").toLowerCase();
+			String categoryName = rs.getString("Name");
+			table.put(categoryName, categoryID);
 		}
 		
 		return table;
