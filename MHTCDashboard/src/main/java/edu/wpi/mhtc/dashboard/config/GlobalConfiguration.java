@@ -33,7 +33,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan("edu.wpi.mhtc")
 @Configuration
 @Import({ DevelopmentConfiguration.class, LocalConfiguration.class,
-		ProductionConfiguration.class, SecurityConfig.class })
+		ProductionConfiguration.class, SecurityConfiguration.class })
 public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override

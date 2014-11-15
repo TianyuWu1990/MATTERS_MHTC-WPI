@@ -30,7 +30,7 @@
 										name="password" type="password" value="">
 								</div>
 								<input name="submit" type="submit" value="Submit">
-								</td>
+							</fieldset>
 						</form>
 					</div>
 				</div>
