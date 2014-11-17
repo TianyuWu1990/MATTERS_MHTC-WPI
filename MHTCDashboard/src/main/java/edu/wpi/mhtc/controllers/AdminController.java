@@ -105,6 +105,8 @@ public class AdminController {
         return "The new password for " + resetUsername + " is " + newPassword;
     }        
     /********** End authentication pages **********/
+    
+    
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Locale locale, Model model) throws Exception {
         Map<String, String> categories = DBLoader.getCategoryInfo();
@@ -112,6 +114,53 @@ public class AdminController {
         model.addAttribute("categories", categories);
         
         return "admin_tool";
+    }
+    
+    
+    @RequestMapping(value = "/admin_help", method = RequestMethod.GET)
+    public String help(Locale locale, Model model) throws Exception {
+        
+        return "admin_help";
+    }
+    
+    
+    @RequestMapping(value = "/admin_explorer", method = RequestMethod.GET)
+    public String admin_db(Locale locale, Model model) throws Exception {
+      
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	model.addAttribute("categories", categories);
+    	
+        return "admin_db_explorer";
+    }
+    
+    
+    @RequestMapping(value = "/admin_upload", method = RequestMethod.GET)
+    public String admin_upload(Locale locale, Model model) throws Exception {
+      
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	model.addAttribute("categories", categories);
+        return "admin_manual_upload";
+    }
+    @RequestMapping(value = "/admin_pipeline", method = RequestMethod.GET)
+    public String admin_pipeline(Locale locale, Model model) throws Exception {
+      
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	model.addAttribute("categories", categories);
+        return "admin_pipeline";
+    }
+    @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
+    public String admin_scheduler(Locale locale, Model model) throws Exception {
+      
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	model.addAttribute("categories", categories);
+        return "admin_scheduler";
+    }
+    @RequestMapping(value = "/admin_reports", method = RequestMethod.GET)
+    public String admin_reports(Locale locale, Model model) throws Exception {
+      
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	model.addAttribute("categories", categories);
+        return "admin_reports";
     }
     
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
@@ -187,28 +236,7 @@ public class AdminController {
         
     }
     
-    private int getCatId(String catname) {
-    	PSqlStringMappedJdbcCall <Integer> call = new PSqlStringMappedJdbcCall<Integer>(template).withSchemaName(
-                "mhtc_sch").withProcedureName("getcategorybyname");
-
-        call.addDeclaredRowMapper(new PSqlRowMapper<Integer>() {
-
-            @Override
-            public Integer mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return rs.getInt(1);
-            }
-
-        });
-
-        call.addDeclaredParameter(new SqlParameter("inname", Types.VARCHAR));
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("inname", catname);
-
-        // TODO temp while testing
-        return 2;
-        //return call.execute(params).get(0);
-    }
+    
     
     /**
      * Handles all MHTCExceptions that could occur during the pipeline execution
