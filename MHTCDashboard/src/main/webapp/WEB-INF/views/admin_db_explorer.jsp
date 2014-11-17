@@ -2,10 +2,6 @@
 <%@ include file="admin_header.jsp" %> 
 <%@ include file="admin_navigation_bar.jsp" %> 
 
-<!DOCTYPE html>
-<html lang="en">
-<body>
-
     <div id="wrapper">
         <div id="page-wrapper">
             <div class="row">
