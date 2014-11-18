@@ -10,6 +10,7 @@
         	</div>
         	<div class="row">
         		<div class="col-lg-12">
+        		Choose a category
                 	<form method="POST" enctype="multipart/form-data" action="admin/upload/add/">
                 		<select name="category">
                 			<c:forEach items="${categories}" var="category">
