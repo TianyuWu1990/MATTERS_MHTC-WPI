@@ -126,7 +126,7 @@ public class AdminController {
     }
     
     
-    @RequestMapping(value = "/admin_explorer", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin_dbexplorer", method = RequestMethod.GET)
     public String admin_db(Locale locale, Model model) throws Exception {
       
     	Map<String, String> categories = DBLoader.getCategoryInfo();
@@ -135,7 +135,7 @@ public class AdminController {
     	model.addAttribute("categories", categories);
         model.addAttribute("title", title);
 
-        return "admin_db_explorer";
+        return "admin_dbexplorer";
     }
     
     
@@ -148,7 +148,7 @@ public class AdminController {
     	model.addAttribute("categories", categories);
         model.addAttribute("title", title);
 
-        return "admin_manual_upload";
+        return "admin_upload";
     }
     @RequestMapping(value = "/admin_pipeline", method = RequestMethod.GET)
     public String admin_pipeline(Locale locale, Model model) throws Exception {
