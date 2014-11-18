@@ -38,3 +38,23 @@ $(function() {
 	// and add the class active to it
 	$('#'+filename+' a').addClass("active");
 });
+
+$(function() {
+	// For Database Explorer
+	
+	$('#category').change(function() {
+		$('#subcat').show();
+	});
+	
+	$('#subcat').change(function() {
+		$('#subcattable').show();
+	})
+
+	$('#year').change(function() {
+		$('#dbrows').show();
+	})
+});
+
+$(function() {
+    $('#dataTables-examples').DataTable();
+} );

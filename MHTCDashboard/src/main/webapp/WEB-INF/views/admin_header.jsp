@@ -24,6 +24,10 @@
 
     <!-- Morris Charts CSS -->
     <!-- <link href="css/plugins/morris.css" rel="stylesheet">-->
+    
+    <!-- Custom MHTC CSS -->
+    <link href="css/admin_css.css" rel="stylesheet">
+    
 
     <!-- Custom Fonts -->
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
