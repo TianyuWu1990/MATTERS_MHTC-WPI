@@ -22,10 +22,6 @@
 					</form>
                 </div>
              </div>
-        </div>
-        
-    </div>
-    <!-- /#wrapper from navigation_bar.jsp -->
-     
+        </div>     
 
 <%@ include file="admin_footer.jsp" %> 
