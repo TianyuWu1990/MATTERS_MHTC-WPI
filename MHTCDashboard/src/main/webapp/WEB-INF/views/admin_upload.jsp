@@ -5,12 +5,11 @@
         <div id="page-wrapper">
         	<div class="row">
         		<div class="col-lg-12">
-        			<h1 class="page-header">Pipeline Manager</h1>
+        			<h1 class="page-header">Manual Upload</h1>
         		</div>
         	</div>
         	<div class="row">
         		<div class="col-lg-12">
-        		Choose a category
                 	<form method="POST" enctype="multipart/form-data" action="admin/upload/add/">
                 		<select name="category">
                 			<c:forEach items="${categories}" var="category">
@@ -23,6 +22,6 @@
 					</form>
                 </div>
              </div>
-        </div>
-        
+        </div>     
+
 <%@ include file="admin_footer.jsp" %> 

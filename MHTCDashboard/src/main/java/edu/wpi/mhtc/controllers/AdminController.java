@@ -110,8 +110,10 @@ public class AdminController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Locale locale, Model model) throws Exception {
         Map<String, String> categories = DBLoader.getCategoryInfo();
+        String title = "MATTERS: Administration Center";
         
         model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
         
         return "admin_tool";
     }
@@ -124,13 +126,16 @@ public class AdminController {
     }
     
     
-    @RequestMapping(value = "/admin_explorer", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin_dbexplorer", method = RequestMethod.GET)
     public String admin_db(Locale locale, Model model) throws Exception {
       
     	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	model.addAttribute("categories", categories);
+    	String title = "MATTERS: Database Explorer";
     	
-        return "admin_db_explorer";
+    	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+
+        return "admin_dbexplorer";
     }
     
     
@@ -138,28 +143,43 @@ public class AdminController {
     public String admin_upload(Locale locale, Model model) throws Exception {
       
     	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Manual Upload";
+    	
     	model.addAttribute("categories", categories);
-        return "admin_manual_upload";
+        model.addAttribute("title", title);
+
+        return "admin_upload";
     }
     @RequestMapping(value = "/admin_pipeline", method = RequestMethod.GET)
     public String admin_pipeline(Locale locale, Model model) throws Exception {
-      
     	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Pipeline Manager";
+    	
     	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+        
         return "admin_pipeline";
     }
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
     public String admin_scheduler(Locale locale, Model model) throws Exception {
       
     	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Scheduler";
+    	
     	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+        
         return "admin_scheduler";
     }
     @RequestMapping(value = "/admin_reports", method = RequestMethod.GET)
     public String admin_reports(Locale locale, Model model) throws Exception {
       
     	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Reporting";
+    	
     	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+        
         return "admin_reports";
     }
     

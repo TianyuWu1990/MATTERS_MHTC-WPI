@@ -26,3 +26,35 @@ $(function() {
         }
     })
 });
+
+$(function() {
+	// To dynamically set the class="active" for the navigation bar
+	// Will extract /mhtc/admin
+	var pathname = window.location.pathname;
+	// Will extract just admin from above
+	var filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+	
+	// Now select the <li> with the ID from filename
+	// and add the class active to it
+	$('#'+filename+' a').addClass("active");
+});
+
+$(function() {
+	// For Database Explorer
+	
+	$('#category').change(function() {
+		$('#subcat').show();
+	});
+	
+	$('#subcat').change(function() {
+		$('#subcattable').show();
+	})
+
+	$('#year').change(function() {
+		$('#dbrows').show();
+	})
+});
+
+$(function() {
+    $('#dataTables-examples').DataTable();
+} );
