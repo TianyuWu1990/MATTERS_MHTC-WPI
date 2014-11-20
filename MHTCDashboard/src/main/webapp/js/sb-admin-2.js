@@ -42,19 +42,34 @@ $(function() {
 $(function() {
 	// For Database Explorer
 	
-	$('#category').change(function() {
-		$('#subcat').show();
-	});
-	
 	$('#subcat').change(function() {
 		$('#subcattable').show();
-	})
+	});
 
 	$('#year').change(function() {
 		$('#dbrows').show();
-	})
+	});
 });
 
 $(function() {
     $('#dataTables-examples').DataTable();
 } );
+
+/*
+ * Handles populating drop down for subcategories in Database Explorer
+ */
+$('#category').change(function() {
+	var value = $("select#category").val();
+	
+	$.getJSON('admin_dbexplorer/'+value, function(data) {
+		var options = $("#subcatdd");
+		
+		/*$.each(data, function() {
+			options.append($("<option />").val(this.categoryid).text(this.categoryname));
+		})*/
+		console.log(data);
+		alert(data);
+	});
+	
+	$('#subcat').show();
+});
