@@ -53,9 +53,12 @@ public class UnifiedParser implements IParser {
 			throw new UnifiedFormatException("File must be in excel format, but file type was: "+ source.getFileType());
 		}
 		
+		if(workbook == null){
+			throw new UnifiedFormatException("bad workbook");
+		}
 		
-		this.category = source.getCategory();
-		this.sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());	//files in unified format only have one sheet
+		this.category = source.getCategory();		
+		this.sheet = workbook.getSheetAt(0);	//files in unified format only have one sheet
 
 		this.headerRow = findHeader();						//find file header, make sure has year and state
 		validateMetrics(category);		//verify that the metric column names match the metrics for this source's category

@@ -174,5 +174,32 @@ public class DBLoader {
 		return table;
 	}
 	
+	/**
+	 * Retrieves all categories with parent from database
+	 * @param parent parent category
+	 * @return
+	 * @throws SQLException
+	 */
+	public static Map<String, String> getSubCategories(String parent) throws SQLException 
+	{
+		HashMap<String, String> table = new HashMap<String, String>();
+		
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "SELECT * FROM mhtc_sch.getCategories(FALSE, ?)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setInt(1, Integer.parseInt(parent));
+		ResultSet rs = pstatement.executeQuery();
+		
+		while (rs.next()) 
+		{
+			String categoryID = rs.getString("Id").toLowerCase();
+			String categoryName = rs.getString("Name");
+			table.put(categoryName, categoryID);
+		}
+		
+		return table;
+	}
+	
 	 
 }

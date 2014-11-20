@@ -26,9 +26,10 @@
 	</beans:bean>-->
 	
 	<context:component-scan base-package="edu.wpi.mhtc" />
-	<resources mapping="/js/**" location="js/" />
- 	<resources mapping="/css/**" location="css/" />
-	
-	
+	<resources mapping="/js/**" location="/js/" />
+ 	<resources mapping="/css/**" location="/css/" />
+ 	<resources mapping="/fonts/**" location="/fonts/" />	
+ 	<resources mapping="/font-awesome-4.1.0/**" location="/font-awesome-4.1.0" />
+ 	<resources mapping="/less/**" location="/less/" />	
 	
 </beans:beans>

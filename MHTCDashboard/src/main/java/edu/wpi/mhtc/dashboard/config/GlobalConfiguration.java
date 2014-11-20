@@ -33,7 +33,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan("edu.wpi.mhtc")
 @Configuration
 @Import({ DevelopmentConfiguration.class, LocalConfiguration.class,
-		ProductionConfiguration.class, SecurityConfig.class })
+		ProductionConfiguration.class, SecurityConfiguration.class })
 public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
@@ -44,6 +44,12 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 				"/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations(
 				"/js/");
+		registry.addResourceHandler("/fonts/**").addResourceLocations(
+				"/fonts/");
+		registry.addResourceHandler("/font-awesome-4.1.0/**").addResourceLocations(
+				"/font-awesome-4.1.0/");
+		registry.addResourceHandler("/less/**").addResourceLocations(
+				"/less/");
 	}
 	
 	@Bean
