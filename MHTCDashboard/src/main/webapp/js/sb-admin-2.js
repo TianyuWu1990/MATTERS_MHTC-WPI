@@ -42,19 +42,40 @@ $(function() {
 $(function() {
 	// For Database Explorer
 	
-	$('#category').change(function() {
-		$('#subcat').show();
-	});
-	
 	$('#subcat').change(function() {
 		$('#subcattable').show();
-	})
+	});
 
 	$('#year').change(function() {
 		$('#dbrows').show();
-	})
+	});
 });
 
 $(function() {
     $('#dataTables-examples').DataTable();
 } );
+
+/*
+ * Handles populating drop down for subcategories in Database Explorer
+ */
+$('#category').change(function() {
+	var value = $("select#category").val();
+	
+	$.getJSON('admin_dbexplorer/'+value, function(data) {
+		// Get the <select> tag
+		var options = $("#subcatdd");
+		
+		// Remove all previous entries
+		options.find('option').remove();
+		
+		// Add default <option>
+		options.append('<option value="">-- Select a subcategory --</option>');
+		
+		// Add each entry from data object to <select>
+		for (key in data) {
+			options.append($("<option />").val(data[key]).text(key));
+		}
+	});
+	
+	$('#subcat').show();
+});

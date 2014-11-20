@@ -24,6 +24,8 @@
 	        		<p>From there, you can then select a year for data in this category, which will populate the table
 	        		with <b>states</b> along the y-axis, and the various possible <b>metrics</b> along the x-axis.
 	        		</p>
+	        	</div>
+	        </div>
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
@@ -41,12 +43,7 @@
 									</td>
 									<td id="subcat" hidden>
 										Choose a subcategory:
-										<select name="category">
-											<option value="">-- Select a subcategory --</option>
-											<option value="subcat1">Technology and Innovation Rank</option>
-											<option value="subcat2">Education Rank</option>
-											<option value="subcat3">STEM Associate's degree award</option>
-										</select>
+										<select id="subcatdd"></select>
 									</td>
 								</tr>
 							</table>

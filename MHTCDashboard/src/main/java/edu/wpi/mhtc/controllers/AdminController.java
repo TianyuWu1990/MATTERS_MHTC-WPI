@@ -118,7 +118,7 @@ public class AdminController {
         return "admin_tool";
     }
     
-    
+ 
     @RequestMapping(value = "/admin_help", method = RequestMethod.GET)
     public String help(Locale locale, Model model) throws Exception {
         
@@ -136,6 +136,13 @@ public class AdminController {
         model.addAttribute("title", title);
 
         return "admin_dbexplorer";
+    }
+    
+    @RequestMapping(value = "/admin_dbexplorer/{categoryid}", method = RequestMethod.GET)
+    public @ResponseBody Map<String, String> getSubCategories(@PathVariable String categoryid) throws Exception {
+    	
+    	Map<String, String> subCategories = DBLoader.getSubCategories(categoryid);
+    	return subCategories;
     }
     
     
