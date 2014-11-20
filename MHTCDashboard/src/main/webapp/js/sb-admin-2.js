@@ -62,13 +62,19 @@ $('#category').change(function() {
 	var value = $("select#category").val();
 	
 	$.getJSON('admin_dbexplorer/'+value, function(data) {
+		// Get the <select> tag
 		var options = $("#subcatdd");
 		
-		/*$.each(data, function() {
-			options.append($("<option />").val(this.categoryid).text(this.categoryname));
-		})*/
-		console.log(data);
-		alert(data);
+		// Remove all previous entries
+		options.find('option').remove();
+		
+		// Add default <option>
+		options.append('<option value="">-- Select a subcategory --</option>');
+		
+		// Add each entry from data object to <select>
+		for (key in data) {
+			options.append($("<option />").val(data[key]).text(key));
+		}
 	});
 	
 	$('#subcat').show();
