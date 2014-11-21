@@ -138,8 +138,8 @@ public class AdminController {
         return "admin_dbexplorer";
     }
     
-    @RequestMapping(value = "/admin_dbexplorer/{categoryid}", method = RequestMethod.GET)
-    public @ResponseBody Map<String, String> getSubCategories(@PathVariable String categoryid) throws Exception {
+    @RequestMapping(value = "/admin_dbexplorer/getSubCategories", method = RequestMethod.GET)
+    public @ResponseBody Map<String, String> getSubCategories(@RequestParam("categoryid") String categoryid) throws Exception {
     	
     	Map<String, String> subCategories = DBLoader.getSubCategories(categoryid);
     	return subCategories;
