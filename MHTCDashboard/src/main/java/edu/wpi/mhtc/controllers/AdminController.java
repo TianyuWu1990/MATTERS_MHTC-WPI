@@ -2,10 +2,13 @@ package edu.wpi.mhtc.controllers;
 
 import java.io.File;
 import java.security.Principal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,9 +34,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
+import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
@@ -172,12 +178,44 @@ public class AdminController {
       
     	Map<String, String> categories = DBLoader.getCategoryInfo();
     	String title = "MATTERS: Scheduler";
+    	List<Schedule> schedList = DBLoader.getSchedules();
     	
     	model.addAttribute("categories", categories);
         model.addAttribute("title", title);
-        
+		model.addAttribute("schedList", schedList);
+
         return "admin_scheduler";
     }
+    
+    @RequestMapping(value = "/admin_scheduler_add", method=RequestMethod.POST, params = {"sched_job", "sched_name", "sched_description", "sched_date"})
+    public String admin_scheduler_add(Locale locale, Model model, @RequestParam("sched_job") String sched_job, @RequestParam("sched_name") String sched_name, @RequestParam("sched_date") String sched_date, @RequestParam("sched_description") String sched_description) throws Exception {
+		Schedule newSched = new Schedule(sched_name, sched_job, sched_description, sched_date);
+		boolean success_add = newSched.insertToDB();
+		List<Schedule> schedList = DBLoader.getSchedules();
+		
+		// TODO: Error message/ Success message
+		model.addAttribute("success_add", true);
+		model.addAttribute("sched_name", sched_name);
+		model.addAttribute("schedList", schedList);
+		
+		return "admin_scheduler";
+    }
+    
+    @RequestMapping(value = "/admin_scheduler_stop", method=RequestMethod.GET, params = {"job_name"})
+    public String admin_scheduler_stop(Locale locale, Model model, @RequestParam("job_name") String job_name) throws Exception {
+		String sql = "DELETE FROM mhtc_sch.schedules WHERE job_name = ?";
+		Connection conn = DBConnector.getInstance().getConn();
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+
+		pstatement.setString(1, job_name);
+		boolean success_stop = pstatement.execute();   
+		
+		// TODO: Error message/ Success message
+		model.addAttribute("success_stop", true);
+		
+        return "admin_scheduler";
+    }
+    
     @RequestMapping(value = "/admin_reports", method = RequestMethod.GET)
     public String admin_reports(Locale locale, Model model) throws Exception {
       

@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
+import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
+
 public class AppInitializer implements WebApplicationInitializer {
 
 	@Override
@@ -18,6 +20,16 @@ public class AppInitializer implements WebApplicationInitializer {
 		//ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
        // dispatcher.setLoadOnStartup(1);
         //dispatcher.addMapping("/*");
+		/*
+		try {
+			JobScheduler.createScheduler();
+			JobScheduler.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Scheduler started");
+		*/
 	}
 	
 	@SuppressWarnings("unused")

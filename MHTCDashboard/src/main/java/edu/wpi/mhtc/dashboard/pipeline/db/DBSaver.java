@@ -13,7 +13,7 @@ public class DBSaver {
 	/*
 	 * save line data into DB
 	 */
-	
+
 	public static void saveLine(Connection conn, Line line) throws SQLException {
 		String sql = "insert into mhtc_sch.statistics values(?, ?, ?, ?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
@@ -26,36 +26,36 @@ public class DBSaver {
 	}
 
 	public static boolean insertNewCategory(String name, String parentID, String source) throws SQLException {
-		
+
 		Connection conn = DBConnector.getInstance().getConn();
-		
+
 		String sql = "select * from mhtc_sch.insertcategory(?,?,?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setString(1, name); 
-		
+
 		if (parentID == null) {
 			pstatement.setNull(2, Types.INTEGER);
 		}
 		else {
 			pstatement.setInt(2, Integer.parseInt(parentID));
 		}
-		
+
 		pstatement.setString(3, source); 
 		ResultSet rs = pstatement.executeQuery();
-		
+
 		rs.next();
-		
+
 		if (Integer.parseInt(rs.getString("insertcategory")) == 1)
-				return true;
+			return true;
 		else 
 			return false;
 	}
 
 	//	Category must exist in db already !!!
 	public static boolean insertNewMetric(String metricName, boolean b, int categoryID, String dataType) throws SQLException {
-		
+
 		Connection conn = DBConnector.getInstance().getConn();
-		
+
 		String sql = "select * from mhtc_sch.insertmetric(?,?,?,?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setString(1, metricName); 
@@ -65,11 +65,27 @@ public class DBSaver {
 		ResultSet rs = pstatement.executeQuery();
 		rs.next();
 		String tableHeader = rs.getString(1);
-		
+
 		if (Integer.parseInt(tableHeader) == 1)
-				return true;
+			return true;
 		else 
 			return false;
 	}
-	
+
+	// Insert new schedule
+	public static boolean insertNewSchedule(String sched_name, String sched_job, String sched_description, String sched_date) throws SQLException {
+		String job_name = sched_name.replaceAll("\\s+","") + "_" + MD5.getMD5(sched_description + sched_date + sched_job);
+
+		String sql = "insert into mhtc_sch.schedules(\"job_name\", \"sched_name\", \"sched_job\", \"sched_date\", \"sched_description\") values(?, ?, ?, ?, ?) ";
+		Connection conn = DBConnector.getInstance().getConn();
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+
+		pstatement.setString(1, job_name);
+		pstatement.setString(2, sched_name);
+		pstatement.setString(3, sched_job);
+		pstatement.setString(4, sched_date);
+		pstatement.setString(5, sched_description);
+		return pstatement.execute();
+	}
+
 }

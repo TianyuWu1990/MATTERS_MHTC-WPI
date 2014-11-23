@@ -12,6 +12,7 @@ import java.util.Map;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
+import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 
 
 public class DBLoader {
@@ -201,5 +202,26 @@ public class DBLoader {
 		return table;
 	}
 	
-	 
+	public static List<Schedule> getSchedules() throws SQLException {
+		List<Schedule> schedLlist = new ArrayList<Schedule>();
+
+		Connection conn = DBConnector.getInstance().getConn();
+		Statement statement = conn.createStatement();
+		
+		String sql = "select * from mhtc_sch.schedules";
+		statement.execute(sql);
+		
+		ResultSet rs = statement.getResultSet();
+        
+        while (rs.next()) {
+    		String job_name =  rs.getString("job_name");
+    		String sched_name = rs.getString("sched_name");
+    		String sched_job = rs.getString("sched_job");
+    		String sched_description = rs.getString("sched_description");
+    		String sched_date = rs.getString("sched_date");
+    		schedLlist.add(new Schedule(job_name, sched_name, sched_job, sched_description, sched_date));
+        }
+        
+		return schedLlist;		
+	}	 
 }

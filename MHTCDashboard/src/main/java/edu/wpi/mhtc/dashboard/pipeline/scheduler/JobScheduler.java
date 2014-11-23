@@ -16,30 +16,32 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
 public class JobScheduler {
-	private SchedulerFactory sf;
-	private Scheduler sched;
-	public JobScheduler() throws Exception {
+	private static SchedulerFactory sf ;
+	private static Scheduler sched;
+	
+	public static void createScheduler() throws Exception {
     	sf = new StdSchedulerFactory();
     	sched = sf.getScheduler();		 	
     	
-    	// Start the scheduler
-    	sched.start();
-    	
     	// Test job
-    	this.createTalendJob(specificDateTimeTrigger(11,20,2014,20,34,0),"Talend 1");
+    	//JobScheduler.createTalendJob(specificDateTimeTrigger(11,23,2014,13,31,30),"Talend 1");
 	}
 	
 	/* Job operations */
-	public void shutdown() throws SchedulerException {
+	public static void start() throws SchedulerException {
+		sched.start();
+	}
+	
+	public static void shutdown() throws SchedulerException {
 		sched.shutdown(true);
 	}
 	
-	public void deleteJob(String jobName) throws SchedulerException {
+	public static void deleteJob(String jobName) throws SchedulerException {
 		sched.deleteJob(new JobKey(jobName));
 	}
 	
 	/* Create job procedures */
-    public void createTalendJob(Trigger trigger, String jobName) throws Exception{
+    public static void createTalendJob(Trigger trigger, String jobName) throws Exception{
 
     	// Create Talend Job
     	JobDetail job = JobBuilder.newJob(TalendJob.class)
@@ -52,7 +54,7 @@ public class JobScheduler {
      }
     
     /************** Trigger builder methods ************************/
-    private SimpleTrigger specificDateTimeTrigger(int month, int day, int year, int hours, int minutes, int seconds) {
+    public static SimpleTrigger specificDateTimeTrigger(int month, int day, int year, int hours, int minutes, int seconds) {
     	Calendar cal = new java.util.GregorianCalendar(year, month-1, day);
     	cal.set(Calendar.HOUR, hours);
     	cal.set(Calendar.MINUTE, minutes);
