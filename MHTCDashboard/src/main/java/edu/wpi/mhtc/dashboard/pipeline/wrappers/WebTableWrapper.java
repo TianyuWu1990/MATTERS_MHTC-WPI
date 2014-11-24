@@ -57,7 +57,8 @@ public final class WebTableWrapper {
 				for (int i = 0; i < headerCells.size(); i++) 
 					if (!list.contains(i)) { // Ignore the column or not?
 						Cell cell = row.createCell(cellNum++);
-						cell.setCellValue(headerCells.get(i).text());
+						String val = headerCells.get(i).text();
+						setCellValue(cell, val);
 					}
 				
 				// Print out data
@@ -67,10 +68,14 @@ public final class WebTableWrapper {
 					cellNum = 0;
 					row = sheet.createRow(rowNum++);
 					Elements currentRow = rows.get(i).select("td");
+					
 					for (int j = 0; j < currentRow.size(); j++) 
 						if (!list.contains(j)) { // Ignore the column or not?
+							
 							Cell cell = row.createCell(cellNum++);
-							cell.setCellValue(currentRow.get(j).text());
+							//We want to write strings and doubles formatted correctly in excel, so check if numeric value
+							String val = currentRow.get(j).text();
+							setCellValue(cell, val);
 						}
 				}
 				
@@ -84,5 +89,19 @@ public final class WebTableWrapper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}			
+	}
+
+	
+// parse type from string and write to excel workbook cell
+	private static void setCellValue(Cell cell, String val) {
+		try{
+			double d = Double.parseDouble(val);
+//value is numeric
+			cell.setCellValue(d);
+		}
+//value is a string
+		catch(NumberFormatException e){
+			cell.setCellValue(val);
+		}
 	}
 }
