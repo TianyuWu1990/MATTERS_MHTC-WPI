@@ -60,7 +60,6 @@
     <script src="js/sb-admin-2.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
-    <script src="js/jquery-cron.js"></script>
 </head>
 
 <body>
