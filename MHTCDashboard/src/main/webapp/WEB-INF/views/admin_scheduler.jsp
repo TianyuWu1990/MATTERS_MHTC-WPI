@@ -59,33 +59,23 @@
 		        				<th>Schedule name</th>
 		        				<th>Schedule time</th>
 		        				<th>Pipeline Job</th>
-		        				<th>Schedule Description</th>
+		        				<th>Job Description</th>
 		        				<th>Action</th>
 		        			</tr>
 		        			</thead>
-		        			<tbody>
-		        			</tr>
-		          				<td>IPEDS</td>
-		          				<td>Every year</td>
-		          				<td>IPEDS Wrapper</td>
-		          				<td>2014 - Degree granting status</td> 
-		          				<td>
-		          					<button class="btn btn-xs btn-danger" type="button"><i class="glyphicon glyphicon-off"></i> Stop / Remove</button>        					
-		          				</td> 			
-		        			<tr>
-		        			
-		        			<c:forEach var="schedule" items="${schedList}">
-		        			
-			        			<tr>
-			          				<td>${schedule.getSched_name()}</td>
-			          				<td>${schedule.getSched_date() }</td>
-			          				<td>${schedule.getSched_job() }</td>
-			          				<td>${schedule.getSched_description() }</td> 
-			          				<td>
-			          					<a href="admin_scheduler_stop?job_name=${schedule.getJob_name()}"><button class="btn btn-xs btn-danger" type="button"><i class="glyphicon glyphicon-off"></i> Stop / Remove</button> </a> 
-			          				</td> 			
-			        			</tr>
-		        			</c:forEach>
+		        			<tbody>       			
+			        			<c:forEach var="schedule" items="${schedList}">
+			        			
+				        			<tr>
+				          				<td>${schedule.getSched_name()}</td>
+				          				<td>${schedule.getSched_date() }</td>
+				          				<td>${schedule.getSched_job() }</td>
+				          				<td>${schedule.getSched_description() }</td> 
+				          				<td>
+				          					<a href="admin_scheduler_stop?job_name=${schedule.getJob_name()}"><button class="btn btn-xs btn-danger" type="button"><i class="glyphicon glyphicon-off"></i> Stop / Remove</button> </a> 
+				          				</td> 			
+				        			</tr>
+			        			</c:forEach>
 		        			</tbody>
 		        		</table>
 	        		</p>

@@ -24,13 +24,15 @@
 							name="sched_name" class="form-control">
 					</div>
 
-
+					<input type="hidden" name="sched_cron" value="false">
 
 					<!-- Schedule calendar -->
 					<div class="input-group">
 						<strong>Run date</strong><br />
 						<div class='input-group date' id='run-date-picker'>
-							<input type='text' class="form-control" name="sched_date" /> <span
+							<input type='text' class="form-control" name="sched_date" /> 
+							
+							<span
 								class="input-group-addon"><span
 								class="glyphicon glyphicon-calendar"></span> </span>
 						</div>

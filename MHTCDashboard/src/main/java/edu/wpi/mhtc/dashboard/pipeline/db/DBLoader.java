@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,7 +205,7 @@ public class DBLoader {
 		return table;
 	}
 	
-	public static List<Schedule> getSchedules() throws SQLException {
+	public static List<Schedule> getSchedules() throws SQLException, ParseException {
 		List<Schedule> schedLlist = new ArrayList<Schedule>();
 
 		Connection conn = DBConnector.getInstance().getConn();
