@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
@@ -204,7 +205,7 @@ public class DBLoader {
 		
 		return table;
 	}
-	
+
 	public static List<Schedule> getSchedules() throws SQLException, ParseException {
 		List<Schedule> schedLlist = new ArrayList<Schedule>();
 
@@ -228,4 +229,34 @@ public class DBLoader {
         
 		return schedLlist;		
 	}	 
+
+	public static List<Map<String, String>> getMetricData(String category) throws SQLException, CategoryException
+	{
+		// Get all metrics with associated category, in the form of key:name, value:id
+		Map<String, String> metrics = getMetricInfo(category);
+						
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		ArrayList<Map<String, String>> data = new ArrayList<Map<String, String>>();
+		
+		for (Entry<String, String> e : metrics.entrySet())
+		{
+			String sql = "SELECT * FROM mhtc_sch.getDataByMetric(?)";
+			PreparedStatement pstatement = conn.prepareStatement(sql);
+			pstatement.setInt(1, Integer.parseInt(e.getValue()));
+			ResultSet rs = pstatement.executeQuery();
+			
+			while (rs.next()) 
+			{
+				HashMap<String, String> dataRows = new HashMap<String, String>();
+				dataRows.put("MetricName", e.getKey());
+				dataRows.put("StateName", rs.getString("StateName"));
+				dataRows.put("Year", rs.getString("Year"));
+				dataRows.put("Value", rs.getString("Value"));
+				data.add(dataRows);
+			}
+		}
+		
+		return data;
+	}
 }

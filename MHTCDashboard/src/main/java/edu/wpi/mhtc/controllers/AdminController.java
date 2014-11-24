@@ -153,6 +153,12 @@ public class AdminController {
     	return subCategories;
     }
     
+    @RequestMapping(value = "/admin_dbexplorer/getMetrics", method = RequestMethod.GET)
+    public @ResponseBody List<Map<String, String>> getMetricData(@RequestParam("categoryid") String categoryid) throws Exception {
+    	
+    	List<Map<String, String>> metricData = DBLoader.getMetricData(categoryid);
+    	return metricData;
+    }
     
     @RequestMapping(value = "/admin_upload", method = RequestMethod.GET)
     public String admin_upload(Locale locale, Model model) throws Exception {

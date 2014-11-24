@@ -28,7 +28,6 @@
     
     <!-- Custom MHTC CSS -->
     <link href="css/admin_css.css" rel="stylesheet">
-    
 
     <!-- Custom Fonts -->
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -50,6 +49,10 @@
 
     <!-- Metis Menu Plugin JavaScript -->
     <script src="js/plugins/metisMenu/metisMenu.min.js"></script>
+    
+    <!-- DataTables JavaScript -->
+    <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
     <!-- Morris Charts JavaScript 
     <script src="js/plugins/morris/raphael.min.js"></script>
@@ -60,6 +63,7 @@
     <script src="js/sb-admin-2.js"></script>
     <script src="js/moment.min.js"></script>
     <script src="js/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/admin_navigation.js"></script>
 </head>
 
 <body>
