@@ -20,16 +20,16 @@ public class AppInitializer implements WebApplicationInitializer {
 		//ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
        // dispatcher.setLoadOnStartup(1);
         //dispatcher.addMapping("/*");
-		/*
+
 		try {
 			JobScheduler.createScheduler();
 			JobScheduler.start();
+			System.out.println("Scheduler started");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Error starting the job scheduler.");
 		}
-		System.out.println("Scheduler started");
-		*/
+		
+
 	}
 	
 	@SuppressWarnings("unused")

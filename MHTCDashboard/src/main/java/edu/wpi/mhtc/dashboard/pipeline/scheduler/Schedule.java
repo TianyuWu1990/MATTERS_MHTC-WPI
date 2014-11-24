@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.dashboard.pipeline.db.MD5;
 
+// TODO: Abstract this class into multiple type of Schedule: TalendSchedule, NormalSchedule
 public class Schedule {
 	private String sched_name;
 	private String sched_job;
@@ -17,7 +18,7 @@ public class Schedule {
 		this.sched_job = sched_job;
 		this.sched_description = sched_description;
 		this.sched_date = sched_date;
-		this.job_name = MD5.getMD5(sched_description + sched_date + sched_job);
+		this.job_name =  sched_name.replaceAll("\\s+","") + MD5.getMD5(sched_description + sched_date + sched_job);
 	}
 	
 	public Schedule(String job_name, String sched_name, String sched_job, String sched_description, String sched_date) {
@@ -29,7 +30,7 @@ public class Schedule {
 	}
 	
 	public boolean insertToDB() throws SQLException {
-		return DBSaver.insertNewSchedule(sched_name, sched_job, sched_description, sched_date);
+		return DBSaver.insertNewSchedule(job_name, sched_name, sched_job, sched_description, sched_date);
 	}
 	
 	// Getters

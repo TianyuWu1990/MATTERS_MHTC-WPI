@@ -39,6 +39,7 @@ import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
+import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
@@ -173,6 +174,7 @@ public class AdminController {
         
         return "admin_pipeline";
     }
+    /********************** SCHEDULER *******************************/
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
     public String admin_scheduler(Locale locale, Model model) throws Exception {
       
@@ -198,6 +200,9 @@ public class AdminController {
 		model.addAttribute("sched_name", sched_name);
 		model.addAttribute("schedList", schedList);
 		
+		// Schedule the job
+		JobScheduler.schedule(newSched);
+		
 		return "admin_scheduler";
     }
     
@@ -216,6 +221,7 @@ public class AdminController {
         return "admin_scheduler";
     }
     
+    /********************** REPORTS *******************************/
     @RequestMapping(value = "/admin_reports", method = RequestMethod.GET)
     public String admin_reports(Locale locale, Model model) throws Exception {
       

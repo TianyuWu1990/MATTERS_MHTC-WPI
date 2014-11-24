@@ -4,7 +4,8 @@ $("#addSchedBtn").click(function(e) {
 	d = new Date();
 	$("#run-date-picker").datetimepicker({
 		showToday: true,
-		minDate: new Date()
+		minDate: new Date(),
+		useSeconds: true
 	});
 })
 

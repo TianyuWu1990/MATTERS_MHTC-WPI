@@ -1,5 +1,7 @@
 package edu.wpi.mhtc.dashboard.pipeline.scheduler;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -22,12 +24,14 @@ public class JobScheduler {
 	public static void createScheduler() throws Exception {
     	sf = new StdSchedulerFactory();
     	sched = sf.getScheduler();		 	
-    	
-    	// Test job
-    	//JobScheduler.createTalendJob(specificDateTimeTrigger(11,23,2014,13,31,30),"Talend 1");
+	}
+	/**************** Job scheduler 
+	 * @throws Exception ****************/
+	public static void schedule(Schedule sched) throws Exception {
+		JobScheduler.createTalendJob(specificDateTimeTrigger(sched.getSched_date()), sched.getJob_name());
 	}
 	
-	/* Job operations */
+	/**************** Job operations ****************/
 	public static void start() throws SchedulerException {
 		sched.start();
 	}
@@ -54,21 +58,30 @@ public class JobScheduler {
      }
     
     /************** Trigger builder methods ************************/
-    public static SimpleTrigger specificDateTimeTrigger(int month, int day, int year, int hours, int minutes, int seconds) {
-    	Calendar cal = new java.util.GregorianCalendar(year, month-1, day);
-    	cal.set(Calendar.HOUR, hours);
-    	cal.set(Calendar.MINUTE, minutes);
-    	cal.set(Calendar.SECOND, seconds);
-    	cal.set(Calendar.MILLISECOND, 0);
-    	
-    	System.out.println("New one-time trigger created: " + cal.getTime().toString());
+    
+    /**
+     * Return a trigger build for a specific date and time
+     * @param date: In format 
+     * @return
+     */
+    public static SimpleTrigger specificDateTimeTrigger(String dateStr) {
+    	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
 
-    	SimpleTrigger trigger = (SimpleTrigger) TriggerBuilder.newTrigger() 
-    			.startAt(cal.getTime())
-    			.build();
+    	try {
+     
+    		Date date = formatter.parse(dateStr);
+    		System.out.println("New one-time trigger created: " + date.toString());
+    		
+        	SimpleTrigger trigger = (SimpleTrigger) TriggerBuilder.newTrigger() 
+        			.startAt(date)
+        			.build();
+        	
+        	return trigger;
+    	} catch (ParseException e) {
+    		e.printStackTrace();
+    	}
     	
-    	return trigger;
-    	
+		return null;
     }
 
 

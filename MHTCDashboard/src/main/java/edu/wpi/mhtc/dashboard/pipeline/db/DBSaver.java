@@ -73,9 +73,7 @@ public class DBSaver {
 	}
 
 	// Insert new schedule
-	public static boolean insertNewSchedule(String sched_name, String sched_job, String sched_description, String sched_date) throws SQLException {
-		String job_name = sched_name.replaceAll("\\s+","") + "_" + MD5.getMD5(sched_description + sched_date + sched_job);
-
+	public static boolean insertNewSchedule(String job_name, String sched_name, String sched_job, String sched_description, String sched_date) throws SQLException {
 		String sql = "insert into mhtc_sch.schedules(\"job_name\", \"sched_name\", \"sched_job\", \"sched_date\", \"sched_description\") values(?, ?, ?, ?, ?) ";
 		Connection conn = DBConnector.getInstance().getConn();
 		PreparedStatement pstatement = conn.prepareStatement(sql);
