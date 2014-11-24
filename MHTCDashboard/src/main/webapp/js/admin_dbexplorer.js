@@ -67,6 +67,10 @@ $(function() {
 		});*/
 		
 		// DataTable implementation
+		if ($.fn.dataTable.isDataTable('#test')) {
+			$('#test').DataTable().destroy();
+		}
+		
 		$('#test').DataTable({
 			"ajax": {
 				"url": "admin_dbexplorer/getMetrics?categoryid="+value,
