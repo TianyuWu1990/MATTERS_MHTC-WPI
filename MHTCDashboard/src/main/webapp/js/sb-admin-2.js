@@ -58,10 +58,10 @@ $(function() {
 /*
  * Handles populating drop down for subcategories in Database Explorer
  */
-$('#category').change(function() {
+$('select#category').change(function() {
 	var value = $("select#category").val();
 	
-	$.getJSON('admin_dbexplorer/'+value, function(data) {
+	$.getJSON('admin_dbexplorer/getSubCategories', {"categoryid":value}, function(data) {
 		// Get the <select> tag
 		var options = $("#subcatdd");
 		
@@ -70,14 +70,25 @@ $('#category').change(function() {
 		
 		// Add default <option>
 		options.append('<option value="">-- Select a subcategory --</option>');
+		options.append('<option value="">Uncategorized</option>');
 		
-		// Add each entry from data object to <select>
-		for (key in data) {
-			options.append($("<option />").val(data[key]).text(key));
+		if (!$.isEmptyObject(data)) {
+			// Add each entry from data object to <select>
+			for (key in data) {
+				options.append($("<option />").val(data[key]).text(key));
+			}
 		}
+
 	});
 	
-	$('#subcat').show();
+	$('td#subcat').show();
+});
+
+/*
+ * Handles populating latest run, year selector after subcategory is chosen
+ */
+$('select#subcatdd').change(function() {
+	var value = $("select#subcatdd").val();
 });
 
 
