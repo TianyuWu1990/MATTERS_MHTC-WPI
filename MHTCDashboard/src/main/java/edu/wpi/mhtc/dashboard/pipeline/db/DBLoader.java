@@ -230,14 +230,14 @@ public class DBLoader {
 		return schedLlist;		
 	}	 
 
-	public static List<Map<String, String>> getMetricData(String category) throws SQLException, CategoryException
+	public static ArrayList<ArrayList<String>> getMetricData(String category) throws SQLException, CategoryException
 	{
 		// Get all metrics with associated category, in the form of key:name, value:id
 		Map<String, String> metrics = getMetricInfo(category);
 						
 		Connection conn = DBConnector.getInstance().getConn();
 		
-		ArrayList<Map<String, String>> data = new ArrayList<Map<String, String>>();
+		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
 		
 		for (Entry<String, String> e : metrics.entrySet())
 		{
@@ -246,13 +246,14 @@ public class DBLoader {
 			pstatement.setInt(1, Integer.parseInt(e.getValue()));
 			ResultSet rs = pstatement.executeQuery();
 			
+			/* Long: Convert it into JSON format for DataTable processing */
 			while (rs.next()) 
 			{
-				HashMap<String, String> dataRows = new HashMap<String, String>();
-				dataRows.put("MetricName", e.getKey());
-				dataRows.put("StateName", rs.getString("StateName"));
-				dataRows.put("Year", rs.getString("Year"));
-				dataRows.put("Value", rs.getString("Value"));
+				ArrayList<String> dataRows = new ArrayList<String>();
+				dataRows.add(rs.getString("StateName"));
+				dataRows.add(e.getKey());
+				dataRows.add(rs.getString("Value"));
+				dataRows.add(rs.getString("Year"));
 				data.add(dataRows);
 			}
 		}

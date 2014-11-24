@@ -78,7 +78,7 @@
 											<th>Metric Name</th>
 											<th>Metric Value</th>
 											<th>Year</th>
-										<tr>
+										</tr>
 									</thead>
 									<tbody>
 									</tbody>

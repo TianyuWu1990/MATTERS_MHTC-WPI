@@ -154,9 +154,9 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_dbexplorer/getMetrics", method = RequestMethod.GET)
-    public @ResponseBody List<Map<String, String>> getMetricData(@RequestParam("categoryid") String categoryid) throws Exception {
+    public @ResponseBody List<ArrayList<String>> getMetricData(@RequestParam("categoryid") String categoryid) throws Exception {
     	
-    	List<Map<String, String>> metricData = DBLoader.getMetricData(categoryid);
+    	List<ArrayList<String>> metricData = DBLoader.getMetricData(categoryid);
     	return metricData;
     }
     
@@ -227,9 +227,13 @@ public class AdminController {
 		// Actually stop the job
 		JobScheduler.deleteJob(job_name);
 		
+		// Get the jobs
+		List<Schedule> schedList = DBLoader.getSchedules();
+		
 		// TODO: Error message/ Success message
 		model.addAttribute("success_stop", true);
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
+		model.addAttribute("schedList", schedList);
 		
         return "admin_scheduler";
     }

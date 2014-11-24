@@ -53,25 +53,26 @@ $(function() {
 		
 		var tbody = $("#test > tbody");
 		
-		$.getJSON('admin_dbexplorer/getMetrics', {"categoryid":value}, function(data) {
-			console.log(data);
+		/*$.getJSON('admin_dbexplorer/getMetrics', {"categoryid":value}, function(data) {
 			for (var i = 0; i < data.length; i++) {
-				tbody.append('<tr>');
-				tbody.append('<td>'+data[i]["StateName"]+'</td>');
-				tbody.append('<td>'+data[i]["MetricName"]+'</td>');
-				tbody.append('<td>'+data[i]["Value"]+'</td>');
-				tbody.append('<td>'+data[i]["Year"]+'</td>');
-				tbody.append('</tr>');
+				var st = "";
+				st += '<tr>';
+				st += '<td>'+data[i]["StateName"]+'</td>';
+				st += '<td>'+data[i]["MetricName"]+'</td>';
+				st += '<td>'+data[i]["Value"]+'</td>';
+				st += '<td>'+data[i]["Year"]+'</td>';
+				st += '</tr>';
+				tbody.append(st);
+			}
+		});*/
+		
+		// DataTable implementation
+		$('#test').DataTable({
+			"ajax": {
+				"url": "admin_dbexplorer/getMetrics?categoryid="+value,
+				"dataSrc": ""
 			}
 		});
-		
-		// Doesn't work, need to fix
-		/*$('#test').DataTable( {
-				"ajax": {
-					"url": "admin_dbexplorer/getMetrics?categoryid="+value,
-					"dataSrc": ""
-				}
-		});*/
 		
 		$('#dbrows').show();
 		
