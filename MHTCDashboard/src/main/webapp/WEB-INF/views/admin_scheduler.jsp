@@ -10,58 +10,9 @@
 		
         <div id="page-wrapper">
 
-			<div class="modal fade" id="largeModal" tabindex="-1" role="dialog"
-				aria-labelledby="largeModal" aria-hidden="true">
-				<form action="admin_scheduler_add" method="POST">
-				<div class="modal-dialog modal-md">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"
-								aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="myModalLabel">Add a Pipeline Job Scheduler</h4>
-						</div>
-						<div class="modal-body">
-
-							<!-- Schedule job -->
-							<div class="input-group">
-								<strong>Schedule Job</strong><br />
-								<select class="form-control" name="sched_job">
-									<option value="0">Talend</option>
-								</select>
-							</div>
-							<!-- Schedule name -->
-							<div class="input-group">
-							  <strong>Schedule name</strong><br/>
-							  <input type="text" name="sched_name" class="form-control">
-							</div>
-							
-							
-							
-							<!-- Schedule calendar -->
-							<div class="input-group">
-							  	<strong>Run date</strong><br/>
-				                <div class='input-group date' id='run-date-picker'>
-				                    <input type='text' class="form-control" name="sched_date"/>
-				                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-				                    </span>
-				                </div>
-							</div>							
-							
-							
-							<!-- Schedule job -->
-							<div class="input-group">
-							  <strong>Schedule Description</strong><br/>
-							  <textarea name="sched_description" class="form-control" style="width: 548px; height: 80px;"></textarea>
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Close</button>
-							<button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Schedule!</button>
-						</div>
-					</div>
-				</div>
-				</form>
-			</div>
+			<%@ include file="admin_scheduler_modal_basic.jsp" %> 
+			<%@ include file="admin_scheduler_modal_cron.jsp" %> 
+			
 			<div class="row">
         		<div class="col-lg-12">
         			<h1 class="page-header">Scheduler</h1>
@@ -75,7 +26,17 @@
 		           
 		             		
         		<p>
-        			<button data-toggle="modal" data-target="#addSchedModal" id="addSchedBtn" class="btn btn-sm btn-success" type="button"><i class="glyphicon glyphicon-plus"></i> New Schedule</button>
+        			<button data-toggle="modal" data-target="#addSchedModal" id="addSchedBtn" class="btn btn-sm btn-success" type="button"><i class="glyphicon glyphicon-calendar"></i> New Schedule</button>
+					<button data-toggle="modal" data-target="#addCronSchedModal" id="addCronSchedBtn" class="btn btn-sm btn-success" type="button"><i class="glyphicon glyphicon-repeat"></i> New Cron Schedule</button>
+			
+					<c:choose>
+					    <c:when test="${inStandbyMode}">
+					       <button id="pauseSchedBtn" class="btn btn-sm btn-primary" type="button"><i class="glyphicon glyphicon-play"></i> Restart the Scheduler</button>
+					    </c:when>
+					    <c:otherwise>
+					        <button id="pauseSchedBtn" class="btn btn-sm btn-warning" type="button"><i class="glyphicon glyphicon-pause"></i> Pause the Scheduler</button>
+					    </c:otherwise>
+					</c:choose>				
 				</p>
 				<c:choose>
 				    <c:when test="${success_add}">
@@ -89,7 +50,8 @@
 					
 				</div>
 				
-				<div class="panel panel-default"><div class="panel-heading">		
+				<div class="panel panel-default"><div id="schedule-panel" class="panel-heading">		
+					<div class="paused-overlay" style="visibility: ${inStandbyMode ? 'visible' : 'hidden'}"><h1>Scheduler paused</h1></div>
 	        		<p id="schedule_list">
 		        		<table class="table">
 		        			<thead>
@@ -97,7 +59,7 @@
 		        				<th>Schedule name</th>
 		        				<th>Schedule time</th>
 		        				<th>Pipeline Job</th>
-		        				<th>Job Description</th>
+		        				<th>Schedule Description</th>
 		        				<th>Action</th>
 		        			</tr>
 		        			</thead>
@@ -108,7 +70,7 @@
 		          				<td>IPEDS Wrapper</td>
 		          				<td>2014 - Degree granting status</td> 
 		          				<td>
-		          					<button class="btn btn-xs btn-danger" type="button"><i class="glyphicon glyphicon-off"></i> Stop</button>        					
+		          					<button class="btn btn-xs btn-danger" type="button"><i class="glyphicon glyphicon-off"></i> Stop / Remove</button>        					
 		          				</td> 			
 		        			<tr>
 		        			
@@ -120,7 +82,7 @@
 			          				<td>${schedule.getSched_job() }</td>
 			          				<td>${schedule.getSched_description() }</td> 
 			          				<td>
-			          					<a href="admin_scheduler_stop?job_name=${schedule.getJob_name()}"><button class="btn btn-xs btn-danger" type="button"><i class="glyphicon glyphicon-off"></i> Stop</button> </a> 
+			          					<a href="admin_scheduler_stop?job_name=${schedule.getJob_name()}"><button class="btn btn-xs btn-danger" type="button"><i class="glyphicon glyphicon-off"></i> Stop / Remove</button> </a> 
 			          				</td> 			
 			        			</tr>
 		        			</c:forEach>

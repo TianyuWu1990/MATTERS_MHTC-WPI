@@ -80,9 +80,4 @@ $('#category').change(function() {
 	$('#subcat').show();
 });
 
-/**
- * Scheduler 
- */
-$(function() {
-	$("#largeModal").modal();
-});
+

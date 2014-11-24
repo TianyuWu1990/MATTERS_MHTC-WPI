@@ -219,7 +219,8 @@ public class DBLoader {
     		String sched_job = rs.getString("sched_job");
     		String sched_description = rs.getString("sched_description");
     		String sched_date = rs.getString("sched_date");
-    		schedLlist.add(new Schedule(job_name, sched_name, sched_job, sched_description, sched_date));
+    		boolean sched_cron = rs.getBoolean("sched_cron");
+    		schedLlist.add(new Schedule(job_name, sched_name, sched_job, sched_description, sched_date, sched_cron));
         }
         
 		return schedLlist;		

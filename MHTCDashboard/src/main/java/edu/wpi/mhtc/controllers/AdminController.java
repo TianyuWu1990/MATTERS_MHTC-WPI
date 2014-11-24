@@ -17,6 +17,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -185,20 +186,22 @@ public class AdminController {
     	model.addAttribute("categories", categories);
         model.addAttribute("title", title);
 		model.addAttribute("schedList", schedList);
-
+		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
+		
         return "admin_scheduler";
     }
     
-    @RequestMapping(value = "/admin_scheduler_add", method=RequestMethod.POST, params = {"sched_job", "sched_name", "sched_description", "sched_date"})
-    public String admin_scheduler_add(Locale locale, Model model, @RequestParam("sched_job") String sched_job, @RequestParam("sched_name") String sched_name, @RequestParam("sched_date") String sched_date, @RequestParam("sched_description") String sched_description) throws Exception {
-		Schedule newSched = new Schedule(sched_name, sched_job, sched_description, sched_date);
-		boolean success_add = newSched.insertToDB();
+    @RequestMapping(value = "/admin_scheduler_add", method=RequestMethod.POST, params = {"sched_job", "sched_name", "sched_description", "sched_date", "sched_cron"})
+    public String admin_scheduler_add(Locale locale, Model model, @RequestParam("sched_job") String sched_job, @RequestParam("sched_name") String sched_name, @RequestParam("sched_date") String sched_date, @RequestParam("sched_description") String sched_description, @RequestParam("sched_cron") boolean sched_cron) throws Exception {
+		Schedule newSched = new Schedule(sched_name, sched_job, sched_description, sched_date, sched_cron);
+		newSched.insertToDB();
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
 		// TODO: Error message/ Success message
 		model.addAttribute("success_add", true);
 		model.addAttribute("sched_name", sched_name);
 		model.addAttribute("schedList", schedList);
+		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		
 		// Schedule the job
 		JobScheduler.schedule(newSched);
@@ -215,12 +218,22 @@ public class AdminController {
 		pstatement.setString(1, job_name);
 		boolean success_stop = pstatement.execute();   
 		
+		// Actually stop the job
+		JobScheduler.deleteJob(job_name);
+		
 		// TODO: Error message/ Success message
 		model.addAttribute("success_stop", true);
+		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		
         return "admin_scheduler";
     }
     
+    @RequestMapping(value = "/admin_scheduler_toggle", method=RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public @ResponseBody String admin_scheduler_toggle() throws SchedulerException {
+    	  JobScheduler.toggle();  	
+    	  return "Success";
+    }
     /********************** REPORTS *******************************/
     @RequestMapping(value = "/admin_reports", method = RequestMethod.GET)
     public String admin_reports(Locale locale, Model model) throws Exception {
@@ -230,7 +243,7 @@ public class AdminController {
     	
     	model.addAttribute("categories", categories);
         model.addAttribute("title", title);
-        
+              
         return "admin_reports";
     }
     

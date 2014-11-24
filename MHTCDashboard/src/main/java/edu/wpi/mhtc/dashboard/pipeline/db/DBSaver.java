@@ -73,8 +73,8 @@ public class DBSaver {
 	}
 
 	// Insert new schedule
-	public static boolean insertNewSchedule(String job_name, String sched_name, String sched_job, String sched_description, String sched_date) throws SQLException {
-		String sql = "insert into mhtc_sch.schedules(\"job_name\", \"sched_name\", \"sched_job\", \"sched_date\", \"sched_description\") values(?, ?, ?, ?, ?) ";
+	public static boolean insertNewSchedule(String job_name, String sched_name, String sched_job, String sched_description, String sched_date, boolean sched_cron) throws SQLException {
+		String sql = "insert into mhtc_sch.schedules(\"job_name\", \"sched_name\", \"sched_job\", \"sched_date\", \"sched_description\", \"sched_cron\") values(?, ?, ?, ?, ?, ?) ";
 		Connection conn = DBConnector.getInstance().getConn();
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 
@@ -83,6 +83,8 @@ public class DBSaver {
 		pstatement.setString(3, sched_job);
 		pstatement.setString(4, sched_date);
 		pstatement.setString(5, sched_description);
+		pstatement.setBoolean(6, sched_cron);
+		
 		return pstatement.execute();
 	}
 

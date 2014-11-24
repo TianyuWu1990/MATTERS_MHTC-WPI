@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -20,6 +21,7 @@ import org.quartz.impl.StdSchedulerFactory;
 public class JobScheduler {
 	private static SchedulerFactory sf ;
 	private static Scheduler sched;
+	private static boolean isRunning = true;
 	
 	public static void createScheduler() throws Exception {
     	sf = new StdSchedulerFactory();
@@ -28,16 +30,41 @@ public class JobScheduler {
 	/**************** Job scheduler 
 	 * @throws Exception ****************/
 	public static void schedule(Schedule sched) throws Exception {
-		JobScheduler.createTalendJob(specificDateTimeTrigger(sched.getSched_date()), sched.getJob_name());
+		if (sched.isCronJob()) {
+			JobScheduler.createTalendJob(cronTrigger(sched.getSched_date()), sched.getJob_name());
+		} else {
+			JobScheduler.createTalendJob(specificDateTimeTrigger(sched.getSched_date()), sched.getJob_name());
+		}
+		
 	}
 	
+
 	/**************** Job operations ****************/
 	public static void start() throws SchedulerException {
 		sched.start();
 	}
-	
 	public static void shutdown() throws SchedulerException {
 		sched.shutdown(true);
+	}
+	
+	public static boolean isInStandbyMode() throws SchedulerException {
+		return !(isRunning);
+	}
+	
+	public static void toggle() {
+		try {
+			if (isRunning) {
+				sched.standby();
+				System.out.println("The scheduler has been paused.");
+			} else {
+				sched.start();
+				System.out.println("The scheduler has been restarted.");
+			}
+			
+			isRunning = !isRunning;
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void deleteJob(String jobName) throws SchedulerException {
@@ -62,7 +89,7 @@ public class JobScheduler {
     /**
      * Return a trigger build for a specific date and time
      * @param date: In format 
-     * @return
+     * @return The trigger
      */
     public static SimpleTrigger specificDateTimeTrigger(String dateStr) {
     	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
@@ -84,5 +111,15 @@ public class JobScheduler {
 		return null;
     }
 
-
+    /**
+     * Return a trigger build for UNIX cron schedule
+     * @param sched_date: The cron string
+     * @return The trigger
+     */
+    private static Trigger cronTrigger(String sched_date) {
+    	Trigger trigger = TriggerBuilder.newTrigger()
+						    			.withSchedule(CronScheduleBuilder.cronSchedule(sched_date))
+						    			.build();
+    	return trigger;
+    }
 }
