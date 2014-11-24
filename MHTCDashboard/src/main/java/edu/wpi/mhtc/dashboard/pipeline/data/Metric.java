@@ -16,7 +16,7 @@ public class Metric {
 		this.name = name;		
 		this.id = id;
 	}
-	
+		
 	/**
 	 * 
 	 * @param value of the metric (to be inserted into database). 
