@@ -188,11 +188,20 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"category", "metricName", "datatype", "isCalculated"})
-    public void admin_addMetric(Locale locale, Model model,
-    		@RequestParam("category") String category, @RequestParam("metricName") String metricName, @RequestParam("datatype") String datatype, @RequestParam("isCaluclated") boolean isCalculated) throws SQLException
+    public String admin_addMetric(Locale locale, Model model,
+    		@RequestParam("category") String category, @RequestParam("metricName") String metricName, @RequestParam("datatype") String datatype, @RequestParam("isCalculated") String isCalculated) throws SQLException
     {
     	int categoryID = Integer.parseInt(category);
-    	DBSaver.insertNewMetric(metricName, isCalculated, categoryID, datatype);
+    	boolean isCalc = Boolean.parseBoolean(isCalculated);
+    	DBSaver.insertNewMetric(metricName, isCalc, categoryID, datatype);
+    	
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Manual Upload";
+    	
+    	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+
+        return "admin_upload";
     }
     
     @RequestMapping(value = "/admin_pipeline", method = RequestMethod.GET)

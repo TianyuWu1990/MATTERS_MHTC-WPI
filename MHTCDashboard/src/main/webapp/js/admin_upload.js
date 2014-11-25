@@ -69,8 +69,10 @@ $(function() {
 				$('div#addCategorySuccess').show();
 				$("div#categoryModal").modal('hide');
 			},
-			error: function() {
-				alert("Something went wrong!");
+			error: function(xhr, status, error) {
+				console.log(xhr);
+				console.log(status);
+				console.log(error);
 			}
 		});
 	});
