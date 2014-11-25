@@ -173,8 +173,8 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addCategory", method = RequestMethod.POST, params = {"parentcategory", "categoryName", "source"})
-    public String admin_addCategory(Locale locale, Model model, @
-    		RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
+    public String admin_addCategory(Locale locale, Model model, 
+    		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
     {
     	DBSaver.insertNewCategory(categoryName, parentid, source);
     	
@@ -185,6 +185,14 @@ public class AdminController {
         model.addAttribute("title", title);
 
         return "admin_upload";
+    }
+    
+    @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"category", "metricName", "datatype", "isCalculated"})
+    public void admin_addMetric(Locale locale, Model model,
+    		@RequestParam("category") String category, @RequestParam("metricName") String metricName, @RequestParam("datatype") String datatype, @RequestParam("isCaluclated") boolean isCalculated) throws SQLException
+    {
+    	int categoryID = Integer.parseInt(category);
+    	DBSaver.insertNewMetric(metricName, isCalculated, categoryID, datatype);
     }
     
     @RequestMapping(value = "/admin_pipeline", method = RequestMethod.GET)

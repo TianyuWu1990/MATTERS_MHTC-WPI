@@ -2,7 +2,7 @@
 <%@ include file="admin_header.jsp" %> 
 <%@ include file="admin_navigation_bar.jsp" %> 
 
-		<script src="js/admin_upload.js"></script>
+		<script src="js/admin_upload.js" type="text/javascript"></script>
 
         <div id="page-wrapper">
         	<div class="row">
@@ -24,12 +24,12 @@
         	</div>
         	<div class="row">
         		<div class="col-lg-4">
-        			<form role="form" method="POST" enctype="multipart/form-data"
+        			<form id="uploadFile" role="form" method="POST" enctype="multipart/form-data"
 						action="admin/upload/add/">
 						
 						<div class="form-group">
 							<label>Choose a category:</label>
-							<select class="form-control" id="parentcategory" name="parentcategory">
+							<select class="form-control" id="parentcategory">
 								<option value="">-- Select a category --</option>
 								<c:forEach items="${categories}" var="category">
 									<option value="${category.value}">${category.key}</option>
@@ -37,9 +37,11 @@
 							</select>
 						</div>
 						
-						<div class="form-group" id="subcat" hidden>
+						<div class="form-group" id="subcat">
 							<label>Choose a subcategory:</label>
-							<select class="form-control" id="category" name="category"></select>
+							<select class="form-control" id="category" name="category">
+								<option value="">-- Select a subcategory --</option>
+							</select>
 						</div>
 						
 						<div class="form-group">
@@ -56,17 +58,27 @@
         	<div class="row">
         		<div class="col-lg-12">
         			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryModal">Add Category</button>
+        			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#metricModal">Add Metric</button>
+        			
+        			<div class="alert alert-success alert-dismissible" id="addCategorySuccess" hidden>
+                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        				You've successfully added a category to the database!
+        			</div>
+        			<div class="alert alert-success alert-dismissible" id="addMetricSuccess" hidden>
+                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        				You've successfully added a metric to the database!
+        			</div>
         		</div>
         	</div>
         	
         	<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModal" aria-hidden="true">
-        		<form method="POST" action="admin_addCategory">
+        		<form id="admin_addCategory">
 	        		<div class="modal-dialog">
 	        			<div class="modal-content">
 	        				<div class="modal-header">
 	        					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
 	        					<span class="sr-only">Close</span></button>
-	        					<h4 class="modal-title" id="categoryModal">Add a new category</h4>
+	        					<h4 class="modal-title" id="categoryModal">Add a new category!</h4>
 	        				</div>
 	        				<div class="modal-body">
 	        					<div class="form-group">
@@ -80,21 +92,73 @@
 	        					</div>
 	        					<div class="form-group">
 	        						<label>Enter a name for the new category:</label>
-	        						<input class="form-control" name="categoryName" required>
+	        						<input class="form-control" name="categoryName">
 	        					</div>
 	        					<div class="form-group">
 	        						<label>Enter the source:</label>
-	        						<input class="form-control" name="source" placeholder="i.e. NSF, Tax Foundation, CNBC, etc." required>
+	        						<input class="form-control" name="source" placeholder="i.e. NSF, Tax Foundation, CNBC, etc.">
 	        					</div>
 	        				</div>
 	        				<div class="modal-footer">
 	        				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        					<button type="submit" class="btn btn-primary">Save changes</button>
+	        					<button type="button" class="btn btn-success" id="addCategory">Submit</button>
 	        				</div>
 	        			</div>
 	        		</div>
 	        	</form>
-        	</div>
+        	</div> <!-- Modal -->
+        	
+        	<div class="modal fade" id="metricModal" tabindex="-1" role="dialog" aria-labelledby="metricModal" aria-hidden="true">
+	        		<div class="modal-dialog">
+	        			<div class="modal-content">
+	        				<div class="modal-header">
+	        					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+	        					<span class="sr-only">Close</span></button>
+	        					<h4 class="modal-title" id="metricModal">Add a new metric!</h4>
+	        				</div>
+	        				<form id="admin_addMetric">
+	        				<div class="modal-body">
+	        					<div class="form-group">
+	        						<label>Choose the parent category:</label>
+	        						<select class="form-control" id="parentcategory">
+										<option value="">-- Select a category --</option>
+										<c:forEach items="${categories}" var="category">
+											<option value="${category.value}">${category.key}</option>
+										</c:forEach>
+									</select>
+	        					</div>
+	        					<div class="form-group" id="subcat">
+									<label>Choose a subcategory:</label>
+									<select class="form-control" id="category" name="category">
+										<option value="">-- Select a subcategory --</option>
+									</select>
+								</div>
+	        					<div class="form-group">
+	        						<label>Enter a name for the new metric:</label>
+	        						<input class="form-control" name="metricName">
+	        					</div>
+	        					<div class="form-group">
+	        						<label>Enter the datatype:</label>
+	        						<input class="form-control" name="datatype" placeholder="i.e. percentage, numeric, rank, etc.">
+	        					</div>
+	        					<div class="form-group">
+	        						<label>Is this metric calculated from others?</label>
+	        						<label class="radio-inline">
+	        							<input type="radio" name="isCalculated" value="true">Yes
+	        						</label>
+	        						<label class="radio-inline">
+	        							<input type="radio" name="isCalculated" value="false">No
+	        						</label>
+	        					</div>
+	        				</div>
+	        				<div class="modal-footer">
+	        				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        					<button type="button" class="btn btn-success" id="addMetric">Submit</button>
+	        				</div>
+	        				</form>
+	        			</div>
+	        		</div>
+        	</div> <!-- Modal -->        	
 		</div>
 
 <%@ include file="admin_footer.jsp" %> 
