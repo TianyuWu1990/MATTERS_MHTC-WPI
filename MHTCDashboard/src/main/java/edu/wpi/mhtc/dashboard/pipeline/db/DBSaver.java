@@ -33,7 +33,7 @@ public class DBSaver {
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setString(1, name); 
 
-		if (parentID == null) {
+		if (parentID.isEmpty()) {
 			pstatement.setNull(2, Types.INTEGER);
 		}
 		else {

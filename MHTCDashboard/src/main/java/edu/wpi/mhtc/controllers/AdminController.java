@@ -146,7 +146,7 @@ public class AdminController {
         return "admin_dbexplorer";
     }
     
-    @RequestMapping(value = "/admin_dbexplorer/getSubCategories", method = RequestMethod.GET)
+    @RequestMapping(value = "/getSubCategories", method = RequestMethod.GET)
     public @ResponseBody Map<String, String> getSubCategories(@RequestParam("categoryid") String categoryid) throws Exception {
     	
     	Map<String, String> subCategories = DBLoader.getSubCategories(categoryid);
@@ -171,6 +171,22 @@ public class AdminController {
 
         return "admin_upload";
     }
+    
+    @RequestMapping(value = "/admin_addCategory", method = RequestMethod.POST, params = {"parentcategory", "categoryName", "source"})
+    public String admin_addCategory(Locale locale, Model model, @
+    		RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
+    {
+    	DBSaver.insertNewCategory(categoryName, parentid, source);
+    	
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Manual Upload";
+    	
+    	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+
+        return "admin_upload";
+    }
+    
     @RequestMapping(value = "/admin_pipeline", method = RequestMethod.GET)
     public String admin_pipeline(Locale locale, Model model) throws Exception {
     	Map<String, String> categories = DBLoader.getCategoryInfo();
