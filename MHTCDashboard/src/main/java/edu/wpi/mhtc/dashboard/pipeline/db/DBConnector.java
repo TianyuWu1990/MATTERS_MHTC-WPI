@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 public class DBConnector {
 
 	private static DBConnector dbConnector;
-	private String url = "jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc";
-	private String user = "dev";
-	private String password = "password";
+	private String url = "jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc-dev";
+	private String user = "server";
+	private String password = "mhtcboxofducks";
 	private Connection conn = null;
 
 	private DBConnector() {

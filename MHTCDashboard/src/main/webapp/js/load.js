@@ -56,7 +56,7 @@ adjustDropDown = function(e) {
 getStyleRuleValue=function(styleName, className) {
 
 	    //for (var i=0;i<document.styleSheets.length;i++) {
-	        var s = document.styleSheets[3];
+	        var s = document.styleSheets[1];
 
 	        var classes = s.rules || s.cssRules
 	        for(var x=0;x<classes.length;x++) {
@@ -86,6 +86,7 @@ getStyleRuleValue=function(styleName, className) {
    * Converts an RGB color To HEXA
    */
   colorToHex= function (color) {
+	  
 	    if (color.substr(0, 1) === '#') {
 	        return color;
 	    }
@@ -189,10 +190,11 @@ getNewColor=function(hexcolor,value,highest){
 animateHeatMap=function(){
 	var limit=array_years_global.length;
 	if(year_global==-1)
-	
+		
 	
 		year_global=array_years_global[globalcounter];
-		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_global);
+		//as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_global);
+		as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap', year_global);
 		globalcounter++;
 		if(globalcounter==limit){
 			year_global=-1;
@@ -210,8 +212,13 @@ stopHeatMapAnimation=function() {
 	global_timer = null;
 };
 // new loadfunction to be called from body-onload
+
+
 loadFunction = function() {
 	//$('#map').usmap({});
+	
+	
+	
 	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
 	$("div.tab-pane").scroll(adjustDropDown);
 	$("#selectallmultiplemetric").addClass("hidden");
@@ -221,7 +228,18 @@ loadFunction = function() {
 	as=AS.create();
 	//cm.loadFunction();
 	as.loadFunction();
-	
+	 $(function() {
+	        $('#ms').change(function() {
+	        	
+	        	
+	            //alert("Elemento: "+States.getStateByID($(this).val()).abbr);
+	        	//console.log($(this).val());
+	        	as.setStatesSelected($(this).val());
+	        }).multipleSelect({
+	            width: '20%'
+	        });
+	        
+	    });
 	$("#chartType" ).change(function() {
 		
 		  cm.current_graph = this.value;
@@ -235,7 +253,6 @@ loadFunction = function() {
 	
 	
 	$( "#playbuttonanimation" ).click(function() {
-		
 			
 		if (!global_timer)
 			global_timer = setInterval(animateHeatMap,3500);
@@ -247,6 +264,7 @@ loadFunction = function() {
 	});
 	$( "#stopbuttonanimation" ).click(function() {
 		//$("#yearHeatMap").prop('disabled', false);
+		
 		stopHeatMapAnimation();
 		$("#stopbuttonanimation").prop('disabled', true); 
 		$("#playbuttonanimation").prop('disabled', false);
@@ -259,8 +277,50 @@ loadFunction = function() {
 	});
 	
 /**********************************************************************/
+/**********************NEW DESIGN**************************************/
+/**********************************************************************/
+/**********************************************************************/
+	 
+/**********************************************************************/
+/***************CHECKING LEFT MENU *************************************/	
+/**********************************************************************/
+	
+	var isChecked;	
+	for(var t=1;t<101;t++){ /**TODO 101 is the number of metrics.***/
+		
+		isChecked = $('#check'+t).attr('checked')?true:false;
+		if(isChecked==true){
+			t=t.toString();
+			as.SelectUnselectMultipleMetric(t,1);
+		}
+			
+			
+		
+			
+		var checkboxchecked="check"+t;	
+		$('input[id="'+checkboxchecked+'"]').click(function(){
+			var  str= $(this).attr('id');
+			var checkboxcheckedid = str.substr(5, str.length);
 
-	$("#selectedmultiplemetrics").addClass("hidden");//make the selection box hidden.But it is used in the multiple metric selection
+			if($(this).is(":checked")){
+				as.SelectUnselectMultipleMetric(checkboxcheckedid,1);
+				
+			}else if($(this).is(":not(:checked)")){
+				as.SelectUnselectMultipleMetric(checkboxcheckedid,2);
+			}
+		});
+	}
+/**********************************************************************/
+/***************CHECKING LEFT MENU *************************************/	
+/**********************************************************************/
+	  
+	
+/**********************************************************************/
+/**********************NEW DESIGN**************************************/
+/**********************************************************************/
+/**********************************************************************/
+	 
+	/*$("#selectedmultiplemetrics").addClass("hidden");//make the selection box hidden.But it is used in the multiple metric selection
 
     window.asd = $('.SlectBox').SumoSelect({ csvDispCount: 3 });
     window.test = $('.testsel').SumoSelect({okCancelInMulti:true });
@@ -270,22 +330,48 @@ loadFunction = function() {
 		as.getMetricMultipleSelect(this.options);
 		
 
-});
+});*/
 
-
-/********************************************************************/	
+	 
+/********************************************************************/
+	$( "#MultipleMetricTitle").hover( function(){
+		
+		var sentinel=0;
+		var h=0;
+		while((h<300)&&(sentinel==0)){
+			$( "#clickMultipleMetric"+h ).click(function(){
+				sentinel=1; 
+				 var currentIdString = $(this).attr('id');
+				 var currentId = currentIdString.substr(19, 2);
+				 console.log("What is this: "+currentId);
+				 as.SelectUnselectMultipleMetric(currentId,3);
+			});
+			h++;
+		}
+		 
+	});
+	
+		
 	
 	
 	 $( "#timeline").hover( function(){
 		 for(t=1950;t<2099;t++){ // The idea is to pick whatever possible year in the time line. Since it is dynamic I could not find a better way
 			 $( "#click"+t ).click(function(){
+				 
 				 var year_in;
 				 var currentId = $(this).attr('id');
 				 year_in=currentId.substr(5, 4);
-				 as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
+				// alert("as.currentind: "+as.currentind);
+				 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
+				 //as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
 			});
 		 }
 		 
 	});
+	 
+	
+	
+	
+	
 	
 };

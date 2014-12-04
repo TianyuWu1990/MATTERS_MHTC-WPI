@@ -67,7 +67,29 @@
 				return each.id == id;
 			}));
 		};
-
+		publicInterface.getArrayStateByID = function(id) {
+			var arrayReturn=[];
+			var indexPos=0;
+			var i=0;
+			var j;
+			
+			var sentinel;
+			while(i<states.length){
+				sentinel=0;
+				j=0;
+				while((j<id.length)&&(sentinel==0)){
+					if(id[j]==states[i].id){
+						sentinel=1;
+						arrayReturn[indexPos]=states[i].abbr;
+						indexPos++;
+					}
+					j++;
+				}
+				
+				i++;
+			}
+			return arrayReturn;
+		};
 		/**
 		 * Gets a state with the given name from the list of cached states.
 		 */

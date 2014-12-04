@@ -170,12 +170,13 @@ var AS= (function($) {
      * Input: Metric ID and Base Color for heat map
      */
     AppState.prototype.SetHeatMap=function (ind,baseColor, tag_id,year_in){
-    	if(!this.multiMode) /** This was causing a weird error specially because the dropdown menu was heatmapping other metrics*/
-    		this.currentind=ind;
+    	//if(!this.multiMode) /** This was causing a weird error specially because the dropdown menu was heatmapping other metrics*/
+    	//this.currentind=ind;
     	
     	var selected_states_global= States.getAllstates().map(function(s) {
     		return s.abbr;
     	});
+    	
      	var query = DQ.create().addState(selected_states_global).addMetric(Metrics.getMetricByID(this.currentind).getName());
         query.execute(function(
                 multiData) {
@@ -280,9 +281,18 @@ var AS= (function($) {
         	    	return b.value_element-a.value_element;
         	    });
     			
-        	          	    
+    			$('#sidebar li:eq(0) a').tab('show');
+    		    $(function() {
+    		        $("[rel='tooltip']").tooltip();
+    		    });
+    		    $("#toggle").toggle("slide");
+    		    $(".statebutton").click(function (){ 
+    		    	stateClicked = $(this).attr("id").substr(3, 2); 
+    		    	as.clickCallback(stateClicked);
+    		    	
+    		    });
     			$(tag_id).usmap({
-    		        
+    				
     		        'stateStyles': {
     		        	
     		            fill: this.stateColor,
@@ -332,14 +342,16 @@ var AS= (function($) {
     		        	  $("#graphStatesHeatMapPos0").text("State: "+States.getStateByAbbreviation(data.name).name);
     		        	  $("#graphStatesHeatMapPos1").text(found[0]);
     		            },
-    		            
+    		            click: function (event,data) { 
+    			        	  as.clickCallback(data.name);
+    			          },
     		            'mouseout': function(event, data){
     		              $("#graphStatesHeatMapPos0").text("Selected States: All States");
     		              $("#graphStatesHeatMapPos1").text("Ranking");
     		            },
     		    });
-    			var selheatmapmeter=$("#heatmapmeter");
-				selheatmapmeter.empty();
+    			//as.changeColor(as.stateAbbr, as.stateSelectedColor); // AAEJ 23/11/2014
+    			
 				var arrayNewColor=[];
 				for(var i=0; i<as.ordered_states_metrics.length;i++){
         	    	if(multiData[0][0].metric.binName!="National"){
@@ -349,16 +361,22 @@ var AS= (function($) {
         	    		newColor=getNewColor(baseColor,as.ordered_states_metrics[0].value_element-as.ordered_states_metrics[i].value_element +1,as.ordered_states_metrics[0].value_element);
         	    	}
         	    	arrayNewColor[i]=newColor;
-        	    	//selheatmapmeter.append('<td  valign="top" bgcolor="'+newColor+'">&nbsp;&nbsp;</td>');
-        	    	$(tag_id).usmap('changeStateColor',  as.ordered_states_metrics[i].state_element, newColor);
+        	    	//if( as.ordered_states_metrics[i].state_element!=as.stateAbbr){// AAEJ 23/11/2014
+        	    		
+        	    		$(tag_id).usmap('changeStateColor',  as.ordered_states_metrics[i].state_element, newColor);
+        	    	//}// AAEJ 23/11/2014
+        	    		
         				
         		}
+				
 /****************************************************************************/
 /* THIS PART COULD BE IMPROVED THIS JUST SHOWS THE BAR degraded. 
  * The only problem is the way it degrades either in increasiung order
  * or decreseing order depending on the metric**/
 /****************************************************************************/
- 				
+				
+				var selheatmapmeter=$("#heatmapmeter");
+				selheatmapmeter.empty();
 				selheatmapmeter.append('<table border="1" cellpadding=0  cellspacing="0">');
 				var r;
 				var return_value_element;
@@ -519,7 +537,7 @@ var AS= (function($) {
         		});	
         });
        
-    	   
+         
     };
 /* AppState.prototype.getYearMultipleSelect=function(selectedOptions){
 	 var sel=$("yearmultiplemetric");
@@ -564,7 +582,7 @@ AppState.prototype.showHeatMapGraph=function (ind,style_in, tag_id, year_in){
 	//document.getElementById("graphCatHeatMap").innerHTML='Category: '+Metrics.getMetricByID(ind).binName;
 	var baseColor=colorToHex(getStyleRuleValue('background-color',style_in));
 	var degradedColor=getNewColor(baseColor,110,100);
-	console.log("error degradedColor : "+degradedColor);
+	//console.log("error degradedColor : "+degradedColor);
 	var degradationColorWindow="rgb("+hexToRgb(degradedColor).r+","+hexToRgb(degradedColor).g+","+hexToRgb(degradedColor).b+")";
     //this.changeColorModalWindow(tag_id.substr(1),degradationColorWindow);
    // console.log("error2 : "+ind);
@@ -646,7 +664,7 @@ AppState.prototype.setHeatMapOnHover=function (ind,style_in, tag_id, year_in){
   */
 AppState.prototype.changeColor= function(stateAbbr, newColor){
 	
-	$("#map").usmap('changeStateColor', stateAbbr, newColor);
+	$("#mbodyHeatMap").usmap('changeStateColor', stateAbbr, newColor);
 	
 	
 };
@@ -662,19 +680,22 @@ AppState.prototype.clickCallback = function(data){
 	    	this.UnSetHeatMap(this.current_tab_style);
 		var stateClicked=data;
 		var changeToColor="";
+		
 		if(stateClicked==as.stateAbbr)
 			return;
 		
 		if (as.multiMode == false){
+			
 			if(as.stateAbbr!=stateClicked){
 				if (States.getStateByAbbreviation(as.stateAbbr).peerState)
 					changeToColor=as.peerStateColor;
 				else
 					changeToColor=as.stateColor;
-				as.changeColor(as.stateAbbr, changeToColor);
-				as.changeColor(stateClicked, as.stateSelectedColor);
+				//as.changeColor(as.stateAbbr, changeToColor);//AAEJ IF YOU WANT TO COLOR THE SELECTE STATE
+				//as.changeColor(stateClicked, as.stateSelectedColor);//AAEJ IF YOU WANT TO COLOR THE SELECTE STATE
 				as.loadState(stateClicked);
 			}
+				
 			
 		}
 		else{
@@ -697,6 +718,8 @@ AppState.prototype.clickCallback = function(data){
 			this.checkIfAllStatesChecked();
 			
 		}
+		
+		//this.showHeatMapGraphReloaded(this.currentind,"mbodyHeatMap", -1); // AAEJ 23/11/2014
 	};
 
 AppState.prototype.checkIfAllStatesChecked=function(){
@@ -1021,6 +1044,7 @@ AppState.prototype.loadState = function(stateData) {
     }
 
     
+    
     $.get("" + this.stateAbbr + "/table", function(data) {
         $("#stateTitle").text(States.getStateByAbbreviation(as.stateAbbr).getName());
         $("#state_container").html(data);
@@ -1029,10 +1053,14 @@ AppState.prototype.loadState = function(stateData) {
         $("#"+current_tab).addClass("active");
         $(".statebutton").click(function (){ 
         	stateClicked = $(this).attr("id").substr(3, 2); 
+        	
         	as.clickCallback(stateClicked);
         });
     });
-}
+    
+    this.showHeatMapGraphReloaded(this.currentind,"mbodyHeatMap", -1); // AAEJ 23/11/2014 NOT YET WORKING ACCORDINGLY
+ 	//this.changeColor(this.stateAbbr, this.stateSelectedColor);  // AAEJ 23/11/2014
+};
 
 /**
  * 
@@ -1053,6 +1081,7 @@ AppState.prototype.changeColorModalWindow=function(tag_id,color_in){
 AppState.prototype.turnOffUnattendedHeatMapAnimation=function(){
 	stopHeatMapAnimation();//User could have left the animation running;
 	$("#verticalheatmapmeter").addClass("hidden");
+	//$("#verticalheatmapmeter").removeClass("hidden");
 	$("#mapTitle").text("Click to Select a State");
 };
 AppState.prototype.changeColorPeerStates = function(style){
@@ -1065,14 +1094,14 @@ AppState.prototype.changeColorPeerStates = function(style){
 	this.UnSetHeatMap(style);
 	this.current_tab_style=style;
 	var divboxcolorpeerstates = document.getElementById( 'boxcolorpeerstates' );
-	divboxcolorpeerstates.style.backgroundColor =newColor;
+	//divboxcolorpeerstates.style.backgroundColor =newColor; /** AAEJ 11/20/2014**/
 	
 	var modalcontentidstyle= style.replace("tab a", "");
    
 	modalcontentidstyle=modalcontentidstyle+" tbody > tr:hover > td";
 	var newColorModalWindow= getStyleRuleValue('background-color',modalcontentidstyle);
-	this.changeColorModalWindow('mbody',newColor);
-	this.changeColorModalWindow('mbodyMultipleQuery',newColor);
+	//this.changeColorModalWindow('mbody',newColor); /** AAEJ 11/20/2014**/
+	//this.changeColorModalWindow('mbodyMultipleQuery',newColor);/** AAEJ 11/20/2014**/
 	/**var divModalWindow=document.getElementById('mbody'); 
 	divModalWindow.style.backgroundColor =newColor;
 	divModalWindow.style.borderWidth ="1px";**/
@@ -1089,7 +1118,277 @@ AppState.prototype.changeColorPeerStates = function(style){
 	}**/
 		
 }
+/*************************************************************/
+/*********************NEW DESIGN******************************/
+/*************************************************************/
+AppState.prototype.getBackNextMultipleMetric=function(metric_id_in){
+	var i=0;
+	var next_back;
+	var sentinel=0;
+	var array_next_back=[]; //element,-1 just next/ element,-2 just back// element, element: back and forth
+	
+	if(this.selected_multiple_metrics.length>1){
+		while((i<this.selected_multiple_metrics.length)&&(sentinel==0)){
+			
+			if(this.selected_multiple_metrics[i]==metric_id_in){
+				sentinel=1;
+				var last_pos=this.selected_multiple_metrics.length-1;
+				
+				if(i==0){
+					
+					next_back=i+1;
+					array_next_back[0]=this.selected_multiple_metrics[next_back];
+					array_next_back[1]=-1;
+				}else if(i==last_pos){
+					
+					next_back=i-1;
+					array_next_back[0]=this.selected_multiple_metrics[next_back];
+					array_next_back[1]=-2;
+				}else{
+					next_back=i-1;
+					
+					array_next_back[0]=this.selected_multiple_metrics[next_back];
+					next_back=i+1;
+					array_next_back[1]=this.selected_multiple_metrics[next_back];
+				}
+			}
+			i++;
+			
+		}
+	}
+	
+	
+	
+	return array_next_back;
+};
+AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in){
+	var sel = $("#MultipleMetricTitle");
+    sel.empty();
+    var array_next_back=[];
+    if(option_in==1) {/***INSERTION **/
+		var pos=this.selected_multiple_metrics.length;
+		this.selected_multiple_metrics[pos]=metric_id_in;
+		/*******************************************************/
+		/***ALWAYS SHOW WHATEVER IS ON THE FIRST POSITION AND LATER LOOP THROUFGG THE METRICS IF
+		 * MOR than one metric was selected
+		 */
+		
+		this.currentind=this.selected_multiple_metrics[pos];
+		pos=this.selected_multiple_metrics.length-1;
+		sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName());
+		this.showHeatMapGraphReloaded(this.selected_multiple_metrics[pos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
+		this.showGraphReloaded(this.selected_multiple_metrics[pos]);// CALL THE LINE GRAPH WITH THIS  PARAM 
+		this.showMultipleMetricsStatesYears(-1);
+		if(this.selected_multiple_metrics.length>1){
+			
+			array_next_back=this.getBackNextMultipleMetric(this.currentind);
+			sel.append('<br><button class="btn btn-default"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>');
+		}
+		
+	}else if(option_in==2){ /***DELETION **/
+		var i = this.selected_multiple_metrics.indexOf(metric_id_in);
+		 if(i != -1) {
+			 this.selected_multiple_metrics.splice(i, 1);
+		 } 
+		if(this.selected_multiple_metrics.length>0){
+			pos=this.selected_multiple_metrics.length-1;
+			sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName());
+			this.showHeatMapGraphReloaded(this.selected_multiple_metrics[pos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
+			this.showGraphReloaded(this.selected_multiple_metrics[pos]);
+			this.showMultipleMetricsStatesYears(-1);
+			if(this.selected_multiple_metrics.length>1){
+				array_next_back=this.getBackNextMultipleMetric(this.currentind);
+				sel.append('<br><button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>');
+			}
+				
+		}else{
+			
+			this.currentind=null;
+			sel.append("<strong>Choose a metric from the left menu</strong>");
+		}
+			
+	 }else if(option_in==3){/// BACK AND FORTH BUTTON
+		 var i = this.selected_multiple_metrics.indexOf(metric_id_in);
+		 this.currentind=this.selected_multiple_metrics[i];
+		 var last_pos=this.selected_multiple_metrics.length-1;
+		 
+		 sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[i]).getName());
+		 this.showHeatMapGraphReloaded(this.selected_multiple_metrics[i],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
+		 this.showGraphReloaded(this.selected_multiple_metrics[i]);
+		 this.showMultipleMetricsStatesYears(-1);
+		 array_next_back=this.getBackNextMultipleMetric(this.currentind);
+		 if(i==0){
+			 sel.append('<br><button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[0]+'">Next</button>'); 
+		 }else if (i==last_pos){
+			 sel.append('<br><button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>'); 
+		 }else{
+			 sel.append('<br><button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>');
+			 sel.append('<button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[1]+'">Next</button>'); 
+		 }
+	}
+	
+};
+AppState.prototype.HeatMapMeter=function(type_in, category_in,ordered_states_metrics,arrayNewColor,stateAbbr){
+	if(type_in==1){
+		$("#verticalheatmapmeter").removeClass("hidden");
+	    //$("#mapTitle").text("Heat map for "+year_in);
+	    var selverticalheatmapmeter=$("#verticalheatmapmeter");
+	    selverticalheatmapmeter.empty();
+	    selverticalheatmapmeter.append('<table border="1" cellpadding=0  cellspacing="0"  style="height: 10px;">');
+	   	var r;
+	   	var return_value_element;
+	    var enter=false;
+	    var state_name;
+    	var position;
+    	var written_to_detail=false;
+	    if(category_in!="National"){
+	    	for(var i=0; i<ordered_states_metrics.length;i++){
+	    		if((i==ordered_states_metrics.length-1)){
+	    			position=i+1;
+	    	    	selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left" nowrap="true"><strong>'+ordered_states_metrics[i].state_element+'</strong>Pos: '+position+'</td></tr>');
+	    		}else{
+	    	    	if((i==0)||(ordered_states_metrics[i].state_element==stateAbbr)){
+	    	    		state_name=ordered_states_metrics[i].state_element;
+    	    	    	position=i+1;
+    	    	    	written_to_detail=true;
+    	    	    }else{
+    	    	    	if(!written_to_detail){
+    	    	    		state_name=null;
+    	    	    		position=null;
+    	    	    	}
+    	    	    				
+    	    	    }
+    	    	    if(i%2==0){
+    	    	    	if(!enter){
+    	    	    		enter=true;
+    	    	    		if(written_to_detail){
+    	    	    			selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left" nowrap="true"><strong>'+state_name+'</strong>Pos: '+position+'</td></tr>');
+    	    	    			written_to_detail=false;
+    	    	    			}else{
+    	    	    				selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left"></td></tr>');
+    	    	    			}
+	    	    	    	}else{
+	    	    	    		enter=false;
+	    	    	    	}
+    	    	    	}
+	    	    }
+   	    	}   
+	    }else{
+	    	
+	    	var pivotcounter=ordered_states_metrics.length;
+	    	for(var i=ordered_states_metrics.length-1; i>=0;i--){
+	    		if((i==0)){
+	    			position=-1*(i-ordered_states_metrics.length);
+	    			selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left" nowrap="true"><strong>'+ordered_states_metrics[i].state_element+'</strong>Pos: '+position+'</td></tr>');
+					
+	    		}else{
+	    			if((i==ordered_states_metrics.length-1)||(ordered_states_metrics[i].state_element==stateAbbr)){
+    	    			state_name=ordered_states_metrics[i].state_element;
+    	    			if(i==ordered_states_metrics.length-1)
+    	    				position=-1*(pivotcounter-ordered_states_metrics.length-1);
+    	    			else
+    	    				position=-1*(i-ordered_states_metrics.length);
+    	    			written_to_detail=true;
+    	    		}else{
+    	    			if(!written_to_detail){
+    	    				state_name=null;
+    	    				position=null;
+    	    			}
+    	    				
+    	    		}
+    	    		if(i%2==0){
+    	    			if(!enter){
+    	    				enter=true;
+    	    				if(written_to_detail){
+    	    					selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left" nowrap="true"><strong>'+state_name+'</strong>Pos: '+position+'</td></tr>');
+    	    					written_to_detail=false;
+    	    				}else{
+    	    					selverticalheatmapmeter.append('<tr><td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td><td valign="top" align="left"></td></tr>');
+    	    				}
+	    	    		}else{
+	    	    			enter=false;
+	    	    		}
+    	    		}
+	    		}
+	    		
+	    }
+	    selverticalheatmapmeter.append('</table>'); 
+	    }
+	}//VERTICAL HEATMAP
+};
+AppState.prototype.showHeatMapGraphReloaded=function (ind,tag_id, year_in){
+	
+	if(this.selected_multiple_metrics.length==0){
+		//document.getElementById("graphTitleHeatMap").innerHTML ='NO value';
+		
+	}else{
+		this.current_tab_style="#talenttab a";//"#nationaltab a";
+		//document.getElementById("graphTitleHeatMap").innerHTML ='Heat map: '+ Metrics.getMetricByID(this.selected_multiple_metrics[ind]).getName(); 
+		
+		var baseColor=colorToHex(getStyleRuleValue('background-color',this.current_tab_style));
+		//var degradedColor=getNewColor(baseColor,110,100);
+		if(year_in==-1){
+			stopHeatMapAnimation();/**Users could left the animation running......**/
+			$("#stopbuttonanimation").prop('disabled', true); 
+			$("#playbuttonanimation").prop('disabled', false);
+			global_timer = null;
+			year_global=-1;
+			globalcounter=0;
+		}
+		
+		if(ind!=0){//**Animation being called or click on the years**/
+			
+			ind=this.selected_multiple_metrics.indexOf(ind);
+			this.currentind=this.selected_multiple_metrics[ind];
+			
+		}
+		/*if(ind!=0){
+			
+			ind=this.selected_multiple_metrics.indexOf(ind);
+			
+		}else{
+			ind=this.selected_multiple_metrics.length-1;
+			
+		}
+		
+		this.currentind=this.selected_multiple_metrics[ind];	
+		**/
+		this.SetHeatMap(this.selected_multiple_metrics[ind],baseColor, tag_id,year_in);
+	}
+	
 
+};
+AppState.prototype.graphDeployer=function(ind, graph_type){
+	cm.current_graph=graph_type;
+	this.showGraphReloaded(ind);
+};
+AppState.prototype.setStatesSelected=function(states){
+	
+	this.selected = States.getArrayStateByID(states);
+	this.showGraphReloaded(this.currentind);
+	this.showMultipleMetricsStatesYears(-1);
+	
+};
+AppState.prototype.showGraphReloaded = function(ind) {
+	
+	
+	if(ind!=0){//**Animation being called or click on the years**/
+		
+		ind=this.selected_multiple_metrics.indexOf(ind);
+		this.currentind=this.selected_multiple_metrics[ind];
+		
+	}/*else {
+		ind=this.selected_multiple_metrics.length-1;
+		
+	}*/
+		
+   
+   cm.showMultiGraphReloded(this.selected);
+    
+};
+/*************************************************************/
+/*********************NEW DESIGN******************************/
+/*************************************************************/
 var publicInterface = {};
 
 /*

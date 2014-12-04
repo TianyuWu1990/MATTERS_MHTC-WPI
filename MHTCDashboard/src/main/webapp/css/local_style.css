@@ -194,9 +194,9 @@ background-position: 0px -240px;
 {
 	width: 125;
 }
-input[type="checkbox"]{
+/*input[type="checkbox"]{
 	display:none;
-}
+}*/
 
 table.table tbody tr td.tabbed_metric
 {
