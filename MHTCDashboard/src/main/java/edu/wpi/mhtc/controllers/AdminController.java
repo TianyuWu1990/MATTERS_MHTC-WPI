@@ -234,7 +234,7 @@ public class AdminController {
         return "admin_pipeline";
     }
     
-    @RequestMapping(value = "/admin_addPipeline", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "script"})
+    @RequestMapping(value = "/admin_addPipeline", method = RequestMethod.POST)
     public String admin_addPipeline(Locale locale, Model model, @RequestParam("parentcategory") String parentCategory,
     								@RequestParam("subcategory") String subCategory, @RequestParam("script") MultipartFile script) throws SQLException 
     {
