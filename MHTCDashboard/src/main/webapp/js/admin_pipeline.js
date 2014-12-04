@@ -2,12 +2,12 @@ $(function() {
 	/*
 	 * Handles populating drop down for subcategories in Manual Upload
 	 */
-	$('form#uploadFile select#parentcategory').change(function() {
-		var value = $("form#uploadFile select#parentcategory").val();
+	$('form#uploadPipeline #parentcategory').change(function() {
+		var value = $("form#uploadPipeline select#parentcategory").val();
 		
 		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
-			var options = $("form#uploadFile #category");
+			var options = $("form#uploadPipeline #subcategory");
 			
 			// Remove all previous entries
 			options.find('option').remove();
@@ -26,6 +26,20 @@ $(function() {
 		});
 		
 	});
+	
+	/**
+	 * Change around data to send the names of the categories instead of the IDs
+	 */
+	/*$('#uploadScript').click(function() {
+		var parentText = $('form#uploadPipeline select#parentcategory').text();
+		var childText = $('form#uploadPipeline select#subcategory').text();
+		
+		$('form#uploadPipeline select#parentcategory').val(parentText);
+		$('form#uploadPipeline select#subcategory').val(childText);
+		
+		console.log($('form#uploadPipeline select#parentcategory').val());
+		console.log($('form#uploadPipeline select#subcategory').val());
+	});*/
 	
 	$('form#admin_addMetric select#parentcategory').change(function() {
 		var value = $('form#admin_addMetric select#parentcategory').val();

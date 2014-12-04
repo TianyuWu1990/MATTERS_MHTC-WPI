@@ -59,20 +59,33 @@
         		<div class="col-lg-12">
         			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryModal">Add Category</button>
         			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#metricModal">Add Metric</button>
-        			
-        			<div class="alert alert-success alert-dismissible" id="addCategorySuccess" hidden>
-                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        				You've successfully added a category to the database!
-        			</div>
-        			<div class="alert alert-success alert-dismissible" id="addMetricSuccess" hidden>
-                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        				You've successfully added a metric to the database!
-        			</div>
         		</div>
         	</div>
+     		<br />
+            <div class="row">
+        		<div class="col-lg-12">
+        	        <c:choose>
+        				<c:when test="${category_success_add}">
+		        			<div class="alert alert-success alert-dismissible" id="addCategorySuccess">
+		                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		        				You've successfully added a category to the database!
+		        			</div>
+		        		</c:when>
+		        	</c:choose>
+		        	
+        			<c:choose>
+        				<c:when test="${metric_success_add}">
+		        			<div class="alert alert-success alert-dismissible" id="addMetricSuccess">
+		                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		        				You've successfully added a metric to the database!
+		        			</div>
+	        			</c:when>
+		        	</c:choose>        		
+		        </div>
+        	</div>   	
         	
         	<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModal" aria-hidden="true">
-        		<form id="admin_addCategory">
+        		<form id="admin_addCategory" action="admin_addCategory" method="POST">
 	        		<div class="modal-dialog">
 	        			<div class="modal-content">
 	        				<div class="modal-header">
@@ -92,17 +105,21 @@
 	        					</div>
 	        					<div class="form-group">
 	        						<label>Enter a name for the new category:</label>
-	        						<input class="form-control" name="categoryName">
+	        						<input class="form-control" name="categoryName" required>
 	        					</div>
 	        					<div class="form-group">
 	        						<label>Enter the source:</label>
-	        						<input class="form-control" name="source" placeholder="i.e. NSF, Tax Foundation, CNBC, etc.">
+	        						<input class="form-control" name="source" placeholder="i.e. NSF, Tax Foundation, CNBC, etc." required>
 	        					</div>
 	        				</div>
 	        				<div class="modal-footer">
-	        				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        					<button type="button" class="btn btn-success" id="addCategory">Submit</button>
-	        				</div>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">
+									<i class="glyphicon glyphicon-remove"></i> Close
+								</button>
+								<button type="submit" class="btn btn-primary">
+									<i class="glyphicon glyphicon-ok"></i> Submit
+								</button>	        				
+							</div>
 	        			</div>
 	        		</div>
 	        	</form>
@@ -116,11 +133,11 @@
 	        					<span class="sr-only">Close</span></button>
 	        					<h4 class="modal-title" id="metricModal">Add a new metric!</h4>
 	        				</div>
-	        				<form id="admin_addMetric">
+	        				<form id="admin_addMetric" action="admin_addMetric" method="POST">
 	        				<div class="modal-body">
 	        					<div class="form-group">
 	        						<label>Choose the parent category:</label>
-	        						<select class="form-control" id="parentcategory">
+	        						<select class="form-control" id="parentcategory" name="parentcategory" required>
 										<option value="">-- Select a category --</option>
 										<c:forEach items="${categories}" var="category">
 											<option value="${category.value}">${category.key}</option>
@@ -129,32 +146,41 @@
 	        					</div>
 	        					<div class="form-group" id="subcat">
 									<label>Choose a subcategory:</label>
-									<select class="form-control" id="category" name="category">
+									<select class="form-control" id="category" name="subcategory">
 										<option value="">-- Select a subcategory --</option>
 									</select>
 								</div>
 	        					<div class="form-group">
 	        						<label>Enter a name for the new metric:</label>
-	        						<input class="form-control" name="metricName">
+	        						<input class="form-control" name="metricName" required>
 	        					</div>
 	        					<div class="form-group">
 	        						<label>Enter the datatype:</label>
-	        						<input class="form-control" name="datatype" placeholder="i.e. percentage, numeric, rank, etc.">
+	        						<select class="form-control" name="datatype" required>
+	        							<option value="">-- Select a datatype --</option>
+	        							<c:forEach items="${datatypes}" var="datatype">
+											<option value="${datatype}">${datatype}</option>
+										</c:forEach>
+	        						</select>
 	        					</div>
 	        					<div class="form-group">
 	        						<label>Is this metric calculated from others?</label>
 	        						<label class="radio-inline">
-	        							<input type="radio" name="isCalculated" value="true">Yes
+	        							<input type="radio" name="isCalculated" value="true" required>Yes
 	        						</label>
 	        						<label class="radio-inline">
-	        							<input type="radio" name="isCalculated" value="false">No
+	        							<input type="radio" name="isCalculated" value="false" required>No
 	        						</label>
 	        					</div>
 	        				</div>
 	        				<div class="modal-footer">
-	        				    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        					<button type="button" class="btn btn-success" id="addMetric">Submit</button>
-	        				</div>
+								<button type="button" class="btn btn-danger" data-dismiss="modal">
+									<i class="glyphicon glyphicon-remove"></i> Close
+								</button>
+								<button type="submit" class="btn btn-primary">
+									<i class="glyphicon glyphicon-ok"></i> Submit
+								</button>	        				
+							</div>
 	        				</form>
 	        			</div>
 	        		</div>
