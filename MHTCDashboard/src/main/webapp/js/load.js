@@ -216,7 +216,49 @@ stopHeatMapAnimation=function() {
 
 loadFunction = function() {
 	//$('#map').usmap({});
-	
+	/*
+	 * Manik
+	 */
+	/*$(".submenu").click(function(){
+		var inputTag = this.getElementsByTagName("input")[0];
+		var isChecked = inputTag.checked;
+		var checkedMetricId = inputTag.id;
+		if(!isChecked)
+		{
+			inputTag.checked = true;
+			this.style.fontWeight = "bold";
+			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),1);
+		}
+		else
+		{	
+			inputTag.checked = false;
+			this.style.fontWeight = "normal";
+			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),2);
+		}
+		//as.SelectUnselectMultipleMetric1(checkedMetricId.substr(5, checkedMetricId.length));
+
+	});*/
+	/**********************************************************************/
+	/***************CHECKING LEFT MENU *************************************/	
+	/*********************************************************************/
+	/*
+	 * Manik
+	 */
+	/*$( "#MultipleMetricTitle").hover( function(){
+
+		$(".backButton" ).click(function(){ 
+			console.log("back button pressed");
+			var currentIdString = $(this).attr('id');
+			var currentId = currentIdString.substr(19, 2);	 
+			as.SelectUnselectMultipleMetric(currentId,3);
+		});
+		$(".nextButton" ).click(function(){ 
+			console.log("next button pressed");
+			var currentIdString = $(this).attr('id');
+			var currentId = currentIdString.substr(19, 2);	 
+			as.SelectUnselectMultipleMetric(currentId,3);
+		});
+	});*/
 	
 	
 	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
@@ -284,9 +326,10 @@ loadFunction = function() {
 /**********************************************************************/
 /***************CHECKING LEFT MENU *************************************/	
 /**********************************************************************/
-	
+	/***COMMNETED BY MANIK */
+	/**TODO 101 is the number of metrics.***/
 	var isChecked;	
-	for(var t=1;t<101;t++){ /**TODO 101 is the number of metrics.***/
+	for(var t=1;t<101;t++){ 
 		
 		isChecked = $('#check'+t).attr('checked')?true:false;
 		if(isChecked==true){
@@ -334,6 +377,7 @@ loadFunction = function() {
 
 	 
 /********************************************************************/
+	/**COMMNETED BY MANIK**/
 	$( "#MultipleMetricTitle").hover( function(){
 		
 		var sentinel=0;
@@ -363,6 +407,21 @@ loadFunction = function() {
 				 year_in=currentId.substr(5, 4);
 				// alert("as.currentind: "+as.currentind);
 				 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
+				 //as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
+			});
+		 }
+		 
+	});
+	 $( "#timelinetable").hover( function(){
+		 for(t=1950;t<2099;t++){ // The idea is to pick whatever possible year in the time line. Since it is dynamic I could not find a better way
+			 $( "#clicktable"+t ).click(function(){
+				 
+				 var year_in;
+				 var currentId = $(this).attr('id');
+				 year_in=currentId.substr(10, 4);
+				
+				// alert("as.currentind: "+as.currentind);
+				 as.showMultipleMetricsStatesYears(year_in);
 				 //as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
 			});
 		 }

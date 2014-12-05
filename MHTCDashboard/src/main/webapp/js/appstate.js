@@ -1161,6 +1161,79 @@ AppState.prototype.getBackNextMultipleMetric=function(metric_id_in){
 	
 	return array_next_back;
 };
+/*
+ * 
+ * Modified by Manik
+ */
+/*AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in){
+	var sel = $("#MultipleMetricTitle");
+    sel.empty();
+    var array_next_back=[];
+    if(option_in==1) {
+		var pos=this.selected_multiple_metrics.length;
+		this.selected_multiple_metrics[pos]=metric_id_in;
+		
+		this.currentind=this.selected_multiple_metrics[pos];
+		pos=this.selected_multiple_metrics.length-1;
+		if(this.selected_multiple_metrics.length>1){
+			array_next_back=this.getBackNextMultipleMetric(this.currentind);
+			sel.append('<button class="backButton"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;');
+			sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+		}
+		
+		sel.append("<strong>"+Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName() +"</strong>");
+		this.showHeatMapGraphReloaded(this.selected_multiple_metrics[pos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
+		this.showGraphReloaded(this.selected_multiple_metrics[pos]);// CALL THE LINE GRAPH WITH THIS  PARAM 
+		this.showMultipleMetricsStatesYears(-1);
+		
+		
+	}else if(option_in==2){ 
+		var i = this.selected_multiple_metrics.indexOf(metric_id_in);
+		 if(i != -1) {
+			 this.selected_multiple_metrics.splice(i, 1);
+		 } 
+		if(this.selected_multiple_metrics.length>0){
+			pos=this.selected_multiple_metrics.length-1;
+			if(this.selected_multiple_metrics.length>1){
+				array_next_back=this.getBackNextMultipleMetric(this.currentind);
+				sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;&nbsp;');
+				sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+			}
+			sel.append("<strong>" +  Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName() + "</strong>");
+			this.showHeatMapGraphReloaded(this.selected_multiple_metrics[pos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
+			this.showGraphReloaded(this.selected_multiple_metrics[pos]);
+			this.showMultipleMetricsStatesYears(-1);
+				
+		}else{
+			
+			this.currentind=null;
+			sel.append("<strong>Choose a metric from the left menu</strong>");
+		}
+			
+	 }else if(option_in==3){/// BACK AND FORTH BUTTON
+		 var i = this.selected_multiple_metrics.indexOf(metric_id_in);
+		 this.currentind=this.selected_multiple_metrics[i];
+		 var last_pos=this.selected_multiple_metrics.length-1;
+		 array_next_back=this.getBackNextMultipleMetric(this.currentind);
+
+		 if(i==0){
+			 sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'" disabled="true">Back</button>&nbsp;');
+			 sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[0]+'">Next</button>&nbsp;&nbsp;');
+			 
+		 }else if (i==last_pos){
+			 sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;&nbsp;'); 
+			 sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+		 }else{
+			 sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;');
+			 sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'">Next</button>&nbsp;&nbsp;'); 
+		 }
+		 sel.append("<strong>"+  Metrics.getMetricByID(this.selected_multiple_metrics[i]).getName() + "</strong>");
+		 this.showHeatMapGraphReloaded(this.selected_multiple_metrics[i],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
+		 this.showGraphReloaded(this.selected_multiple_metrics[i]);
+		 this.showMultipleMetricsStatesYears(-1);
+	}
+	
+};*/
 AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in){
 	var sel = $("#MultipleMetricTitle");
     sel.empty();
