@@ -248,6 +248,7 @@ public class AdminController {
     	String childDir = subCategory.toLowerCase().replaceAll(" ", "_");
     	
     	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
+    	String absoluteFilePath = dir.toString() + "/" + script.getOriginalFilename();
     	
     	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
     	
@@ -255,10 +256,23 @@ public class AdminController {
     		// TODO: Yell at the user or something. 
     	}
     	
+    	// Now save file to location
+    	File dest = new File(absoluteFilePath);
+    	
+    	try {
+			script.transferTo(dest);
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
     	// Now unzip file to server in proper directory
     	if (!script.isEmpty()) {
     		UnZip unZipper = new UnZip();
-    		unZipper.unZipIt(script.getOriginalFilename(), dir.toString());
+    		unZipper.unZipIt(absoluteFilePath, dir.toString()+"/");
     	}
     	
     	Map<String, String> categories = DBLoader.getCategoryInfo();
