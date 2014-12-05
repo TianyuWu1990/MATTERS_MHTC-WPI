@@ -248,18 +248,22 @@ public class AdminController {
     	String childDir = subCategory.toLowerCase().replaceAll(" ", "_");
     	
     	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
-    	boolean success = new File(dir.toString()).mkdirs();
-
-    	if (!success) {
-	    	// Now unzip file to server in proper directory
-	    	if (!script.isEmpty()) {
-	    		UnZip unZipper = new UnZip();
-	    		unZipper.unZipIt(script.getOriginalFilename(), dir.toString());
-	    	}
-	    	
-	    	Map<String, String> categories = DBLoader.getCategoryInfo();
-	    	Set<String> dataTypes = DBLoader.getMetricDataTypes();
+    	
+    	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
+    	
+    	if (!createFolderSuccess) {
+    		// TODO: Yell at the user or something. 
     	}
+    	
+    	// Now unzip file to server in proper directory
+    	if (!script.isEmpty()) {
+    		UnZip unZipper = new UnZip();
+    		unZipper.unZipIt(script.getOriginalFilename(), dir.toString());
+    	}
+    	
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	Set<String> dataTypes = DBLoader.getMetricDataTypes();
+    	
     	String title = "MATTERS: Pipeline Manager";
     	model.addAttribute("datatypes", dataTypes);
     	model.addAttribute("categories", categories);
