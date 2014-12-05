@@ -42,6 +42,7 @@ import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
+import edu.wpi.mhtc.dashboard.util.Logger;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
@@ -256,6 +257,11 @@ public class AdminController {
               
         return "admin_reports";
     }
+    
+    @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
+    public @ResponseBody List<HashMap<String,String>>  dmin_get_logs(Locale locale, Model model) throws Exception {
+    	return Logger.retriveLog();
+    }    
     
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
     public @ResponseBody List<Metric> categories() {
