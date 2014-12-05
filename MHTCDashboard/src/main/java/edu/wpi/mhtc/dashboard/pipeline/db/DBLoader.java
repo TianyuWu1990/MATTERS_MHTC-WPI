@@ -10,9 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
@@ -259,5 +261,27 @@ public class DBLoader {
 		}
 		
 		return data;
+	}
+	
+	/**
+	 * Gets the list of DataTypes for metrics (numeric, rank, etc.)
+	 * @return list of data types
+	 * @throws SQLException
+	 */
+	public static Set<String> getMetricDataTypes() throws SQLException 
+	{
+		Set<String> dataTypes = new HashSet<String>();
+		
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "SELECT \"DataType\" FROM mhtc_sch.metrics";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		ResultSet rs = pstatement.executeQuery();
+
+		while (rs.next()) {
+			dataTypes.add(rs.getString("DataType"));
+		}
+		
+		return dataTypes;
 	}
 }

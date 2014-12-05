@@ -1,23 +1,11 @@
 $(function() {
-	// For Database Explorer
-	
-	$('#subcat').change(function() {
-		$('#subcattable').show();
-	});
-
-	$('#year').change(function() {
-		$('#dbrows').show();
-	});
-});
-
-$(function() {
 	/*
 	 * Handles populating drop down for subcategories in Database Explorer
 	 */
 	$('select#category').change(function() {
 		var value = $("select#category").val();
 		
-		$.getJSON('admin_dbexplorer/getSubCategories', {"categoryid":value}, function(data) {
+		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
 			var options = $("#subcatdd");
 			
