@@ -93,7 +93,7 @@ public class AdminController {
 			newAdmin.insertToDB();
 			return "Added";
 		} catch (SQLException e) {
-			
+				
 			return e.toString();
 		}
     }
@@ -248,7 +248,7 @@ public class AdminController {
     	String childDir = subCategory.toLowerCase().replaceAll(" ", "_");
     	
     	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
-    	String absoluteFilePath = dir.toString() + "/" + script.getOriginalFilename();
+    	String zipFile = dir.toString() + "/" + script.getOriginalFilename();
     	
     	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
     	
@@ -257,7 +257,7 @@ public class AdminController {
     	}
     	
     	// Now save file to location
-    	File dest = new File(absoluteFilePath);
+    	File dest = new File(zipFile);
     	
     	try {
 			script.transferTo(dest);
@@ -272,7 +272,7 @@ public class AdminController {
     	// Now unzip file to server in proper directory
     	if (!script.isEmpty()) {
     		UnZip unZipper = new UnZip();
-    		unZipper.unZipIt(absoluteFilePath, dir.toString()+"/");
+    		unZipper.unZipIt(zipFile, dir.toString()+"/");
     	}
     	
     	Map<String, String> categories = DBLoader.getCategoryInfo();
