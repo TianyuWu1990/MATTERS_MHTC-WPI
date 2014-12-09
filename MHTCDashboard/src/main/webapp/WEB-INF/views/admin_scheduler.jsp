@@ -84,6 +84,6 @@
         </div>
         
      
-<script src="js/admin-scheduler.js"></script>
+<script src="js/admin_scheduler.js"></script>
 <%@ include file="admin_footer.jsp" %> 
 

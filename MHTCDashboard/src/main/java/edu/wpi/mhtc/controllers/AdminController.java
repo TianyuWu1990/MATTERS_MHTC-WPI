@@ -13,11 +13,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.quartz.SchedulerException;
@@ -44,6 +46,7 @@ import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
+import edu.wpi.mhtc.dashboard.util.Logger;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
@@ -56,6 +59,7 @@ public class AdminController {
     
     private MetricService service;
     private JdbcTemplate template;
+    @Autowired ServletContext servletContext=null;
     
     @Autowired
     public AdminController(MetricService service, JdbcTemplate template) {
@@ -89,7 +93,7 @@ public class AdminController {
 			newAdmin.insertToDB();
 			return "Added";
 		} catch (SQLException e) {
-			
+				
 			return e.toString();
 		}
     }
@@ -180,15 +184,8 @@ public class AdminController {
     		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
     {
     	DBSaver.insertNewCategory(categoryName, parentid, source);
-    	
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	String title = "MATTERS: Manual Upload";
-    	
-    	model.addAttribute("category_success_add", true);
-    	model.addAttribute("categories", categories);
-        model.addAttribute("title", title);
 
-        return "admin_upload";
+        return "redirct:admin_upload";
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "datatype", "isCalculated"})
@@ -207,15 +204,8 @@ public class AdminController {
 
     	boolean isCalc = Boolean.parseBoolean(isCalculated);
     	DBSaver.insertNewMetric(metricName, isCalc, categoryID, datatype);
-    	
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	String title = "MATTERS: Manual Upload";
-    	
-    	model.addAttribute("metric_success_add", true);
-    	model.addAttribute("categories", categories);
-        model.addAttribute("title", title);
 
-        return "admin_upload";
+        return "redirct:admin_upload";
     }
     
     /*********************** PIPELINE ********************************/
@@ -242,31 +232,36 @@ public class AdminController {
     	final String DATA_DIRECTORY = "/matters/bin";
     	String parentDir = parentCategory.toLowerCase().replaceAll(" ", "_");
     	String childDir = subCategory.toLowerCase().replaceAll(" ", "_");
-    	    	
-    	Path dir = Paths.get(DATA_DIRECTORY, parentDir, childDir);
+    	
+    	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
+    	String zipFile = dir.toString() + "/" + script.getOriginalFilename();
+    	
+    	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
+    	
+    	if (!createFolderSuccess) {
+    		// TODO: Yell at the user or something. 
+    	}
+    	
+    	// Now save file to location
+    	File dest = new File(zipFile);
     	
     	try {
-			Files.createDirectory(dir);
+			script.transferTo(dest);
+		} catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
-			// Do something
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
     	
     	// Now unzip file to server in proper directory
     	if (!script.isEmpty()) {
     		UnZip unZipper = new UnZip();
-    		unZipper.unZipIt(script.getOriginalFilename(), dir.toString());
+    		unZipper.unZipIt(zipFile, dir.toString());
     	}
     	
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	Set<String> dataTypes = DBLoader.getMetricDataTypes();
-
-    	String title = "MATTERS: Pipeline Manager";
-    	
-    	model.addAttribute("datatypes", dataTypes);
-    	model.addAttribute("categories", categories);
-        model.addAttribute("title", title);
-        
-    	return "admin_pipeline";
+    	return "redirect:admin_pipeline";
     }
     /********************** SCHEDULER *******************************/
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
@@ -343,6 +338,11 @@ public class AdminController {
               
         return "admin_reports";
     }
+    
+    @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
+    public @ResponseBody List<HashMap<String,String>>  dmin_get_logs(Locale locale, Model model) throws Exception {
+    	return Logger.retriveLog();
+    }    
     
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
     public @ResponseBody List<Metric> categories() {

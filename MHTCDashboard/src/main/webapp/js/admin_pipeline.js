@@ -30,16 +30,14 @@ $(function() {
 	/**
 	 * Change around data to send the names of the categories instead of the IDs
 	 */
-	/*$('#uploadScript').click(function() {
-		var parentText = $('form#uploadPipeline select#parentcategory').text();
-		var childText = $('form#uploadPipeline select#subcategory').text();
+	$('#uploadScript').click(function() {
+		var parentText = $('form#uploadPipeline select#parentcategory option:selected').text();
+		var childText = $('form#uploadPipeline select#subcategory option:selected').text();
 		
-		$('form#uploadPipeline select#parentcategory').val(parentText);
-		$('form#uploadPipeline select#subcategory').val(childText);
+		$('form#uploadPipeline select#parentcategory option:selected').val(parentText);
+		$('form#uploadPipeline select#subcategory option:selected').val(childText);
 		
-		console.log($('form#uploadPipeline select#parentcategory').val());
-		console.log($('form#uploadPipeline select#subcategory').val());
-	});*/
+	});
 	
 	$('form#admin_addMetric select#parentcategory').change(function() {
 		var value = $('form#admin_addMetric select#parentcategory').val();
