@@ -184,15 +184,8 @@ public class AdminController {
     		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
     {
     	DBSaver.insertNewCategory(categoryName, parentid, source);
-    	
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	String title = "MATTERS: Manual Upload";
-    	
-    	model.addAttribute("category_success_add", true);
-    	model.addAttribute("categories", categories);
-        model.addAttribute("title", title);
 
-        return "admin_upload";
+        return "redirct:admin_upload";
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "datatype", "isCalculated"})
@@ -211,15 +204,8 @@ public class AdminController {
 
     	boolean isCalc = Boolean.parseBoolean(isCalculated);
     	DBSaver.insertNewMetric(metricName, isCalc, categoryID, datatype);
-    	
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	String title = "MATTERS: Manual Upload";
-    	
-    	model.addAttribute("metric_success_add", true);
-    	model.addAttribute("categories", categories);
-        model.addAttribute("title", title);
 
-        return "admin_upload";
+        return "redirct:admin_upload";
     }
     
     /*********************** PIPELINE ********************************/
@@ -275,14 +261,7 @@ public class AdminController {
     		unZipper.unZipIt(zipFile, dir.toString());
     	}
     	
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	Set<String> dataTypes = DBLoader.getMetricDataTypes();
-    	
-    	String title = "MATTERS: Pipeline Manager";
-    	model.addAttribute("datatypes", dataTypes);
-    	model.addAttribute("categories", categories);
-        model.addAttribute("title", title);
-    	return "admin_pipeline";
+    	return "redirect:admin_pipeline";
     }
     /********************** SCHEDULER *******************************/
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
