@@ -272,7 +272,7 @@ public class AdminController {
     	// Now unzip file to server in proper directory
     	if (!script.isEmpty()) {
     		UnZip unZipper = new UnZip();
-    		unZipper.unZipIt(zipFile, dir.toString()+"/");
+    		unZipper.unZipIt(zipFile, dir.toString());
     	}
     	
     	Map<String, String> categories = DBLoader.getCategoryInfo();
