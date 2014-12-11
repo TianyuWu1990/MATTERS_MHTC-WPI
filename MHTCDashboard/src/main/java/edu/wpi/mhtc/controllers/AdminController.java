@@ -227,7 +227,8 @@ public class AdminController {
     
     @RequestMapping(value = "/admin_addPipeline", method = RequestMethod.POST)
     public String admin_addPipeline(Locale locale, Model model, @RequestParam("parentcategory") String parentCategory,
-    								@RequestParam("subcategory") String subCategory, @RequestParam("script") MultipartFile script) throws SQLException 
+    								@RequestParam("subcategory") String subCategory, @RequestParam("script") MultipartFile script,
+    								@RequestParam("pipelineName") String pipelineName, @RequestParam("pipelineDesc") String pipelineDesc) throws SQLException 
     {
     	// Create directory structure
     	final String DATA_DIRECTORY = "/matters/bin";
@@ -262,6 +263,9 @@ public class AdminController {
     		unZipper.unZipIt(zipFile, dir.toString());
     	}
     	
+    	// Now let's add the entry to the database if nothing has failed yet    	
+    	DBSaver.insertPipeline(pipelineName, pipelineDesc, dir.toString(), script.getOriginalFilename());
+    	
     	return "redirect:admin_pipeline";
     }
     
@@ -279,13 +283,13 @@ public class AdminController {
 		
 		while (rs.next()) {
 			HashMap<String,String> row = new HashMap<String,String>();
-			String pipelineName = rs.getString("pipelineName");
-			String pipelineDesc = rs.getString("pipelineDesc");	
+			String pipelineName = rs.getString("pipelinename");
+			String pipelineDesc = rs.getString("pipelinedesc");	
 			String path = rs.getString("path");
 			String filename = rs.getString("filename");
 			
-			row.put("pipelineName",pipelineName);
-			row.put("pipelineDesc", pipelineDesc);
+			row.put("pipelinename",pipelineName);
+			row.put("pipelinedesc", pipelineDesc);
 			row.put("path", path);
 			row.put("filename", filename);
 			

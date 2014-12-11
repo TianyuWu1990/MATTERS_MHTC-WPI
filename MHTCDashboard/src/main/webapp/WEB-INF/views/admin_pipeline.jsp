@@ -25,7 +25,7 @@
 						
 						<div class="form-group">
 							<label>Choose a category:</label>
-							<select class="form-control" id="parentcategory" name="parentcategory">
+							<select class="form-control" id="parentcategory" name="parentcategory" required>
 								<option value="">-- Select a category --</option>
 								<c:forEach items="${categories}" var="category">
 									<option value="${category.value}">${category.key}</option>
@@ -35,9 +35,19 @@
 						
 						<div class="form-group">
 							<label>Choose a subcategory:</label>
-							<select class="form-control" id="subcategory" name="subcategory">
+							<select class="form-control" id="subcategory" name="subcategory" required>
 								<option value="">-- Select a subcategory --</option>
 							</select>
+						</div>
+						
+						<div class="form-group">
+							<label>Enter a name for the pipeline:</label>
+							<input class="form-control" name="pipelineName" placeholder="Enter pipeline name" required>
+						</div>
+						
+						<div class="form-group">
+							<label>Enter a brief description of the pipeline:</label>
+							<textarea class="form-control" name="pipelineDesc"rows="5" cols="15"></textarea>
 						</div>
 						
 						<div class="form-group">
@@ -180,7 +190,27 @@
 	        				</form>
 	        			</div>
 	        		</div>
-        	</div> <!-- Modal -->        	
-		</div>
+		        	</div> <!-- Modal -->
+		
+			<div id="pipelines" class="panel-body" hidden>
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-hover"
+						id="pipelineTbl">
+						<thead>
+							<tr>
+								<th>Pipeline Name</th>
+								<th>Pipeline Description</th>
+								<th>Path to file</th>
+								<th>Filename</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<!-- /.table-responsive -->
+		
+			</div>
+	</div>
 
 <%@ include file="admin_footer.jsp" %> 

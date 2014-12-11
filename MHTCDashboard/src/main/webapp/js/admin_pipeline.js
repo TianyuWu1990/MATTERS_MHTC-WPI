@@ -63,5 +63,19 @@ $(function() {
 		});
 		
 	});
+	
+	// DataTable implementation
+	if ($.fn.dataTable.isDataTable('#pipelinesTbl')) {
+		$('#pipelinesTbl').DataTable().destroy();
+	}
+	
+	$('#pipelinesTbl').DataTable({
+		"ajax": {
+			"url": "admin_get_pipeline_data",
+			"dataSrc": ""
+		}
+	});
+	
+	$('#pipelines').show();
 
 });

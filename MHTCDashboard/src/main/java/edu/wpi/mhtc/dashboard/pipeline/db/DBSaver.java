@@ -87,5 +87,27 @@ public class DBSaver {
 		
 		return pstatement.execute();
 	}
+	
+	/**
+	 * Inserts a new pipeline for tracking into the db
+	 * @param pipelineName
+	 * @param pipelineDesc
+	 * @param path
+	 * @param filename
+	 * @return
+	 * @throws SQLException
+	 */
+	public static boolean insertPipeline(String pipelineName, String pipelineDesc, String path, String filename) throws SQLException {
+		String sql = "INSERT INTO mhtc_sch.pipelines(\"pipelinename\", \"pipelinedesc\", \"path\", \"filename\") VALUES (?, ?, ?, ?)";
+		Connection conn = DBConnector.getInstance().getConn();
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		
+		pstatement.setString(1, pipelineName);
+		pstatement.setString(2, pipelineDesc);
+		pstatement.setString(3, path);
+		pstatement.setString(4, filename);
+		
+		return pstatement.execute();
+	}
 
 }
