@@ -187,7 +187,7 @@ var CM = (function($) {
 		    				else
 		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
 		    			}
-		    			var seltimeline=$("#timelinetable");
+		    			/*var seltimeline=$("#timelinetable");
 						seltimeline.empty();
 						array_years.sort(function(a,b){return b - a;});
 						if(cm.year_selected==-1)
@@ -200,7 +200,24 @@ var CM = (function($) {
 								seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-primary btn-right" ><li id="clicktable"+'+cm.year_selected+'>'+cm.year_selected+'</li></button></td><td></td>');
 							}
 						}
-						seltimeline.append('</tr></table>');
+						seltimeline.append('</tr></table>');*/
+		    			//modified by manik
+		    			var seltimeline=$("#timelinetable");
+		    			seltimeline.empty();
+		    			var liststring =""
+		    			array_years.sort(function(a,b){return b - a;});
+						if(cm.year_selected==-1)
+		    				cm.year_selected=array_years[0];
+						liststring += '<ul class="timelineListStyle">';
+						for(var k=array_years.length-1; k>=0; k--){
+							if(cm.year_selected!=array_years[k]){
+								liststring += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+array_years[k]+')" >'+array_years[k]+'</button></li>';
+							}else{
+								liststring += '<li id="clicktable'+cm.year_selected+'"><button class="active"  id="tableTimeLineButton" >'+cm.year_selected+'</button></li>';
+							}
+						}
+						liststring += '</ul >';
+						seltimeline.append(liststring);
 						var row="<th>&nbsp;</th>";
 						var checkduplicity;//hack to fix the fact the titles and rows were strnagly duplicating
 						var array_duplicates=new Array();
@@ -478,10 +495,16 @@ var CM = (function($) {
 		                }) // adjusting, 100% is 1.00, not 100 as it is in the data
 		                .color(d3.scale.category10().range())
 	
-
-		                var xtickvalues = multiData[0][0].dataPoints.map(function(d) {
+		                var k=0;var sentinel=0;
+		                while((k<multiData.length)&&(sentinel==0)){
+		                	var xtickvalues = multiData[k][0].dataPoints.map(function(d) {
 			                    return d["year"];
 			                });
+		                	if(xtickvalues.length>0)
+		                		sentinel=1;
+		                	k++;
+		                }
+		                
 		                
 		                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
 	
@@ -498,15 +521,53 @@ var CM = (function($) {
 			                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
 			                }
 		                var data = new Array();
-		                for (var i = 0; i < multiData.length; i++) {
-		                    data[i] = {
-		                        key : multiData[i][0].state.abbr,
-		                        color: cm.array_colors[i%cm.array_colors.length]
-		                    };
-		                    data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-		                        return [ d["year"], d["value"] ];
-		                    });
+		                if(multiData[0][0].metric.binName!="National"){ //Attemnpting to fix the inverted line and bar graphs
+		                												//For national ranking. Unsuccesful so far
+		                	for (var i = 0; i < multiData.length; i++) {
+		                		//if(multiData[i][0].dataPoints.length>0){ // For bar graphs, not doing this was preventing the graph
+		                													//from showing. It is ok for line graph
+		                			data[i] = {
+			                				key : multiData[i][0].state.abbr,
+			                				color: cm.array_colors[i%cm.array_colors.length]
+			                		};
+			                		data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
+			                			return [ d["year"], d["value"] ];
+			                		});
+		                		//}
+		                		
+		                	}
+		                }else{
+		                	var limit_array=multiData.length-1;
+		                	for (var i = limit_array; i>=0  ; i--) {
+		                		//if(multiData[i][0].dataPoints.length>0){ // For bar graphs, not doing this was preventing the graph
+									//from showing. It is ok for line graph
+		                			data[i] = {
+		                				key : multiData[i][0].state.abbr,
+		                				color: cm.array_colors[i%cm.array_colors.length]
+		                			};
+		                			data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
+		                			return [ d["year"], d["value"] ];
+		                			});
+		                		//}
+		                	}
 		                }
+		                if(data[0].values.length==0){
+		                	var counter=0;
+		                	var sentinel=0;
+		                	var temp;
+		                	while((counter<data.length)&&(sentinel==0)){
+		                		if(data[counter].values.length>0){
+		                			temp=data[0];
+		                			data[0]=data[counter];
+		                			data[counter]=temp;
+		                			sentinel=1;
+		                		}
+		                		counter++;
+		                	}
+			                
+		                }
+		                
+		                
 		                if (cm.current_graph == 'line') {
 		                	d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
 		                }else if (cm.current_graph == 'bar') {

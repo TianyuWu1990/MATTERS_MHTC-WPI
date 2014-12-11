@@ -21,6 +21,7 @@ var AS= (function($) {
 		this.selected_multiple_metrics=[]; /********Array where multiple metrics selected are stored*********/
 		this.selected_multiple_years=[];/********Array where multiple years selected are stored*********/
 		var array_years_global=[];
+		this.metric_category_table =new Object(); /********hashtable to suggest duplicate metric categories*********/
     }
 
       AppState.prototype.selectState = function(state) {
@@ -147,8 +148,75 @@ var AS= (function($) {
 	             
 	            }
 	    });
+	    /************************************************************************************
+	     ************* creating a hashtable for eliminating duplicate metric selection*******
+	     ************************************************************************************/
 	    
+	    var id1 = "stateMetric"  
+	    var stateList = document.getElementById(id1).getElementsByClassName("submenu");	
+		this.addInMetricTable(stateList,id1);
+	   
+	   var id2 = "nationalProfileList"
+	    nationalList = document.getElementById(id2).getElementsByClassName("submenu");	
+	   this.addInMetricTable(nationalList,id2);
+	    
+	    //console.log(this.metric_category_table[keyofTable]);
+	    var id3="talentProfileList"
+	    talentList = document.getElementById(id3).getElementsByClassName("submenu");	
+	    this.addInMetricTable(talentList,id3);
+	    
+	    var id4="costProfileList"
+	    costList = document.getElementById(id4).getElementsByClassName("submenu");
+	    this.addInMetricTable(costList,id4);
+	    
+	    var id5 = "economyProfileList"
+	    economyList = document.getElementById(id5).getElementsByClassName("submenu");
+	    this.addInMetricTable(economyList,id5);
+	   
 	};
+	//added by manik
+	 AppState.prototype.addInMetricTable = function(mlist,id){
+		for(i=0;i< mlist.length;i++)
+	    {
+	    	list=[]
+	    	keyofTable = mlist[i].getElementsByTagName("input")[0].id;
+	    	if(this.metric_category_table.hasOwnProperty(keyofTable))
+	    	{
+	    		list = this.metric_category_table[keyofTable];
+	    		list[list.length] = id;
+	    	}
+	    	else
+	    	{
+	    		list[0]=id;
+	    		this.metric_category_table[keyofTable]=list;
+	    	}
+	    }
+	}
+	 /*get duplicate metric parent node*/
+	 AppState.prototype.getDuplicateMetricCategory = function(currentParentId,id)
+	 {
+		 var mlist=[];
+		 if(as.metric_category_table.hasOwnProperty(id))
+				
+			{
+				mlist = as.metric_category_table[id]
+				if(mlist.length > 1)
+				{
+					for(m=0; m < mlist.length; m++)
+					{
+						if(currentParentId !== mlist[m])
+						{
+							
+							return mlist[m];
+						}
+					}
+				}
+				else
+					return ""
+			}else
+			return ""
+		return ""
+	 };
     /*
      * Gets the array of year in which the metric appears. 
      */
@@ -231,7 +299,7 @@ var AS= (function($) {
 						//alert(year_in);
 					}
         			
-        			var seltimeline=$("#timeline");
+        			/*var seltimeline=$("#timeline");
 					seltimeline.empty();
 				
 					seltimeline.append('<table ><tr>');
@@ -242,10 +310,28 @@ var AS= (function($) {
 							seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-primary btn-right" ><li id="click"+'+array_years[k]+'>'+year_in+'</li></button></td><td></td>');
 						}
 					}
-					seltimeline.append('</tr></table>');
+					seltimeline.append('</tr></table>');*/
         			
-						
- 					
+        			/*******************************************************************************/
+        			/*modified by manik*/
+        			var seltimeline=$("#timeline");
+	    			seltimeline.empty();
+	    			var liststring =""
+	    			array_years.sort(function(a,b){return b - a;});	
+					liststring += '<ul class="timelineListStyle">';
+					for(var k=array_years.length-1; k>=0; k--){
+						if(year_in != array_years[k]){
+							liststring += '<li ><button  class="tableTimeLineButton" onClick="heatmapButtonClicked('+array_years[k]+')" id="clicktable'+array_years[k]+'">'+array_years[k]+'</button></li>';
+						}else{
+							liststring += '<li id="clicktable'+year_in+'"><button  class="active" >'+year_in+'</button></li>';
+						}
+					}
+					liststring += '</ul >';
+					seltimeline.append(liststring);	
+					document.getElementById("playbuttonanimation").style.visibility = "visible";
+					document.getElementById("stopbuttonanimation").style.visibility = "visible";
+					/*******************************************************************************/
+					
         			var j;
         			var sentinel;
         			for(var i=0; i<multiData.length; i++){
@@ -1165,87 +1251,230 @@ AppState.prototype.getBackNextMultipleMetric=function(metric_id_in){
  * 
  * Modified by Manik
  */
-/*AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in){
-	var sel = $("#MultipleMetricTitle");
-    sel.empty();
+AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in){
+	sel = $("#MultipleMetricTitle");
+	sel.empty();
     var array_next_back=[];
-    if(option_in==1) {
-		var pos=this.selected_multiple_metrics.length;
-		this.selected_multiple_metrics[pos]=metric_id_in;
+   
+    if(option_in==1) {/***INSERTION**/
+    	
+    	var pos=this.selected_multiple_metrics.length;
+    	//console.log("for adding in array: ",metric_id_in);
+    	//console.log("position to add next ",pos);
+    	if(metric_id_in instanceof Array)
+		{
+			for(j = 0 ;j < metric_id_in.length; j++ )
+			{
+				if(this.selected_multiple_metrics.indexOf(metric_id_in[j]) == -1)
+				{
+					this.selected_multiple_metrics[pos]=metric_id_in[j];
+					pos = pos + 1;
+				}
+
+			}
+		}
+		else if((typeof metric_id_in) == "string"){
+			this.selected_multiple_metrics[pos]=metric_id_in;
+		}
+    	console.log("array after deletion: ",this.selected_multiple_metrics );
+    	var lastpos=this.selected_multiple_metrics.length-1;
+    	//console.log("lastpos : ",lastpos,"muliple: ",this.selected_multiple_metrics);
 		
-		this.currentind=this.selected_multiple_metrics[pos];
-		pos=this.selected_multiple_metrics.length-1;
-		if(this.selected_multiple_metrics.length>1){
+		/*******************************************************/
+		/***ALWAYS SHOW WHATEVER IS ON THE FIRST POSITION AND LATER LOOP THROUFGG THE METRICS IF
+		 * MOR than one metric was selected
+		 */
+		this.currentind=this.selected_multiple_metrics[lastpos];
+		//pos=this.selected_multiple_metrics.length-1;
+		if(this.selected_multiple_metrics.length ==1) {
 			array_next_back=this.getBackNextMultipleMetric(this.currentind);
-			sel.append('<button class="backButton"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;');
-			sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+			console.log(array_next_back[0],array_next_back[1]);
+			//sel.append('<button class="backButton"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;');
+			//sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+			$(".backButton").css("display","inline");
+			$(".backButton").attr("disabled","disabled");
+			$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
+			$(".nextButton").css("display","inline");
+			$(".nextButton").attr("disabled","disabled");
+			$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
+		}
+		else if(this.selected_multiple_metrics.length > 1) {
+			array_next_back=this.getBackNextMultipleMetric(this.currentind);
+			console.log(array_next_back[0],array_next_back[1]);
+			//sel.append('<button class="backButton"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;');
+			//sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+			$(".backButton").css("display","inline");
+			$(".backButton").removeAttr("disabled");
+			$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
+			$(".nextButton").css("display","inline");
+			$(".nextButton").attr("disabled","disabled");
+			$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
 		}
 		
-		sel.append("<strong>"+Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName() +"</strong>");
-		this.showHeatMapGraphReloaded(this.selected_multiple_metrics[pos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
-		this.showGraphReloaded(this.selected_multiple_metrics[pos]);// CALL THE LINE GRAPH WITH THIS  PARAM 
+		sel.append("<strong>"+Metrics.getMetricByID(this.selected_multiple_metrics[lastpos]).getName() +"</strong>");
+		this.showHeatMapGraphReloaded(this.selected_multiple_metrics[lastpos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
+		this.showGraphReloaded(this.selected_multiple_metrics[lastpos]);// CALL THE LINE GRAPH WITH THIS  PARAM 
 		this.showMultipleMetricsStatesYears(-1);
 		
 		
-	}else if(option_in==2){ 
-		var i = this.selected_multiple_metrics.indexOf(metric_id_in);
-		 if(i != -1) {
-			 this.selected_multiple_metrics.splice(i, 1);
-		 } 
-		if(this.selected_multiple_metrics.length>0){
-			pos=this.selected_multiple_metrics.length-1;
-			if(this.selected_multiple_metrics.length>1){
-				array_next_back=this.getBackNextMultipleMetric(this.currentind);
-				sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;&nbsp;');
-				sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
-			}
-			sel.append("<strong>" +  Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName() + "</strong>");
-			this.showHeatMapGraphReloaded(this.selected_multiple_metrics[pos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
-			this.showGraphReloaded(this.selected_multiple_metrics[pos]);
-			this.showMultipleMetricsStatesYears(-1);
+	}else if(option_in==2){ /***DELETION **/
+		console.log("metric present : ",this.selected_multiple_metrics);
+		console.log("deleting : ",metric_id_in);
+		if(metric_id_in instanceof Array)
+		{
+			for(j = 0 ;j < metric_id_in.length; j++ )
+			{
 				
-		}else{
+				 var i = this.selected_multiple_metrics.indexOf(metric_id_in[j]);
+				 if(i != -1) {
+						 this.selected_multiple_metrics.splice(i, 1);
+				 }
+				// console.log("element to delete: ",metric_id_in[j],this.selected_multiple_metrics.length );
+			}
+		}
+		else if((typeof metric_id_in) == "string"){
+			console.log("single delete: ",metric_id_in);
+			var i = this.selected_multiple_metrics.indexOf(metric_id_in);
+			//console.log("i=",i)
+			 if(i != -1) 
+			 {
+				 this.selected_multiple_metrics.splice(i, 1);
+			 } 
+		}
+		//this.currentind = this.selected_multiple_metrics[]
+		
+		if(this.selected_multiple_metrics.length > 0){
+		
+			var lastpos=this.selected_multiple_metrics.length-1;
+			this.currentind=this.selected_multiple_metrics[lastpos];
+			console.log("metric present : ",this.selected_multiple_metrics);
+			array_next_back=this.getBackNextMultipleMetric(this.currentind);
 			
+			console.log("array_next_back--",array_next_back[0],array_next_back[1]);
+			console.log("metric present : ",this.selected_multiple_metrics,"curent id : ",this.currentind);
+			
+			if(this.selected_multiple_metrics.length > 1){
+				
+				//sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;&nbsp;');
+				//sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+				$(".backButton").css("display","inline");
+				$(".backButton").removeAttr("disabled");
+				$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
+				$(".nextButton").css("display","inline");
+				$(".nextButton").attr("disabled","disabled");
+				$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
+			}
+			else
+			{
+				$(".backButton").css("display","inline");
+				$(".backButton").attr("disabled","disabled");
+				$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
+				$(".nextButton").css("display","inline");
+				$(".nextButton").attr("disabled","disabled");
+				$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
+			}
+			//console.log("deletion: ",i);
+			
+			sel.append("<strong>" +  Metrics.getMetricByID(this.selected_multiple_metrics[lastpos]).getName() + "</strong>");
+			this.showHeatMapGraphReloaded(this.selected_multiple_metrics[lastpos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
+			this.showGraphReloaded(this.selected_multiple_metrics[lastpos]);
+			this.showMultipleMetricsStatesYears(-1);
+			
+		}else{
+			console.log("everything is null");
 			this.currentind=null;
 			sel.append("<strong>Choose a metric from the left menu</strong>");
+			$(".backButton").css("display","none");
+			$(".backButton").attr("disabled","disabled");
+			$(".backButton").attr("id","");
+			$(".nextButton").css("display","none");
+			$(".nextButton").attr("disabled","disabled");
+			$(".nextButton").attr("id","");
+			this.ClearGraphArea();
+				
 		}
 			
 	 }else if(option_in==3){/// BACK AND FORTH BUTTON
+		 
 		 var i = this.selected_multiple_metrics.indexOf(metric_id_in);
 		 this.currentind=this.selected_multiple_metrics[i];
 		 var last_pos=this.selected_multiple_metrics.length-1;
 		 array_next_back=this.getBackNextMultipleMetric(this.currentind);
 
 		 if(i==0){
-			 sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'" disabled="true">Back</button>&nbsp;');
-			 sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[0]+'">Next</button>&nbsp;&nbsp;');
+
+			 $(".backButton").css("display","inline");
+			$(".backButton").attr("disabled","disabled");
+			$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
+			$(".nextButton").css("display","inline");
+			$(".nextButton").removeAttr("disabled");
+			$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
 			 
 		 }else if (i==last_pos){
-			 sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;&nbsp;'); 
-			 sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+			 $(".backButton").css("display","inline");
+				$(".backButton").removeAttr("disabled");
+				$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
+				$(".nextButton").css("display","inline");
+				$(".nextButton").attr("disabled","disabled");
+				$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
 		 }else{
-			 sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;');
-			 sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'">Next</button>&nbsp;&nbsp;'); 
+			 $(".backButton").css("display","inline");
+				$(".backButton").removeAttr("disabled");
+				$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
+				$(".nextButton").css("display","inline");
+				$(".nextButton").removeAttr("disabled");
+				$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
 		 }
 		 sel.append("<strong>"+  Metrics.getMetricByID(this.selected_multiple_metrics[i]).getName() + "</strong>");
 		 this.showHeatMapGraphReloaded(this.selected_multiple_metrics[i],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
 		 this.showGraphReloaded(this.selected_multiple_metrics[i]);
 		 this.showMultipleMetricsStatesYears(-1);
+			
 	}
 	
-};*/
-AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in){
+};
+/*Added by manik
+ * TODO: Please reset tab-pane area (Alexis).
+ * 
+ * */
+AppState.prototype.ClearGraphArea = function()
+{
+	console.log("clearing graph");
+	var activeTab = document.getElementsByClassName('tab-pane active')[0];
+	var  content = activeTab.getElementsByClassName("box-content")[0];
+	if(activeTab.id == "profile")
+	{
+		content.getElementsByTagName("h4")[0].innerText = "Please select atleast one metric";
+		$("#mbody").html('<svg style="height: 100%;"></svg>');
+		
+	}
+	if(activeTab.id == "national")
+	{
+		$(".modal-body").html('<svg style="height: auto; overflow:auto"></svg>');
+	}
+	if(activeTab.id == "heatmaptab")
+	{
+		document.getElementById("playbuttonanimation").style.visibility = "hidden";
+		document.getElementById("stopbuttonanimation").style.visibility = "hidden";
+		document.getElementById("timeline").innerHTML = "";
+		document.getElementById("stateTitle").innerHTML = "";
+		//document.getElementById("mbodyHeatMap").innerHTML = "";
+	}
+}
+/***
+ * MANIK CHANGED A FEW THINGS HERE 
+ *AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in){
 	var sel = $("#MultipleMetricTitle");
     sel.empty();
     var array_next_back=[];
-    if(option_in==1) {/***INSERTION **/
+    if(option_in==1) {/***INSERTION **//**
 		var pos=this.selected_multiple_metrics.length;
 		this.selected_multiple_metrics[pos]=metric_id_in;
 		/*******************************************************/
 		/***ALWAYS SHOW WHATEVER IS ON THE FIRST POSITION AND LATER LOOP THROUFGG THE METRICS IF
 		 * MOR than one metric was selected
 		 */
-		
+		/**
 		this.currentind=this.selected_multiple_metrics[pos];
 		pos=this.selected_multiple_metrics.length-1;
 		sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName());
@@ -1258,7 +1487,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 			sel.append('<br><button class="btn btn-default"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>');
 		}
 		
-	}else if(option_in==2){ /***DELETION **/
+	}else if(option_in==2){ /***DELETION **//**
 		var i = this.selected_multiple_metrics.indexOf(metric_id_in);
 		 if(i != -1) {
 			 this.selected_multiple_metrics.splice(i, 1);
@@ -1300,7 +1529,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 		 }
 	}
 	
-};
+};*/
 AppState.prototype.HeatMapMeter=function(type_in, category_in,ordered_states_metrics,arrayNewColor,stateAbbr){
 	if(type_in==1){
 		$("#verticalheatmapmeter").removeClass("hidden");
@@ -1436,16 +1665,22 @@ AppState.prototype.graphDeployer=function(ind, graph_type){
 	this.showGraphReloaded(ind);
 };
 AppState.prototype.setStatesSelected=function(states){
+	if(states==null){
+		this.selected=[];
+		
+		
+	}else{
+		this.selected = States.getArrayStateByID(states);
+		
+	}
 	
-	this.selected = States.getArrayStateByID(states);
 	this.showGraphReloaded(this.currentind);
 	this.showMultipleMetricsStatesYears(-1);
-	
 };
 AppState.prototype.showGraphReloaded = function(ind) {
 	
 	
-	if(ind!=0){//**Animation being called or click on the years**/
+	if(ind > 0){//**Animation being called or click on the years**/
 		
 		ind=this.selected_multiple_metrics.indexOf(ind);
 		this.currentind=this.selected_multiple_metrics[ind];

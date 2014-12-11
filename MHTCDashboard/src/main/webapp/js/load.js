@@ -216,50 +216,12 @@ stopHeatMapAnimation=function() {
 
 loadFunction = function() {
 	//$('#map').usmap({});
-	/*
-	 * Manik
-	 */
-	/*$(".submenu").click(function(){
-		var inputTag = this.getElementsByTagName("input")[0];
-		var isChecked = inputTag.checked;
-		var checkedMetricId = inputTag.id;
-		if(!isChecked)
-		{
-			inputTag.checked = true;
-			this.style.fontWeight = "bold";
-			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),1);
-		}
-		else
-		{	
-			inputTag.checked = false;
-			this.style.fontWeight = "normal";
-			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),2);
-		}
-		//as.SelectUnselectMultipleMetric1(checkedMetricId.substr(5, checkedMetricId.length));
-
-	});*/
-	/**********************************************************************/
-	/***************CHECKING LEFT MENU *************************************/	
-	/*********************************************************************/
-	/*
-	 * Manik
-	 */
-	/*$( "#MultipleMetricTitle").hover( function(){
-
-		$(".backButton" ).click(function(){ 
-			console.log("back button pressed");
-			var currentIdString = $(this).attr('id');
-			var currentId = currentIdString.substr(19, 2);	 
-			as.SelectUnselectMultipleMetric(currentId,3);
-		});
-		$(".nextButton" ).click(function(){ 
-			console.log("next button pressed");
-			var currentIdString = $(this).attr('id');
-			var currentId = currentIdString.substr(19, 2);	 
-			as.SelectUnselectMultipleMetric(currentId,3);
-		});
-	});*/
 	
+	
+	/**********************************************************************/
+	/***************CHECKING LEFT MENU ************************************/	
+	/**********************************************************************/
+
 	
 	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
 	$("div.tab-pane").scroll(adjustDropDown);
@@ -276,6 +238,7 @@ loadFunction = function() {
 	        	
 	            //alert("Elemento: "+States.getStateByID($(this).val()).abbr);
 	        	//console.log($(this).val());
+	        	
 	        	as.setStatesSelected($(this).val());
 	        }).multipleSelect({
 	            width: '20%'
@@ -315,6 +278,7 @@ loadFunction = function() {
 		globalcounter=0;
 	});
 	$("#yearsMultipleQuery").change(function(){
+		console.log("current value: ",this.value);
 		as.showMultipleMetricsStatesYears(this.value);
 	});
 	
@@ -328,7 +292,7 @@ loadFunction = function() {
 /**********************************************************************/
 	/***COMMNETED BY MANIK */
 	/**TODO 101 is the number of metrics.***/
-	var isChecked;	
+	/*var isChecked;	
 	for(var t=1;t<101;t++){ 
 		
 		isChecked = $('#check'+t).attr('checked')?true:false;
@@ -374,11 +338,221 @@ loadFunction = function() {
 		
 
 });*/
+	/***********************added by manik*********************************************/
+	
+	$(".submenu").click(function(){
+		//console.log("submenu")
+		var inputTag = this.getElementsByTagName("input")[0];
+		var isChecked = inputTag.checked;
+		var checkedMetricId = inputTag.id;
+		var currentParentId = this.parentNode.parentNode.id;
+		console.log(currentParentId);
+		if(!isChecked)
+		{		
+			//$("#"+checkedMetricId).css({"display":"inline"});
+			$("#"+checkedMetricId).removeAttr("disabled");
+			inputTag.checked = true;
+			this.style.color = "#000";
+			this.style.fontWeight = "bold"
+			//as.SelectUnselectMultipleMetric([1,3,4],1);	
+			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),1);
+			duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
+			if(duplicateMetricParentId !== "")
+			{
+				var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
+				//console.log("duplicatecategory: ",duplicatecategory);
+				for(d = 1;d<duplicatecategory.length;d++)
+				{
+					if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
+					{
+						duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="bold";
+						duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#000";
+						duplicatecategory[d].getElementsByTagName("input")[0].checked = true;
+						duplicatecategory[d].getElementsByTagName("input")[0].disabled = "";
+						break;
+					}
+				}
+				
+			}
+		}
+		else if ( isChecked)
+		{	
+			$("#"+checkedMetricId).attr("disabled","disabled");
+			inputTag.checked = false;
+			this.style.color = "#666";
+			this.style.fontWeight = "normal"
+			duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
+			if(duplicateMetricParentId !== "")
+			{
+				var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
+				//console.log("duplicatecategory: ",duplicatecategory);
+				for(d = 1;d<duplicatecategory.length;d++)
+				{
+					if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
+					{
+						duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="normal";
+						duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#666";
+						duplicatecategory[d].getElementsByTagName("input")[0].checked = false;
+						break;
+					}
+				}
+				
+			}
+			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),2);
+		}
+	});
+	/*******************************************************************************************
+	/*table creation and default selection*/
+		var unorderedList   = document.getElementById('stateMetric');
+	    var ListItems       = unorderedList.getElementsByTagName('li');
+	  
+	    defaultlist =[]
+		for(i = 1;i < ListItems.length ;i++ )
+		{
+			var inputTag = ListItems[i].getElementsByTagName("input")[0];
+			var aTag = ListItems[i].getElementsByTagName("a")[0];
+			checkedMetricId = inputTag.id;
+			 var currentParentId = 'stateMetric'
+			if(inputTag.checked){
+				
+				$("#"+aTag.id).css("color","#000");
+				$("#"+aTag.id).css("font-weight","bold");
+				//as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),1);
+				defaultlist[i-1] = checkedMetricId.substr(5, checkedMetricId.length);
+				duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
+				if(duplicateMetricParentId !== "")
+				{
+					var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
+					//console.log("duplicatecategory: ",duplicatecategory);
+					for(d = 1;d<duplicatecategory.length;d++)
+					{
+						if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
+						{
+							duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="bold";
+							duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#000";
+							duplicatecategory[d].getElementsByTagName("input")[0].checked = true;
+							duplicatecategory[d].getElementsByTagName("input")[0].disabled = "";
+							break;
+						}
+					}
+					
+				}
+			}
+		}
+	    //console.log("defaultlist len: [",defaultlist);
+	    as.SelectUnselectMultipleMetric(defaultlist,1);
+	
+		
+		/*******************************************************************************************/
+		/*select and clear all the metric under category*/
+	$(".selectUnselectAll" ).click(function(){ 
+		var selectionTagInput = this.getElementsByTagName("input")[0];
+		var isChecked = selectionTagInput.checked;
+		var allListMetrics = this.parentNode.getElementsByClassName("submenu");
+		var currentParentId = this.parentNode.id;
+		var duplicateMetricParentId;
+		var metricList = []
+		if(isChecked)
+		{
+			selectionTagInput.checked = false;
+			this.getElementsByTagName("a")[0].innerHTML = "Select ALL"
+				var index = 0;
+			var i = 0;
+				while(i < allListMetrics.length)
+				{
+				var inputTag = allListMetrics[i].getElementsByTagName("input")[0];
+				var checkedMetricId = inputTag.id;
+				
+				if(inputTag.checked){
+					inputTag.checked = false;
+					inputTag.disabled = "disabled";
+					allListMetrics[i].style.color = "#666";
+					allListMetrics[i].style.fontWeight = "normal"
 
+					metricList[index] = checkedMetricId.substr(5, checkedMetricId.length);
+					index++;
+					duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
+					if(duplicateMetricParentId !== "")
+					{
+						var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
+						for(d = 1;d<duplicatecategory.length;d++)
+						{
+							if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
+							{
+								duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="normal";
+								duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#666";
+								duplicatecategory[d].getElementsByTagName("input")[0].checked = false;
+								break;
+							}
+						}
+						
+					}
+				}
+				i++;
+			}
+			console.log("metric list: ",metricList);
+			as.SelectUnselectMultipleMetric(metricList,2);
+		}
+		else if (!isChecked)
+		{
+			selectionTagInput.checked = true;
+			this.getElementsByTagName("a")[0].innerHTML = "Unselect ALL"
+			var index = 0;
+			var i = 0;
+			//for(i = 0; i < allListMetrics.length; i++ )
+			while(i < allListMetrics.length)
+			{
+				var inputTag = allListMetrics[i].getElementsByTagName("input")[0];
+				var checkedMetricId = inputTag.id;
+
+				if(!inputTag.checked){
+					inputTag.checked = true;
+					inputTag.disabled = "";
+					allListMetrics[i].style.color = "#000";
+					allListMetrics[i].style.fontWeight = "bold"
+					metricList[index] = checkedMetricId.substr(5, checkedMetricId.length);
+					index++;
+					duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
+					if(duplicateMetricParentId !== "")
+					{
+						var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
+						for(d = 1;d<duplicatecategory.length;d++)
+						{
+							if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
+							{
+								duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="bold";
+								duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#000";
+								duplicatecategory[d].getElementsByTagName("input")[0].checked = true;
+								duplicatecategory[d].getElementsByTagName("input")[0].disabled = "";
+								break;
+							}
+						}
+						
+					}
+				}
+				i++;
+			}
+			console.log("metric list: ",metricList);
+			as.SelectUnselectMultipleMetric(metricList,1);
+		}
+	});
+
+	$(".backButton" ).click(function(){ 
+		//console.log("back button pressed");
+		var currentIdString = $(this).attr('id');
+		var currentId = currentIdString.substr(19, 2);	 
+		as.SelectUnselectMultipleMetric(currentId,3);
+	});
+	$(".nextButton" ).click(function(){ 
+		//console.log("next button pressed");
+		var currentIdString = $(this).attr('id');
+		var currentId = currentIdString.substr(19, 2);	 
+		as.SelectUnselectMultipleMetric(currentId,3);
+	});
 	 
 /********************************************************************/
 	/**COMMNETED BY MANIK**/
-	$( "#MultipleMetricTitle").hover( function(){
+	/*$( "#MultipleMetricTitle").hover( function(){
 		
 		var sentinel=0;
 		var h=0;
@@ -393,12 +567,12 @@ loadFunction = function() {
 			h++;
 		}
 		 
-	});
+	});*/
 	
 		
 	
 	
-	 $( "#timeline").hover( function(){
+	 /*$( "#timeline").hover( function(){
 		 for(t=1950;t<2099;t++){ // The idea is to pick whatever possible year in the time line. Since it is dynamic I could not find a better way
 			 $( "#click"+t ).click(function(){
 				 
@@ -408,14 +582,17 @@ loadFunction = function() {
 				// alert("as.currentind: "+as.currentind);
 				 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
 				 //as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
+				
 			});
 		 }
 		 
 	});
 	 $( "#timelinetable").hover( function(){
+		 var isclicked = false;
 		 for(t=1950;t<2099;t++){ // The idea is to pick whatever possible year in the time line. Since it is dynamic I could not find a better way
+			 console.log("before table button cliecked....");
 			 $( "#clicktable"+t ).click(function(){
-				 
+				 console.log(" after table button cliecked....");
 				 var year_in;
 				 var currentId = $(this).attr('id');
 				 year_in=currentId.substr(10, 4);
@@ -423,13 +600,26 @@ loadFunction = function() {
 				// alert("as.currentind: "+as.currentind);
 				 as.showMultipleMetricsStatesYears(year_in);
 				 //as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
+				 isclicked = true;
 			});
+			 if(isclicked)
+				 break;
 		 }
 		 
-	});
+	});*/
+	
 	 
 	
-	
+	tableButtonClicked = function(obj, year_in)
+	 { 	
+		 as.showMultipleMetricsStatesYears(year_in);
+		 return true;
+		 
+	 }
+	 heatmapButtonClicked = function(year_in)
+	 { 	
+		 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
+	 }
 	
 	
 	
