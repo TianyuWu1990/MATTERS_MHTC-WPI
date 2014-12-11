@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -263,6 +264,36 @@ public class AdminController {
     	
     	return "redirect:admin_pipeline";
     }
+    
+    /**
+     * Returns a JSON array of every pipeline jobs.
+     * Used for Scheduler and Table Pipeline Listing
+     */
+    public @ResponseBody List<HashMap<String,String>>  admin_get_pipeline_data(Locale locale, Model model) throws Exception {
+		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "SELECT * FROM mhtc_sch.pipelines";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		ResultSet rs = pstatement.executeQuery();
+		
+		while (rs.next()) {
+			HashMap<String,String> row = new HashMap<String,String>();
+			String pipelineName = rs.getString("pipelineName");
+			String pipelineDesc = rs.getString("pipelineDesc");	
+			String path = rs.getString("path");
+			String filename = rs.getString("filename");
+			
+			row.put("pipelineName",pipelineName);
+			row.put("pipelineDesc", pipelineDesc);
+			row.put("path", path);
+			row.put("filename", filename);
+			
+			data.add(row);
+		}
+		
+		return data;
+    }    
     /********************** SCHEDULER *******************************/
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
     public String admin_scheduler(Locale locale, Model model) throws Exception {
