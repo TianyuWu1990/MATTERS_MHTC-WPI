@@ -70,10 +70,17 @@ $(function() {
 	}
 	
 	$('#pipelinesTbl').DataTable({
+		"processing": true,
 		"ajax": {
-			"url": "admin_get_pipeline_data",
+			"url": "admin_pipeline/getPipelineData",
 			"dataSrc": ""
-		}
+		},
+		"aoColumns": [
+			            { "mData": "pipelinename" },
+			            { "mData": "pipelinedesc" },
+			            { "mData": "path" },
+			            { "mData": "filename" }
+		]
 	});
 	
 	$('#pipelines').show();

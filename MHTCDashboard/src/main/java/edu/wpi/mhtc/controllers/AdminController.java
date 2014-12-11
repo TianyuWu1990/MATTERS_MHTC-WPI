@@ -273,6 +273,7 @@ public class AdminController {
      * Returns a JSON array of every pipeline jobs.
      * Used for Scheduler and Table Pipeline Listing
      */
+    @RequestMapping(value = "/admin_pipeline/getPipelineData", method = RequestMethod.GET)
     public @ResponseBody List<HashMap<String,String>>  admin_get_pipeline_data(Locale locale, Model model) throws Exception {
 		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
 		Connection conn = DBConnector.getInstance().getConn();
