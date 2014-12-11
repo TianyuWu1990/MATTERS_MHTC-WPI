@@ -64,12 +64,13 @@ $(function() {
 		
 	});
 	
+	console.log("Test");
 	// DataTable implementation
 	if ($.fn.dataTable.isDataTable('#pipelinesTbl')) {
 		$('#pipelinesTbl').DataTable().destroy();
 	}
 	
-	$('#pipelinesTbl').DataTable({
+	$('#pipelineTbl').DataTable({
 		"processing": true,
 		"ajax": {
 			"url": "admin_pipeline/getPipelineData",
