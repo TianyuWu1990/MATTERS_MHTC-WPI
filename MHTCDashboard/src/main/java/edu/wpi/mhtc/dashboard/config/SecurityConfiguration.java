@@ -15,7 +15,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		//auth.inMemoryAuthentication().withUser("wpi").password("mhtc").roles("ADMIN");
-		LocalConfiguration cfg = new LocalConfiguration();
+		DevelopmentConfiguration cfg = new DevelopmentConfiguration();
 		
 		auth.jdbcAuthentication().dataSource(cfg.dataSource())
 		.usersByUsernameQuery(
