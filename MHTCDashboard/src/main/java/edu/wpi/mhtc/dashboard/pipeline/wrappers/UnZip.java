@@ -38,11 +38,11 @@ public class UnZip {
 			while (ze != null) {
 
 				String fileName = ze.getName();
-				System.out.println(fileName);
+				//System.out.println(fileName);
 				
 				File newFile = new File(outputFolder + File.separator + fileName);
 
-				System.out.println("file unzip : " + newFile.getAbsoluteFile());
+				//System.out.println("file unzip : " + newFile.getAbsoluteFile());
 
 				if (ze.isDirectory()) {
 					newFile.mkdirs();
@@ -68,7 +68,7 @@ public class UnZip {
 			zis.closeEntry();
 			zis.close();
 
-			System.out.println("Done");
+			//System.out.println("Done");
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
