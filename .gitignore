@@ -3,4 +3,5 @@ MHTCDashboard/tmp/
 .class
 /target/
 MHTCDashboard/src/main/java/edu/wpi/mhtc/dashboard/pipeline/db/DBConnector.java
+MHTCDashboard/src/main/java/edu/wpi/mhtc/dashboard/config/DevelopmentConfiguration.java
 MHTCDashboard/pom.xml
