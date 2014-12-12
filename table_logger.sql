@@ -24,7 +24,7 @@ SET default_with_oids = false;
 -- Name: logs; Type: TABLE; Schema: mhtc_sch; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE logs (
+CREATE TABLE mhtc_sch."logs" (
     id integer DEFAULT nextval('log_id'::regclass) NOT NULL,
     log_datetime character varying(50) DEFAULT now() NOT NULL,
     component_name text NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE logs (
 );
 
 
-ALTER TABLE mhtc_sch.logs OWNER TO postgres;
+ALTER TABLE mhtc_sch."logs" OWNER TO postgres;
 
 --
 -- TOC entry 2042 (class 0 OID 45456)
@@ -42,7 +42,6 @@ ALTER TABLE mhtc_sch.logs OWNER TO postgres;
 --
 
 COPY logs (id, log_datetime, component_name, message, status) FROM stdin;
-\.
 
 
 --
@@ -50,7 +49,7 @@ COPY logs (id, log_datetime, component_name, message, status) FROM stdin;
 -- Name: logs_pkey; Type: CONSTRAINT; Schema: mhtc_sch; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY logs
+ALTER TABLE ONLY mhtc_sch."logs"
     ADD CONSTRAINT logs_pkey PRIMARY KEY (id);
 
 
