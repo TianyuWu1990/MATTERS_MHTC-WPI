@@ -3,19 +3,19 @@
 -- In your Quartz properties file, you'll need to set 
 -- org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
 
-drop table qrtz_fired_triggers;
-DROP TABLE QRTZ_PAUSED_TRIGGER_GRPS;
-DROP TABLE QRTZ_SCHEDULER_STATE;
-DROP TABLE QRTZ_LOCKS;
-drop table qrtz_simple_triggers;
-drop table qrtz_cron_triggers;
-drop table qrtz_simprop_triggers;
-DROP TABLE QRTZ_BLOB_TRIGGERS;
-drop table qrtz_triggers;
-drop table qrtz_job_details;
-drop table qrtz_calendars;
+DROP TABLE IF EXISTS qrtz_fired_triggers;
+DROP TABLE IF EXISTS QRTZ_PAUSED_TRIGGER_GRPS;
+DROP TABLE IF EXISTS QRTZ_SCHEDULER_STATE;
+DROP TABLE IF EXISTS QRTZ_LOCKS;
+DROP TABLE IF EXISTS qrtz_simple_triggers;
+DROP TABLE IF EXISTS qrtz_cron_triggers;
+DROP TABLE IF EXISTS qrtz_simprop_triggers;
+DROP TABLE IF EXISTS QRTZ_BLOB_TRIGGERS;
+DROP TABLE IF EXISTS qrtz_triggers;
+DROP TABLE IF EXISTS qrtz_job_details;
+DROP TABLE IF EXISTS qrtz_calendars;
 
-CREATE TABLE qrtz_job_details
+CREATE TABLE mhtc_sch.qrtz_job_details
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     JOB_NAME  VARCHAR(200) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE qrtz_job_details
     PRIMARY KEY (SCHED_NAME,JOB_NAME,JOB_GROUP)
 );
 
-CREATE TABLE qrtz_triggers
+CREATE TABLE mhtc_sch.qrtz_triggers
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     TRIGGER_NAME VARCHAR(200) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE qrtz_triggers
 	REFERENCES QRTZ_JOB_DETAILS(SCHED_NAME,JOB_NAME,JOB_GROUP) 
 );
 
-CREATE TABLE qrtz_simple_triggers
+CREATE TABLE mhtc_sch.qrtz_simple_triggers
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     TRIGGER_NAME VARCHAR(200) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE qrtz_simple_triggers
 	REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
 );
 
-CREATE TABLE qrtz_cron_triggers
+CREATE TABLE mhtc_sch.qrtz_cron_triggers
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     TRIGGER_NAME VARCHAR(200) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE qrtz_cron_triggers
 	REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
 );
 
-CREATE TABLE qrtz_simprop_triggers
+CREATE TABLE mhtc_sch.qrtz_simprop_triggers
   (          
     SCHED_NAME VARCHAR(120) NOT NULL,
     TRIGGER_NAME VARCHAR(200) NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE qrtz_simprop_triggers
     REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
 );
 
-CREATE TABLE qrtz_blob_triggers
+CREATE TABLE mhtc_sch.qrtz_blob_triggers
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     TRIGGER_NAME VARCHAR(200) NOT NULL,
@@ -110,7 +110,7 @@ CREATE TABLE qrtz_blob_triggers
         REFERENCES QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
 );
 
-CREATE TABLE qrtz_calendars
+CREATE TABLE mhtc_sch.qrtz_calendars
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     CALENDAR_NAME  VARCHAR(200) NOT NULL, 
@@ -119,14 +119,14 @@ CREATE TABLE qrtz_calendars
 );
 
 
-CREATE TABLE qrtz_paused_trigger_grps
+CREATE TABLE mhtc_sch.qrtz_paused_trigger_grps
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     TRIGGER_GROUP  VARCHAR(200) NOT NULL, 
     PRIMARY KEY (SCHED_NAME,TRIGGER_GROUP)
 );
 
-CREATE TABLE qrtz_fired_triggers 
+CREATE TABLE mhtc_sch.qrtz_fired_triggers 
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     ENTRY_ID VARCHAR(95) NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE qrtz_fired_triggers
     PRIMARY KEY (SCHED_NAME,ENTRY_ID)
 );
 
-CREATE TABLE qrtz_scheduler_state 
+CREATE TABLE mhtc_sch.qrtz_scheduler_state 
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     INSTANCE_NAME VARCHAR(200) NOT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE qrtz_scheduler_state
     PRIMARY KEY (SCHED_NAME,INSTANCE_NAME)
 );
 
-CREATE TABLE qrtz_locks
+CREATE TABLE mhtc_sch.qrtz_locks
   (
     SCHED_NAME VARCHAR(120) NOT NULL,
     LOCK_NAME  VARCHAR(40) NOT NULL, 
