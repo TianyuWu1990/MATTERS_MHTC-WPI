@@ -29,8 +29,37 @@ $(function() {
 	
 	/**
 	 * Change around data to send the names of the categories instead of the IDs
+	 * Contains form validation as well
 	 */
 	$('#uploadScript').click(function() {
+		
+		var fileInput = $('input[type="file"]');
+		
+		// Make sure user has selected a file to upload
+		if (fileInput.val() == '') {
+			alert("You haven't uploaded a file!");
+			return false;
+		}
+		
+		var file = fileInput[0].files[0];		
+		var fileName = file.name;
+		var fileSize = file.size;
+		
+		// Make sure it's not a blank file
+		if (fileSize <= 0) {
+			alert("The file you uploaded is empty!");
+			return false;
+		}
+		
+		var fileExt = fileName.split('.').pop();
+		var allowedExtensions = new Array("zip");
+		
+		// Make sure uploaded file is in list of allowable file types
+		if ($.inArray(fileExt, allowedExtensions) == -1) {
+			alert("You must upload a file with the .zip extension!");
+			return false;
+		}
+							
 		var parentText = $('form#uploadPipeline select#parentcategory option:selected').text();
 		var childText = $('form#uploadPipeline select#subcategory option:selected').text();
 		
@@ -64,7 +93,6 @@ $(function() {
 		
 	});
 	
-	console.log("Test");
 	// DataTable implementation
 	if ($.fn.dataTable.isDataTable('#pipelinesTbl')) {
 		$('#pipelinesTbl').DataTable().destroy();

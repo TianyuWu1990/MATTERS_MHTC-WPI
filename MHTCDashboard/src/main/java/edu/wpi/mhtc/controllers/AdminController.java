@@ -49,7 +49,7 @@ import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
-import edu.wpi.mhtc.dashboard.util.Finder;
+import edu.wpi.mhtc.dashboard.util.FileFinder;
 import edu.wpi.mhtc.dashboard.util.Logger;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
@@ -268,7 +268,7 @@ public class AdminController {
     	
     	// Need to find path to the .sh file
     	String pattern = "*.sh";
-		Finder finder = new Finder(pattern);
+		FileFinder finder = new FileFinder(pattern);
 		try {
 			Files.walkFileTree(dir, finder);
 		} catch (IOException e) {

@@ -17,12 +17,12 @@ import java.nio.file.*;
 import java.nio.file.attribute.*;
 import static java.nio.file.FileVisitResult.*;
 
-public class Finder extends SimpleFileVisitor<Path> {
+public class FileFinder extends SimpleFileVisitor<Path> {
 
 		private final PathMatcher matcher;
 		private Path endFile;
 
-		public Finder(String pattern) {
+		public FileFinder(String pattern) {
 			matcher = FileSystems.getDefault()
 					.getPathMatcher("glob:" + pattern);
 		}
