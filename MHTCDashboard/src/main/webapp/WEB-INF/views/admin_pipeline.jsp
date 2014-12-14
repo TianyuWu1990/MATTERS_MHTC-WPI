@@ -14,8 +14,12 @@
         		<div class="col-lg-12">
         			<p>The <b>Pipeline Manager</b> page provides administrators the ability to upload new Talend pipeline scripts,
         			check on which Talend pipeline scripts have been uploaded, as well as download and delete Talend pipeline scripts
-        			on the server.</p>
-        			<strong>When uploading pipeline scripts, please upload the exported file from Talend in the .zip format!</strong>
+        			on the server. When uploading pipeline scripts, please upload the exported file from Talend in the .zip format!
+        			</p>
+        		</div>
+        	</div>
+        	<div class="row">
+        		<div class="col-lg-12" id="status">
         		</div>
         	</div>
         	<div class="row">

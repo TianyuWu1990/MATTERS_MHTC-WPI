@@ -33,21 +33,28 @@ $(function() {
 	 */
 	$('#uploadScript').click(function() {
 		
-		var fileInput = $('input[type="file"]');
+		var $fileInput = $('input[type="file"]');
+		
+		var $statusAlert = $('#status');
+		var $statusDiv = $('<div class="alert alert-danger" role="alert" />');
 		
 		// Make sure user has selected a file to upload
-		if (fileInput.val() == '') {
-			alert("You haven't uploaded a file!");
+		if ($fileInput.val() == '') {			
+			$statusDiv.text("You haven't selected a file to upload!");
+			
+			$statusAlert.html($statusDiv);
 			return false;
 		}
 		
-		var file = fileInput[0].files[0];		
+		var file = $fileInput[0].files[0];		
 		var fileName = file.name;
 		var fileSize = file.size;
 		
 		// Make sure it's not a blank file
 		if (fileSize <= 0) {
-			alert("The file you uploaded is empty!");
+			$statusDiv.text("The file you uploaded is empty!");
+			
+			$statusAlert.html($statusDiv);
 			return false;
 		}
 		
@@ -56,7 +63,9 @@ $(function() {
 		
 		// Make sure uploaded file is in list of allowable file types
 		if ($.inArray(fileExt, allowedExtensions) == -1) {
-			alert("You must upload a file with the .zip extension!");
+			$statusDiv.text("You must upload a file with the .zip extension!");
+			
+			$statusAlert.html($statusDiv);
 			return false;
 		}
 							
