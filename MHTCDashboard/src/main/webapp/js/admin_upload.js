@@ -51,5 +51,43 @@ $(function() {
 		});
 		
 	});
+	
+	$('#uploadData').click(function() {
+		var $fileInput = $('input[type="file"]');
+		
+		var $statusAlert = $('#status');
+		var $statusDiv = $('<div class="alert alert-danger" role="alert" />');
+		
+		// Make sure user has selected a file to upload
+		if ($fileInput.val() == '') {			
+			$statusDiv.text("You haven't selected a file to upload!");
+			
+			$statusAlert.html($statusDiv);
+			return false;
+		}
+		
+		var file = $fileInput[0].files[0];		
+		var fileName = file.name;
+		var fileSize = file.size;
+		
+		// Make sure it's not a blank file
+		if (fileSize <= 0) {
+			$statusDiv.text("The file you uploaded is empty!");
+			
+			$statusAlert.html($statusDiv);
+			return false;
+		}
+		
+		var fileExt = fileName.split('.').pop();
+		var allowedExtensions = new Array("xlsx", "xls");
+		
+		// Make sure uploaded file is in list of allowable file types
+		if ($.inArray(fileExt, allowedExtensions) == -1) {
+			$statusDiv.text("The file you attempted to upload is not allowed!");
+			
+			$statusAlert.html($statusDiv);
+			return false;
+		}
+	});
 
 });

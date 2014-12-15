@@ -23,6 +23,10 @@
         		</div>
         	</div>
         	<div class="row">
+        		<div class="col-lg-12" id="status">
+        		</div>
+        	</div>
+        	<div class="row">
         		<div class="col-lg-4">
         			<form id="uploadFile" role="form" method="POST" enctype="multipart/form-data"
 						action="admin/upload/add/">
@@ -49,7 +53,7 @@
 							<input type="file" name="file">
 						</div>
 						
-						<button type="submit" class="btn btn-default"><i class="fa fa-upload fa-fw"></i>Upload File</button>
+						<button type="submit" class="btn btn-default" id="uploadData"><i class="fa fa-upload fa-fw"></i>Upload File</button>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form>
         		</div>
