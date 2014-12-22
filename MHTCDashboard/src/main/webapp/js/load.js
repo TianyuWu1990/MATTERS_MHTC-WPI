@@ -454,7 +454,7 @@ loadFunction = function() {
 		if(isChecked)
 		{
 			selectionTagInput.checked = false;
-			this.getElementsByTagName("a")[0].innerHTML = "Select ALL"
+			this.getElementsByTagName("a")[0].innerHTML = "Select All"
 				var index = 0;
 			var i = 0;
 				while(i < allListMetrics.length)
@@ -495,7 +495,7 @@ loadFunction = function() {
 		else if (!isChecked)
 		{
 			selectionTagInput.checked = true;
-			this.getElementsByTagName("a")[0].innerHTML = "Unselect ALL"
+			this.getElementsByTagName("a")[0].innerHTML = "Deselect All"
 			var index = 0;
 			var i = 0;
 			//for(i = 0; i < allListMetrics.length; i++ )
