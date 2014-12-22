@@ -4,7 +4,7 @@ update mhtc_sch.metrics set "Visible" = 'false' where "Id" = 14; --remove wages 
 Update mhtc_sch.metrics set "Name" =	'Cost of Doing Business Rank'	where "Id" = 	86	;
 Update mhtc_sch.metrics set "Name" =	'High Tech Employment'	where "Id" = 	20	;
 Update mhtc_sch.metrics set "Name" =	'Degrees Awarded in STEM'	where "Id" = 	98	;
-Update mhtc_sch.metrics set "Name" =	'Human Capital Investment'	where "Id" = 	77	;
+Update mhtc_sch.metrics set "Name" =	'Human Capital Investment Rank'	where "Id" = 	77	;
 Update mhtc_sch.metrics set "Name" =	'High Tech Employment Rank'	where "Id" = 	87	;
 Update mhtc_sch.metrics set "Name" =	'Percentage of Workforce in High Tech Business'	where "Id" = 	88	;
 Update mhtc_sch.metrics set "Name" =	'Personal Income Tax Burden'	where "Id" = 	97	;
