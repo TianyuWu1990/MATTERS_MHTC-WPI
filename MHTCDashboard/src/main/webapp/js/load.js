@@ -496,7 +496,7 @@ loadFunction = function() {
 		{
 			selectionTagInput.checked = true;
 			this.getElementsByTagName("a")[0].innerHTML = "Deselect All"
-			var index = 0;
+			var index = 0; 
 			var i = 0;
 			//for(i = 0; i < allListMetrics.length; i++ )
 			while(i < allListMetrics.length)
