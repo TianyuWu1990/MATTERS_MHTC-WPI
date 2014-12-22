@@ -1311,7 +1311,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 			$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
 		}
 		
-		sel.append("<strong>"+Metrics.getMetricByID(this.selected_multiple_metrics[lastpos]).getName() +"</strong>");
+		sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[lastpos]).getName());
 		this.showHeatMapGraphReloaded(this.selected_multiple_metrics[lastpos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
 		this.showGraphReloaded(this.selected_multiple_metrics[lastpos]);// CALL THE LINE GRAPH WITH THIS  PARAM 
 		this.showMultipleMetricsStatesYears(-1);
@@ -1375,7 +1375,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 			}
 			//console.log("deletion: ",i);
 			
-			sel.append("<strong>" +  Metrics.getMetricByID(this.selected_multiple_metrics[lastpos]).getName() + "</strong>");
+			sel.append( Metrics.getMetricByID(this.selected_multiple_metrics[lastpos]).getName() );
 			this.showHeatMapGraphReloaded(this.selected_multiple_metrics[lastpos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
 			this.showGraphReloaded(this.selected_multiple_metrics[lastpos]);
 			this.showMultipleMetricsStatesYears(-1);
@@ -1425,7 +1425,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 				$(".nextButton").removeAttr("disabled");
 				$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
 		 }
-		 sel.append("<strong>"+  Metrics.getMetricByID(this.selected_multiple_metrics[i]).getName() + "</strong>");
+		 sel.append(  Metrics.getMetricByID(this.selected_multiple_metrics[i]).getName() );
 		 this.showHeatMapGraphReloaded(this.selected_multiple_metrics[i],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
 		 this.showGraphReloaded(this.selected_multiple_metrics[i]);
 		 this.showMultipleMetricsStatesYears(-1);

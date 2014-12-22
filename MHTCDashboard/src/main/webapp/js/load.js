@@ -86,7 +86,9 @@ getStyleRuleValue=function(styleName, className) {
    * Converts an RGB color To HEXA
    */
   colorToHex= function (color) {
-	  
+	  	
+	  	if(color == undefined || color == null) return "#F17171"
+	  	
 	    if (color.substr(0, 1) === '#') {
 	        return color;
 	    }
@@ -223,28 +225,25 @@ loadFunction = function() {
 	/**********************************************************************/
 
 	
-	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
+	/*$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
 	$("div.tab-pane").scroll(adjustDropDown);
 	$("#selectallmultiplemetric").addClass("hidden");
 	$("#unselectallmultiplemetric").addClass("hidden");
-	$("#selectpeerstates").addClass("hidden");
+	$("#selectpeerstates").addClass("hidden");*/
 	cm=CM.create();
 	as=AS.create();
 	//cm.loadFunction();
 	as.loadFunction();
 	 $(function() {
 	        $('#ms').change(function() {
-	        	
-	        	
-	            //alert("Elemento: "+States.getStateByID($(this).val()).abbr);
-	        	//console.log($(this).val());
-	        	
 	        	as.setStatesSelected($(this).val());
 	        }).multipleSelect({
-	            width: '20%'
+	            width: '30%'
 	        });
 	        
 	    });
+
+		
 	$("#chartType" ).change(function() {
 		
 		  cm.current_graph = this.value;
@@ -607,9 +606,19 @@ loadFunction = function() {
 		 }
 		 
 	});*/
-	
-	 
-	
+	//var table=$("#mbodyMultipleQuery table");
+	//console.log("table: ",table.html());
+	fancyTable = function(obj)
+	 {
+		 console.log(obj.id," id ");
+		 obj.dataTable( {
+		        "aaSorting": [[ 4, "desc" ]]
+		    } );
+	 }
+	$('.dropdown-toggle').dropdown();
+	$('.dropdown-menu form input, .dropdown-menu label').click(function(e) {
+        e.stopPropagation();
+    });
 	tableButtonClicked = function(obj, year_in)
 	 { 	
 		 as.showMultipleMetricsStatesYears(year_in);
@@ -620,7 +629,27 @@ loadFunction = function() {
 	 { 	
 		 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
 	 }
+	/**needed if selection states does not want in graph mode*/
+	/*$(".graph-tab").click(function(){
+		 
+		 var id = this.id;
+		 if(id =="heatmap-tab")
+		 {
+			//console.log("prev display:",document.getElementById("stateSelection").style.display);
+			 $('#stateSelection').css("display","none");
+		 }
+		 else
+		 {
+			 //document.getElementById("stateSelection").style.display="inline";
+			 $('#stateSelection').css("display","block");
+			 //$('#stateSelection').css("margin-top","7px");
+		 }
+	});*/
 	
-	
-	
+	 //$("#myTable").tablesorter(); 
+	// console.log("table", $('#myTable').HTML(),"jfghjh");
+	 /*$('#myTable').dataTable( {
+	        "aaSorting": [[ 4, "desc" ]]
+	    } );*/
+	 
 };

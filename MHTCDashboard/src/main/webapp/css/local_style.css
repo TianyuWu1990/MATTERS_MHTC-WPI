@@ -204,13 +204,6 @@ table.table tbody tr td.tabbed_metric
 	
 }
 
-.tab-pane
-{
-	height:70%;
-	overflow:auto;
-	
-}
-
 #profiletab a{
 	background-color: #3D8AF4 ; 
 	color:#fff;

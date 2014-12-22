@@ -7,8 +7,9 @@
 var CM = (function($) {
 	
 	function Chart() {
-		this.array_colors=["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2",
+		this.array_colors=["#F90101","#F2B50F","#00933B","#0266C8","#603CBA","#1E7145","#9F00A7",
 		                  "#7f7f7f","#bcbd22","#17becf","#F2F5A9","#FE2EF7","#6E6E6E","#F6CED8","#3B0B0B","#181907"];
+		
 		this.current_graph = 'line'; 
 		this.current_graph_function = null; 
 		this.graph_title_prefix = ''; 
@@ -67,14 +68,18 @@ var CM = (function($) {
 		
 		return array_years;
 	};
+	
+	/*changed by manik*/
 	Chart.prototype.showMultipleMetricsStatesYears = function(states,selected_multiple_metrics,year_in) {
+		console.log("table created mow");
 		var query;
 		this.year_selected=year_in;
 		$("#mbodyMultipleQuery > *").remove();
 		//document.getElementById("graphStatesMultipleQuery").innerHTML = states.join(", ");
 		
-		$("#mbodyMultipleQuery").append("<table id='myTable' class='table table-condensed' style='font-size: 13px; background-color:#fff'></table>");
+		$("#mbodyMultipleQuery").append("<table id='myTable' class='table table-bordered table-condensed' onload='fancyTable(this)' style='font-size: 13px; background-color:#fff'></table>");
 		var table=$("#mbodyMultipleQuery table");
+		//table.dataTable();
 		if(selected_multiple_metrics.length>0){
 			
 			if(selected_multiple_metrics.length==1){ /*Similar to the one we had**/
@@ -92,13 +97,14 @@ var CM = (function($) {
 			        		 row="<tr><td>No data found</td></tr>";
 			        		 table.append(row);
 			        	}else{
-			        		 row="<th>&nbsp;</th>";
+			        		 row="<thead><th>&nbsp;</th>";
 			        		 var i=0;
 			        		 while(i<array_years.length){
+			        			
 			        			 row = row+"<th>"+array_years[i]+ "</th>";
 			        			 i++;
 			        		 }
-			        		 row = "<tr>" +row +"</tr>";
+			        		 row = row +"</thead>";
 				             table.append(row);
 			        		 /*
 			                row = row + multiData[0][0].dataPoints.map(function(d) {
@@ -111,7 +117,7 @@ var CM = (function($) {
 			                var j;
 			                var type_var;
 			                for (var i = 0; i < multiData.length; i++) {
-			                    row = "<th>" + multiData[i][0].state.name + "</th>" ;
+			                    row = "<td>" + multiData[i][0].state.name + "</td>" ;
 			                    j=0;
 			                    while(j<array_years.length){
 			                    	if(multiData[i][0].dataPoints.length==0){
@@ -140,6 +146,7 @@ var CM = (function($) {
 			                    }).join("");*/
 			                    row = "<tr>" +row +"</tr>";
 				                table.append(row);
+			                    
 			                }
 			        	}
 		                
@@ -208,7 +215,7 @@ var CM = (function($) {
 		    			array_years.sort(function(a,b){return b - a;});
 						if(cm.year_selected==-1)
 		    				cm.year_selected=array_years[0];
-						liststring += '<ul class="timelineListStyle">';
+						liststring += '<table><tr><td><h4 style="width:auto">Timeline:&nbsp;&nbsp; </h4></td><td><ul class="timelineListStyle">';
 						for(var k=array_years.length-1; k>=0; k--){
 							if(cm.year_selected!=array_years[k]){
 								liststring += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+array_years[k]+')" >'+array_years[k]+'</button></li>';
@@ -216,8 +223,9 @@ var CM = (function($) {
 								liststring += '<li id="clicktable'+cm.year_selected+'"><button class="active"  id="tableTimeLineButton" >'+cm.year_selected+'</button></li>';
 							}
 						}
-						liststring += '</ul >';
+						liststring += '</ul ></td></tr></table>';
 						seltimeline.append(liststring);
+						
 						var row="<th>&nbsp;</th>";
 						var checkduplicity;//hack to fix the fact the titles and rows were strnagly duplicating
 						var array_duplicates=new Array();
@@ -233,7 +241,7 @@ var CM = (function($) {
 							}
 	
 						}
-						row = "<tr>" +row +"</tr>"; 
+						row = "<thead>" +row +"</thead>"; 
 						table.append(row);
 						
 						var data = new Array();
@@ -264,6 +272,7 @@ var CM = (function($) {
 									alert("Year selected: "+cm.year_selected);*/
 									if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year==cm.year_selected){
 										if(!band){
+											
 											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.name + "</th>";
 											band=true;
 										}
@@ -296,6 +305,7 @@ var CM = (function($) {
 								w++;
 								}
 								if(!band){
+									//console.log("statename2: ",cm.multiDataMultipleQuery[r][j][0].state.name);
 									row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.name + "</th>";
 									band=true;
 								}
@@ -336,8 +346,8 @@ var CM = (function($) {
 		
 		   if (this.current_graph == 'table') {
 		    	$("#mbody > *").remove();
-	    	document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
-		    document.getElementById("graphStates").innerHTML = states.join(", ");
+	    	/*document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();*/
+		    /*document.getElementById("graphStates").innerHTML = states.join(", ");*/
 		    
 	    	$("#mbody").append("<table id='myTable' class='table table-condensed' style='font-size: 13px; background-color:#fff'></table>");
 	    	var table=$("#mbody table");
@@ -375,8 +385,8 @@ var CM = (function($) {
 	    	
 		    d3.selectAll("#mbody svg > *").remove();
 		    
-		    document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
-		    document.getElementById("graphStates").innerHTML = states.join(", ");
+		    /*document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
+		    document.getElementById("graphStates").innerHTML = states.join(", ");*/
 		    
 		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
 		    query.execute(function(
@@ -452,16 +462,17 @@ var CM = (function($) {
 		    	if($("#mbody svg").length==0){
 		    		
 		    		$("#mbody").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
-		    		document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
-				    document.getElementById("graphStates").innerHTML = states.join(", ");
+		    		/*commented by manik: we are already showing current metric at the top..no need to show it twice*/
+		    		/*document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
+				    document.getElementById("graphStates").innerHTML = states.join(", ");*/
 				    d3.selectAll("#mbody svg > *").remove();
 		    	}
 	    	}else{
 	    		$("#mbodyBar > *").remove();
 	    		if($("#mbodyBar svg").length==0){
 		    		$("#mbodyBar").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
-		    		document.getElementById("graphTitleBar").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
-				    document.getElementById("graphStatesBar").innerHTML = states.join(", ");
+		    		/*document.getElementById("graphTitleBar").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
+				    document.getElementById("graphStatesBar").innerHTML = states.join(", ");*/
 				    d3.selectAll("#mbodyBar svg > *").remove();
 				        
 		    	}
