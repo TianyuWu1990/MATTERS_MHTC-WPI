@@ -17,7 +17,6 @@ public class DBConnector {
 	private String user ="server";
 	private String password ="mhtcboxofducks";*/
 	
-	
 	private Connection conn = null;
 
 	private DBConnector() {

@@ -5,6 +5,11 @@
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.GregorianCalendar"%>
 <script src="js/funct.js"></script>
+
+<script src="js/jquery.multiple.select.js"></script>
+
+<link rel="stylesheet" href="css/sumoselect.css"></link>
+
 <div id="sidebar" class="col-md-12">
 
 <ul class="nav nav-tabs">
@@ -160,7 +165,7 @@
 		<td>
 			<div class="btn-group" data-toggle="buttons">
 				<table class="table" align="center">
-					<c:forEach items="${jv_peer_states}" var="stat">
+					<c:forEach items="${jv_all_states}" var="stat">
 						<tr>
 							<c:forEach items="${stat.row}" var="row">
 								<c:choose>
@@ -190,6 +195,112 @@
 		</tr>
 	</table>
 </div>
+<%/*****************************************************************************/ %>
+<div id="multiSelecterMetricStateCopy"  style="position: relative; left: 0px; top: 0px; display: none;" > 
+<div id="sidebar" class="col-md-12">
+
+<ul class="nav nav-tabs">
+    <li id="profileTab"><a href="#profile" data-toggle="tab"  >State Profile</a></li>
+	<li id="nationalTab"><a href="#national" data-toggle="tab" >National Rankings</a></li>
+	<li id="talentTab"><a href="#talent" data-toggle="tab" >Talent Metrics</a></li>
+	<li id="costTab"><a href="#cost" data-toggle="tab">Cost Metrics</a></li>
+	<li id="economyTab"><a href="#economy" data-toggle="tab" >Economy Metrics</a></li>
+	
+</ul>
+<!-- Tab panes -->
+<div class="tab-content" >
+    
+    <div class="tab-pane fade" id="profile">
+		<table class="table table-hover" style="font-size: 13px;" >
+			<thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="Profile-tbody">
+			    <c:set var="style_values" scope="session" value="'#profiletab a'"/>
+			    
+				<c:set var="data_values" scope="session" value="${jv_stats_profile}" />
+				<c:import url="profile_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+		</table>
+	</div>
+   
+	<div class="tab-pane fade" id="national">
+		<table class="table table-hover" style="font-size: 13px;">
+			<thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="National-tbody" >
+			    <c:set var="style_values" scope="session" value="'#nationaltab a'"/>
+				<c:set var="data_values" scope="session" value="${jv_stats_national}" />
+				<c:import url="rank_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+		</table>
+	</div>
+	<div class="tab-pane fade" id="talent">
+		<table class="table table-hover" style="font-size: 13px;">
+			 <thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="Talent-tbody" >
+			    <c:set var="style_values" scope="session" value="'#talenttab a'"/>
+				<c:set var="data_values" scope="session" value="${jv_stats_talent}" />
+				<c:import url="rank_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+			
+		</table>
+	</div>
+	<div class="tab-pane fade" id="cost">
+		<table class="table table-hover" style="font-size: 13px;">
+			<thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="Cost-tbody" >
+			    <c:set var="style_values" scope="session" value="'#costtab a'"/>
+				<c:set var="data_values" scope="session" value="${jv_stats_cost}" />
+				<c:import url="rank_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+			
+		</table>
+	</div>
+	<div class="tab-pane fade" id="economy">
+		<table class="table table-hover" style="font-size: 13px;" >
+			<thead>
+				<th>Index / Survey</th>
+				<th>Ranking / Data</th>
+				<th>Source</th>
+				<th></th>
+			</thead>
+			<tbody id="Economy-tbody" >
+			    <c:set var="style_values" scope="session" value="'#economytab a'"/>
+				<c:set var="data_values" scope="session" value="${jv_stats_economy}" />
+				<c:import url="rank_table.jsp" />
+				<c:remove var="data_values" scope="session" />
+			</tbody>
+			
+		</table>
+	</div>
+	
+</div>
+</div>
+</div>
+<%/*****************************************************************************/ %>
+
 
 <div id="multiSelecterMetricState" style="position: relative; left: 0px; top: 0px; display: none;" class="col-md-12">
 <p class="lead">
@@ -204,21 +315,17 @@
 	<tr>
 		<td valign="top" nowrap="true" align="left">
 			<table>
-				<tr>
-					<td valign="top" nowrap="true" align="left">
-						<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">Select All States</button>
-						<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect All States</button>
-					</td>
-					
-					
 				
-				</tr>
 				
 			</table></td>
-			<td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td><td>&nbsp;&nbsp;</td>
+			<%/*<td valign="top" nowrap="true" align="right">	<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(3)" id="selectallmultiplemetric"  disabled="true">Select States</button>
+					</td>
 			<td valign="top" nowrap="true" align="right">
-				<button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="as.showMultiGraphOnSelected()">Compare</button>
-			</td>
+						<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(4)" id="unselectallmultiplemetric" disabled="true">Unselect States</button>
+					</td> */%>
+			<%/*<td valign="top" nowrap="true" align="right">
+				<button data-toggle="modal" data-target="#myModalMultipleQuery" class="btn btn-info" onClick="as.showMultipleMetricsStatesYears(-1)">Compare</button>
+			</td> */%>
 	</tr>
 	<tr>
 		<td valign="top" nowrap="true" align="left">		
@@ -227,8 +334,10 @@
 				    <tr><td>Metrics (National, Talent,Cost, Economy)</td></tr>
 					<tr>
 						<td valign="top" align="left">
-							<select  id='multiplemetrics' name="multiplemetrics" multiple="multiple" size=130 style='height:400px; width:340px;'>
- 				 				<c:forEach items="${jv_stats_national}" var="stat">
+						
+						
+							<select multiple="multiple" placeholder="Select Metrics" class="SlectBox"  id='multiplemetrics' name="multiplemetrics">
+								<c:forEach items="${jv_stats_national}" var="stat">
        			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
     							</c:forEach>
     							<c:forEach items="${jv_stats_talent}" var="stat">
@@ -241,48 +350,76 @@
        			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
     							</c:forEach>
 							</select>
+							
+       					 
+    
+							<%/* <select  id='multiplemetrics' name="multiplemetrics" multiple="multiple" size=130 style='height:400px; width:340px;'>
+ 				 				<c:forEach items="${jv_stats_national}" var="stat">
+       			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
+    							</c:forEach>
+    							<c:forEach items="${jv_stats_talent}" var="stat">
+       			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
+    							</c:forEach>
+    							<c:forEach items="${jv_stats_cost}" var="stat">
+       			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
+    							</c:forEach>
+    							<c:forEach items="${jv_stats_economy}" var="stat">
+       			 					<option value="${stat.metric.id}"}>${stat.metric.name}</option>
+    							</c:forEach>
+							</select>*/%>
 			       		</td>
 			     </tr>
 				</table>
 			</div>
 		</td>
-		<td>&nbsp;&nbsp;</td>
-		<td valign="top" align="left">
+		
+	<td valign="top" align="left">
 			<div >
 			<table>
-				<tr><td>Selected metrics to compare</td></tr>
-				<tr><td  valign="top"  align="left">
-					<select  id='selectedmultiplemetrics' multiple="multiple" size=130 style='height:400px; width:340px;' disabled="true" ></select>
+				<% /* <tr><td>Selected metrics to compare</td></tr>*/%>
+				<tr><td>&nbsp;</td></tr>
+				<tr>
+				<td valign="top"><button data-toggle="modal" data-target="#myModalMultipleQuery" class="btn btn-info" onClick="as.showMultipleMetricsStatesYears(-1)">Compare</button></td>
+					<td  valign="top"  align="left">
+					<select  id='selectedmultiplemetrics' multiple="multiple" size=130 style='height:400px; width:140px;' disabled="true" ></select>
 				</td></tr>
 			</table>
 			</div>
 		</td>
-		<td>&nbsp;&nbsp;</td>
+		
 		<td valign="top" align="left">
 			<table>
-				<tr>
+				<% /**<tr>
 					<td valign="top" nowrap="true" align="left">Select year</td>
 				</tr>
-				<tr>
+				 <tr>
 					<td valign="top" nowrap="true" align="left">
 					<select  id='yearmultiplemetric' name="yearmultiplemetric" multiple="multiple" size="10" style='width:70px;'>
+					*/%>
 						<%
-						GregorianCalendar cal = new GregorianCalendar();
+						/* GregorianCalendar cal = new GregorianCalendar();
 						int current_year=cal.get(Calendar.YEAR);
 						int bottom_year=cal.get(Calendar.YEAR)-20;
 						for(int i=current_year;i>=bottom_year;i--){
-							%><option value="<%=i %>"><%=i %></option><%
+							if(i==current_year){
+											
+							}else{
+										
+							}
 								
 						}
-						%>
+						*/ %>
 						
 					
-					</select>
+					<% /*</select>
 					</td>
-				</tr>
+				</tr>*/%>
 				
-				<% /**<tr>
-					<td valign="middle" nowrap="true" align="left"><button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="as.showMultiGraphOnSelected()">Compare</button></td>
+				<tr><td><br /><br /><br /><br /><br /><br /><br /><br /><br /></td></tr>
+					<% /*<tr>
+					<td valign="top" nowrap="true" align="right">
+						<button data-toggle="modal" data-target="#myModalMultipleQuery" class="btn btn-info" onClick="as.showMultipleMetricsStatesYears(-1)">Compare</button>
+					</td>	
 				</tr> */%>
 			</table>
 		</td>
@@ -291,3 +428,4 @@
 	</table>
 	
 </div>
+

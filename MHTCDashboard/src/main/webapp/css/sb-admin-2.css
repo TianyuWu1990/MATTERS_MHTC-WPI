@@ -27,10 +27,6 @@ body {
     }
 }
 
-.navbar-top-links {
-    margin-right: 0;
-}
-
 .navbar-top-links li {
     display: inline-block;
 }

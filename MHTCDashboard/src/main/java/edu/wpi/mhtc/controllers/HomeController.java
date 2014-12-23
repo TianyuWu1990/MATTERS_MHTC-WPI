@@ -60,7 +60,7 @@ public class HomeController {
 		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
 		List<DataSeries> massEconomy = statsService.getStateBinData(maId, 29);
 		List<State> peers = stateService.getAllPeers();
-		
+		List<State> allstates= stateService.getAllStates(); 
 		// TODO un-hardcode these bin ids
 		model.addAttribute("jv_stats_profile",massProfile );
 		model.addAttribute("jv_stats_national", massNational);
@@ -68,6 +68,8 @@ public class HomeController {
 		model.addAttribute("jv_stats_cost", massCost);
 		model.addAttribute("jv_stats_economy", massEconomy);
 		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
+		model.addAttribute("jv_all_states", new PeerStates(allstates).getAsGrid(13));
+		
 		
         model.addAttribute("jv_current_state", "MA");
 		
@@ -90,6 +92,7 @@ public class HomeController {
 		List<DataSeries> cost = statsService.getStateBinData(stateId, 37);
 		List<DataSeries> economy = statsService.getStateBinData(stateId, 29);
 		List<State> peers = stateService.getAllPeers();
+		List<State> allstates= stateService.getAllStates(); 
 		
         model.addAttribute("jv_stats_profile",profile );
         model.addAttribute("jv_stats_national", national);
@@ -97,7 +100,7 @@ public class HomeController {
         model.addAttribute("jv_stats_cost", cost);
         model.addAttribute("jv_stats_economy", economy);
         model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
-        
+        model.addAttribute("jv_all_states", new PeerStates(allstates).getAsGrid(13));
         model.addAttribute("jv_current_state", state);
         
         return "state_tab_display";
