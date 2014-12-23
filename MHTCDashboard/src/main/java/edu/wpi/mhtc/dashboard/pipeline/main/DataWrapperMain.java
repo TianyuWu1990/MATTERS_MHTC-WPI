@@ -52,10 +52,14 @@ public class DataWrapperMain {
 
 		//IPEDS number of colleges and universities
 		DataGovDownload data_gov_downloader = new DataGovDownload();
+		
 		data_gov_downloader.smartDownload("https://inventory.data.gov/dataset/usaid-development-credit-authority-guarantee-data-utilization-and-claims", "tmp/dev_credit.csv");
+		
+		//IPEDS number of colleges and universities 2013
 		data_gov_downloader.smartDownload("https://inventory.data.gov/dataset/032e19b4-5a90-41dc-83ff-6e4cd234f565/resource/38625c3d-5388-4c16-a30f-d105432553a4", "tmp/ipeds.csv");
 		data_gov_downloader.queryDownload("SELECT \"STABBR\", COUNT(*) from \"38625c3d-5388-4c16-a30f-d105432553a4\" GROUP BY \"STABBR\"", "tmp/ipeds_count.json");
 		
+		//Energy
 		try {
 			EIADownload eiaDownloader = new EIADownload();
 		} catch (Exception e) {
@@ -75,6 +79,30 @@ public class DataWrapperMain {
 		
 		//IPEDS STEM Degrees
 		IPEDSDownload ipeds = new IPEDSDownload();
+		
+		
+		//Mass High Tech Clusters - files are named Indicator 1 ...
+		down.HTTPDownload("http://index.masstech.org/sites/index/files/ff/10/Indicator%201%20raw%20data.zip", DATA_DIRECTORY+"/mass_tech_clusters.zip");
+		unZip.unZipIt(DATA_DIRECTORY+"/mass_tech_clusters.zip", DATA_DIRECTORY);
+		
+		//Milken rankings
+//		Can't find table???
+//		WebTableWrapper.download("http://statetechandscience.org/stateTech.taf?page=state-ranking", "table_id", "tmp/milken-ranks.xls", Arrays.asList(-1));
+			
+		//Tax foundation - personal income tax
+		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Individual%20Income%20Tax%20Rates%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Personal_Income_Tax_Rate.xls");
+
+		//Tax foundation - capital gains tax
+		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/FF414dataset_1.xls", DATA_DIRECTORY+"/Capital_Gains_Tax_Rate.xls");
+
+		//Tax foundation - Corporate Income Tax 
+		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Corporate%20Income%20Tax%20Rates%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Corporate_Income_Tax_Rate.xls");
+		
+		//Tax foundation - Sales tax 
+		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Sales%2C%20Gasoline%2C%20Cigarette%20and%20Alcohol%20Taxes%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Sales_Tax_Rate.xls");
+				
+		 
+		
 	}
 	
 }
