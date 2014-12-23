@@ -19,7 +19,7 @@ public final class WebTableWrapper {
 	}
 
 	/**
-	 * HTML Table data scrapper. Note that it can only work with ordinary HTML table tages <tr><th><td>
+	 * HTML Table data scraper. Note that it can only work with ordinary HTML table tags <tr><th><td>
 	 * Outputs a file with data values from the table separated by a string defined by "separator"
 	 * @param url: The website URL
 	 * @param tblSelector: CSS Selector for the table. This needs to be unique.
