@@ -8,10 +8,13 @@
 <!--  <script src="http://d3js.org/d3.v3.min.js"></script> -->
  <script src="js/d3.v3.min.js"></script>
 
- <script src="js/nv.d3.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<script src="js/nv.d3.min.js"></script>
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<%
+	/*<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> */
+%>
 <script src="js/raphael.js"></script>
 <script src="js/color.jquery.js"></script>
 <script src="js/dataquery.js"></script>
