@@ -2,11 +2,8 @@
 <%@ include file="admin_header.jsp" %> 
 <%@ include file="admin_navigation_bar.jsp" %> 
 
-<!DOCTYPE html>
-<html lang="en">
-<body>
-
-    <div id="wrapper">
+	<script src="adminPanel/js/admin_reports.js"></script>
+	
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -52,24 +49,4 @@
         </div>
         <!-- /#page-wrapper -->
 
-    </div>
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="js/plugins/metisMenu/metisMenu.min.js"></script>
-
-    <!-- DataTables JavaScript -->
-    <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
-
-</body>
-
-</html>
-<script src="js/admin_reports.js"></script>
 <%@ include file="admin_footer.jsp" %> 

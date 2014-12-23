@@ -2,7 +2,7 @@
 <%@ include file="admin_header.jsp" %> 
 <%@ include file="admin_navigation_bar.jsp" %> 
 
-		<script src="js/admin_dbexplorer.js"></script>
+		<script src="adminPanel/js/admin_dbexplorer.js"></script>
 
         <div id="page-wrapper">
             <div class="row">
