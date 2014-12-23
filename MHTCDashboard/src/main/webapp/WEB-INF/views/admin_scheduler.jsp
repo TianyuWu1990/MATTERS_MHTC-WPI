@@ -7,6 +7,9 @@
 	}
 </style>
 <%@ include file="admin_navigation_bar.jsp" %> 
+
+<script src="adminPanel/js/admin_scheduler.js"></script>
+
 		
         <div id="page-wrapper">
 
@@ -84,6 +87,5 @@
         </div>
         
      
-<script src="js/admin_scheduler.js"></script>
 <%@ include file="admin_footer.jsp" %> 
 

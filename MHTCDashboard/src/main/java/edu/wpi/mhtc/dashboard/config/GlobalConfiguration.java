@@ -50,6 +50,8 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 				"/font-awesome-4.1.0/");
 		registry.addResourceHandler("/less/**").addResourceLocations(
 				"/less/");
+		registry.addResourceHandler("/adminPanel/**").addResourceLocations(
+				"/adminPanel/");
 	}
 	
 	@Bean
