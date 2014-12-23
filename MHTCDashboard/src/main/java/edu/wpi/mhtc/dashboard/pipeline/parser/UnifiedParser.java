@@ -237,6 +237,7 @@ public class UnifiedParser implements IParser {
 	public void validateMetrics(Category category) throws CategoryException {
 		
 		columnNames = new HashMap<String, Integer>();
+		
 		for (Cell cell : sheet.getRow(headerRow)) {
 			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 				String cellValue = cell.getRichStringCellValue().getString().trim();
