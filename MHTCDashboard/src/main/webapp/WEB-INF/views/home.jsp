@@ -205,7 +205,7 @@
 						<li class=''><a class="dropmenu" href="blank0.html"><span
 								class="hidden-tablet"> State Profile</span> </a>
 							<ul id="stateMetric" class="listcontent">
-								<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/unselect all"><input type="checkbox" checked style="display:none"><a style="text-align:right;" ">Unselect All</a></li>
+								<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox" checked style="display:none"><a style="text-align:right;" ">Deselect All</a></li>
 								<c:forEach items="${jv_stats_profile}" var="stat1">
 									<li><a class="submenu" id="${stat1.metric.id}"> <span class="hidden-tablet">
 												<input type="checkbox" id="check${stat1.metric.id}" checked> 
@@ -216,7 +216,7 @@
 						<li class=''><a class="dropmenu" href="blank1.html"><span
 								class="hidden-tablet"> National Ranking</span> </a>
 							<ul id="nationalProfileList">
-							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/unselect all"><input type="checkbox"  style="display:none" data-toggle="tooltip" title="Click to select/unselect all"><a style="text-align:right;">Select All</a></li>
+							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox"  style="display:none" data-toggle="tooltip" title="Click to select/unselect all"><a style="text-align:right;">Select All</a></li>
 								<c:forEach items="${jv_stats_national}" var="stat2">
 									<li><a class="submenu"> <span class="hidden-tablet">
 												<input type="checkbox" id="check${stat2.metric.id}" disabled="disabled"
@@ -227,7 +227,7 @@
 						<li class=''><a class="dropmenu" href="blank2.html"><span
 								class="hidden-tablet"> Talent Metrics</span> </a>
 							<ul id="talentProfileList" >
-							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/unselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
+							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
 								<c:forEach items="${jv_stats_talent}" var="stat3">
 									<li><a class="submenu"> <span class="hidden-tablet">
 												<input type="checkbox" id="check${stat3.metric.id}" disabled="disabled"
@@ -238,7 +238,7 @@
 						<li class=''><a class="dropmenu" href="blank3.html"><span
 								class="hidden-tablet"> Cost Metrics</span> </a>
 							<ul id= "costProfileList">
-							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/unselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
+							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
 								<c:forEach items="${jv_stats_cost}" var="stat4">
 									<li><a class="submenu"><span class="hidden-tablet">
 												<input type="checkbox" id="check${stat4.metric.id}" disabled="disabled"
@@ -249,7 +249,7 @@
 						<li class=''><a class="dropmenu" href="blank4.html"><span
 								class="hidden-tablet">Economy Metrics </span> </a>
 							<ul id="economyProfileList">
-							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/unselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
+							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
 								<c:forEach items="${jv_stats_economy}" var="stat5">
 									<li><a class="submenu"> <span class="hidden-tablet">
 												<input type="checkbox" id="check${stat5.metric.id}" disabled="disabled"
