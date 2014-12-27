@@ -56,7 +56,7 @@ adjustDropDown = function(e) {
 getStyleRuleValue=function(styleName, className) {
 
 	    //for (var i=0;i<document.styleSheets.length;i++) {
-	        var s = document.styleSheets[1];
+	        var s = document.styleSheets[2];
 
 	        var classes = s.rules || s.cssRules
 	        for(var x=0;x<classes.length;x++) {
@@ -225,25 +225,78 @@ loadFunction = function() {
 	/**********************************************************************/
 
 	
-	/*$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
+	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
 	$("div.tab-pane").scroll(adjustDropDown);
 	$("#selectallmultiplemetric").addClass("hidden");
 	$("#unselectallmultiplemetric").addClass("hidden");
-	$("#selectpeerstates").addClass("hidden");*/
+	$("#selectpeerstates").addClass("hidden");
 	cm=CM.create();
 	as=AS.create();
+	
 	//cm.loadFunction();
 	as.loadFunction();
-	 $(function() {
-	        $('#ms').change(function() {
-	        	as.setStatesSelected($(this).val());
-	        }).multipleSelect({
-	            width: '30%'
-	        });
-	        
-	    });
-
-		
+	/*$(function() {
+        $('#ms').change(function() {
+        	
+        	as.setStatesSelected($(this).val());
+        }).multipleSelect({
+            width: '20%'
+        });
+        
+    });*/
+	 $('select').multiselect({
+		 noneSelectedText: "Select to display",
+		 header: false,
+		   click: function(e){
+			  
+			   list2 = $(this).multiselect("widget")
+			   selectAll = list2.find("li.ui-multiselect-optgroup-label ");
+			    inputs = $(this).multiselect("widget").find('input');
+			   console.log("input list : ",inputs.length);
+			   if($(inputs[0]).attr('checked')){
+				   for (i=1;i<inputs.length;i++)
+				   {
+					   $(inputs[i]).attr('disabled','disabled');
+				   }
+				   $(selectAll).attr("disabled","disabled");
+				   as.setStatesSelected([],0);
+				}
+			   else if($(inputs[1]).attr('checked'))
+			   {
+				   for (i=0;i<inputs.length;i++)
+				   {
+					   if(i!=1)
+					    $(inputs[i]).attr('disabled','disabled');
+				   }
+				   as.setStatesSelected([],1);
+			   }
+			   else if($(inputs[2]).attr('checked'))
+			   {
+				   for (i=0;i<inputs.length;i++)
+				   {
+					   if(i!=2)
+					    $(inputs[i]).attr('disabled','disabled');
+				   }
+				   as.setStatesSelected([],2);
+			   }
+			   else
+			   {
+				   selectedItems = []
+				   j=0
+				   for (i=0;i<inputs.length;i++)
+				   {
+					    $(inputs[i]).removeAttr('disabled');
+					    if($(inputs[i]).attr('checked'))
+					    {
+					    	selectedItems.push($(inputs[i]).attr('value'))
+					    }
+				   }
+				   as.setStatesSelected(selectedItems,-1);
+				   //console.log("values",selectedItems);
+			   }
+		   }
+	 }); 
+	// $(".ui-widget-header").css('display','none');
 	$("#chartType" ).change(function() {
 		
 		  cm.current_graph = this.value;
@@ -277,7 +330,6 @@ loadFunction = function() {
 		globalcounter=0;
 	});
 	$("#yearsMultipleQuery").change(function(){
-		console.log("current value: ",this.value);
 		as.showMultipleMetricsStatesYears(this.value);
 	});
 	
@@ -454,7 +506,7 @@ loadFunction = function() {
 		if(isChecked)
 		{
 			selectionTagInput.checked = false;
-			this.getElementsByTagName("a")[0].innerHTML = "Select All"
+			this.getElementsByTagName("a")[0].innerHTML = "Select ALL"
 				var index = 0;
 			var i = 0;
 				while(i < allListMetrics.length)
@@ -489,14 +541,13 @@ loadFunction = function() {
 				}
 				i++;
 			}
-			console.log("metric list: ",metricList);
 			as.SelectUnselectMultipleMetric(metricList,2);
 		}
 		else if (!isChecked)
 		{
 			selectionTagInput.checked = true;
-			this.getElementsByTagName("a")[0].innerHTML = "Deselect All"
-			var index = 0; 
+			this.getElementsByTagName("a")[0].innerHTML = "Unselect ALL"
+			var index = 0;
 			var i = 0;
 			//for(i = 0; i < allListMetrics.length; i++ )
 			while(i < allListMetrics.length)
@@ -531,7 +582,6 @@ loadFunction = function() {
 				}
 				i++;
 			}
-			console.log("metric list: ",metricList);
 			as.SelectUnselectMultipleMetric(metricList,1);
 		}
 	});
@@ -551,74 +601,29 @@ loadFunction = function() {
 	 
 /********************************************************************/
 	/**COMMNETED BY MANIK**/
-	/*$( "#MultipleMetricTitle").hover( function(){
-		
-		var sentinel=0;
-		var h=0;
-		while((h<300)&&(sentinel==0)){
-			$( "#clickMultipleMetric"+h ).click(function(){
-				sentinel=1; 
-				 var currentIdString = $(this).attr('id');
-				 var currentId = currentIdString.substr(19, 2);
-				 console.log("What is this: "+currentId);
-				 as.SelectUnselectMultipleMetric(currentId,3);
-			});
-			h++;
-		}
-		 
-	});*/
-	
-		
-	
-	
-	 /*$( "#timeline").hover( function(){
-		 for(t=1950;t<2099;t++){ // The idea is to pick whatever possible year in the time line. Since it is dynamic I could not find a better way
-			 $( "#click"+t ).click(function(){
-				 
-				 var year_in;
-				 var currentId = $(this).attr('id');
-				 year_in=currentId.substr(5, 4);
-				// alert("as.currentind: "+as.currentind);
-				 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
-				 //as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
-				
-			});
-		 }
-		 
-	});
-	 $( "#timelinetable").hover( function(){
-		 var isclicked = false;
-		 for(t=1950;t<2099;t++){ // The idea is to pick whatever possible year in the time line. Since it is dynamic I could not find a better way
-			 console.log("before table button cliecked....");
-			 $( "#clicktable"+t ).click(function(){
-				 console.log(" after table button cliecked....");
-				 var year_in;
-				 var currentId = $(this).attr('id');
-				 year_in=currentId.substr(10, 4);
-				
-				// alert("as.currentind: "+as.currentind);
-				 as.showMultipleMetricsStatesYears(year_in);
-				 //as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_in);
-				 isclicked = true;
-			});
-			 if(isclicked)
-				 break;
-		 }
-		 
-	});*/
-	//var table=$("#mbodyMultipleQuery table");
-	//console.log("table: ",table.html());
-	fancyTable = function(obj)
-	 {
-		 console.log(obj.id," id ");
-		 obj.dataTable( {
-		        "aaSorting": [[ 4, "desc" ]]
-		    } );
-	 }
+
 	$('.dropdown-toggle').dropdown();
 	$('.dropdown-menu form input, .dropdown-menu label').click(function(e) {
         e.stopPropagation();
     });
+	
+	$('#loginform').click(function () {
+		console.log("login button clicked");
+        if ($('#signin-dropdown').is(":visible")) {
+            $('#signin-dropdown').hide()
+			
+        } else {
+            $('#signin-dropdown').show()
+        }
+		return false;
+    });
+	$('#signin-dropdown').click(function(e) {
+        e.stopPropagation();
+    });
+    $(document).click(function() {
+        $('#signin-dropdown').hide();
+    });
+    
 	tableButtonClicked = function(obj, year_in)
 	 { 	
 		 as.showMultipleMetricsStatesYears(year_in);
@@ -651,5 +656,5 @@ loadFunction = function() {
 	 /*$('#myTable').dataTable( {
 	        "aaSorting": [[ 4, "desc" ]]
 	    } );*/
-	 
+	
 };

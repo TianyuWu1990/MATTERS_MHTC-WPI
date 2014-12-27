@@ -111,11 +111,11 @@
 		
 		/**
 		 * Given a string that could be name, id or abbreviation, returns a state that matches
-		 * either.
+		 * either. modified by manik..
 		 */
 		publicInterface.getStateFromString = function(state) {
 			return returnFirstOrNull(states.filter(function(each) {
-				return each.id == state || each.name === state;
+				return each.id == state || each.name === state || each.abbr === state;
 			}));
 		};
 

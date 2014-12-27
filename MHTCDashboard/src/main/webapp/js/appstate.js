@@ -330,6 +330,7 @@ var AS= (function($) {
 					seltimeline.append(liststring);	
 					document.getElementById("playbuttonanimation").style.visibility = "visible";
 					document.getElementById("stopbuttonanimation").style.visibility = "visible";
+					document.getElementById("modal-title").innerHTML = "Timeline:&nbsp;&nbsp;";
 					/*******************************************************************************/
 					
         			var j;
@@ -923,11 +924,12 @@ AppState.prototype.set_initializer=function(title_prefix_in, this_graph_in ) {
   * This function calls the chart module for displaying the graph type for TOP TEN states for the current Metric.
   * Input: Metric ID
   */ 
- AppState.prototype.showMultiGraphOnTopTen = function(ind) {
+ AppState.prototype.showMultiGraphOnTopTen = function() {
+	 	if(this.currentind == null || this.currentind == undefined) return;
 	    this.set_initializer("Compare Top Ten States: ",this.showMultiGraphOnTopTen); 
-		this.currentind = ind;
+		//this.currentind = ind;
 	  	this.selected = $.parseJSON($.ajax({
-			url : "data/peers/top?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
+			url : "data/peers/top?metric=" + Metrics.getMetricByID(this.currentind).getName() + "&year=0",
 				dataType : 'text',
 				async : false,
 				success : function(data) {
@@ -938,18 +940,19 @@ AppState.prototype.set_initializer=function(title_prefix_in, this_graph_in ) {
 	        });
 	    
   
-	    cm.showMultiGraph( this.selected);
+	    //cm.showMultiGraph( this.selected);
 	}
 
  /*
   * This function calls the chart module for displaying the graph type for BOTTOM TEN states for the current Metric.
   * Input: Metric ID
   */ 
-AppState.prototype.showMultiGraphOnBottomTen = function(ind) {
+AppState.prototype.showMultiGraphOnBottomTen = function() {
+	if(this.currentind == null || this.currentind == undefined) return;
 		this.set_initializer("Compare Bottom Ten States: ",this.showMultiGraphOnBottomTen);
-	    this.currentind = ind;
+	    //this.currentind = ind;
 	    this.selected = $.parseJSON($.ajax({
-			url : "data/peers/bottom?metric=" + Metrics.getMetricByID(ind).getName() + "&year=0",
+			url : "data/peers/bottom?metric=" + Metrics.getMetricByID(this.currentind).getName() + "&year=0",
 	           
 			dataType : 'text',
 			async : false,
@@ -961,7 +964,7 @@ AppState.prototype.showMultiGraphOnBottomTen = function(ind) {
 	    });
 		
 
-	    cm.showMultiGraph(this.selected);
+	    //cm.showMultiGraph(this.selected);
 	}
 
  /*
@@ -990,9 +993,9 @@ AppState.prototype.SelectPeerStates=function(){
     for(var i=0; i<selected_states.length;i++){
     	this.clickCallback(selected_states[i]);
 	}
-    $("#selectallmultiplemetric").prop("disabled",false);
+   /* $("#selectallmultiplemetric").prop("disabled",false);
 	$("#unselectallmultiplemetric").prop("disabled", false);
-	$("#selectpeerstates").prop("disabled",true);		
+	$("#selectpeerstates").prop("disabled",true);	*/	
 		
 };
 
@@ -1276,7 +1279,6 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 		else if((typeof metric_id_in) == "string"){
 			this.selected_multiple_metrics[pos]=metric_id_in;
 		}
-    	console.log("array after deletion: ",this.selected_multiple_metrics );
     	var lastpos=this.selected_multiple_metrics.length-1;
     	//console.log("lastpos : ",lastpos,"muliple: ",this.selected_multiple_metrics);
 		
@@ -1318,8 +1320,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 		
 		
 	}else if(option_in==2){ /***DELETION **/
-		console.log("metric present : ",this.selected_multiple_metrics);
-		console.log("deleting : ",metric_id_in);
+	
 		if(metric_id_in instanceof Array)
 		{
 			for(j = 0 ;j < metric_id_in.length; j++ )
@@ -1333,7 +1334,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 			}
 		}
 		else if((typeof metric_id_in) == "string"){
-			console.log("single delete: ",metric_id_in);
+
 			var i = this.selected_multiple_metrics.indexOf(metric_id_in);
 			//console.log("i=",i)
 			 if(i != -1) 
@@ -1347,12 +1348,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 		
 			var lastpos=this.selected_multiple_metrics.length-1;
 			this.currentind=this.selected_multiple_metrics[lastpos];
-			console.log("metric present : ",this.selected_multiple_metrics);
 			array_next_back=this.getBackNextMultipleMetric(this.currentind);
-			
-			console.log("array_next_back--",array_next_back[0],array_next_back[1]);
-			console.log("metric present : ",this.selected_multiple_metrics,"curent id : ",this.currentind);
-			
 			if(this.selected_multiple_metrics.length > 1){
 				
 				//sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;&nbsp;');
@@ -1381,7 +1377,6 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 			this.showMultipleMetricsStatesYears(-1);
 			
 		}else{
-			console.log("everything is null");
 			this.currentind=null;
 			sel.append("<strong>Choose a metric from the left menu</strong>");
 			$(".backButton").css("display","none");
@@ -1442,24 +1437,26 @@ AppState.prototype.ClearGraphArea = function()
 	console.log("clearing graph");
 	var activeTab = document.getElementsByClassName('tab-pane active')[0];
 	var  content = activeTab.getElementsByClassName("box-content")[0];
-	if(activeTab.id == "profile")
-	{
-		content.getElementsByTagName("h4")[0].innerText = "Please select atleast one metric";
-		$("#mbody").html('<svg style="height: 100%;"></svg>');
-		
-	}
-	if(activeTab.id == "national")
-	{
-		$(".modal-body").html('<svg style="height: auto; overflow:auto"></svg>');
-	}
 	if(activeTab.id == "heatmaptab")
 	{
 		document.getElementById("playbuttonanimation").style.visibility = "hidden";
 		document.getElementById("stopbuttonanimation").style.visibility = "hidden";
 		document.getElementById("timeline").innerHTML = "";
-		document.getElementById("stateTitle").innerHTML = "";
+		document.getElementById("modal-title").innerText = "";
+		
 		//document.getElementById("mbodyHeatMap").innerHTML = "";
 	}
+	if(activeTab.id == "profile")
+	{
+		content.getElementsByTagName("h4")[0].innerText = "Please select atleast one metric";
+
+	}
+	if(activeTab.id == "national")
+	{
+		$(".modal-body").html('<svg style="height: auto; overflow:auto"></svg>');
+		$("#timelinetable").html("Please select atleast one metric..");
+	}
+	
 }
 /***
  * MANIK CHANGED A FEW THINGS HERE 
@@ -1661,24 +1658,46 @@ AppState.prototype.showHeatMapGraphReloaded=function (ind,tag_id, year_in){
 
 };
 AppState.prototype.graphDeployer=function(ind, graph_type){
+	if(this.currentind == null || this.currentind == undefined)
+	{
+		console.log("returning..");
+		return;
+	}
 	cm.current_graph=graph_type;
 	this.showGraphReloaded(ind);
 };
-AppState.prototype.setStatesSelected=function(states){
-	if(states==null){
-		this.selected=[];
-		
-		
-	}else{
-		this.selected = States.getArrayStateByID(states);
-		
-	}
+AppState.prototype.setStatesSelected=function(states,opt){
 	
+	if(states==null || states==undefined){
+		this.selected=[];
+	}
+	else{
+		if(opt == 0)
+		{
+			console.log("peer selected");
+			this.selected =States.getPeers().map(function(s){
+				return s.abbr; 
+			});
+			console.log("peer states: ",this.selected);
+		}
+		else if(opt == 1){
+			this.showMultiGraphOnTopTen()
+		}
+		else if(opt == 2){
+			this.showMultiGraphOnBottomTen()
+		}
+		else{
+			this.selected = States.getArrayStateByID(states);
+		}
+	}
 	this.showGraphReloaded(this.currentind);
 	this.showMultipleMetricsStatesYears(-1);
 };
 AppState.prototype.showGraphReloaded = function(ind) {
-	
+	if(this.currentind == null)
+	{
+		return;
+	}
 	
 	if(ind > 0){//**Animation being called or click on the years**/
 		

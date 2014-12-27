@@ -71,18 +71,17 @@ var CM = (function($) {
 	
 	/*changed by manik*/
 	Chart.prototype.showMultipleMetricsStatesYears = function(states,selected_multiple_metrics,year_in) {
-		console.log("table created mow");
 		var query;
 		this.year_selected=year_in;
 		$("#mbodyMultipleQuery > *").remove();
 		//document.getElementById("graphStatesMultipleQuery").innerHTML = states.join(", ");
 		
-		$("#mbodyMultipleQuery").append("<table id='myTable' class='table table-bordered table-condensed' onload='fancyTable(this)' style='font-size: 13px; background-color:#fff'></table>");
-		var table=$("#mbodyMultipleQuery table");
+		$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='font-size: 13px; background-color:#fff'></table>");
+		var table = $("#mbodyMultipleQuery table");
 		//table.dataTable();
 		if(selected_multiple_metrics.length>0){
 			
-			if(selected_multiple_metrics.length==1){ /*Similar to the one we had**/
+			if(selected_multiple_metrics.length==1){
 				$("#yearsMultipleQuery").addClass("hidden");
 				$("#timelinetable").addClass("hidden");
 				query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[0]).getName());
@@ -92,72 +91,60 @@ var CM = (function($) {
 			        setTimeout(function() {
 			        	var row;
 			        	var array_years=cm.getYearsMetricState(states,multiData);
-			        	
 			        	if(array_years.length==0){
-			        		 row="<tr><td>No data found</td></tr>";
+			        		 row="<tr><td> Please select atleast one state </td></tr>";
 			        		 table.append(row);
 			        	}else{
-			        		 row="<thead><th>&nbsp;</th>";
+			        		 row="<thead><th>States</th>";
 			        		 var i=0;
-			        		 while(i<array_years.length){
-			        			
+			        		while(i<array_years.length){			        			
 			        			 row = row+"<th>"+array_years[i]+ "</th>";
 			        			 i++;
-			        		 }
-			        		 row = row +"</thead>";
-				             table.append(row);
-			        		 /*
-			                row = row + multiData[0][0].dataPoints.map(function(d) {
-			                    return "<th>"+d["year"] + "</th>";
-			                }).join("");
-			                row = "<tr>" +row +"</tr>";
-			                table.append(row);*/
+			        		}
+			        		row = row +"</thead>";
+				            table.append(row);
+				             
 			                var data = new Array();
 			                var percentage;
 			                var j;
 			                var type_var;
-			                for (var i = 0; i < multiData.length; i++) {
-			                    row = "<td>" + multiData[i][0].state.name + "</td>" ;
+			                for (var i = 0; i < multiData.length; i++)
+			                {
+			                    row = "<th>" + multiData[i][0].state.attr + "</th>" ;
 			                    j=0;
-			                    while(j<array_years.length){
-			                    	if(multiData[i][0].dataPoints.length==0){
-			                    		row = row +"<td>NV</td>"; 
-			                    	}else{
+			                    while(j<array_years.length)
+			                    {
+			                    	if(multiData[i][0].dataPoints.length==0)
+			                    	{
+			                    		row = row +"<td> NV </td>"; 
+			                    	}
+			                    	else
+			                    	{
 			                    		type_var=Metrics.getMetricByID(multiData[i][0].metric.id).getType();
 			                    		if(type_var=="percentage"){
 			                    			percentage=(multiData[i][0].dataPoints[j].value*100).toFixed(2)+"%";
 			                    			row=row+"<td>" +  percentage+ "</td>";
-			                    		}else if(type_var=="currency"){
+			                    		}else if(type_var =="currency"){
 			                    			
 			                    			row=row+"<td>$" +  multiData[i][0].dataPoints[j].value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</td>";
 			                    		}else if(type_var=="numeric"){
 			                    			row=row+"<td>" +  multiData[i][0].dataPoints[j].value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</td>";
 			                    		}else{
 			                    			row=row+"<td>" +  multiData[i][0].dataPoints[j].value+"</td>";
-			                    		}
-			                    		
+			                    		}	
 			                    	}
-			                    	
 			                    	j++;
 			                    }
-			                    
-			                    /*row = row + multiData[i][0].dataPoints.map(function(d) {
-			                        return "<td>" +  d["value"] + "</td>";
-			                    }).join("");*/
 			                    row = "<tr>" +row +"</tr>";
 				                table.append(row);
-			                    
 			                }
 			        	}
-		                
+			        	cm.setDataTable();
 			        }, 500);
 				});
-			}else{
-				/*var d = new Date();
-			    var current_year = d.getFullYear();
-			    var first_year =current_year-10;*/
-				
-				//document.getElementById("graphTitleMultipleQuery").innerHTML = this.graph_title_prefix + "Multiple metrics selected";
+			}
+			else
+			{
 					this.kcounterexecute=0;
 					this.multiDataMultipleQuery=[];
 					
@@ -173,9 +160,6 @@ var CM = (function($) {
 						});
 						
 					}
-					
-					
-					
 					setTimeout(function() {	
 						
 						var array_years=cm.getMultipleYearsMetricState(states,cm.multiDataMultipleQuery);
@@ -194,20 +178,7 @@ var CM = (function($) {
 		    				else
 		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
 		    			}
-		    			/*var seltimeline=$("#timelinetable");
-						seltimeline.empty();
-						array_years.sort(function(a,b){return b - a;});
-						if(cm.year_selected==-1)
-		    				cm.year_selected=array_years[0];
-						seltimeline.append('<table ><tr>');
-						for(var k=array_years.length-1; k>=0; k--){
-							if(cm.year_selected!=array_years[k]){
-								seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-default" id="clicktable'+array_years[k]+'"><li  >'+array_years[k]+'</li></button></td><td></td>');
-							}else{
-								seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-primary btn-right" ><li id="clicktable"+'+cm.year_selected+'>'+cm.year_selected+'</li></button></td><td></td>');
-							}
-						}
-						seltimeline.append('</tr></table>');*/
+
 		    			//modified by manik
 		    			var seltimeline=$("#timelinetable");
 		    			seltimeline.empty();
@@ -215,7 +186,7 @@ var CM = (function($) {
 		    			array_years.sort(function(a,b){return b - a;});
 						if(cm.year_selected==-1)
 		    				cm.year_selected=array_years[0];
-						liststring += '<table><tr><td><h4 style="width:auto">Timeline:&nbsp;&nbsp; </h4></td><td><ul class="timelineListStyle">';
+						liststring += '<table align="center"><tr><td><h4 style="width:auto">Timeline:&nbsp;&nbsp; </h4></td><td><ul class="timelineListStyle">';
 						for(var k=array_years.length-1; k>=0; k--){
 							if(cm.year_selected!=array_years[k]){
 								liststring += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+array_years[k]+')" >'+array_years[k]+'</button></li>';
@@ -265,15 +236,11 @@ var CM = (function($) {
 								w=0; 
 								
 								while((w< cm.multiDataMultipleQuery[r][j][0].dataPoints.length)&&(!sentinel)){
-								//for(var w=0;w<cm.multiDataMultipleQuery[r][j][0].dataPoints.length; w++){
-									/*alert("UPPER HEADER: "+r+" "+cm.multiDataMultipleQuery[r][0][0].metric.name);
-									alert("Value: "+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value);
-									alert("Year: "+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year);
-									alert("Year selected: "+cm.year_selected);*/
+
 									if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year==cm.year_selected){
 										if(!band){
 											
-											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.name + "</th>";
+											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
 											band=true;
 										}
 										
@@ -292,52 +259,81 @@ var CM = (function($) {
 				                    			
 				                    		}else{
 				                    			row=row+"<td>" +  cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value+"</td>";
-				                    		}
-											
-											
-											
-											
+				                    		}	
 											foundvalue=true;
-											//alert("VALUE NOT NULL " +cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value);	
+											
 										}
 									sentinel=true;		
 									}
 								w++;
 								}
 								if(!band){
-									//console.log("statename2: ",cm.multiDataMultipleQuery[r][j][0].state.name);
-									row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.name + "</th>";
+									row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
 									band=true;
 								}
 								if((!foundvalue)&&(rows_written<counter_control_duplicates)){
 									rows_written++;
 									row = row +"<td>NV</td>";
 								}
-									
-									
 							}
 							if(band){ 
 								row = "<tr>" +row +"</tr>";
 								table.append(row);
 							}
 						}
-						
-						
+						cm.setDataTable();
 					}, 500);
-				
-				
-				
-			}	
-				
-				
+			}		
 					
-		}else{
-			var row="<tr><td valign='top' align='center'>Select at least one metric<td></tr>";
-			table.append(row);
-		}
-			
+		}	
+		
 	};
+	/**added by manik*/
+	Chart.prototype.setDataTable = function() {
+		//console.log("states",States.getAllstates());
+		stateList = States.getAllstates();
+		//console.log("stateList: ",stateList[0].id);
+		
+		if ( $("#myTable").html().indexOf("<thead>") != -1 ){//&& ! $.fn.DataTable.isDataTable( '#myTable' ) ) {
+			
+			$('#myTable tbody tr td').each( function() {
+				var sTitle= $(this).text();
+				if ( sTitle == "NV" )
+					this.setAttribute( 'title', "NV: No Value for the year selected" );	
+				
+			} );
+			$('#myTable tbody tr th').each( function() {
+				var sTitle= $(this).text();
+				this.setAttribute( 'title', States.getStateFromString(sTitle).name );	
 
+			} );
+			if( !$.fn.DataTable.isDataTable( '#myTable' ) )
+				var oTable = $('#myTable').dataTable({"iDisplayLength": 10});
+			else
+			{
+				console.log("table already present");
+				$('#myTable').dataTable().fnDestroy();
+				var oTable = $('#myTable').dataTable({"iDisplayLength": 10});
+			}
+		 /* Apply the tooltips */
+			oTable.$('tr').tooltip( {
+				"delay": 0,
+				"track": true,
+				"fade": 0
+			} );
+			$('#myTable tbody').on( 'click', 'tr', function () {
+		        if ( $(this).hasClass('selected') ) {
+		            $(this).removeClass('selected');
+		        }
+		        else {
+		        	oTable.$('tr.selected').removeClass('selected');
+		            $(this).addClass('selected');
+		        }
+		    } );
+		}
+	}
+	
+	
 	/**
 	 * This function display the different types of chart (line,bar or table) for selected state/s and metric.
 	 */
@@ -364,7 +360,7 @@ var CM = (function($) {
 		                table.append(row);
 		                var data = new Array();
 		                for (var i = 0; i < multiData.length; i++) {
-		                        row = "<th>" + multiData[i][0].state.name + "</th>" ;
+		                        row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
 		                    row = row + multiData[i][0].dataPoints.map(function(d) {
 		                        return "<td>" +  d["value"] + "</td>";
 		                    }).join("");
@@ -454,7 +450,8 @@ var CM = (function($) {
 	   
 	}
 	Chart.prototype.showMultiGraphReloded = function(states) {
-		
+		if(as.currentind == null || as.currentind == undefined)
+			return;
 		   
 	    	if(this.current_graph=='line'){
 	    		$("#mbody > *").remove();
@@ -477,12 +474,7 @@ var CM = (function($) {
 				        
 		    	}
 	    	}
-	    		
-	    	
-	    	
-	    	
-		    
-		    
+	    
 		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
 		    query.execute(function(
 		            multiData) {
@@ -622,7 +614,7 @@ var CM = (function($) {
 		                table.append(row);
 		                var data = new Array();
 		                for (var i = 0; i < multiData.length; i++) {
-		                        row = "<th>" + multiData[i][0].state.name + "</th>" ;
+		                        row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
 		                    row = row + multiData[i][0].dataPoints.map(function(d) {
 		                        return "<td>" +  d["value"] + "</td>";
 		                    }).join("");
@@ -674,11 +666,6 @@ var CM = (function($) {
 						//alert(cm.multiDataMultipleQuery.length);
 						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
 							row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";
-							
-							//alert("cm.multiDataMultipleQuery[cm.kcounter][0][0].metric.name: "+cm.multiDataMultipleQuery[cm.kcounter][0][0].metric.name);
-							
-							//alert("k: "+k+" cm.kcounter "+cm.kcounter+" Product"+cm.multiDataMultipleQuery[cm.kcounter][0][0].metric.name);
-							
 						}
 						row = "<tr>" +row +"</tr>"; 
 						table.append(row);
@@ -707,7 +694,7 @@ var CM = (function($) {
 									alert("Year selected: "+cm.year_selected);*/
 									if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year==cm.year_selected){
 										if(!band){
-											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.name + "</th>";
+											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
 											band=true;
 										}
 										
@@ -721,7 +708,7 @@ var CM = (function($) {
 								w++;
 								}
 								if(!band){
-									row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.name + "</th>";
+									row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
 									band=true;
 								}
 								if(!foundvalue)	
@@ -733,15 +720,10 @@ var CM = (function($) {
 								table.append(row);
 							}
 						}
-						
-						
+				
 					}, 500);
-				
-				
-				
-			}	
-				
-				
+
+			}			
 					
 		}else{
 			var row="<tr><td valign='top' align='center'>Select at least one metric<td></tr>";
