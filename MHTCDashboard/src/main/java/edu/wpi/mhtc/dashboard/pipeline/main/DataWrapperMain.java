@@ -2,10 +2,8 @@ package edu.wpi.mhtc.dashboard.pipeline.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BEADownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BLSDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.DataGovDownload;

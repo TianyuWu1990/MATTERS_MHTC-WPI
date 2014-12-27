@@ -20,7 +20,7 @@ public class TestDBSaver {
 		line.addMetric(m);
 		
 		
-		DBSaver.saveLine(line);
+//		DBSaver.saveLine(line);
 	}
 
 }

@@ -2,7 +2,7 @@ package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 import java.io.PrintWriter;
 
-import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
+import edu.wpi.mhtc.dashboard.pipeline.data.State;
 import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONArray;
 import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONObject;
 
@@ -39,12 +39,14 @@ public class EIADownload implements IWrapper {
 		URLDownload downloader = new URLDownload();
 		writerRate = new PrintWriter("tmp/eia-rate.txt", "UTF-8");
 		
-		for (String state: StateInfoConfig.getInstance().getStateInitialsList()) {
-			String url = apiUrl + String.format("&series_id=ELEC.PRICE.%s-COM.A", state.toUpperCase());
+		for (State state: State.getList()) {
+			
+			String stateInit = state.getInitial();
+			String url = apiUrl + String.format("&series_id=ELEC.PRICE.%s-COM.A", stateInit.toUpperCase());
 			
 			String jsonStr = downloader.getText(url);
 
-			processJsonToFile(state.toUpperCase(), jsonStr, writerRate);
+			processJsonToFile(stateInit.toUpperCase(), jsonStr, writerRate);
 		}
 		System.out.println("Completed.");
 		writerRate.close();

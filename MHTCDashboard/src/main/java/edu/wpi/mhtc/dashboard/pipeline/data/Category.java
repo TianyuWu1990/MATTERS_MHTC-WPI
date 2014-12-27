@@ -23,7 +23,6 @@ public class Category {
 		this.id = id;
 		name = DBLoader.getCategoryNameFromID(id);
 		metrics = getMetrics(id);
-		
 	}
 	
 	/**

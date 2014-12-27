@@ -59,7 +59,7 @@ public class TextParser implements IParser {
 		boolean foundState = false;
 		
 		for(CSVRecord record : parser){
-			record.toMap()
+			record.toMap();
 			for (String cellValue : record) {
 				if(cellValue.equalsIgnoreCase("year")){
 					foundYear = true;
