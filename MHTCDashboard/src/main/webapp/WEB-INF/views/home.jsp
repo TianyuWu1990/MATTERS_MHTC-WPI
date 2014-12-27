@@ -278,21 +278,6 @@
 								<c:forEach items="${stat.row}" var="row">
 									<option value="${row.id}">${row.name}</option>
 
-<<<<<<< HEAD
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="text-align: center">
-				<ul class="nav navbar-nav navbar-left">
-					<li class="active"><a href="#">Explore</a></li>
-					<li><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
-				</ul>
-				<h1 class="centered title">Massachusetts' Technology, Talent and Economy Reporting System</h1>
-				<ul class="nav navbar-nav navbar-right">
-					<form class="navbar-form navbar-left" action="<c:url value='admin/login' />" method="POST"
-						role="search">
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="username" name="username"> <input type="password"
-								class="form-control" placeholder="password" name="password">
-=======
 
 								</c:forEach>
 							</c:forEach>
@@ -309,7 +294,6 @@
 									<svg style="height: 90%;"></svg>
 								</div>
 							</div>
->>>>>>> origin/dev-webapp-new
 						</div>
 
 						<%/*<div class="tab-pane fade" id="national">

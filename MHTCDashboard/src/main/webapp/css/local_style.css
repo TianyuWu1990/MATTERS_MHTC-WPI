@@ -205,7 +205,6 @@ table.table tbody tr td.tabbed_metric
 	
 }
 
-<<<<<<< HEAD
 .tab-pane
 {
 	height:70%;
@@ -213,8 +212,6 @@ table.table tbody tr td.tabbed_metric
 	
 }
 
-=======
->>>>>>> origin/dev-webapp-new
 #profiletab a{
 	background-color: #3D8AF4 ; 
 	color:#fff;
@@ -320,17 +317,12 @@ table.table tbody tr td.tabbed_metric
 */
 #Profile tbody tr:hover td
   {
-<<<<<<< HEAD
   background-color:  #ADC2FF; 
-=======
-  background-color:  transparent; 
->>>>>>> origin/dev-webapp-new
   }
 
 #national tbody tr:hover td
 
  {
-<<<<<<< HEAD
  background-color:#CBFFF2;	 /**#7ECB98;**/
  }
 /*
@@ -350,27 +342,6 @@ table.table tbody tr td.tabbed_metric
  #economy tbody tr:hover td 
   {
   background-color: #FFE48A;
-=======
- background-color:transparent;	 /**#7ECB98;**/
- }
- 
-/*
- #national tbody tr:hover tr td{
-  background-color:#D0A9F5;	 #7ECB98;  }
- 
- */
-#talent tbody tr:hover td
- {
- background-color: transparent;
- }
- #cost tbody tr:hover td
- {
- background-color:transparent;
- }
- #economy tbody tr:hover td 
-  {
-  background-color: transparent;
->>>>>>> origin/dev-webapp-new
   } 
 
 .topContainer{
@@ -393,7 +364,6 @@ width: 85%;
 }
 
 
-<<<<<<< HEAD
 .nav >li.active>a{
 	font-size:14px;
 	font-weight:bold;
@@ -403,16 +373,10 @@ width: 85%;
 	cursor:default
 }
 
-=======
->>>>>>> origin/dev-webapp-new
 .arrow { 
 	width: 0; 
 	height: 0; 
 	border-left: 10px solid transparent; 
 	border-right: 10px solid transparent; 
 	border-top: 10px solid black; 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/dev-webapp-new
