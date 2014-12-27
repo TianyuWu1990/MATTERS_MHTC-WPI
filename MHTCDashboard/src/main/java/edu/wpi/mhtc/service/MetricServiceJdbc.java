@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.service;
 
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -13,9 +14,9 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
-import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.AdminMetric;
 import edu.wpi.mhtc.model.admin.TreeViewNode;
+import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
@@ -78,6 +79,7 @@ public class MetricServiceJdbc implements MetricService {
         metricParams.put("showall", false);
 
         return metricCall.execute(metricParams);
+
     }
 
     @Override

@@ -116,7 +116,7 @@ var CM = (function($) {
 			                    {
 			                    	if(multiData[i][0].dataPoints.length==0)
 			                    	{
-			                    		row = row +"<td> NV </td>"; 
+			                    		row = row +"<td> N/A </td>"; 
 			                    	}
 			                    	else
 			                    	{
@@ -273,7 +273,7 @@ var CM = (function($) {
 								}
 								if((!foundvalue)&&(rows_written<counter_control_duplicates)){
 									rows_written++;
-									row = row +"<td>NV</td>";
+									row = row +"<td>N/A</td>";
 								}
 							}
 							if(band){ 
@@ -298,8 +298,8 @@ var CM = (function($) {
 			
 			$('#myTable tbody tr td').each( function() {
 				var sTitle= $(this).text();
-				if ( sTitle == "NV" )
-					this.setAttribute( 'title', "NV: No Value for the year selected" );	
+				if ( sTitle == "N/A" )
+					this.setAttribute( 'title', "No Value for the year selected" );	
 				
 			} );
 			$('#myTable tbody tr th').each( function() {
@@ -712,7 +712,7 @@ var CM = (function($) {
 									band=true;
 								}
 								if(!foundvalue)	
-									row = row +"<td>NV</td>";
+									row = row +"<td>N/A</td>";
 									
 							}
 							if(band){ 
