@@ -31,6 +31,7 @@
  	<resources mapping="/fonts/**" location="/fonts/" />	
  	<resources mapping="/font-awesome-4.1.0/**" location="/font-awesome-4.1.0" />
  	<resources mapping="/less/**" location="/less/" />	
+ 	<resources mapping="/img/**" location="/img/" />
  	<resources mapping="/adminPanel/**" location="/adminPanel/" />
 	
 </beans:beans>
