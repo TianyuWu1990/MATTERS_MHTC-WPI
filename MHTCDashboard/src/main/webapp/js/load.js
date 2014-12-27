@@ -56,7 +56,7 @@ adjustDropDown = function(e) {
 getStyleRuleValue=function(styleName, className) {
 
 	    //for (var i=0;i<document.styleSheets.length;i++) {
-	        var s = document.styleSheets[2];
+	        var s = document.styleSheets[3];
 
 	        var classes = s.rules || s.cssRules
 	        for(var x=0;x<classes.length;x++) {

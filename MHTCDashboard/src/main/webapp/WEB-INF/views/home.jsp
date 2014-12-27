@@ -23,7 +23,7 @@
 	src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 <script
 	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
- <script type="text/javascript" charset="utf8" src="js/dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="js/dataTables.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <script src="js/state.js"></script>
 <script src="js/metric.js"></script>
@@ -34,7 +34,7 @@
 	/*<script src="js/jquery.multiple.select.js"></script>
 	<link rel="stylesheet" href="css/sumoselect.css"></link> */
 %>
-<link rel="stylesheet" href="css/local_style.css">
+<link href="css/local_style.css" rel="stylesheet">
 
 <title>MATTERS: Massachusetts' Technology, Talent and Economy
 	Reporting System</title>
