@@ -5,119 +5,80 @@
 <head>
 <meta charset="utf-8" />
 <link href="css/nv.d3.css" rel="stylesheet">
-<!--  <script src="http://d3js.org/d3.v3.min.js"></script> -->
-<script src="js/d3.v3.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="css/local_style.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet">
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+<link href="css/dataTables.css" rel="stylesheet">
+<link href="css/style.css" id="base-style"  rel="stylesheet">
+<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext'
+	rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/jquery.multiselect.css" />
 
+<script src="js/d3.v3.min.js"></script>
 <script src="js/nv.d3.min.js"></script>
-<script type="text/javascript"
-	src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<%
-	/*<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> */
-%>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script src="js/raphael.js"></script>
-<script src="js/color.jquery.js"></script>
 <script src="js/dataquery.js"></script>
 <script src="js/jquery.usmap.js"></script>
-<script
-	src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-<script
-	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" charset="utf8" src="js/dataTables.js"></script>
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="js/dataTables.js"></script>
 <script src="js/state.js"></script>
 <script src="js/metric.js"></script>
 <script src="js/chart.js"></script>
 <script src="js/appstate.js"></script>
 
-<%
-	/*<script src="js/jquery.multiple.select.js"></script>
-	<link rel="stylesheet" href="css/sumoselect.css"></link> */
-%>
-<link href="css/local_style.css" rel="stylesheet">
-
-<title>MATTERS: Massachusetts' Technology, Talent and Economy
-	Reporting System</title>
-
-<!--  NEW DESIGN -->
-
-<link id="bootstrap-style" href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
-<link href="css/dataTables.css" rel="stylesheet">
-<link id="base-style" href="css/style.css" rel="stylesheet">
-<link id="base-style-responsive" href="css/style-responsive.css"
-	rel="stylesheet">
-<link
-	href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext'
-	rel='stylesheet' type='text/css'>
-
-
+<!-- start: JavaScript for Metro Dashboard-->
 <script src="js/jquery-1.9.1.min.js"></script>
-  
 <script src="js/jquery-migrate-1.0.0.min.js"></script>
-
 <script src="js/jquery-ui-1.10.0.custom.min.js"></script>
-
 <script src="js/jquery.ui.touch-punch.js"></script>
-
 <script src="js/modernizr.js"></script>
-
 <script src="js/bootstrap.min.js"></script>
-
 <script src="js/jquery.cookie.js"></script>
-
 <script src='js/fullcalendar.min.js'></script>
-
 <script src='js/jquery.dataTables.min.js'></script>
-
 <script src="js/excanvas.js"></script>
-<%
-	/* <script src="js/jquery.flot.js"></script> */
-%>
+<script src="js/jquery.flot.js"></script>
 <script src="js/jquery.flot.pie.js"></script>
 <script src="js/jquery.flot.stack.js"></script>
 <script src="js/jquery.flot.resize.min.js"></script>
-
 <script src="js/jquery.chosen.min.js"></script>
-
 <script src="js/jquery.uniform.min.js"></script>
-
 <script src="js/jquery.cleditor.min.js"></script>
-
 <script src="js/jquery.noty.js"></script>
-
 <script src="js/jquery.elfinder.min.js"></script>
-
 <script src="js/jquery.raty.min.js"></script>
-
 <script src="js/jquery.iphone.toggle.js"></script>
-
 <script src="js/jquery.uploadify-3.1.min.js"></script>
-
 <script src="js/jquery.gritter.min.js"></script>
-
 <script src="js/jquery.imagesloaded.js"></script>
-
 <script src="js/jquery.masonry.min.js"></script>
-
 <script src="js/jquery.knob.modified.js"></script>
-
 <script src="js/jquery.sparkline.min.js"></script>
-
 <script src="js/counter.js"></script>
-
 <script src="js/retina.js"></script>
-
 <script src="js/custom.js"></script>
+<!-- end: JavaScript-->
 
-
-
-<!--  NEW DESIGN
-<script src="js/jquery.multiple.select.js"></script>
- -->
 <script src="js/jquery.multiselect.js"></script>
-<link rel="stylesheet" href="css/jquery.multiselect.css" />
 
+<%
+	/*
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+	<script src="js/jquery.multiple.select.js"></script>
+	<link rel="stylesheet" href="css/sumoselect.css"></link> 
+	<script src="js/jquery.multiple.select.js"></script>
+	<script src="js/jquery.flot.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	 */
+%>
+
+<title>MATTERS: Massachusetts' Technology, Talent and Economy
+	Reporting System</title>
 
 </head>
 <body onLoad="loadFunction()">
