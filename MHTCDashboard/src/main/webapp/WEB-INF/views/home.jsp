@@ -264,10 +264,22 @@
 				<div class="row-fluid" id="graph-area" >
 				<div class="pagination pagination-right" >
 					<ul class="nav nav-tabs">										
-						<li class="graph-tab active" id="table-tab" ><a href="#national" data-toggle="tab" title="Table" onclick="as.showMultipleMetricsStatesYears(-1)" valign="middle"><i class="fa fa-table fa-2x"></i></a></li>
-						<li class=" graph-tab " id="line-tab"><a href="#profile" data-toggle="tab" title="Line Chart" onclick="as.graphDeployer(0,'line')"><i class="fa fa-line-chart fa-2x"></i></a></li>
-						<li class="graph-tab" id="bar-tab"><a href="#talent" data-toggle="tab" title="Bar Chart" onclick="as.graphDeployer(0,'bar')"> <i class="fa fa-bar-chart fa-2x"></i></a></li>
-						<li class="graph-tab" id="heatmap-tab"><a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1)"><i class="fa fa-picture-o fa-2x"></i></a></li>
+						<li class="graph-tab active" id="table-tab" >
+							<a href="#table" data-toggle="tab" title="Table" onclick="as.showMultipleMetricsStatesYears(-1)" valign="middle">
+							<i class="fa fa-table fa-2x"></i></a>
+						</li>
+						<li class=" graph-tab " id="line-tab">
+							<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.graphDeployer(0,'line')">
+							<i class="fa fa-line-chart fa-2x"></i></a>
+						</li>
+						<li class="graph-tab" id="bar-tab">
+							<a href="#bar" data-toggle="tab" title="Bar Chart" onclick="as.graphDeployer(0,'bar')"> 
+							<i class="fa fa-bar-chart fa-2x"></i></a>
+						</li>
+						<li class="graph-tab" id="heatmap-tab">
+							<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1)">
+							<i class="fa fa-picture-o fa-2x"></i></a>
+						</li>
 					</ul>
 					</div>
 					<%/*<div  id="stateSelection" style="margin-top:5px;">
@@ -283,7 +295,7 @@
 					</div>*/ %>
 					<div class="tab-content">
 
-						<div class="tab-pane fade" id="profile">
+						<div class="tab-pane fade" id="line">
 	
 							<div class="box-content">
 								<h4 class="modal-title" id="graphTitle"></h4>
@@ -307,7 +319,7 @@
 							</div>
 							
 						</div>*/ %>
-						<div class="tab-pane active" id="national">
+						<div class="tab-pane active" id="table">
 							<div class="box-content">
 								<table style="width:98%"><tr style="width:98%; "><td id="timelinetable">
 								</td></tr>
@@ -316,7 +328,7 @@
 							</div>
 						</div>
 						
-						<div class="tab-pane fade" id="talent">
+						<div class="tab-pane fade" id="bar">
 
 							<div class="box-content">
 								<h4 class="modal-title" id="graphTitleBar"></h4>
