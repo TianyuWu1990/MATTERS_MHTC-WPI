@@ -391,8 +391,14 @@ public class AdminController {
         return "admin_reports";
     }
     
+    @RequestMapping(value = "/post_reports", method = RequestMethod.POST)
+    public @ResponseBody String admin_post_reports(Locale locale, Model model, @RequestParam("message") String message) throws Exception {
+    	Logger.jsonTalendLog(message);
+    	return "{\"success\" : true}";
+    }    
+    
     @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>>  dmin_get_logs(Locale locale, Model model) throws Exception {
+    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model) throws Exception {
     	return Logger.retriveLog();
     }    
     
