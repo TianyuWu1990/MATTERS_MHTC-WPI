@@ -288,6 +288,7 @@ var CM = (function($) {
 		}	
 		
 	};
+	
 	/**added by manik*/
 	Chart.prototype.setDataTable = function() {
 		//console.log("states",States.getAllstates());
@@ -335,9 +336,12 @@ var CM = (function($) {
 	
 	
 	/**
-	 * This function display the different types of chart (line,bar or table) for selected state/s and metric.
+	 * This function displays the different types of chart (line,bar or table) for selected state/s and metric.
 	 */
     
+	
+	//only called when page first loads - only applies to initial display type - table, line, bar or map. 
+	//showMultiGraphReloaded (below) is called for all subsequent displays
 	Chart.prototype.showMultiGraph = function(states) {
 		
 		   if (this.current_graph == 'table') {
@@ -369,11 +373,15 @@ var CM = (function($) {
 		                }    
 		        }, 500);
 		    });
-
-		    
+	    }
+		else{
+			
+			
+			
+			
+			
 	    	
-	    }else{
-	    	
+	    	//either line or bar 
 	    	$("#mbody > *").remove();
 	    	if($("#mbody svg").length==0){
 	    		$("#mbody").append( "<svg style=\"height: 50%; background-color:#fff\"></svg>" );
@@ -381,21 +389,22 @@ var CM = (function($) {
 	    	
 		    d3.selectAll("#mbody svg > *").remove();
 		    
-		    /*document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
-		    document.getElementById("graphStates").innerHTML = states.join(", ");*/
-		    
+		    //get data
 		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
 		    query.execute(function(
 		            multiData) {
 		        setTimeout(function() {
+		        	
+		        	//set up chart
 		            nv.addGraph(function() {
 		                var chart;
 		    
 		                if (cm.current_graph == 'line') {
 		                    chart = nv.models.lineChart()
-		                    .useInteractiveGuideline(true);
+		                    			.useInteractiveGuideline(true);       
 		                } else if (cm.current_graph == 'bar') {
-		                    chart = nv.models.multiBarChart();
+		                	chart = nv.models.lineChart()
+                			.useInteractiveGuideline(true);
 		                }
 		                chart.margin({
 		                    left : 100
@@ -413,18 +422,6 @@ var CM = (function($) {
 		                
 		                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
 	
-		                var type_var=Metrics.getMetricByID(as.currentind).getType();
-		                if (type_var == "integer") {
-					           chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
-			                } else if (type_var == "rank") {
-			                    chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
-			                } else if (type_var == "percentage") {
-			                    chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
-			                } else if (type_var == "numeric") {
-			                    chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
-			                } else if (type_var == "currency") {
-			                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
-			                }
 		                var data = new Array();
 		                for (var i = 0; i < multiData.length; i++) {
 		                    data[i] = {
@@ -435,7 +432,33 @@ var CM = (function($) {
 		                        return [ d["year"], d["value"] ];
 		                    });
 		                }
-		                d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
+		                
+		                var type_var=Metrics.getMetricByID(as.currentind).getType();
+		                if (type_var == "integer") {
+					           chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
+			                } else if (type_var == "rank") {
+			                    chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
+			                    chart.y(function(d) {
+			                    	return 
+			                    });
+			                    
+			                    
+			                } else if (type_var == "percentage") {
+			                    chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
+			                } else if (type_var == "numeric") {
+			                    chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
+			                } else if (type_var == "currency") {
+			                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
+			                }
+		               
+		                //select where the chart goes
+		                var chartDiv = d3.select('#mbody svg');
+		                
+		                //bind data to selection
+		                var vals = chartDiv.datum(data);
+		                //transition is like selection, only animates operations
+		                //call chart function on this transition
+		                vals.transition().duration(500).call(chart);
 	
 		                // TODO: Figure out a good way to do this automatically
 		                
@@ -443,12 +466,266 @@ var CM = (function($) {
 		                
 		                return chart;
 		            });
+		            
 		        }, 500);
+		        
 		    });
-		   
 		  }
 	   
 	}
+	
+	
+	
+	
+	
+	/*
+	
+	var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+	var x0 = d3.scale.ordinal()
+    	.rangeRoundBands([0, width], .1);
+
+	var x1 = d3.scale.ordinal();
+
+	var y = d3.scale.linear()
+    	.range([height, 0]);
+
+	var color = d3.scale.ordinal()
+    	.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+	var xAxis = d3.svg.axis()
+    	.scale(x0)
+    	.orient("bottom");
+
+	var yAxis = d3.svg.axis()
+    	.scale(y)
+    	.orient("left")
+    	.tickFormat(d3.format(".2s"));
+
+	var svg = d3.select("body").append("svg")
+    	.attr("width", width + margin.left + margin.right)
+    	.attr("height", height + margin.top + margin.bottom)
+    	.append("g")
+    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	d3.csv("data.csv", function(error, data) {
+		var ageNames = d3.keys(data[0]).filter(function(key) { return key !== "State"; });
+
+		data.forEach(function(d) {
+			d.ages = ageNames.map(function(name) { return {name: name, value: +d[name]}; });
+		});
+
+		x0.domain(data.map(function(d) { return d.State; }));
+		x1.domain(ageNames).rangeRoundBands([0, x0.rangeBand()]);
+		y.domain([0, d3.max(data, function(d) { return d3.max(d.ages, function(d) { return d.value; }); })]);
+
+		svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);
+
+		svg.append("g")
+			.attr("class", "y axis")
+			.call(yAxis)
+			.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 6)
+			.attr("dy", ".71em")
+			.style("text-anchor", "end")
+			.text("Population");
+
+		var state = svg.selectAll(".state")
+			.data(data)
+			.enter().append("g")
+			.attr("class", "g")
+			.attr("transform", function(d) { return "translate(" + x0(d.State) + ",0)"; });
+
+		state.selectAll("rect")
+			.data(function(d) { return d.ages; })
+			.enter().append("rect")
+			.attr("width", x1.rangeBand())
+			.attr("x", function(d) { return x1(d.name); })
+			.attr("y", function(d) { return y(d.value); })
+			.attr("height", function(d) { return height - y(d.value); })
+			.style("fill", function(d) { return color(d.name); });
+
+		var legend = svg.selectAll(".legend")
+			.data(ageNames.slice().reverse())
+			.enter().append("g")
+			.attr("class", "legend")
+			.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+		legend.append("rect")
+			.attr("x", width - 18)
+			.attr("width", 18)
+			.attr("height", 18)
+			.style("fill", color);
+
+		legend.append("text")
+			.attr("x", width - 24)
+			.attr("y", 9)
+			.attr("dy", ".35em")
+			.style("text-anchor", "end")
+			.text(function(d) { return d; });
+
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	function ckBarChart() {
+		  var margin = {top: 20, right: 20, bottom: 20, left: 20},
+		      width = 760,
+		      height = 120,
+		      xValue = function(d) { return d[0]; },
+		      yValue = function(d) { return d[1]; },
+		      xScale = d3.time.scale(),
+		      yScale = d3.scale.linear(),
+		      xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(6, 0),
+		      area = d3.svg.area().x(X).y1(Y),
+		      line = d3.svg.line().x(X).y(Y);
+		      
+		      ({
+                  left : 100
+              }).x(function(d) {
+                  return d[0]
+              }).y(function(d) {
+                  return d[1]
+              }) // adjusting, 100% is 1.00, not 100 as it is in the data
+              .color(d3.scale.category10().range())
+
+		  function chart(selection) {
+		    selection.each(function(data) {
+
+		      // Convert data to standard representation greedily;
+		      // this is needed for nondeterministic accessors.
+		      data = data.map(function(d, i) {
+		        return [xValue.call(data, d, i), yValue.call(data, d, i)];
+		      });
+
+		      // Update the x-scale.
+		      xScale
+		          .domain(d3.extent(data, function(d) { return d[0]; }))
+		          .range([0, width - margin.left - margin.right]);
+
+		      // Update the y-scale.
+		      yScale
+		          .domain([0, d3.max(data, function(d) { return d[1]; })])
+		          .range([height - margin.top - margin.bottom, 0]);
+
+		      // Select the svg element, if it exists.
+		      var svg = d3.select(this).selectAll("svg").data([data]);
+
+		      // Otherwise, create the skeletal chart.
+		      var gEnter = svg.enter().append("svg").append("g");
+		      gEnter.append("path").attr("class", "area");
+		      gEnter.append("path").attr("class", "line");
+		      gEnter.append("g").attr("class", "x axis");
+
+		      // Update the outer dimensions.
+		      svg .attr("width", width)
+		          .attr("height", height);
+
+		      // Update the inner dimensions.
+		      var g = svg.select("g")
+		          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		      // Update the area path.
+		      g.select(".area")
+		          .attr("d", area.y0(yScale.range()[0]));
+
+		      // Update the line path.
+		      g.select(".line")
+		          .attr("d", line);
+
+		      // Update the x-axis.
+		      g.select(".x.axis")
+		          .attr("transform", "translate(0," + yScale.range()[0] + ")")
+		          .call(xAxis);
+		    });
+		  }
+
+		  // The x-accessor for the path generator; xScale ∘ xValue.
+		  function X(d) {
+		    return xScale(d[0]);
+		  }
+
+		  // The x-accessor for the path generator; yScale ∘ yValue.
+		  function Y(d) {
+		    return yScale(d[1]);
+		  }
+
+		  chart.margin = function(_) {
+		    if (!arguments.length) return margin;
+		    margin = _;
+		    return chart;
+		  };
+
+		  chart.width = function(_) {
+		    if (!arguments.length) return width;
+		    width = _;
+		    return chart;
+		  };
+
+		  chart.height = function(_) {
+		    if (!arguments.length) return height;
+		    height = _;
+		    return chart;
+		  };
+
+		  chart.x = function(_) {
+		    if (!arguments.length) return xValue;
+		    xValue = _;
+		    return chart;
+		  };
+
+		  chart.y = function(_) {
+		    if (!arguments.length) return yValue;
+		    yValue = _;
+		    return chart;
+		  };
+
+		  return chart;
+		}
+	
+	
+	
+	
+	
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	Chart.prototype.showMultiGraphReloded = function(states) {
 		if(as.currentind == null || as.currentind == undefined)
 			return;
@@ -476,6 +753,7 @@ var CM = (function($) {
 	    	}
 	    
 		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
+		    
 		    query.execute(function(
 		            multiData) {
 		        setTimeout(function() {
@@ -508,52 +786,44 @@ var CM = (function($) {
 		                	k++;
 		                }
 		                
-		                
 		                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
 	
 		                var type_var=Metrics.getMetricByID(as.currentind).getType();
 		                if (type_var == "integer") {
-					           chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
-			                } else if (type_var == "rank") {
-			                    chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
-			                } else if (type_var == "percentage") {
-			                    chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
-			                } else if (type_var == "numeric") {
-			                    chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
-			                } else if (type_var == "currency") {
-			                    chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
-			                }
-		                var data = new Array();
-		                if(multiData[0][0].metric.binName!="National"){ //Attemnpting to fix the inverted line and bar graphs
-		                												//For national ranking. Unsuccesful so far
-		                	for (var i = 0; i < multiData.length; i++) {
-		                		//if(multiData[i][0].dataPoints.length>0){ // For bar graphs, not doing this was preventing the graph
-		                													//from showing. It is ok for line graph
-		                			data[i] = {
-			                				key : multiData[i][0].state.abbr,
-			                				color: cm.array_colors[i%cm.array_colors.length]
-			                		};
-			                		data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-			                			return [ d["year"], d["value"] ];
-			                		});
-		                		//}
-		                		
-		                	}
-		                }else{
-		                	var limit_array=multiData.length-1;
-		                	for (var i = limit_array; i>=0  ; i--) {
-		                		//if(multiData[i][0].dataPoints.length>0){ // For bar graphs, not doing this was preventing the graph
-									//from showing. It is ok for line graph
-		                			data[i] = {
-		                				key : multiData[i][0].state.abbr,
-		                				color: cm.array_colors[i%cm.array_colors.length]
-		                			};
-		                			data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-		                			return [ d["year"], d["value"] ];
-		                			});
-		                		//}
-		                	}
+		                	chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
+		                } 
+		                else if (type_var == "rank") {
+		                	chart
+		          
+
+		                	//reverse order of rankings
+		                	.yDomain([50, 1]).forceY([50, 1])
+		                	
+		                	.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
+		                	
+		                	
+		                } else if (type_var == "percentage") {
+		                	chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
+		                } else if (type_var == "numeric") {
+		                	chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
+		                } else if (type_var == "currency") {
+		                	chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
 		                }
+		                
+		                //get data
+		                var data = new Array();
+		                var limit_array=multiData.length-1;
+		                for (var i = limit_array; i>=0  ; i--) {
+		                	
+		                	data[i] = {
+		                			key : multiData[i][0].state.abbr,
+		                			color: cm.array_colors[i%cm.array_colors.length]
+		                	};
+		                	data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
+		                		return [ d["year"], d["value"] ];
+		                	});
+		                }
+		                
 		                if(data[0].values.length==0){
 		                	var counter=0;
 		                	var sentinel=0;
@@ -570,15 +840,17 @@ var CM = (function($) {
 			                
 		                }
 		                
-		                
+		                //bind data to chart
 		                if (cm.current_graph == 'line') {
 		                	d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
 		                }else if (cm.current_graph == 'bar') {
 		                	d3.select('#mbodyBar svg').datum(data).transition().duration(500).call(chart);
+		                	
 		                }
 		                // TODO: Figure out a good way to do this automatically
 		                
 		                nv.utils.windowResize(chart.update);
+		                d3.selectAll(".nv-bar > rect").attr("height", 50);
 		                
 		                return chart;
 		            });

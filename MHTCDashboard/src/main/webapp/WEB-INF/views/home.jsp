@@ -6,7 +6,7 @@
 <meta charset="utf-8" />
 <link href="css/nv.d3.css" rel="stylesheet">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="css/local_style.css" rel="stylesheet">
+<link href="css/styleMHTC.css" rel="stylesheet">
 <link href="css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet">
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 <link href="css/dataTables.css" rel="stylesheet">
@@ -282,43 +282,8 @@
 						</li>
 					</ul>
 					</div>
-					<%/*<div  id="stateSelection" style="margin-top:5px;">
-							Select states to display data <select id="ms" multiple="multiple">
-							<c:forEach items="${jv_all_states}" var="stat">
-								<c:forEach items="${stat.row}" var="row">
-									<option value="${row.id}">${row.name}</option>
-
-
-								</c:forEach>
-							</c:forEach>
-						</select>
-					</div>*/ %>
+					
 					<div class="tab-content">
-
-						<div class="tab-pane fade" id="line">
-	
-							<div class="box-content">
-								<h4 class="modal-title" id="graphTitle"></h4>
-								<%/*<h4 class="small" id="graphStates"></h4>*/%>
-								<div id="mbody" style="margin-right:5px; margin-top:20px;">
-									<svg style="height: 90%;"></svg>
-								</div>
-							</div>
-						</div>
-
-						<%/*<div class="tab-pane fade" id="national">
-						
-							<div class="box-content">
-								<div id="timelinetable" ></div>
-								<%/*<select id="yearsMultipleQuery"
-									class="btn btn-primary btn-right"></select>*/ %>
-								<%/*<h6 class="modal-title" >NV: No Value for the year selected</h6>
-							<div class="modal-body" id="mbodyMultipleQuery" >
-								<svg style="height: auto"></svg>
-							</div>
-							</div>
-							
-						</div>*/ %>
 						<div class="tab-pane active" id="table">
 							<div class="box-content">
 								<table style="width:98%"><tr style="width:98%; "><td id="timelinetable">
@@ -328,17 +293,20 @@
 							</div>
 						</div>
 						
+						<div class="tab-pane fade" id="line">
+							<div class="box-content">
+								<h4 class="modal-title" id="graphTitle"></h4>
+								<div id="mbody" style="margin-right:100px; margin-top:20px;"></div>
+							</div>
+						</div>	
+											
 						<div class="tab-pane fade" id="bar">
-
 							<div class="box-content">
 								<h4 class="modal-title" id="graphTitleBar"></h4>
-								<%/*<h4 class="small" id="graphStatesBar">Selected States:
-									Massachusetts, California, Texas</h4>*/ %>
-								<div id="mbodyBar" style="margin-top:20px;">
-									<svg style="height: 400%;"></svg>
-								</div>
+								<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
 							</div>
 						</div>
+						
 						<div class="tab-pane fade" id="heatmaptab">
 							<div class="box-content" >
 								<table style="width: 98%; height: 650px;">
@@ -367,9 +335,12 @@
 										<td align="center">
 											<table style="width: 100%; height: 650px; overflow: auto;">
 												<tr>
-													<td valign="top"><div id="mbodyHeatMap" text-align="center"
-															style=""></div> </td>
-													<td valign="top" align="left" style="width:10%; padding-left:10px;"> <div id="verticalheatmapmeter"></div></td>
+													<td valign="top">
+														<div id="mbodyHeatMap" text-align="center"style=""></div> 
+													</td>
+													<td valign="top" align="left" style="width:10%; padding-left:10px;"> 
+														<div id="verticalheatmapmeter"></div>
+													</td>
 
 												</tr>
 											</table>

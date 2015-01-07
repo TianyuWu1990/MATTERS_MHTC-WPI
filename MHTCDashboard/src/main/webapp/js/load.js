@@ -300,8 +300,7 @@ loadFunction = function() {
 	$("#chartType" ).change(function() {
 		
 		  cm.current_graph = this.value;
-		  //alert("current_graph11"+cm.current_graph);
-		  //cm.showMultiGraph(cm.selected);
+		//alert("current_graph11"+cm.current_graph);
 		  cm.showMultiGraph(as.selected);
 		});
 	$("#yearHeatMap").change(function(){
