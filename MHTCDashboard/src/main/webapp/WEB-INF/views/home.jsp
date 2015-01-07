@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <html>
 <head>
 <meta charset="utf-8" />
 <link href="css/nv.d3.css" rel="stylesheet">
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="css/local_style.css" rel="stylesheet">
 <link href="css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet">
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -96,54 +96,10 @@
 					<ul class="nav pull-right" id="main-menu">
 						<li id="explore"><a href="#">Explore</a></li>
 						<li id="about"><a>About</a></li>
-						<li class="dropdown"><a class="dropdown-toggle" id="dLabel"
-							data-toggle="dropdown" data-target="#" href=""><i class="fa fa-user"></i>&nbsp;Login <span
-								class="caret"></span>
-						</a>
-							<div class="dropdown-menu" role="menu" aria-labelledby="dLabel"
-								style="padding: 0px;">
-
-								<%/*<form class="navbar-form navbar-left"
-									action="<c:url value='j_spring_security_check' />"
-									method="POST" role="search" style="margin: 0px;">
-									<input type="text" class="form-control" placeholder="username"
-										name="username" id="username">
-									<input type="password"
-										class="form-control" placeholder="password" name="password"
-										id="password">
-
-									<button id="login-button" type="submit" value="submit" class="btn btn-default" style="margin: 0px; width: 100%; height: 40px; background: #333;">Login</button>
-
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" style="display: none;" />
-								</form>*/ %>
-								<form method="post" class="signin" action="http://www.alessioatzeni.com/wp-content/tutorials/jquery/Signin-Dropdown-box-twitter-style/index.html#">
-				                <fieldset class="textbox">
-				            	<label class="username">
-				                <span>Username or email</span>
-				                <input id="username" name="username" value="" type="text" autocomplete="on">
-				                </label>
-				                
-				                <label class="password">
-				                <span>Password</span>
-				                <input id="password" name="password" value="" type="password">
-				                </label>
-				                </fieldset>
-				                
-				                <fieldset class="remb">
-				                <label class="remember">
-				                <input type="checkbox" value="1" name="remember_me">
-				                <span>Remember me</span>
-				                </label>
-				                <button class="submit button" type="button">Login</button>
-				                </fieldset>
-				                <p align="center">
-				               		 <a class="forgot" href="">Forgot your password</a>
-				                </p>
-				                <input type="hidden" name="${_csrf.parameterName}"
-														value="${_csrf.token}" style="display: none;" />
-				                </form>
-							</div></li>
+						<sec:authorize access="hasRole('ADMIN')">
+                            	<li id="admin"><a href="admin">Admin Panel</a></li>
+                        </sec:authorize>
+						<li id="login"><a href="login/">Login</a>
 					</ul>
 					<!-- /.navbar-collapse -->
 				</div>

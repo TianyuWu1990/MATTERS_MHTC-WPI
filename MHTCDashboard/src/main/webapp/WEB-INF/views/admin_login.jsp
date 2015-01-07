@@ -12,7 +12,7 @@
 <title>Authentication</title>
 
 <!-- Bootstrap core CSS -->
-<link href="../../adminPanel/css/bootstrap.min.css" rel="stylesheet">
+<link href="../adminPanel/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 body {
@@ -71,7 +71,7 @@ body {
 				${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
 			</div>
 		</c:if>
-		<form class="form-signin" action="${pageContext.request.contextPath}/admin/login/" method="post">
+		<form class="form-signin" action="${pageContext.request.contextPath}/login/" method="post">
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<label for="inputUsername" class="sr-only">Username</label> 
 			<input name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus> 

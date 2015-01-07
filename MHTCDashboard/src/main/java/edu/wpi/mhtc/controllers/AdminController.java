@@ -72,12 +72,12 @@ public class AdminController {
     }
     
     /********** Authentication **********/
-    @RequestMapping(value = "admin/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage() {
         return "logoutPage";
     }
     
-    @RequestMapping(value = "admin/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
         return "admin_login";
     }

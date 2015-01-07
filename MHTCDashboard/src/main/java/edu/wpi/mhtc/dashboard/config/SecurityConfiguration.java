@@ -19,9 +19,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 		auth.jdbcAuthentication().dataSource(cfg.dataSource())
 		.usersByUsernameQuery(
-			"select \"UserName\" as username, \"PasswordHash\" as password, 'true' as enabled from mhtc_sch.admins where \"UserName\"=?")
+			"select \"UserName\" as username, \"PasswordHash\" as password, 'true' as enabled from mhtc_sch.users where \"UserName\"=?")
 		.authoritiesByUsernameQuery(
-			"select \"UserName\" as username, 'ROLE_ADMIN' as authorities from mhtc_sch.admins where \"UserName\"=?")
+			"select \"UserName\" as username, \"Authorities\" as authorities from mhtc_sch.user_roles where \"UserName\"=?")
 		.passwordEncoder(new Md5PasswordEncoder());
 	}
 
@@ -29,17 +29,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().
 		authorizeRequests()
-			.antMatchers("/admin**").access("hasRole('ROLE_ADMIN')")
-			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+			.antMatchers("/admin**").access("hasRole('ADMIN')")
+			.antMatchers("/admin/**").access("hasRole('ADMIN')")
 			.and()
 		.logout()
-			.logoutUrl("/admin/logout")
+			.logoutUrl("/logout/")
 			.logoutSuccessUrl("/")
 			.deleteCookies("JSESSIONID")
 			.and()
 		.formLogin()
-			.defaultSuccessUrl("/admin", true)
-			.loginPage("/admin/login/")
+			.defaultSuccessUrl("/", true)
+			.loginPage("/login/")
 			.permitAll();
 	}
 }
