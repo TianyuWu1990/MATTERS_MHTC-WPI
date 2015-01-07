@@ -12,11 +12,11 @@
 				</c:if>
 				<div class="login-panel panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Please Sign In</h3>
+						<h3 class="panel-title">MHTC Administrator Panel - Please Sign In</h3>
 					</div>
 					<div class="panel-body">
 						<form role="form"
-							action="${pageContext.request.contextPath}/admin/login"
+							action="${pageContext.request.contextPath}/admin/login/"
 							method="post">
 							<input type="hidden" name="${_csrf.parameterName}"
 								value="${_csrf.token}" />

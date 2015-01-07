@@ -393,6 +393,7 @@ public class AdminController {
     
     @RequestMapping(value = "/post_reports", method = RequestMethod.POST)
     public @ResponseBody String admin_post_reports(Locale locale, Model model, @RequestParam("message") String message) throws Exception {
+    	// TODO: Add security measure to prevent unauthorized users to access this point
     	Logger.jsonTalendLog(message);
     	return "{\"success\" : true}";
     }    
