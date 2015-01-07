@@ -40,7 +40,7 @@ public class Admin {
 	// Push into database
 	public boolean insertToDB() throws SQLException {
 		if (this.id == 0) { // Just to make sure this Admin class is not DB-retrieved.
-			String sql = "insert into mhtc_sch.admins(\"UserName\", \"PasswordHash\", \"Email\", \"FirstName\", \"LastName\") values(?, md5(?), ?, ?, ?) ";
+			String sql = "INSERT INTO mhtc_sch.users(\"UserName\", \"PasswordHash\", \"Email\", \"FirstName\", \"LastName\", \"IsApproved\", \"GroupId\") VALUES (?, md5(?), ?, ?, ?, true, 1)";
 			Connection conn = DBConnector.getInstance().getConn();
 			PreparedStatement pstatement = conn.prepareStatement(sql);
 			
@@ -50,7 +50,16 @@ public class Admin {
 			pstatement.setString(4, this.firstName);
 			pstatement.setString(5, this.lastName);
 			System.out.println(pstatement.toString());
-			return pstatement.execute();
+			boolean insertStatus = pstatement.execute();
+			
+			String roles_sql = "INSERT INTO mhtc_sch.user_roles VALUES (?, 'ADMIN'), (?, 'USER')";
+			PreparedStatement prolestatement = conn.prepareStatement(roles_sql);
+			prolestatement.setString(1, this.username);
+			prolestatement.setString(2, this.username);
+			System.out.println(prolestatement.toString());
+			boolean roleStatus = prolestatement.execute();
+			
+			return insertStatus && roleStatus;
 		} else {
 			return false;
 		}
@@ -63,7 +72,7 @@ public class Admin {
 	static final int NEW_PASSWORD_NOT_MATCHED = -2;
 	public int changePassword(String oldPassword, String newPassword, String confirmPassword) throws SQLException {
 		// Security validation
-		String sql = "SELECT \"UserName\", \"PasswordHash\" FROM mhtc_sch.admins WHERE \"UserName\"=? AND \"PasswordHash\"=md5(?)";
+		String sql = "SELECT \"UserName\", \"PasswordHash\" FROM mhtc_sch.users WHERE \"UserName\"=? AND \"PasswordHash\"=md5(?)";
 		Connection conn = DBConnector.getInstance().getConn();
 		PreparedStatement pstatement = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		pstatement.setString(1, this.username);
@@ -101,7 +110,7 @@ public class Admin {
 	}
 	
 	private int setNewPassword(String newPassword) throws SQLException {
-		String update_sql = "UPDATE mhtc_sch.admins SET \"PasswordHash\"=md5(?) WHERE \"UserName\"=?";
+		String update_sql = "UPDATE mhtc_sch.users SET \"PasswordHash\"=md5(?) WHERE \"UserName\"=?";
 		Connection conn = DBConnector.getInstance().getConn();
 		PreparedStatement pstatement = conn.prepareStatement(update_sql);
 		pstatement.setString(1, newPassword);

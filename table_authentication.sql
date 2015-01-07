@@ -57,8 +57,7 @@ CREATE TABLE mhtc_sch.user_roles
 );
 
 -- Insert some roles
-INSERT INTO mhtc_sch.user_roles VALUES ('wpi', 'ADMIN');
-INSERT INTO mhtc_sch.user_roles VALUES ('wpi', 'USER');
+INSERT INTO mhtc_sch.user_roles VALUES ('wpi', 'ADMIN'), ('wpi', 'USER');
 INSERT INTO mhtc_sch.user_roles VALUES ('wpi-user', 'USER');
 
 
