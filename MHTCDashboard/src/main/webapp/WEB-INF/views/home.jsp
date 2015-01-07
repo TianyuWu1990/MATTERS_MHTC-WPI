@@ -99,7 +99,14 @@
 						<sec:authorize access="hasRole('ADMIN')">
                             	<li id="admin"><a href="admin">Admin Panel</a></li>
                         </sec:authorize>
-						<li id="login"><a href="login/">Login</a>
+                        
+                        <sec:authorize access="!isAuthenticated()">
+							<li id="login"><a href="login/">Login</a></li>
+						</sec:authorize>
+						
+                        <sec:authorize access="isAuthenticated()">
+							<li id="login"><a href="logout/">Logout</a></li>
+						</sec:authorize>
 					</ul>
 					<!-- /.navbar-collapse -->
 				</div>
