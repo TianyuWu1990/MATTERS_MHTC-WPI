@@ -184,12 +184,13 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addCategory", method = RequestMethod.POST, params = {"parentcategory", "categoryName", "source"})
-    public String admin_addCategory(Locale locale, Model model, 
+    public String admin_addCategory(Locale locale, Model model, HttpServletRequest request,
     		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
     {
     	DBSaver.insertNewCategory(categoryName, parentid, source);
+    	String referer = request.getHeader("Referer");
 
-        return "redirct:admin_upload";
+        return "redirect:"+referer;
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "datatype", "isCalculated"})
