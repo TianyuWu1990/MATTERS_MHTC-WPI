@@ -194,7 +194,7 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "datatype", "isCalculated"})
-    public String admin_addMetric(Locale locale, Model model,
+    public String admin_addMetric(Locale locale, Model model, HttpServletRequest request,
     		@RequestParam("subcategory") String subCategory, @RequestParam("metricName") String metricName, @RequestParam("datatype") String datatype,
     		@RequestParam("isCalculated") String isCalculated, @RequestParam("parentcategory") String parentCategory) throws SQLException
     {
@@ -210,7 +210,9 @@ public class AdminController {
     	boolean isCalc = Boolean.parseBoolean(isCalculated);
     	DBSaver.insertNewMetric(metricName, isCalc, categoryID, datatype);
 
-        return "redirct:admin_upload";
+    	String referer = request.getHeader("Referer");
+
+        return "redirect:"+referer;
     }
     
     /*********************** PIPELINE ********************************/
