@@ -2,10 +2,8 @@ package edu.wpi.mhtc.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.sql.Connection;
@@ -48,6 +46,7 @@ import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
+import edu.wpi.mhtc.dashboard.pipeline.scheduler.TalendJob;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
 import edu.wpi.mhtc.dashboard.util.Logger;
@@ -281,10 +280,19 @@ public class AdminController {
 		
 		Path scriptFilePath = finder.done();
 		System.out.println(scriptFilePath);
-
+		
     	// Now let's add the entry to the database if nothing has failed yet    	
-    	//DBSaver.insertPipeline(pipelineName, pipelineDesc, dir.toString(), script.getOriginalFilename());
+    	DBSaver.insertPipeline(pipelineName, pipelineDesc, dir.toString(), script.getOriginalFilename());
     	
+    	//Now run job on server
+    	try {
+    		scriptFilePath.toFile().setExecutable(true);
+//    		Runtime.getRuntime().exec("chmod +x" + scriptFilePath.toString());
+			TalendJob.runPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
     	return "redirect:admin_pipeline";
     }
     
