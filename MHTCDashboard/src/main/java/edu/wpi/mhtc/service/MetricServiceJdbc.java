@@ -66,7 +66,7 @@ public class MetricServiceJdbc implements MetricService {
                 	if (tabids[i] == rs.getInt("Id"))
                 			tabbed = true;
                 		
-                return new Metric(rs.getInt("Id"), rs.getString("DisplayName"), categoryId, finalName, rs.getString("DataType"), trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"), tabbed);
+                return new Metric(rs.getInt("Id"), rs.getString("Name"), categoryId, finalName, rs.getString("DataType"), trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"), tabbed);
             }
 
         });

@@ -2,7 +2,7 @@
 <%@ include file="admin_header.jsp" %> 
 <%@ include file="admin_navigation_bar.jsp" %> 
 
-		<script src="js/admin_pipeline.js" type="text/javascript"></script>
+		<script src="adminPanel/js/admin_pipeline.js" type="text/javascript"></script>
 
         <div id="page-wrapper">
         	<div class="row">
@@ -164,6 +164,10 @@
 	        						<label>Enter a name for the new metric:</label>
 	        						<input class="form-control" name="metricName" required>
 	        					</div>
+	        					<div class="form-group">
+	        						<label>Enter a description for the new metric:</label>
+	        						<textarea class="form-control" name="metricDesc" rows="5" cols="15"></textarea>
+	        					</div>	        					
 	        					<div class="form-group">
 	        						<label>Enter the datatype:</label>
 	        						<select class="form-control" name="datatype" required>

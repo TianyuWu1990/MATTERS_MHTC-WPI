@@ -52,24 +52,26 @@ public class DBSaver {
 	}
 
 	//	Category must exist in db already !!!
-	public static boolean insertNewMetric(String metricName, boolean b, int categoryID, String dataType) throws SQLException {
+	public static boolean insertNewMetric(String metricName, String metricDesc, boolean b, int categoryID, String dataType) throws SQLException {
 
 		Connection conn = DBConnector.getInstance().getConn();
 
+		// Stored procedure doesn't allow us to enter a description (column DisplayName)
 		String sql = "select * from mhtc_sch.insertmetric(?,?,?,?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setString(1, metricName); 
 		pstatement.setBoolean(2, b);
 		pstatement.setInt(3,categoryID);
 		pstatement.setString(4, dataType);
-		ResultSet rs = pstatement.executeQuery();
-		rs.next();
-		String tableHeader = rs.getString(1);
-
-		if (Integer.parseInt(tableHeader) == 1)
-			return true;
-		else 
-			return false;
+		
+		pstatement.execute();
+		
+		sql = "UPDATE mhtc_sch.metrics SET \"DisplayName\" = ? WHERE \"Name\" = ?";
+		pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, metricDesc);
+		pstatement.setString(2, metricName);
+		
+		return pstatement.execute();
 	}
 
 	// Insert new schedule

@@ -44,8 +44,16 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 				"/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations(
 				"/js/");
+		registry.addResourceHandler("/fonts/**").addResourceLocations(
+				"/fonts/");
 		registry.addResourceHandler("/font-awesome-4.1.0/**").addResourceLocations(
 				"/font-awesome-4.1.0/");
+		registry.addResourceHandler("/less/**").addResourceLocations(
+				"/less/");
+		registry.addResourceHandler("/img/**").addResourceLocations(
+				"/img/");
+		registry.addResourceHandler("/adminPanel/**").addResourceLocations(
+				"/adminPanel/");
 	}
 	
 	@Bean

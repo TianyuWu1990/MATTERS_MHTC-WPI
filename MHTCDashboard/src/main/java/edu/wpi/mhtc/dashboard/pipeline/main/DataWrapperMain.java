@@ -2,10 +2,8 @@ package edu.wpi.mhtc.dashboard.pipeline.main;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.wpi.mhtc.dashboard.pipeline.config.StateInfoConfig;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BEADownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.BLSDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.DataGovDownload;
@@ -48,7 +46,8 @@ public class DataWrapperMain {
 
 
 		//Bureau of Economic Analysis-all regions and years
-		bea.download("http://www.bea.gov/itable/download.cfm?ext=csv&fid=B543E5DBA3B4E53FD891B19007B42B878D129B6B2748DC214E8A4E7CABFEDCCB522F771881E09A5857B449F0B6C397CB7F09B19F65C08EDE33EDFE47038C81A4", DATA_DIRECTORY+"/allbea.csv");
+		bea.download("http://www.bea.gov/itable/download.cfm?ext=csv&fid=B543E5DBA3B4E53FD891B19007B42B878D129B6B2748DC214E8A4E7CABFEDCCB"
+				+ "522F771881E09A5857B449F0B6C397CB7F09B19F65C08EDE33EDFE47038C81A4", DATA_DIRECTORY+"/allbea.csv");
 
 		//IPEDS number of colleges and universities
 		DataGovDownload data_gov_downloader = new DataGovDownload();

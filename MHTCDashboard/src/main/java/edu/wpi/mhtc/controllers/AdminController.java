@@ -2,10 +2,8 @@ package edu.wpi.mhtc.controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.sql.Connection;
@@ -41,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
@@ -48,6 +47,7 @@ import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
+import edu.wpi.mhtc.dashboard.pipeline.scheduler.TalendJob;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
 import edu.wpi.mhtc.dashboard.util.Logger;
@@ -72,12 +72,12 @@ public class AdminController {
     }
     
     /********** Authentication **********/
-    @RequestMapping(value = "admin/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage() {
         return "logoutPage";
     }
     
-    @RequestMapping(value = "admin/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
         return "admin_login";
     }
@@ -184,18 +184,19 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addCategory", method = RequestMethod.POST, params = {"parentcategory", "categoryName", "source"})
-    public String admin_addCategory(Locale locale, Model model, 
+    public String admin_addCategory(Locale locale, Model model, HttpServletRequest request,
     		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
     {
     	DBSaver.insertNewCategory(categoryName, parentid, source);
+    	String referer = request.getHeader("Referer");
 
-        return "redirct:admin_upload";
+        return "redirect:"+referer;
     }
     
-    @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "datatype", "isCalculated"})
-    public String admin_addMetric(Locale locale, Model model,
-    		@RequestParam("subcategory") String subCategory, @RequestParam("metricName") String metricName, @RequestParam("datatype") String datatype,
-    		@RequestParam("isCalculated") String isCalculated, @RequestParam("parentcategory") String parentCategory) throws SQLException
+    @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "metricDesc", "datatype", "isCalculated"})
+    public String admin_addMetric(Locale locale, Model model, HttpServletRequest request,
+    		@RequestParam("subcategory") String subCategory, @RequestParam("metricName") String metricName, @RequestParam("metricDesc") String metricDesc, 
+    		@RequestParam("datatype") String datatype, @RequestParam("isCalculated") String isCalculated, @RequestParam("parentcategory") String parentCategory) throws SQLException
     {
     	int categoryID;
     	
@@ -207,9 +208,11 @@ public class AdminController {
     	}
 
     	boolean isCalc = Boolean.parseBoolean(isCalculated);
-    	DBSaver.insertNewMetric(metricName, isCalc, categoryID, datatype);
+    	DBSaver.insertNewMetric(metricName, metricDesc, isCalc, categoryID, datatype);
 
-        return "redirct:admin_upload";
+    	String referer = request.getHeader("Referer");
+
+        return "redirect:"+referer;
     }
     
     /*********************** PIPELINE ********************************/
@@ -278,10 +281,19 @@ public class AdminController {
 		
 		Path scriptFilePath = finder.done();
 		System.out.println(scriptFilePath);
-
+		
     	// Now let's add the entry to the database if nothing has failed yet    	
-    	//DBSaver.insertPipeline(pipelineName, pipelineDesc, dir.toString(), script.getOriginalFilename());
+    	DBSaver.insertPipeline(pipelineName, pipelineDesc, dir.toString(), script.getOriginalFilename());
     	
+    	//Now run job on server
+    	try {
+    		scriptFilePath.toFile().setExecutable(true);
+//    		Runtime.getRuntime().exec("chmod +x" + scriptFilePath.toString());
+			TalendJob.runPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
     	return "redirect:admin_pipeline";
     }
     
@@ -391,8 +403,15 @@ public class AdminController {
         return "admin_reports";
     }
     
+    @RequestMapping(value = "/post_reports", method = RequestMethod.POST)
+    public @ResponseBody String admin_post_reports(Locale locale, Model model, @RequestParam("data") String data) throws Exception {
+    	// TODO: Add some security measures to prevent unauthorized users to access this RESTful service.
+    	Logger.jsonTalendLog(data);
+    	return "{\"success\" : true}";
+    }    
+    
     @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>>  dmin_get_logs(Locale locale, Model model) throws Exception {
+    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model) throws Exception {
     	return Logger.retriveLog();
     }    
     
@@ -469,21 +488,28 @@ public class AdminController {
         
     }
     
+    @RequestMapping(value = "/errorTest", method = RequestMethod.GET)
+    public ModelAndView getErrorPage() throws Exception {
+    	
+    	MHTCException test = new CategoryException("You threw an MHTC Exception!");
+    	test.setSolution("And here is the solution you set!");
+    	
+    	throw test;
+    }
     
+    /*********************** ERROR HANDLING **********************************/
     
     /**
-     * Handles all MHTCExceptions that could occur during the pipeline execution
+     * Handles all Exceptions that could occur in the system
      * @param e the exception to catch and pass to the view
      * @return the appropriate error view
      */
-    @ExceptionHandler(MHTCException.class)
-    public ModelAndView handleCategoryException(HttpServletRequest req, Exception e){
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(Exception e){
     	
-    	ModelAndView mav = new ModelAndView();
+    	ModelAndView mav = new ModelAndView("error");
     	
     	mav.addObject("exception", e);
-    	mav.addObject("url", req.getRequestURL());
-    	mav.setViewName("error");
     	
     	return mav;
     }
