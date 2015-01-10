@@ -22,7 +22,7 @@ public class TalendJob implements Job {
 		System.out.println("Talend Job "  + jobName + " completed at:"  + new Date());
 	}
 
-	private void runPipeline(String pipelineName, String pipelineDesc, String path, String filename) throws IOException {
+	public static void runPipeline(String pipelineName, String pipelineDesc, String path, String filename) throws IOException {
 		ProcessBuilder pb = new ProcessBuilder(path);
 		Process p = pb.start();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));

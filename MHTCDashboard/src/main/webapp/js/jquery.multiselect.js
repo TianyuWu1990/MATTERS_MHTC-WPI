@@ -230,10 +230,10 @@
           value = $checked.map(function() { return $(this).next().html(); }).get().join(', ');console.log("here2");
         } else {
         	 value = $.map($checked.parent(), function(checkbox){
-        		 if(checkbox.innerText.indexOf('(') != -1)
-        			 val = checkbox.innerText.substr(checkbox.innerText.indexOf('(')+1 , checkbox.innerText.length).replace(')','')
+        		 if(checkbox.textContent.indexOf('(') != -1)
+        			 val = checkbox.textContent.substr(checkbox.textContent.indexOf('(')+1 , checkbox.textContent.length).replace(')','')
         		else
-        				 val = checkbox.innerText;
+        				 val = checkbox.textContent;
                  return val;
               }).join(", ");
              

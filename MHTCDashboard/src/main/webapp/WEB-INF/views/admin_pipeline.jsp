@@ -165,6 +165,10 @@
 	        						<input class="form-control" name="metricName" required>
 	        					</div>
 	        					<div class="form-group">
+	        						<label>Enter a description for the new metric:</label>
+	        						<textarea class="form-control" name="metricDesc" rows="5" cols="15"></textarea>
+	        					</div>	        					
+	        					<div class="form-group">
 	        						<label>Enter the datatype:</label>
 	        						<select class="form-control" name="datatype" required>
 	        							<option value="">-- Select a datatype --</option>
