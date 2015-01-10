@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
@@ -469,21 +470,28 @@ public class AdminController {
         
     }
     
+    @RequestMapping(value = "/errorTest", method = RequestMethod.GET)
+    public ModelAndView getErrorPage() throws Exception {
+    	
+    	MHTCException test = new CategoryException("You threw an MHTC Exception!");
+    	test.setSolution("And here is the solution you set!");
+    	
+    	throw test;
+    }
     
+    /*********************** ERROR HANDLING **********************************/
     
     /**
-     * Handles all MHTCExceptions that could occur during the pipeline execution
+     * Handles all Exceptions that could occur in the system
      * @param e the exception to catch and pass to the view
      * @return the appropriate error view
      */
-    @ExceptionHandler(MHTCException.class)
-    public ModelAndView handleCategoryException(HttpServletRequest req, Exception e){
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(Exception e){
     	
-    	ModelAndView mav = new ModelAndView();
+    	ModelAndView mav = new ModelAndView("error");
     	
     	mav.addObject("exception", e);
-    	mav.addObject("url", req.getRequestURL());
-    	mav.setViewName("error");
     	
     	return mav;
     }

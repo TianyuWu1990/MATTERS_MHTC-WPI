@@ -1,34 +1,35 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html>
-<!DOCTYPE html>
+<%@ include file="admin_header.jsp" %> 
+<%@ include file="admin_navigation_bar.jsp" %> 
 
-<head>
-<title>Error!</title>
-</head>
-<body>
-	<h1>Oops...</h1>
-	<table width="100%" border="1">
-		<tr valign="top">
-			<td width="40%"><b>Error:</b></td>
-			<td>${exception.message}</td>
-		</tr>
-		<tr valign="top">
-			<td><b>URI:</b></td>
-			<td>${url}</td>
-		</tr>
-		<tr valign="top">
-			<td><b>Possible solution:</b></td>
-			<td>${exception.solution}</td>
-		</tr>
-		<tr valign="top">
-			<td><b>Stack trace:</b></td>
-			<td><c:forEach items="${exception.stackTrace}" var="trace">
-					<p>${trace}</p>
-				</c:forEach>
-			</td>
-		</tr>
-	</table>
-	
-	<!--  Add in button to go back to previous page -->
-</body>
-</html>
+        <div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header"><i class="fa fa-ban fa-2x text-danger"></i> Uh oh! Something went wrong...</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<h3>Error Message:</h3>
+					<p>${exception.message}</p>
+				</div>
+			</div>
+			<c:if test="${not empty exception.solution}">
+				<div class="row">
+					<div class="col-lg-12">
+						<h3>Possible solution:</h3>
+						<p>${exception.solution}</p>
+					</div>
+				</div>
+			</c:if>
+			<!-- <div class="row">
+				<div class="col-lg-12">
+					<h2>Error Stacktrace:</h2>
+					<c:forEach items="${exception.stackTrace}" var="trace">
+						${trace}
+					</c:forEach>
+				</div>
+			</div>  -->			
+		</div> <!-- /#page-wrapper -->
+
+<%@ include file="admin_footer.jsp" %>
