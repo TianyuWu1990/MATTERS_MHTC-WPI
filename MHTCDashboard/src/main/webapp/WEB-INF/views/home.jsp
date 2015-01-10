@@ -101,7 +101,37 @@
                         </sec:authorize>
                         
                         <sec:authorize access="!isAuthenticated()">
-							<li id="login"><a href="login/">Login</a></li>
+							<li class="dropdown">
+								<a class="dropdown-toggle" id="dLabel" data-toggle="dropdown" data-target="#" href="">
+									<i class="fa fa-user"></i>&nbsp;Login <span class="caret"></span>
+								</a>
+								<div class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="padding: 0px;">
+									<form method="post" class="signin" action="http://www.alessioatzeni.com/wp-content/tutorials/jquery/Signin-Dropdown-box-twitter-style/index.html#">
+					                <fieldset class="textbox">
+					            	<label class="username">
+					                <span>Username or email</span>
+					                <input id="username" name="username" value="" type="text" autocomplete="on">
+					                </label>
+					                
+					                <label class="password">
+					                <span>Password</span>
+					                <input id="password" name="password" value="" type="password">
+					                </label>
+					                </fieldset>
+					                
+					                <fieldset class="remb">
+					                <label class="remember">
+					                <input type="checkbox" value="1" name="remember_me">
+					                <span>Remember me</span>
+					                </label>
+					                <button class="submit button" type="button">Login</button>
+					                </fieldset>
+					                <p align="center">
+					               		 <a class="forgot" href="">Forgot your password</a>
+					                </p>
+					                </form>
+								</div>
+							</li>
 						</sec:authorize>
 						
                         <sec:authorize access="isAuthenticated()">
