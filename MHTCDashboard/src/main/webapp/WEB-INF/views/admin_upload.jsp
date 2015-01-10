@@ -68,23 +68,19 @@
      		<br />
             <div class="row">
         		<div class="col-lg-12">
-        	        <c:choose>
-        				<c:when test="${category_success_add}">
+        	        <c:if test="${category_success_add}">
 		        			<div class="alert alert-success alert-dismissible" id="addCategorySuccess">
 		                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 		        				You've successfully added a category to the database!
 		        			</div>
-		        		</c:when>
-		        	</c:choose>
+		        	</c:if>
 		        	
-        			<c:choose>
-        				<c:when test="${metric_success_add}">
+        			<c:if test="${metric_success_add}">
 		        			<div class="alert alert-success alert-dismissible" id="addMetricSuccess">
 		                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 		        				You've successfully added a metric to the database!
 		        			</div>
-	        			</c:when>
-		        	</c:choose>        		
+	        		</c:if>        		
 		        </div>
         	</div>   	
         	

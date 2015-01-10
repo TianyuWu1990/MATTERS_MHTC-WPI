@@ -107,7 +107,7 @@ $(function() {
 		$('#pipelinesTbl').DataTable().destroy();
 	}
 	
-	$('#pipelineTbl').DataTable({
+	var table = $('#pipelineTbl').DataTable({
 		"processing": true,
 		"ajax": {
 			"url": "admin_pipeline/getPipelineData",
@@ -116,11 +116,11 @@ $(function() {
 		"aoColumns": [
 			            { "mData": "pipelinename" },
 			            { "mData": "pipelinedesc" },
-			            { "mData": "path" },
-			            { "mData": "filename" }
+//			            { "mData": "path" },
+			            { "mData": "filename" },
 		]
 	});
 	
 	$('#pipelines').show();
-
+			
 });

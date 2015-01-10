@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
@@ -184,17 +185,20 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addCategory", method = RequestMethod.POST, params = {"parentcategory", "categoryName", "source"})
-    public String admin_addCategory(Locale locale, Model model, HttpServletRequest request,
+    public String admin_addCategory(Locale locale, Model model, RedirectAttributes redir, HttpServletRequest request,
     		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
     {
     	DBSaver.insertNewCategory(categoryName, parentid, source);
     	String referer = request.getHeader("Referer");
+    	
+    	// For status message
+		redir.addFlashAttribute("category_success_add", true);
 
         return "redirect:"+referer;
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "metricDesc", "datatype", "isCalculated"})
-    public String admin_addMetric(Locale locale, Model model, HttpServletRequest request,
+    public String admin_addMetric(Locale locale, RedirectAttributes redir, HttpServletRequest request,
     		@RequestParam("subcategory") String subCategory, @RequestParam("metricName") String metricName, @RequestParam("metricDesc") String metricDesc, 
     		@RequestParam("datatype") String datatype, @RequestParam("isCalculated") String isCalculated, @RequestParam("parentcategory") String parentCategory) throws SQLException
     {
@@ -211,7 +215,10 @@ public class AdminController {
     	DBSaver.insertNewMetric(metricName, metricDesc, isCalc, categoryID, datatype);
 
     	String referer = request.getHeader("Referer");
-
+    	
+    	// For status message
+		redir.addFlashAttribute("metric_success_add", true);
+		
         return "redirect:"+referer;
     }
     
@@ -319,7 +326,7 @@ public class AdminController {
 			
 			row.put("pipelinename",pipelineName);
 			row.put("pipelinedesc", pipelineDesc);
-			row.put("path", path);
+			//row.put("path", path);
 			row.put("filename", filename);
 			
 			data.add(row);

@@ -74,25 +74,21 @@
      		<br />
             <div class="row">
         		<div class="col-lg-12">
-        	        <c:choose>
-        				<c:when test="${category_success_add}">
+        	        <c:if test="${category_success_add}">
 		        			<div class="alert alert-success alert-dismissible" id="addCategorySuccess">
 		                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 		        				You've successfully added a category to the database!
 		        			</div>
-		        		</c:when>
-		        	</c:choose>
+		        	</c:if>
 		        	
-        			<c:choose>
-        				<c:when test="${metric_success_add}">
+        				<c:if test="${metric_success_add}">
 		        			<div class="alert alert-success alert-dismissible" id="addMetricSuccess">
 		                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 		        				You've successfully added a metric to the database!
 		        			</div>
-	        			</c:when>
-		        	</c:choose>        		
+	        			</c:if>        		
 		        </div>
-        	</div>   	
+        	</div>
         	
         	<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModal" aria-hidden="true">
         		<form id="admin_addCategory" action="admin_addCategory" method="POST">
@@ -124,10 +120,10 @@
 	        				</div>
 	        				<div class="modal-footer">
 								<button type="button" class="btn btn-danger" data-dismiss="modal">
-									<i class="glyphicon glyphicon-remove"></i> Close
+									<i class="fa fa-times"></i> Close
 								</button>
 								<button type="submit" class="btn btn-primary">
-									<i class="glyphicon glyphicon-ok"></i> Submit
+									<i class="fa fa-check"></i> Submit
 								</button>	        				
 							</div>
 	        			</div>
@@ -189,10 +185,10 @@
 	        				</div>
 	        				<div class="modal-footer">
 								<button type="button" class="btn btn-danger" data-dismiss="modal">
-									<i class="glyphicon glyphicon-remove"></i> Close
+									<i class="fa fa-times"></i> Close
 								</button>
 								<button type="submit" class="btn btn-primary">
-									<i class="glyphicon glyphicon-ok"></i> Submit
+									<i class="fa fa-check"></i> Submit
 								</button>	        				
 							</div>
 	        				</form>
@@ -208,7 +204,6 @@
 							<tr>
 								<th>Pipeline Name</th>
 								<th>Pipeline Description</th>
-								<th>Path to file</th>
 								<th>Filename</th>
 							</tr>
 						</thead>
