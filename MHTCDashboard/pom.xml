@@ -191,7 +191,20 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>3.10-FINAL</version>
 		</dependency>
-
+		
+	    <!-- Java Mail API -->
+	    <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>4.0.2.RELEASE</version>
+        </dependency>
+        
+	    <dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4.3</version>
+	    </dependency>
+	    
 		<dependency>
 			<groupId>net.sf.jazzy</groupId>
 			<artifactId>jazzy</artifactId>

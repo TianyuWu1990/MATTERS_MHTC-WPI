@@ -14,7 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import edu.wpi.mhtc.helpers.Mailer;
 import edu.wpi.mhtc.model.Data.DataSeries;
 import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
@@ -107,4 +111,10 @@ public class HomeController {
 	    
 	}
 	
+    @RequestMapping(value = "/spring_test", method = RequestMethod.GET)
+    public @ResponseBody String help(Locale locale, Model model) throws Exception {
+    	ApplicationContext context =  new ClassPathXmlApplicationContext("Spring-Mail.xml");
+
+		return "Done!";
+    }	
 }
