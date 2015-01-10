@@ -1120,12 +1120,12 @@ AppState.prototype.toggleMultiSelect = function(ind,option ) {
 AppState.prototype.loadState = function(stateData) {
 	
     this.stateAbbr = stateData;
-    if ($("#profile").hasClass("active")) {
-        current_tab = 'profile';
-    } else if ($("#national").hasClass("active")) {
-        current_tab = 'national';
-    } else if ($("#talent").hasClass("active")) {
-        current_tab = 'talent';
+    if ($("#line").hasClass("active")) {
+        current_tab = 'line';
+    } else if ($("#table").hasClass("active")) {
+        current_tab = 'table';
+    } else if ($("#bar").hasClass("active")) {
+        current_tab = 'bar';
     } else if ($("#cost").hasClass("active")) {
         current_tab = 'cost';
     } else if ($("#economy").hasClass("active")) {

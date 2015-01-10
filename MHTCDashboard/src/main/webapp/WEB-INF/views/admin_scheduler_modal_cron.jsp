@@ -41,10 +41,10 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">
-						<i class="glyphicon glyphicon-remove"></i> Close
+						<i class="fa fa-times"></i> Close
 					</button>
 					<button type="submit" class="btn btn-primary">
-						<i class="glyphicon glyphicon-ok"></i> Schedule!
+						<i class="fa fa-check"></i> Schedule!
 					</button>
 				</div>
 			</div>
