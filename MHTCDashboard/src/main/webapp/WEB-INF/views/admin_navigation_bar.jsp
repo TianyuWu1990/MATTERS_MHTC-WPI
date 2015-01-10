@@ -18,7 +18,7 @@
 					<ul class="dropdown-menu dropdown-user">
 						<li><a href="<c:url value="admin_help"/>"><i class="fa fa-question"></i> Help</a></li>
 						<li class="divider"></li>
-						<li><a href="<c:url value="admin/logout"/>"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+						<li><a href="<c:url value="logout/"/>"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 					</ul> <!-- /.dropdown-user -->
 				</li>
 				<!-- /.dropdown -->

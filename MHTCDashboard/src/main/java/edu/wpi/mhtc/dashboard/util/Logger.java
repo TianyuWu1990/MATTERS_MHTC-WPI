@@ -29,7 +29,7 @@ public class Logger {
 		int priority = data.getInt("priority");
 		String moment = data.getString("moment");
 		String origin = data.getString("origin");
-		String job = data.getString("origin");
+		String job = data.getString("job");
 		String status;
 		
 		// Decide which status
