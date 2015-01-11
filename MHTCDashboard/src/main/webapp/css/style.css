@@ -1160,11 +1160,12 @@ border:1px solid #b7b7b7; -webkit-border-radius: 3px; -moz-border-radius: 3px;bo
 
 #mbodyHeatMap
 {
-	height: 650px; 
-	widht: 90%; 
-	overflow:auto; 
-	padding-left:15%;
-	padding-right:20px;
+	height: 90%; 
+	widht: 90%;  
+	position: relative;
+	vertical-align: middle;
+	overflow: auto;
+	text-align:center;
 }
 
 button.timeLineButton

@@ -238,8 +238,6 @@ var AS= (function($) {
      * Input: Metric ID and Base Color for heat map
      */
     AppState.prototype.SetHeatMap=function (ind,baseColor, tag_id,year_in){
-    	//if(!this.multiMode) /** This was causing a weird error specially because the dropdown menu was heatmapping other metrics*/
-    	//this.currentind=ind;
     	
     	var selected_states_global= States.getAllstates().map(function(s) {
     		return s.abbr;
@@ -252,45 +250,13 @@ var AS= (function($) {
         			/*******************************************************************************/
         			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
         			/*******************************************************************************/
-        			
-        			/*var array_years=[];
-        			var k=0;
-        			for(var i=0; i<multiData.length; i++){
-        				for(var j=0; j<multiData[i][0].dataPoints.length; j++){
-        					if(array_years.indexOf(multiData[i][0].dataPoints[j].year) < 0){
-        						array_years[k]=multiData[i][0].dataPoints[j].year;
-        						k++;
-        					}
-        				}
-        			}*/
-        			 /*var selplaybutton = $("#playbutton");
-        			 selplaybutton.empty();
-        			 selplaybutton.append('<div class="btn btn-info" id="#playbuttonanimation">Play</div>');
-        			  */    			
-						
-					
-        			
+        		 	
         			var array_years=as.getYearsMetric(multiData);
         			array_years_global=as.getYearsMetric(multiData);///HAVE TO MAKE THIS CALL. WIL ELIMINATE ONE OR THE OTHER
         			
-        			/*var sel = $("#yearHeatMap");
-        			sel.empty();
-        			var size_tam=array_years.length-1;
-        			*/
         			array_years.sort(function(a,b){return b - a});
         			array_years_global.sort(function(a,b){return a - b});
-        			/*for(var k=0; k<array_years.length; k++){
-        				if(year_in!=array_years[k]){
-        					console.log("array_years "+array_years[k]);
-        					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
-        				}   				 
-        					
-        				else{
-        					console.log("year_in "+year_in);
-        					sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
-        				}
-        					
-        			}*/
+        		
         			/*******************************************************************************/
         			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
         			/*******************************************************************************/
@@ -298,19 +264,6 @@ var AS= (function($) {
 						year_in = array_years[0];
 						//alert(year_in);
 					}
-        			
-        			/*var seltimeline=$("#timeline");
-					seltimeline.empty();
-				
-					seltimeline.append('<table ><tr>');
-					for(var k=array_years.length-1; k>=0; k--){
-						if(year_in!=array_years[k]){
-							seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-default" id="click'+array_years[k]+'"><li  >'+array_years[k]+'</li></button></td><td></td>');
-						}else{
-							seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-primary btn-right" ><li id="click"+'+array_years[k]+'>'+year_in+'</li></button></td><td></td>');
-						}
-					}
-					seltimeline.append('</tr></table>');*/
         			
         			/*******************************************************************************/
         			/*modified by manik*/
@@ -806,7 +759,6 @@ AppState.prototype.clickCallback = function(data){
 			
 		}
 		
-		//this.showHeatMapGraphReloaded(this.currentind,"mbodyHeatMap", -1); // AAEJ 23/11/2014
 	};
 
 AppState.prototype.checkIfAllStatesChecked=function(){
@@ -1618,14 +1570,12 @@ AppState.prototype.HeatMapMeter=function(type_in, category_in,ordered_states_met
 AppState.prototype.showHeatMapGraphReloaded=function (ind,tag_id, year_in){
 	
 	if(this.selected_multiple_metrics.length==0){
-		//document.getElementById("graphTitleHeatMap").innerHTML ='NO value';
 		
 	}else{
-		this.current_tab_style="#talenttab a";//"#nationaltab a";
-		//document.getElementById("graphTitleHeatMap").innerHTML ='Heat map: '+ Metrics.getMetricByID(this.selected_multiple_metrics[ind]).getName(); 
+		this.current_tab_style="#talenttab a";
 		
 		var baseColor=colorToHex(getStyleRuleValue('background-color',this.current_tab_style));
-		//var degradedColor=getNewColor(baseColor,110,100);
+	
 		if(year_in==-1){
 			stopHeatMapAnimation();/**Users could left the animation running......**/
 			$("#stopbuttonanimation").prop('disabled', true); 
@@ -1641,17 +1591,7 @@ AppState.prototype.showHeatMapGraphReloaded=function (ind,tag_id, year_in){
 			this.currentind=this.selected_multiple_metrics[ind];
 			
 		}
-		/*if(ind!=0){
-			
-			ind=this.selected_multiple_metrics.indexOf(ind);
-			
-		}else{
-			ind=this.selected_multiple_metrics.length-1;
-			
-		}
 		
-		this.currentind=this.selected_multiple_metrics[ind];	
-		**/
 		this.SetHeatMap(this.selected_multiple_metrics[ind],baseColor, tag_id,year_in);
 	}
 	
