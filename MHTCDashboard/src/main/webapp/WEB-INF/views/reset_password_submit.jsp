@@ -12,7 +12,7 @@
 <title>Forgot your password?</title>
 
 <!-- Bootstrap core CSS -->
-<link href="../adminPanel/css/bootstrap.min.css" rel="stylesheet">
+<link href="../../adminPanel/css/bootstrap.min.css" rel="stylesheet">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
 body {
@@ -58,6 +58,7 @@ body {
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="../js/bootstrap-validator.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -69,26 +70,16 @@ body {
                     </div>     
 
                     <div style="padding-top:20px" class="panel-body" >
-                        <div id="login-alert" class="alert alert-warning">
-                        If you have forgotten your username or password, you can request to have your username emailed to you and to reset your password. 
-                        When you fill in your registered email address, you will be sent instructions on how to reset your password.
-                        </div>
-                        <div>    
-                        <form id="resetRequestForm" class="form-horizontal" role="form" action="forgot/sent" method="POST">
-                                    
-                            <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="email" placeholder="Email">
-									<div class="help-block with-errors"></div>                                       
-                            </div>
-                               
-                            <div style="margin-top:10px" class="form-group">
-                                <div class="col-sm-12 controls center" align="center">
-                                  <a id="btn-login" href="#" class="btn btn-success" onclick="$('#resetRequestForm').submit();">Request password reset</a>
-                                </div>
-                            </div>   
-                        </form> 
-                        </div>    
+	                    <c:choose>
+	                       <c:when test="${!error}">
+	                       		 Your password has been reset. Please login with your new password.
+	                       </c:when>  
+	                       <c:otherwise>
+		                        <div id="login-alert" class="alert alert-danger">
+		                        	Error while resetting your password. Please try again
+		                        </div> 
+	                       </c:otherwise>
+	                    </c:choose>       
                     </div>                     
              </div>  
         </div>

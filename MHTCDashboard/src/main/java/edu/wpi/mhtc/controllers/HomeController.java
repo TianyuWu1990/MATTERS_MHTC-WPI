@@ -1,8 +1,12 @@
 package edu.wpi.mhtc.controllers;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.helpers.Mailer;
 import edu.wpi.mhtc.model.Data.DataSeries;
 import edu.wpi.mhtc.model.state.PeerStates;
@@ -34,6 +39,7 @@ public class HomeController {
 	
 	private StatsService statsService;
 	private StateService stateService;
+	static Connection conn = DBConnector.getInstance().getConn();
 	
 	@Autowired
 	public HomeController(StatsService statsService, StateService stateService)
@@ -126,25 +132,82 @@ public class HomeController {
         return "forgot_password_form";
     }
     
-    @RequestMapping(value = "/user/forgot/sent", method = RequestMethod.GET)
-    public String request_reset_sent(Locale locale, Model model) throws Exception {
+    @RequestMapping(value = "/user/forgot/sent", method = RequestMethod.POST)
+    public String request_reset_sent(Locale locale, Model model, @RequestParam("email") String email) throws Exception {
         // First, randomize the token
+    	Random rand = new Random();
+    	int randomNum = rand.nextInt(100) + 1;
+    	String unencryptedTokenString = email + randomNum;
     	
     	// SQL Query execution
+		String sql = "UPDATE mhtc_sch.users SET \"Token\" = MD5(?) WHERE \"Email\" = ?";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, unencryptedTokenString); // set parameter 1 (FIRST_NAME)
+		pstatement.setString(2, email);
+		pstatement.execute();
+		
+		if (pstatement.getUpdateCount() == 1) {
+			model.addAttribute("completed", true);
+			
+			// Send the email for that user
+	    	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
+	    
+	       	Mailer mm = (Mailer) context.getBean("mailMail");
+	           mm.sendResetPasswordMail(email, unencryptedTokenString);
+	    
+		} else {
+			model.addAttribute("completed", false);
+		}
+		
+		pstatement.close();	
     	
-        return "forgot_password_form";
+        return "forgot_password_form_submit";
     }  
 
     @RequestMapping(value = "/user/reset", method = RequestMethod.GET)
     public String reset_password_form(Locale locale, Model model, @RequestParam("token") String token) throws Exception {
+    	if (!token.equals("")) {
+	    	// Query the token string in the database
+	    	String sql = "SELECT * FROM mhtc_sch.users WHERE \"Token\" = ?";
+			PreparedStatement pstatement = conn.prepareStatement(sql);
+			pstatement.setString(1, token);
+			ResultSet rs = pstatement.executeQuery();
+			
+			if (!rs.next()) {
+				model.addAttribute("error", true);
+			} else {
+				model.addAttribute("error", false);
+				model.addAttribute("email", rs.getString("Email"));
+				model.addAttribute("token", token);
+			}
+    	} else {
+    		model.addAttribute("error", true);
+    	}
+    	
     	model.addAttribute("token", token);
         return "reset_password";
     } 
     
-    @RequestMapping(value = "/user/reset/password", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/reset/submit", method = RequestMethod.POST)
     public String reset_password(Locale locale, Model model, @RequestParam("token") String token, @RequestParam("password") String password) throws Exception {
-    	/* Reset password and clear the token*/
-        return "reset_password_completed";
+    	if (token.equals("")) {
+    		model.addAttribute("error", true);
+    	} else {
+        	/* Reset password and clear the token*/
+    		String sql = "UPDATE mhtc_sch.users SET \"PasswordHash\" = MD5(?), \"Token\" = '' WHERE \"Token\" = ?";
+    		PreparedStatement pstatement = conn.prepareStatement(sql);
+    		pstatement.setString(1, password); // set parameter 1 (FIRST_NAME)
+    		pstatement.setString(2, token);
+    		pstatement.execute();
+    		
+    		if (pstatement.getUpdateCount() == 1) {
+    			model.addAttribute("error", false);
+    		} else {
+    			model.addAttribute("error", true);
+    		}
+    	}
+		
+        return "reset_password_submit";
     }
     
     /********** Authentication **********/
