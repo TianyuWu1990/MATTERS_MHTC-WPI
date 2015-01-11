@@ -92,24 +92,27 @@
 		        			</div>
 	        			</c:if>        		
 		        </div>
-			</div>		
-			<div id="pipelines" class="panel-body" hidden>
-				<div class="table-responsive">
-					<table class="table table-striped table-bordered table-hover"
-						id="pipelineTbl">
-						<thead>
-							<tr>
-								<th>Pipeline Name</th>
-								<th>Pipeline Description</th>
-								<th>Filename</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">		
+					<div id="pipelines" class="panel-body" hidden>
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover" id="pipelineTbl">
+								<thead>
+									<tr>
+										<th>Pipeline Name</th>
+										<th>Pipeline Description</th>
+										<th>Filename</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.table-responsive -->
+				
+					</div>
 				</div>
-				<!-- /.table-responsive -->
-		
 			</div>
 	</div>
 

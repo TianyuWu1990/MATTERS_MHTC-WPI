@@ -21,6 +21,9 @@
 
     <!-- Custom CSS -->
     <link href="adminPanel/css/sb-admin-2.css" rel="stylesheet">
+    
+    <!-- DataTables CSS -->
+	<link href="adminPanel/css/plugins/dataTables.bootstrap.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <!-- <link href="adminPanel/css/plugins/morris.css" rel="stylesheet">-->
