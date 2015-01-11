@@ -179,10 +179,10 @@ public class AdminController {
         return "redirect:"+referer;
     }
     
-    @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "datatype", "isCalculated"})
+    @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "metricDesc", "datatype", "isCalculated"})
     public String admin_addMetric(Locale locale, Model model, HttpServletRequest request,
-    		@RequestParam("subcategory") String subCategory, @RequestParam("metricName") String metricName, @RequestParam("datatype") String datatype,
-    		@RequestParam("isCalculated") String isCalculated, @RequestParam("parentcategory") String parentCategory) throws SQLException
+    		@RequestParam("subcategory") String subCategory, @RequestParam("metricName") String metricName, @RequestParam("metricDesc") String metricDesc, 
+    		@RequestParam("datatype") String datatype, @RequestParam("isCalculated") String isCalculated, @RequestParam("parentcategory") String parentCategory) throws SQLException
     {
     	int categoryID;
     	
@@ -194,7 +194,7 @@ public class AdminController {
     	}
 
     	boolean isCalc = Boolean.parseBoolean(isCalculated);
-    	DBSaver.insertNewMetric(metricName, isCalc, categoryID, datatype);
+    	DBSaver.insertNewMetric(metricName, metricDesc, isCalc, categoryID, datatype);
 
     	String referer = request.getHeader("Referer");
 

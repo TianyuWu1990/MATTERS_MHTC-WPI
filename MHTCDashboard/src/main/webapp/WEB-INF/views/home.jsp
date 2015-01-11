@@ -36,6 +36,7 @@
 <script src="js/jquery-ui-1.10.0.custom.min.js"></script>
 <script src="js/jquery.ui.touch-punch.js"></script>
 <script src="js/modernizr.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.cookie.js"></script>
 <script src='js/fullcalendar.min.js'></script>
 <script src='js/jquery.dataTables.min.js'></script>
