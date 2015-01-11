@@ -69,19 +69,7 @@ public class AdminController {
         this.service = service;
         this.template = template;
     }
-    
-    /********** Authentication **********/
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String logoutPage() {
-        return "logoutPage";
-    }
-    
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage() {
-        return "loginPage";
-    }
-    /********** End authentication pages **********/
-    
+
     /********** Admin manager page **********/
     @RequestMapping(value = "admin/manage", method = RequestMethod.GET)
     public String manage() {
@@ -132,24 +120,6 @@ public class AdminController {
         
         return "admin_tool";
     }
-    /*************************** User services ***********************************/
-    @RequestMapping(value = "/user/forgot", method = RequestMethod.GET)
-    public String request_reset(Locale locale, Model model) throws Exception {
-        
-        return "forgot_password_form";
-    }  
-
-    @RequestMapping(value = "/user/reset", method = RequestMethod.GET)
-    public String reset_password_form(Locale locale, Model model, @RequestParam("token") String token) throws Exception {
-    	model.addAttribute("token", token);
-        return "reset_password";
-    } 
-    
-    @RequestMapping(value = "/user/reset/password", method = RequestMethod.POST)
-    public String reset_password(Locale locale, Model model, @RequestParam("token") String token, @RequestParam("password") String password) throws Exception {
-    	/* Reset password */
-        return "reset_password_completed";
-    }     
     /*************************** HELP ***********************************/  
     @RequestMapping(value = "/admin_help", method = RequestMethod.GET)
     public String help(Locale locale, Model model) throws Exception {

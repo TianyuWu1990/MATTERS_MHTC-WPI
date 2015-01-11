@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -117,4 +118,45 @@ public class HomeController {
 
 		return "Done!";
     }	
+    
+    /*************************** User services ***********************************/
+    @RequestMapping(value = "/user/forgot", method = RequestMethod.GET)
+    public String request_reset(Locale locale, Model model) throws Exception {
+        
+        return "forgot_password_form";
+    }
+    
+    @RequestMapping(value = "/user/forgot/sent", method = RequestMethod.GET)
+    public String request_reset_sent(Locale locale, Model model) throws Exception {
+        // First, randomize the token
+    	
+    	// SQL Query execution
+    	
+        return "forgot_password_form";
+    }  
+
+    @RequestMapping(value = "/user/reset", method = RequestMethod.GET)
+    public String reset_password_form(Locale locale, Model model, @RequestParam("token") String token) throws Exception {
+    	model.addAttribute("token", token);
+        return "reset_password";
+    } 
+    
+    @RequestMapping(value = "/user/reset/password", method = RequestMethod.POST)
+    public String reset_password(Locale locale, Model model, @RequestParam("token") String token, @RequestParam("password") String password) throws Exception {
+    	/* Reset password and clear the token*/
+        return "reset_password_completed";
+    }
+    
+    /********** Authentication **********/
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage() {
+        return "logoutPage";
+    }
+    
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "loginPage";
+    }
+    /********** End authentication pages **********/
+    
 }

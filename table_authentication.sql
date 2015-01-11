@@ -34,7 +34,7 @@ CREATE TABLE mhtc_sch.users
   "FirstName" character varying(25),
   "LastName" character varying(25),
   "PasswordHash" text NOT NULL,
-  "Token" text NOT NULL,
+  "ResetToken" text NOT NULL,
   "IsApproved" boolean NOT NULL DEFAULT false,
   "GroupId" integer NOT NULL,
   CONSTRAINT "PK_users" PRIMARY KEY ("Id"),

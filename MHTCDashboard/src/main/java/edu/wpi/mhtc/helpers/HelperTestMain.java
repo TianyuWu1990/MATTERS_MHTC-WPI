@@ -8,7 +8,7 @@ public class HelperTestMain {
     	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
     
        	Mailer mm = (Mailer) context.getBean("mailMail");
-        mm.sendMail("hlong290494@gmail.com",
+        mm.sendMail(
        		   "lhnguyenduc@wpi.edu",
        		   "Testing123", 
        		   "Testing only \n\n Hello Spring Email Sender");			

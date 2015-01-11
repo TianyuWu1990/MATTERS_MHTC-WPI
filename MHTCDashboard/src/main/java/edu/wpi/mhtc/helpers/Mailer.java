@@ -5,16 +5,16 @@ import org.springframework.mail.SimpleMailMessage;
 
 public class Mailer {
 	private MailSender mailSender;
-	
+	private String fromAddress = "";
 	public void setMailSender(MailSender mailSender) {
 		this.mailSender = mailSender;
 	}
  
-	public void sendMail(String from, String to, String subject, String msg) {
+	public void sendMail(String to, String subject, String msg) {
  
 		SimpleMailMessage message = new SimpleMailMessage();
  
-		message.setFrom(from);
+		message.setFrom(fromAddress);
 		message.setTo(to);
 		message.setSubject(subject);
 		message.setText(msg);
