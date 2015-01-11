@@ -117,13 +117,6 @@ public class HomeController {
         return "state_tab_display";
 	    
 	}
-	
-    @RequestMapping(value = "/spring_test", method = RequestMethod.GET)
-    public @ResponseBody String help(Locale locale, Model model) throws Exception {
-    	ApplicationContext context =  new ClassPathXmlApplicationContext("Spring-Mail.xml");
-
-		return "Done!";
-    }	
     
     /*************************** User services ***********************************/
     @RequestMapping(value = "/user/forgot", method = RequestMethod.GET)
