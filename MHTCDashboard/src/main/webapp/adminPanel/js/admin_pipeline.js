@@ -122,5 +122,11 @@ $(function() {
 	});
 	
 	$('#pipelines').show();
+	
+	var data = table
+    .rows()
+    .data();
+ 
+	console.log(table);
 			
 });

@@ -96,7 +96,7 @@
 			<div class="row">
 				<div class="col-lg-12">		
 					<div id="pipelines" class="panel-body" hidden>
-						<div class="table-responsive">
+						<div class="dataTable_wrapper">
 							<table class="table table-striped table-bordered table-hover" id="pipelineTbl">
 								<thead>
 									<tr>

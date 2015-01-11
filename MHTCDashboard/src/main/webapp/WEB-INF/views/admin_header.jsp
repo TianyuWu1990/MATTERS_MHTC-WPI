@@ -24,6 +24,7 @@
     
     <!-- DataTables CSS -->
 	<link href="adminPanel/css/plugins/dataTables.bootstrap.css" rel="stylesheet">
+	<link href="adminPanel/css/plugins/dataTables.responsive.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <!-- <link href="adminPanel/css/plugins/morris.css" rel="stylesheet">-->
@@ -53,7 +54,7 @@
     <script src="adminPanel/js/plugins/metisMenu/metisMenu.min.js"></script>
     
     <!-- DataTables JavaScript -->
-    <script src="adminPanel/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="adminPanel/js/plugins/dataTables/jquery.dataTables.min.js"></script>
     <script src="adminPanel/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
     <!-- Morris Charts JavaScript 
