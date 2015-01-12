@@ -143,9 +143,9 @@
 				<!-- /.container-fluid -->
 			
 
-		<div style="background:#7b0020; margin:0px; padding:20px;">
-		<p align = "center" style="font-size:27px"> <b> MATTERS: </b></p>
-		<p align="center" style="font-size:20px;">Massachusetts Technology, Talent, and Economic Reporting System</p></div>
+		<div style="background:#7b0020; margin:0px; padding:25px;">
+		<p align = "center" style="font-size:24px"> <b> MATTERS: </b></p>
+		<p align="center" style="font-size:18px;">Massachusetts Technology, Talent, and Economic Reporting System</p></div>
 		</div>
 	</div>
 
