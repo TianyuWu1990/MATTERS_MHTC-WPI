@@ -50,7 +50,7 @@ public class Category {
 	public Metric getMetric(String name) throws CategoryException {
 		
 		for (Metric metric: metrics) {
-			if (name.equals(metric.getName())) {
+			if (name.toLowerCase().equals(metric.getName().toLowerCase())) {
 				return metric;
 			}
 		}

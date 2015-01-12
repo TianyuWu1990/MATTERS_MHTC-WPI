@@ -242,11 +242,11 @@ public class UnifiedParser implements IParser {
 			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 				String cellValue = cell.getRichStringCellValue().getString().trim();
 				if(cellValue.equalsIgnoreCase("year") || cellValue.equalsIgnoreCase("state")){
-					columnNames.put(cellValue, cell.getColumnIndex());
+					columnNames.put(cellValue.toLowerCase(), cell.getColumnIndex());
 				}
 				else{
 					category.getMetric(cellValue);	//make sure valid metric
-					columnNames.put(cellValue, cell.getColumnIndex());
+					columnNames.put(cellValue.toLowerCase(), cell.getColumnIndex());
 				}
 			}
 		}
