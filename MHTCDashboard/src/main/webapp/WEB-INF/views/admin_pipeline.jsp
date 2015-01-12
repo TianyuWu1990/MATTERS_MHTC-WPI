@@ -33,6 +33,16 @@
         		</div>
         	</div>
         	<div class="row">
+        		<div class="col-lg-12">
+        			<c:if test="${database_duplicate_key}">
+        				<div class="alert alert-danger">
+        					The pipeline you are trying to upload already exists in the database!
+        				</div>
+        			</c:if>
+        		</div>
+        	</div>
+        	
+        	<div class="row">
         		<div class="col-lg-4">
         			<form id="uploadPipeline" role="form" method="POST" enctype="multipart/form-data"
 						action="admin_addPipeline">
