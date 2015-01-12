@@ -166,7 +166,10 @@
       
       // Scale to fit
       this.paper.setSize(width, height);
-      this.paper.setViewBox(0, 0, paperWidthWithLabels, HEIGHT, false);
+//      this.paper.setViewBox(0, 0, paperWidthWithLabels, HEIGHT, false);
+      this.paper.setViewBox(0, 0, WIDTH, HEIGHT, false);
+      this.paper.canvas.setAttribute('preserveAspectRatio', 'xMidYmin meet');
+//      this.paper.canvas.setAttribute('preserveAspectRatio', 'none');
       
       // Keep track of all the states
       this.stateHitAreas = {}; // transparent for the hit area
