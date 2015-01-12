@@ -37,8 +37,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.RedirectView;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
@@ -545,8 +548,11 @@ public class AdminController {
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(Exception e){
     	
+    	String title = "MATTERS: Generic Exception Error";
+
     	ModelAndView mav = new ModelAndView("error/generic");
     	
+    	mav.addObject("title", title);
     	mav.addObject("exception", e);
     	
     	return mav;
@@ -556,13 +562,34 @@ public class AdminController {
      * Handles all SQL Exceptions that could occur in the system
      */
     @ExceptionHandler(SQLException.class)
-    public ModelAndView handleSQLException(SQLException ex) {
+    public ModelAndView handleSQLException(SQLException ex, HttpServletRequest request) {
     	
-    	ModelAndView mav = new ModelAndView("error/sql");
+    	String title = "MATTERS: SQL Exception Error";
+    	ModelAndView mav = new ModelAndView();		
     	
-    	mav.addObject("sqlException", ex);
+    	// This is a duplicate key, let's just inform the user
+    	if (ex.getSQLState().equals("23505")) {
+        	String referer = request.getHeader("Referer");
+        	
+        	RedirectView redirectView = new RedirectView(referer);
+        	
+        	mav.setView(redirectView);
+        	
+        	FlashMap outputFlashMap = RequestContextUtils.getOutputFlashMap(request);
+        	if (outputFlashMap != null) {
+        		outputFlashMap.put("database_duplicate_key", true);
+        	}
+        	
+    	} else {
+
+	    	mav.setViewName("error/sql");
+	    	mav.addObject("title", title);
+	    	mav.addObject("sqlException", ex);
+	    	
+    	}
 
 		return mav;
+
     }
     
     /**
@@ -571,8 +598,11 @@ public class AdminController {
     @ExceptionHandler(MHTCException.class)
     public ModelAndView handleMHTCException(MHTCException ex) {
     	
+    	String title = "MATTERS: MHTC Exception Error";
+    	
     	ModelAndView mav = new ModelAndView("error/mhtc");
     	
+    	mav.addObject("title", title);
     	mav.addObject("mhtcEx", ex);
     	
     	return mav;

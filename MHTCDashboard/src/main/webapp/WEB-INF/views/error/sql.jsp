@@ -19,8 +19,7 @@
 					<h3>SQL Error:</h3>
 					<ul>
 						<li>Message: ${sqlException.message}</li>
-						<li>SQL State: ${sqlException.SQLState }</li>
-						<li>Error code: ${sqlException.errorCode }</li>
+						<li>SQL State Code: ${sqlException.SQLState }</li>
 					</ul>
 					<p>Please contact your database administrator regarding this issue.</p>
 				</div>
