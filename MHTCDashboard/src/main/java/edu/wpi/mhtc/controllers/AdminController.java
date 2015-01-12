@@ -326,7 +326,6 @@ public class AdminController {
 			
 			// Need to convert Date to String
 			Date dateAdded = rs.getTimestamp("dateadded");
-			System.out.println(dateAdded);
 			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 			String date = df.format(dateAdded);
 			
