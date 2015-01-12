@@ -3,6 +3,7 @@ package edu.wpi.mhtc.dashboard.pipeline.main;
 import java.io.File;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedDataSource;
 import edu.wpi.mhtc.dashboard.pipeline.db.TransactionManager;
 import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedParser;
@@ -28,6 +29,10 @@ public class DataPipeline {
 	
 		UnifiedParser parser = new UnifiedParser(source);
 		parser.parseAll();
+		
+		for(Line l : parser.getLines()){
+			System.out.println(l.getStateID()+" "+ l.getMetricValue()+ " " + l.getYear());
+		}
 		
 		TransactionManager.insertData(parser.getLines());
 	}

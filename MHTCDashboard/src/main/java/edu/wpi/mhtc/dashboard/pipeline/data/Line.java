@@ -23,7 +23,11 @@ public class Line {
 	 * @throws Exception if the stateName cannot be found in the database
 	 */
 	public void setState(String stateName) throws Exception{
-		stateID = State.getStateID(stateName);
+		int id = State.getStateID(stateName);
+		if(id == -1){	//this is not a valid state
+			throw new Exception("Bad state name "+ stateName);
+		}
+		stateID = id;
 	}
 	
 	public void setYear(String year){

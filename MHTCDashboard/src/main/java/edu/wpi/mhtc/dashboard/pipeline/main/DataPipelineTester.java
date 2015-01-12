@@ -7,10 +7,10 @@ import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
 public class DataPipelineTester {
 
-	static File inputFile = new File("TestFile3.xlsx"); //local test excel file
+	static File inputFile = new File("testfiles/State Minimum Wage Rates formatted.xlsx"); //local test excel file
 //	static String categoryName = "Testing Category Name"; //this is supplied by the user through the admin panel
-	static int catID = 46;
-	static String metricName = "test metric 1"; //for testing
+	static int catID = 54;
+	static String metricName = "minimum wage"; //for testing
 	
 	
 	public static void main(String[] args){

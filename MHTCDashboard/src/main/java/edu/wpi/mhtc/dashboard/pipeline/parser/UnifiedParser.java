@@ -122,8 +122,14 @@ public class UnifiedParser implements IParser {
 //					get metric fields
 					for (String name: columnNames.keySet()) {
 						line = new Line();
-						line.setState(state);
-						line.setYear(year);
+						try{
+							line.setState(state);
+							line.setYear(year);
+						}
+						catch(Exception e){
+							System.out.println(e.getMessage());
+							break;
+						}
 
 						Cell cell = row.getCell(columnNames.get(name));
 						if(cell != null){
@@ -154,6 +160,12 @@ public class UnifiedParser implements IParser {
 							if(value != null){
 								try{
 									String cleanedValue = numCleaner.clean(value);
+//									TODO: don't want to use -1 to check this, could be actual value
+									if(cleanedValue.equals(Integer.toString(-1))){
+//										invalid data
+										System.out.println("bad data "+value+", line skipped");
+										break;
+									}
 									metric.setValue(Float.parseFloat(cleanedValue));
 									line.addMetric(metric);
 									if(line.isValid())
@@ -162,6 +174,7 @@ public class UnifiedParser implements IParser {
 								catch(Exception e){
 									//	TODO: use this to report error to admin
 								}
+								
 							}
 						}
 					}
@@ -242,11 +255,11 @@ public class UnifiedParser implements IParser {
 			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 				String cellValue = cell.getRichStringCellValue().getString().trim();
 				if(cellValue.equalsIgnoreCase("year") || cellValue.equalsIgnoreCase("state")){
-					columnNames.put(cellValue, cell.getColumnIndex());
+					columnNames.put(cellValue.toLowerCase(), cell.getColumnIndex());
 				}
 				else{
 					category.getMetric(cellValue);	//make sure valid metric
-					columnNames.put(cellValue, cell.getColumnIndex());
+					columnNames.put(cellValue.toLowerCase(), cell.getColumnIndex());
 				}
 			}
 		}
