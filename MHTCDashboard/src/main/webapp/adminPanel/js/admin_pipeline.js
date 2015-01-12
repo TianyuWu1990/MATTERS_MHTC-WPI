@@ -103,8 +103,8 @@ $(function() {
 	});
 	
 	// DataTable implementation
-	if ($.fn.dataTable.isDataTable('#pipelinesTbl')) {
-		$('#pipelinesTbl').DataTable().destroy();
+	if ($.fn.dataTable.isDataTable('#pipelineTbl')) {
+		$('#pipelineTbl').DataTable().destroy();
 	}
 	
 	var table = $('#pipelineTbl').DataTable({
@@ -118,15 +118,19 @@ $(function() {
 			            { "mData": "pipelinedesc" },
 //			            { "mData": "path" },
 			            { "mData": "filename" },
+			            { "mData": null,
+			            	"sClass": "center",
+			            	"bSortable": false,
+			            	"sDefaultContent": "<button type='button' class='btn btn-link btn-sm edit'><i class='fa fa-pencil-square-o fa-2x'></i></button>"
+			            }
 		]
 	});
 	
 	$('#pipelines').show();
 	
-	var data = table
-    .rows()
-    .data();
- 
-	console.log(table);
+	$('#pipelineTbl tbody').on("click", "button.edit", function() {
+		// Get the pipeline name of the one user wants to delete/edit
+		var pipelineName = $(this).closest("tr").find('td:first').html();
+	});
 			
 });

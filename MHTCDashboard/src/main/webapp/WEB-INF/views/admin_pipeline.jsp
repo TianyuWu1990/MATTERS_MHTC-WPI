@@ -7,6 +7,12 @@
 <%@ include file="admin_metric_modal.jsp" %> 
 
 		<script src="adminPanel/js/admin_pipeline.js" type="text/javascript"></script>
+		
+		<style>
+		.center {
+			text-align: center;
+		}
+		</style>
 
         <div id="page-wrapper">
         	<div class="row">
@@ -94,23 +100,27 @@
 		        </div>
 			</div>
 			<div class="row">
-				<div class="col-lg-12">		
-					<div id="pipelines" class="panel-body" hidden>
-						<div class="dataTable_wrapper">
-							<table class="table table-striped table-bordered table-hover" id="pipelineTbl">
-								<thead>
-									<tr>
-										<th>Pipeline Name</th>
-										<th>Pipeline Description</th>
-										<th>Filename</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
+				<div class="col-lg-12">
+					<div class="panel panel-default" id="pipelines" hidden>
+						<div class="panel-heading">
+						Pipelines
 						</div>
-						<!-- /.table-responsive -->
-				
+						<div class="panel-body">
+							<div class="dataTable_wrapper">
+								<table class="table table-striped table-bordered table-hover" id="pipelineTbl">
+									<thead>
+										<tr>
+											<th>Pipeline Name</th>
+											<th>Pipeline Description</th>
+											<th>Filename</th>
+											<th>Edit</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div><!-- /.dataTable_wrapper -->
+						</div>
 					</div>
 				</div>
 			</div>
