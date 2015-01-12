@@ -116,6 +116,7 @@
 											<th>Pipeline Name</th>
 											<th>Pipeline Description</th>
 											<th>Filename</th>
+											<th>Date Added</th>
 											<th>Delete</th>
 										</tr>
 									</thead>

@@ -324,10 +324,17 @@ public class AdminController {
 			String path = rs.getString("path");
 			String filename = rs.getString("filename");
 			
+			// Need to convert Date to String
+			Date dateAdded = rs.getTimestamp("dateadded");
+			System.out.println(dateAdded);
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+			String date = df.format(dateAdded);
+			
 			row.put("pipelinename",pipelineName);
 			row.put("pipelinedesc", pipelineDesc);
 			//row.put("path", path);
 			row.put("filename", filename);
+			row.put("dateadded", date);
 			
 			data.add(row);
 		}

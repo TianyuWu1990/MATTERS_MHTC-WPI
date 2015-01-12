@@ -118,6 +118,7 @@ $(function() {
 			            { "mData": "pipelinedesc" },
 //			            { "mData": "path" },
 			            { "mData": "filename" },
+			            { "mData": "dateadded" },
 			            { "mData": null,
 			            	"sClass": "center",
 			            	"bSortable": false,
