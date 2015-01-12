@@ -107,7 +107,7 @@ $(function() {
 		$('#pipelineTbl').DataTable().destroy();
 	}
 	
-	var table = $('#pipelineTbl').DataTable({
+	var $table = $('#pipelineTbl').DataTable({
 		"processing": true,
 		"ajax": {
 			"url": "admin_pipeline/getPipelineData",
@@ -121,16 +121,37 @@ $(function() {
 			            { "mData": null,
 			            	"sClass": "center",
 			            	"bSortable": false,
-			            	"sDefaultContent": "<button type='button' class='btn btn-link btn-sm edit'><i class='fa fa-pencil-square-o fa-2x'></i></button>"
+			            	"sDefaultContent": "<button type='button' class='btn btn-link btn-sm delete'><i class='fa fa-times fa-2x'></i></button>"
 			            }
 		]
 	});
 	
 	$('#pipelines').show();
 	
-	$('#pipelineTbl tbody').on("click", "button.edit", function() {
+	$('#pipelineTbl tbody').on("click", "button.delete", function() {
+		var $row = $(this).closest("tr");
+		
 		// Get the pipeline name of the one user wants to delete/edit
-		var pipelineName = $(this).closest("tr").find('td:first').html();
+		var pipelineName = $row.find('td:first').html();
+				
+		bootbox.confirm("Are you sure you want to delete \""+pipelineName+"\" pipeline?", function(result) {
+			if (result == true) {
+				
+				$.post("admin_pipeline/delete", {pipelineName:pipelineName}, function(data) {
+					$table.row($row).remove().draw();
+
+					var $deleteSuccess = $('#deletePipelineSuccess');
+					
+					var $successDiv = $('<div class="alert alert-success" role="alert" />');
+
+					var successMessage = '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>You\'ve successfully delete pipeline "' +
+										pipelineName + '"!';
+					
+					$deleteSuccess.html($successDiv.html(successMessage));
+				});
+						
+			}
+		});
 	});
 			
 });

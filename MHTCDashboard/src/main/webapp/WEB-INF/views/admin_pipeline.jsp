@@ -83,7 +83,7 @@
         	</div>
      		<br />
             <div class="row">
-        		<div class="col-lg-12">
+        		<div class="col-lg-12">        		
         	        <c:if test="${category_success_add}">
 		        			<div class="alert alert-success alert-dismissible" id="addCategorySuccess">
 		                    	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -101,6 +101,9 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
+				    <div id="deletePipelineSuccess">
+				    </div>
+				
 					<div class="panel panel-default" id="pipelines" hidden>
 						<div class="panel-heading">
 						Pipelines
@@ -113,7 +116,7 @@
 											<th>Pipeline Name</th>
 											<th>Pipeline Description</th>
 											<th>Filename</th>
-											<th>Edit</th>
+											<th>Delete</th>
 										</tr>
 									</thead>
 									<tbody>

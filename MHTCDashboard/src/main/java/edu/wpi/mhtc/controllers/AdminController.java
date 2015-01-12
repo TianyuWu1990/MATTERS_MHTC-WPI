@@ -309,7 +309,7 @@ public class AdminController {
      * Used for Scheduler and Table Pipeline Listing
      */
     @RequestMapping(value = "/admin_pipeline/getPipelineData", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>>  admin_get_pipeline_data(Locale locale, Model model) throws Exception {
+    public @ResponseBody List<HashMap<String,String>> admin_get_pipeline_data(Locale locale, Model model) throws Exception {
 		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
 		Connection conn = DBConnector.getInstance().getConn();
 		
@@ -333,7 +333,32 @@ public class AdminController {
 		}
 		
 		return data;
-    }    
+    }
+    
+    /**
+     * Deletes pipeline from database with that name
+     * TODO Does not wipe data from server
+     * @param locale
+     * @param model
+     * @param pipelineName
+     * @return
+     * @throws SQLException
+     */
+    @RequestMapping(value = "/admin_pipeline/delete", method = RequestMethod.POST, params = {"pipelineName"})
+    public @ResponseBody boolean admin_pipeline_delete(Locale locale, Model model, @RequestParam("pipelineName") String pipelineName) throws SQLException
+    {
+		Connection conn = DBConnector.getInstance().getConn();
+
+		String sql = "DELETE FROM mhtc_sch.pipelines WHERE pipelinename = ?";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		
+		pstatement.setString(1, pipelineName);
+		
+		// Will return false since there is no result, but just want to make sure it executed properly
+		return !pstatement.execute();
+		
+    }
+    
     /********************** SCHEDULER *******************************/
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
     public String admin_scheduler(Locale locale, Model model) throws Exception {

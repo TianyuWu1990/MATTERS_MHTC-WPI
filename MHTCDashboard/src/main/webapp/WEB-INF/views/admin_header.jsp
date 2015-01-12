@@ -66,6 +66,10 @@
     <script src="adminPanel/js/moment.min.js"></script>
     <script src="adminPanel/js/bootstrap-datetimepicker.min.js"></script>
     <script src="adminPanel/js/admin_navigation.js"></script>
+    
+    <!-- Bootbox for Window Prompts -->
+    <script src="adminPanel/js/plugins/bootbox.min.js"></script>
+    
 </head>
 
 <body>
