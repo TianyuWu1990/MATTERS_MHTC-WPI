@@ -29,7 +29,13 @@ public class TransactionManager {
 
 		while (iter.hasNext()) {
 			Line line = iter.next();
-			DBSaver.saveLine(conn, line);
+			try {
+				DBSaver.saveLine(conn, line);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				conn.rollback();
+				throw e;
+			}
 		}
 		
 		// If exception isn't thrown, data is good to go

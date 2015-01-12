@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ include file="admin_header.jsp" %> 
-<%@ include file="admin_navigation_bar.jsp" %> 
+<%@ include file="../admin_header.jsp" %> 
+<%@ include file="../admin_navigation_bar.jsp" %> 
 
         <div id="page-wrapper">
 			<div class="row">
@@ -14,14 +14,11 @@
 					<p>${exception.message}</p>
 				</div>
 			</div>
-			<c:if test="${not empty exception.solution}">
-				<div class="row">
-					<div class="col-lg-12">
-						<h3>Possible solution:</h3>
-						<p>${exception.solution}</p>
-					</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<p> Please contact your system administrator to resolve this issue.</p>
 				</div>
-			</c:if>
+			</div>
 			<!-- <div class="row">
 				<div class="col-lg-12">
 					<h2>Error Stacktrace:</h2>
@@ -32,4 +29,4 @@
 			</div>  -->			
 		</div> <!-- /#page-wrapper -->
 
-<%@ include file="admin_footer.jsp" %>
+<%@ include file="../admin_footer.jsp" %>

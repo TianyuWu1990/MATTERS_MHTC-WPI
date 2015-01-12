@@ -526,30 +526,56 @@ public class AdminController {
         
     }
     
-//    @RequestMapping(value = "/errorTest", method = RequestMethod.GET)
-//    public ModelAndView getErrorPage() throws Exception {
-//    	
-//    	MHTCException test = new CategoryException("You threw an MHTC Exception!");
-//    	test.setSolution("And here is the solution you set!");
-//    	
-//    	throw test;
-//    }
-//    
-//    /*********************** ERROR HANDLING **********************************/
-//    
-//    /**
-//     * Handles all Exceptions that could occur in the system
-//     * @param e the exception to catch and pass to the view
-//     * @return the appropriate error view
-//     */
-//    @ExceptionHandler(Exception.class)
-//    public ModelAndView handleException(Exception e){
-//    	
-//    	ModelAndView mav = new ModelAndView("error");
-//    	
-//    	mav.addObject("exception", e);
-//    	
-//    	return mav;
-//    }
+    @RequestMapping(value = "/errorTest", method = RequestMethod.GET)
+    public ModelAndView getErrorPage() throws Exception {
+    	
+    	MHTCException test = new CategoryException("You threw an MHTC Exception!");
+    	test.setSolution("And here is the solution you set!");
+    	
+    	throw test;
+    }
     
+    /*********************** ERROR HANDLING **********************************/
+    
+    /**
+     * Handles all Exceptions that could occur in the system
+     * @param e the exception to catch and pass to the view
+     * @return the appropriate error view
+     */
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(Exception e){
+    	
+    	ModelAndView mav = new ModelAndView("error/generic");
+    	
+    	mav.addObject("exception", e);
+    	
+    	return mav;
+    }
+    
+    /**
+     * Handles all SQL Exceptions that could occur in the system
+     */
+    @ExceptionHandler(SQLException.class)
+    public ModelAndView handleSQLException(SQLException ex) {
+    	
+    	ModelAndView mav = new ModelAndView("error/sql");
+    	
+    	mav.addObject("sqlException", ex);
+
+		return mav;
+    }
+    
+    /**
+     * Handles all specific MHTC Exceptions, which have suggested solutions
+     */
+    @ExceptionHandler(MHTCException.class)
+    public ModelAndView handleMHTCException(MHTCException ex) {
+    	
+    	ModelAndView mav = new ModelAndView("error/mhtc");
+    	
+    	mav.addObject("mhtcEx", ex);
+    	
+    	return mav;
+    }
 }
+
