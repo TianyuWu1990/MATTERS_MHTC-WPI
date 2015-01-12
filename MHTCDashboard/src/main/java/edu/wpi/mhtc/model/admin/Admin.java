@@ -40,7 +40,8 @@ public class Admin {
 	// Push into database
 	public boolean insertToDB() throws SQLException {
 		if (this.id == 0) { // Just to make sure this Admin class is not DB-retrieved.
-			String sql = "INSERT INTO mhtc_sch.users(\"UserName\", \"PasswordHash\", \"Email\", \"FirstName\", \"LastName\", \"IsApproved\", \"GroupId\") VALUES (?, md5(?), ?, ?, ?, true, 1)";
+			String sql = "INSERT INTO mhtc_sch.users(\"UserName\", \"PasswordHash\", \"Email\", \"FirstName\", \"LastName\", \"IsApproved\", \"GroupId\") VALUES (?, md5(?), ?, ?, ?, true, 1);";
+			sql += " INSERT INTO mhtc_sch.user_roles VALUES(?, 'USER'), (?, 'ADMIN');";
 			Connection conn = DBConnector.getInstance().getConn();
 			PreparedStatement pstatement = conn.prepareStatement(sql);
 			
@@ -49,6 +50,9 @@ public class Admin {
 			pstatement.setString(3, this.email);
 			pstatement.setString(4, this.firstName);
 			pstatement.setString(5, this.lastName);
+			pstatement.setString(6, this.username);
+			pstatement.setString(7, this.username);
+			
 			System.out.println(pstatement.toString());
 			boolean insertStatus = pstatement.execute();
 			
