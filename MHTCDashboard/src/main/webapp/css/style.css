@@ -1160,7 +1160,7 @@ border:1px solid #b7b7b7; -webkit-border-radius: 3px; -moz-border-radius: 3px;bo
 
 #mbodyHeatMap
 {
-	height: 80%; 
+	height: 70%; 
 	width: 80%; 
 	overflow:auto; 
 	padding-left: 10% 
