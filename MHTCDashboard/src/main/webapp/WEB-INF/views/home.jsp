@@ -91,7 +91,7 @@
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 					</a> 
-					<img src="css/img/MHTC_Logo.jpg" alt="Mass High Technology Council" >
+					<img class="nav pull-left" src="css/img/MHTC_Logo.jpg" alt="Mass High Technology Council" >
 					
 					<ul class="nav pull-right" id="main-menu">
 						<li id="explore"><a href="#">Explore</a></li>
@@ -143,8 +143,9 @@
 				<!-- /.container-fluid -->
 			
 
-		<div style="background:#7b0020; margin:0px; padding:7px;">
-		<p align="center" valign="middle" style="font-size:20px;">Massachusetts' Technology, Talent and Economic Reporting System - MATTERS</p></div>
+		<div style="background:#7b0020; margin:0px; padding:20px;">
+		<p align = "center" style="font-size:27px"> <b> MATTERS: </b></p>
+		<p align="center" style="font-size:20px;">Massachusetts Technology, Talent, and Economic Reporting System</p></div>
 		</div>
 	</div>
 
