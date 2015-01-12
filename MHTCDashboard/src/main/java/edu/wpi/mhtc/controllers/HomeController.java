@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -202,7 +203,36 @@ public class HomeController {
 		
         return "reset_password_submit";
     }
+    /********** Registration **********/
+    @RequestMapping(value = "/user/register", method = RequestMethod.GET)
+    public String register(Locale locale, Model model) {
+        return "registerPage";
+    }    
     
+    @RequestMapping(value = "/user/register/submit", method = RequestMethod.POST)
+    public String register_submit(Locale locale, Model model, @RequestParam("UserName") String username, @RequestParam("Email") String email, @RequestParam("Password") String password, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) throws SQLException {
+    	// First, create an entry in the user table.
+		try {
+			String sql = "INSERT INTO mhtc_sch.users VALUES (nextval('mhtc_sch.user_id_seq'), ?, ?, ?, ?, md5(?), '', true, 2);";
+	    	sql += " INSERT INTO mhtc_sch.user_roles VALUES(?, 'USER');";
+			PreparedStatement pstatement = conn.prepareStatement(sql);
+			
+			pstatement.setString(1, username); // set parameter 1 (FIRST_NAME)
+			pstatement.setString(2, email);
+			pstatement.setString(3, firstName);
+			pstatement.setString(4, lastName);
+			pstatement.setString(5, password); // set parameter 1 (FIRST_NAME)
+			pstatement.setString(6, username);
+			
+			pstatement.execute();
+			
+			model.addAttribute("error", false);
+		} catch (SQLException e) {
+			model.addAttribute("error", true);
+		}
+		
+        return "register_page_submit";
+    }     
     /********** Authentication **********/
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage() {
