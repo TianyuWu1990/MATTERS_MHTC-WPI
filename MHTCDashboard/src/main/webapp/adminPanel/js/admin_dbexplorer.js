@@ -38,22 +38,7 @@ $(function() {
 		if ($.isEmptyObject(value)) {
 			value = $("select#category").val();
 		}
-		
-		var tbody = $("#test > tbody");
-		
-		/*$.getJSON('admin_dbexplorer/getMetrics', {"categoryid":value}, function(data) {
-			for (var i = 0; i < data.length; i++) {
-				var st = "";
-				st += '<tr>';
-				st += '<td>'+data[i]["StateName"]+'</td>';
-				st += '<td>'+data[i]["MetricName"]+'</td>';
-				st += '<td>'+data[i]["Value"]+'</td>';
-				st += '<td>'+data[i]["Year"]+'</td>';
-				st += '</tr>';
-				tbody.append(st);
-			}
-		});*/
-		
+				
 		// DataTable implementation
 		if ($.fn.dataTable.isDataTable('#test')) {
 			$('#test').DataTable().destroy();

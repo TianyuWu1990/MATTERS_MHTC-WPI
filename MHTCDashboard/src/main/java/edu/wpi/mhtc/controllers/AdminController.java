@@ -37,8 +37,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.RedirectView;
 
+import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
@@ -170,17 +175,20 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addCategory", method = RequestMethod.POST, params = {"parentcategory", "categoryName", "source"})
-    public String admin_addCategory(Locale locale, Model model, HttpServletRequest request,
+    public String admin_addCategory(Locale locale, Model model, RedirectAttributes redir, HttpServletRequest request,
     		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
     {
     	DBSaver.insertNewCategory(categoryName, parentid, source);
     	String referer = request.getHeader("Referer");
+    	
+    	// For status message
+		redir.addFlashAttribute("category_success_add", true);
 
         return "redirect:"+referer;
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "metricDesc", "datatype", "isCalculated"})
-    public String admin_addMetric(Locale locale, Model model, HttpServletRequest request,
+    public String admin_addMetric(Locale locale, RedirectAttributes redir, HttpServletRequest request,
     		@RequestParam("subcategory") String subCategory, @RequestParam("metricName") String metricName, @RequestParam("metricDesc") String metricDesc, 
     		@RequestParam("datatype") String datatype, @RequestParam("isCalculated") String isCalculated, @RequestParam("parentcategory") String parentCategory) throws SQLException
     {
@@ -197,7 +205,10 @@ public class AdminController {
     	DBSaver.insertNewMetric(metricName, metricDesc, isCalc, categoryID, datatype);
 
     	String referer = request.getHeader("Referer");
-
+    	
+    	// For status message
+		redir.addFlashAttribute("metric_success_add", true);
+		
         return "redirect:"+referer;
     }
     
@@ -288,7 +299,7 @@ public class AdminController {
      * Used for Scheduler and Table Pipeline Listing
      */
     @RequestMapping(value = "/admin_pipeline/getPipelineData", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>>  admin_get_pipeline_data(Locale locale, Model model) throws Exception {
+    public @ResponseBody List<HashMap<String,String>> admin_get_pipeline_data(Locale locale, Model model) throws Exception {
 		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
 		Connection conn = DBConnector.getInstance().getConn();
 		
@@ -303,16 +314,47 @@ public class AdminController {
 			String path = rs.getString("path");
 			String filename = rs.getString("filename");
 			
+			// Need to convert Date to String
+			Date dateAdded = rs.getTimestamp("dateadded");
+			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+			String date = df.format(dateAdded);
+			
 			row.put("pipelinename",pipelineName);
 			row.put("pipelinedesc", pipelineDesc);
-			row.put("path", path);
+			//row.put("path", path);
 			row.put("filename", filename);
+			row.put("dateadded", date);
 			
 			data.add(row);
 		}
 		
 		return data;
-    }    
+    }
+    
+    /**
+     * Deletes pipeline from database with that name
+     * TODO Does not wipe data from server
+     * @param locale
+     * @param model
+     * @param pipelineName
+     * @return
+     * @throws SQLException
+     */
+    @RequestMapping(value = "/admin_pipeline/delete", method = RequestMethod.POST, params = {"pipelineName"})
+    public @ResponseBody boolean admin_pipeline_delete(Locale locale, Model model, @RequestParam("pipelineName") String pipelineName) throws SQLException
+    {
+		Connection conn = DBConnector.getInstance().getConn();
+
+		String sql = "DELETE FROM mhtc_sch.pipelines WHERE pipelinename = ?";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		
+		pstatement.setString(1, pipelineName);
+		
+		// Will return false since there is no result, but just want to make sure it executed properly
+		return !pstatement.execute();
+		
+    }
+    
     /********************** SCHEDULER *******************************/
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
     public String admin_scheduler(Locale locale, Model model) throws Exception {
@@ -448,7 +490,7 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) throws Exception {
+    public String uploadAddFile(RedirectAttributes redir, @RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) throws Exception {
     	
     	System.out.println("\n\nCategory id from admin panel: " + categoryID);
     	
@@ -470,27 +512,90 @@ public class AdminController {
                 
         }
         
-        return "You successfully uploaded " + name + " into " + name + "-uploaded !";
+        redir.addFlashAttribute("upload_file_success", true);
+        redir.addAttribute("filename", file.getOriginalFilename());
+        
+        return "redirect:admin_upload";
         
     }
     
+    @RequestMapping(value = "/errorTest", method = RequestMethod.GET)
+    public ModelAndView getErrorPage() throws Exception {
+    	
+    	MHTCException test = new CategoryException("You threw an MHTC Exception!");
+    	test.setSolution("And here is the solution you set!");
+    	
+    	throw test;
+    }
     
+    /*********************** ERROR HANDLING **********************************/
     
     /**
-     * Handles all MHTCExceptions that could occur during the pipeline execution
+     * Handles all Exceptions that could occur in the system
      * @param e the exception to catch and pass to the view
      * @return the appropriate error view
      */
-    @ExceptionHandler(MHTCException.class)
-    public ModelAndView handleCategoryException(HttpServletRequest req, Exception e){
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleException(Exception e){
     	
-    	ModelAndView mav = new ModelAndView();
+    	String title = "MATTERS: Generic Exception Error";
+
+    	ModelAndView mav = new ModelAndView("error/generic");
     	
+    	mav.addObject("title", title);
     	mav.addObject("exception", e);
-    	mav.addObject("url", req.getRequestURL());
-    	mav.setViewName("error");
     	
     	return mav;
     }
     
+    /**
+     * Handles all SQL Exceptions that could occur in the system
+     */
+    @ExceptionHandler(SQLException.class)
+    public ModelAndView handleSQLException(SQLException ex, HttpServletRequest request) {
+    	
+    	String title = "MATTERS: SQL Exception Error";
+    	ModelAndView mav = new ModelAndView();		
+    	
+    	// This is a duplicate key, let's just inform the user
+    	if (ex.getSQLState().equals("23505")) {
+        	String referer = request.getHeader("Referer");
+        	
+        	RedirectView redirectView = new RedirectView(referer);
+        	
+        	mav.setView(redirectView);
+        	
+        	FlashMap outputFlashMap = RequestContextUtils.getOutputFlashMap(request);
+        	if (outputFlashMap != null) {
+        		outputFlashMap.put("database_duplicate_key", true);
+        	}
+        	
+    	} else {
+
+	    	mav.setViewName("error/sql");
+	    	mav.addObject("title", title);
+	    	mav.addObject("sqlException", ex);
+	    	
+    	}
+
+		return mav;
+
+    }
+    
+    /**
+     * Handles all specific MHTC Exceptions, which have suggested solutions
+     */
+    @ExceptionHandler(MHTCException.class)
+    public ModelAndView handleMHTCException(MHTCException ex) {
+    	
+    	String title = "MATTERS: MHTC Exception Error";
+    	
+    	ModelAndView mav = new ModelAndView("error/mhtc");
+    	
+    	mav.addObject("title", title);
+    	mav.addObject("mhtcEx", ex);
+    	
+    	return mav;
+    }
 }
+

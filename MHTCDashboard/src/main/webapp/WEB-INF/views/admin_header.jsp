@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,28 +13,31 @@
     <title>${title}</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="adminPanel/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<c:url value="/adminPanel/css/bootstrap.min.css" />" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="adminPanel/css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="<c:url value="/adminPanel/css/plugins/metisMenu/metisMenu.min.css" />" rel="stylesheet">
 
     <!-- Timeline CSS -->
-    <link href="adminPanel/css/plugins/timeline.css" rel="stylesheet">
+    <link href="<c:url value="/adminPanel/css/plugins/timeline.css" />" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="adminPanel/css/sb-admin-2.css" rel="stylesheet">
+    <link href="<c:url value="/adminPanel/css/sb-admin-2.css" />" rel="stylesheet">
     
+    <!-- DataTables CSS -->
+	<link href="<c:url value="/adminPanel/css/plugins/dataTables.bootstrap.css" />" rel="stylesheet">
+	<link href="<c:url value="/adminPanel/css/plugins/dataTables.responsive.css" />" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <!-- <link href="adminPanel/css/plugins/morris.css" rel="stylesheet">-->
+    <!-- <link href="<c:url value="/adminPanel/css/plugins/morris.css" />" rel="stylesheet">-->
     
     <!-- Custom MHTC CSS -->
-    <link href="adminPanel/css/admin_css.css" rel="stylesheet">
+    <link href="<c:url value="/adminPanel/css/admin_css.css" />" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="adminPanel/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     
-    <link href="adminPanel/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="<c:url value="/adminPanel/css/bootstrap-datetimepicker.min.css" />" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -42,27 +47,31 @@
     <![endif]-->
     
     <!-- jQuery -->
-    <script src="adminPanel/js/jquery.min.js"></script>
+    <script src="<c:url value="/adminPanel/js/jquery.min.js" />"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="adminPanel/js/bootstrap.min.js"></script>
+    <script src="<c:url value="/adminPanel/js/bootstrap.min.js" />"></script>
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="adminPanel/js/plugins/metisMenu/metisMenu.min.js"></script>
+    <script src="<c:url value="/adminPanel/js/plugins/metisMenu/metisMenu.min.js" />"></script>
     
     <!-- DataTables JavaScript -->
-    <script src="adminPanel/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="adminPanel/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="<c:url value="/adminPanel/js/plugins/dataTables/jquery.dataTables.min.js" />"></script>
+    <script src="<c:url value="/adminPanel/js/plugins/dataTables/dataTables.bootstrap.js" />"></script>
 
     <!-- Morris Charts JavaScript 
-    <script src="adminPanel/js/plugins/morris/raphael.min.js"></script>
-    <script src="adminPanel/js/plugins/morris/morris.min.js"></script>
-    <script src="adminPanel/js/plugins/morris/morris-data.js"></script> -->
+    <script src="<c:url value="/adminPanel/js/plugins/morris/raphael.min.js" />"></script>
+    <script src="<c:url value="/adminPanel/js/plugins/morris/morris.min.js" />"></script>
+    <script src="<c:url value="/adminPanel/js/plugins/morris/morris-data.js" />"></script> -->
 
     <!-- Custom Theme JavaScript -->
-    <script src="adminPanel/js/moment.min.js"></script>
-    <script src="adminPanel/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="adminPanel/js/admin_navigation.js"></script>
+    <script src="<c:url value="/adminPanel/js/moment.min.js" />"></script>
+    <script src="<c:url value="/adminPanel/js/bootstrap-datetimepicker.min.js" />"></script>
+    <script src="<c:url value="/adminPanel/js/admin_navigation.js" />"></script>
+    
+    <!-- Bootbox for Window Prompts -->
+    <script src="<c:url value="/adminPanel/js/plugins/bootbox.min.js" />"></script>
+    
 </head>
 
 <body>
