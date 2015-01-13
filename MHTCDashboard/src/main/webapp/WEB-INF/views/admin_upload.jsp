@@ -37,6 +37,11 @@
         					The data you are trying to upload already exists in the database!
         				</div>
         			</c:if>
+        			<c:if test="${upload_file_success}">
+        				<div class="alert alert-success">
+        					You've successfully uploaded ${filename}!
+        				</div>
+        			</c:if>
         		</div>
         	</div>
         	<div class="row">

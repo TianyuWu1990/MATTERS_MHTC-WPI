@@ -503,7 +503,7 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public @ResponseBody String uploadAddFile(@RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) throws Exception {
+    public String uploadAddFile(RedirectAttributes redir, @RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) throws Exception {
     	
     	System.out.println("\n\nCategory id from admin panel: " + categoryID);
     	
@@ -525,7 +525,10 @@ public class AdminController {
                 
         }
         
-        return "You successfully uploaded " + name + " into " + name + "-uploaded !";
+        redir.addFlashAttribute("upload_file_success", true);
+        redir.addAttribute("filename", file.getOriginalFilename());
+        
+        return "redirect:admin_upload";
         
     }
     
