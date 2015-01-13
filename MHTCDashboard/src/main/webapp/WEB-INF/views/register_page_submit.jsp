@@ -79,7 +79,8 @@ body {
 		                        	Error while registering your account. Please try again.
 		                        </div> 
 	                       </c:otherwise>
-	                    </c:choose>       
+	                    </c:choose>   
+	                 	<p>Click <a href="<c:url value="/" />">here</a> to return to the dashboard.</p>
                     </div>                     
              </div>  
         </div>

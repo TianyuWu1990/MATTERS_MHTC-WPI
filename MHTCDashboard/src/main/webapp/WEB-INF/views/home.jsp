@@ -118,15 +118,12 @@
 					                </label>
 					                </fieldset>
 					                
-					                <fieldset class="remb">
-					                <label class="remember">
-					                <input type="checkbox" value="1" name="remember_me">
-					                <span>Remember me</span>
-					                </label>
 					                <input class="submit button" type="submit" value="Login">
-					                </fieldset>
 					                <p align="center">
-					               		 <a class="forgot" href="">Forgot your password</a>
+					               		 <a class="forgot" href="<c:url value="/user/forgot" />">Forgot your password</a>
+					                </p>
+					                <p align="center">
+					                	<a class="register" href="<c:url value="/user/register" />">Register</a>
 					                </p>
 					                </form>
 								</div>
