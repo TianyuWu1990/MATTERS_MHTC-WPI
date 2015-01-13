@@ -184,7 +184,7 @@ public class AdminController {
     	// For status message
 		redir.addFlashAttribute("category_success_add", true);
 
-        return "redirect:/"+referer;
+        return "redirect:"+referer;
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "metricDesc", "datatype", "isCalculated"})
@@ -209,7 +209,7 @@ public class AdminController {
     	// For status message
 		redir.addFlashAttribute("metric_success_add", true);
 		
-        return "redirect:/"+referer;
+        return "redirect:"+referer;
     }
     
     /*********************** PIPELINE ********************************/
@@ -229,7 +229,7 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addPipeline", method = RequestMethod.POST)
-    public String admin_addPipeline(Locale locale, Model model, @RequestParam("parentcategory") String parentCategory,
+    public String admin_addPipeline(Locale locale, Model model, RedirectAttributes redir, @RequestParam("parentcategory") String parentCategory,
     								@RequestParam("subcategory") String subCategory, @RequestParam("script") MultipartFile script,
     								@RequestParam("pipelineName") String pipelineName, @RequestParam("pipelineDesc") String pipelineDesc) throws SQLException 
     {
@@ -277,12 +277,15 @@ public class AdminController {
 		}
 		
 		Path scriptFilePath = finder.done();
+		scriptFilePath.toFile().setExecutable(true);
 		System.out.println(scriptFilePath);
 		
     	// Now let's add the entry to the database if nothing has failed yet    	
-    	DBSaver.insertPipeline(pipelineName, pipelineDesc, dir.toString(), script.getOriginalFilename());
+    	DBSaver.insertPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename());
     	
     	//Now run job on server
+    	/**
+    	 * 
     	try {
     		scriptFilePath.toFile().setExecutable(true);
 //    		Runtime.getRuntime().exec("chmod +x" + scriptFilePath.toString());
@@ -291,6 +294,11 @@ public class AdminController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
+    	*/
+    	
+    	redir.addFlashAttribute("pipeline_add_success", true);
+    	redir.addFlashAttribute("pipelineName", pipelineName);
+    	
     	return "redirect:/admin_pipeline";
     }
     

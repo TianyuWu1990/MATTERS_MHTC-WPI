@@ -40,16 +40,16 @@ $(function() {
 			if ($this.hasClass("btn-warning")) {
 				$this.removeClass("btn-warning");
 				$this.addClass("btn-primary");
-				$this.find("i").removeClass("glyphicon-pause");
-				$this.find("i").addClass("glyphicon-play");
-				$this.html("<i class=\"glyphicon glyphicon-play\"></i> Restart the Scheduler");
+				$this.find("i").removeClass("fa-pause");
+				$this.find("i").addClass("fa-play");
+				$this.html("<i class=\"fa fa-play\"></i> Restart the Scheduler");
 				$(".paused-overlay").css("visibility","visible")
 			} else {
 				$this.addClass("btn-warning");
 				$this.removeClass("btn-primary");
-				$this.find("i").removeClass("glyphicon-play");
-				$this.find("i").addClass("glyphicon-pause");
-				$this.html("<i class=\"glyphicon glyphicon-pause\"></i> Pause the Scheduler");	
+				$this.find("i").removeClass("fa-play");
+				$this.find("i").addClass("fa-pause");
+				$this.html("<i class=\"fa fa-pause\"></i> Pause the Scheduler");	
 				$(".paused-overlay").css("visibility","hidden")
 			}
 		});

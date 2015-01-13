@@ -39,6 +39,11 @@
         					The pipeline you are trying to upload already exists in the database!
         				</div>
         			</c:if>
+        			<c:if test="${pipeline_add_success}">
+        				<div class="alert alert-success">
+        					You've successfully uploaded pipeline ${pipelineName}!
+        				</div>
+        			</c:if>
         		</div>
         	</div>
         	
