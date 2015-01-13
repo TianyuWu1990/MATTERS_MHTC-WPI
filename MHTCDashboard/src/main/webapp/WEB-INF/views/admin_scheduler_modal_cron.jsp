@@ -12,8 +12,8 @@
 
 					<!-- Schedule job -->
 					<div class="input-group">
-						<strong>Schedule Job</strong><br /> <select class="form-control" name="sched_job">
-							<option value="0">Talend</option>
+						<strong>Schedule Job</strong><br />
+						<select class="form-control" name="sched_job">
 						</select>
 					</div>
 					<!-- Schedule name -->

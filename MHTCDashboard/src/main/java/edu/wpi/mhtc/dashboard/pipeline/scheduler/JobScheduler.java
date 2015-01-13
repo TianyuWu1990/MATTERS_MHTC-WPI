@@ -27,17 +27,18 @@ public class JobScheduler {
     	sf = new StdSchedulerFactory();
     	sched = sf.getScheduler();		 	
 	}
-	/**************** Job scheduler 
-	 * @throws Exception ****************/
+	/**************** 
+	 * Job scheduler 
+	 * @throws Exception 
+	 *****************/
 	public static void schedule(Schedule sched) throws Exception {
 		if (sched.isCronJob()) {
-			JobScheduler.createTalendJob(cronTrigger(sched.getSched_date()), sched.getJob_name());
+			JobScheduler.createTalendJob(cronTrigger(sched.getSched_date()), sched);
 		} else {
-			JobScheduler.createTalendJob(specificDateTimeTrigger(sched.getSched_date()), sched.getJob_name());
+			JobScheduler.createTalendJob(specificDateTimeTrigger(sched.getSched_date()), sched);
 		}
 		
 	}
-	
 
 	/**************** Job operations ****************/
 	public static void start() throws SchedulerException {
@@ -72,14 +73,14 @@ public class JobScheduler {
 	}
 	
 	/* Create job procedures */
-    public static void createTalendJob(Trigger trigger, String jobName) throws Exception{
+    public static void createTalendJob(Trigger trigger, Schedule job_schedule) throws Exception{
 
     	// Create Talend Job
     	JobDetail job = JobBuilder.newJob(TalendJob.class)
-    		       .withIdentity(jobName)
+    		       .withIdentity(job_schedule.getJob_name())
     		       .build();        
-    	job.getJobDataMap().put("jobName", jobName);
     	
+    	job.getJobDataMap().put("jobPipelineName",  job_schedule.getSched_job());
     	//Trigger the job to run on the next round minute
     	sched.scheduleJob(job, trigger);
      }
