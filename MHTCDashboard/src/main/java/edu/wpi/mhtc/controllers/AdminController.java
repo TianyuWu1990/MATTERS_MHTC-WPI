@@ -184,7 +184,7 @@ public class AdminController {
     	// For status message
 		redir.addFlashAttribute("category_success_add", true);
 
-        return "redirect:"+referer;
+        return "redirect:/"+referer;
     }
     
     @RequestMapping(value = "/admin_addMetric", method = RequestMethod.POST, params = {"parentcategory", "subcategory", "metricName", "metricDesc", "datatype", "isCalculated"})
@@ -209,7 +209,7 @@ public class AdminController {
     	// For status message
 		redir.addFlashAttribute("metric_success_add", true);
 		
-        return "redirect:"+referer;
+        return "redirect:/"+referer;
     }
     
     /*********************** PIPELINE ********************************/
@@ -291,7 +291,7 @@ public class AdminController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-    	return "redirect:admin_pipeline";
+    	return "redirect:/admin_pipeline";
     }
     
     /**
@@ -513,9 +513,9 @@ public class AdminController {
         }
         
         redir.addFlashAttribute("upload_file_success", true);
-        redir.addAttribute("filename", file.getOriginalFilename());
+        redir.addFlashAttribute("filename", file.getOriginalFilename());
         
-        return "redirect:admin_upload";
+        return "redirect:/admin_upload";
         
     }
     
