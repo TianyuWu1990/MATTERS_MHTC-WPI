@@ -28,9 +28,7 @@ public class TestDBLoader {
 		assertEquals("60", map.get("total taxes"));
 		
 		map = DBLoader.getMetricInfo("2");
-		
-//		metric names have changed
-//		assertEquals( "7", map.get("Total Employment"));
+		assertEquals("7", map.get("total employment"));
 	}
 
 }
