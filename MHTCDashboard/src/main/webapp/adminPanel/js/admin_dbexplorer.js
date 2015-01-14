@@ -46,7 +46,7 @@ $(function() {
 		
 		$('#test').DataTable({
 			"ajax": {
-				"url": "admin_dbexplorer/getMetrics?categoryid="+value,
+				"url": "admin_dbexplorer/getMetricData?categoryid="+value,
 				"dataSrc": ""
 			}
 		});

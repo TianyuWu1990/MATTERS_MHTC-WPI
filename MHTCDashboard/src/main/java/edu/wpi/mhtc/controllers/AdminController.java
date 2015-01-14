@@ -152,7 +152,7 @@ public class AdminController {
     	return subCategories;
     }
     
-    @RequestMapping(value = "/admin_dbexplorer/getMetrics", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin_dbexplorer/getMetricData", method = RequestMethod.GET)
     public @ResponseBody List<ArrayList<String>> getMetricData(@RequestParam("categoryid") String categoryid) throws Exception {
     	
     	List<ArrayList<String>> metricData = DBLoader.getMetricData(categoryid);
@@ -211,6 +211,13 @@ public class AdminController {
 		
         return "redirect:"+referer;
     }
+    
+    @RequestMapping(value = "/admin/metrics", method = RequestMethod.GET)
+    public @ResponseBody Map<String, String> getMetrics(@RequestParam("categoryid") String categoryid) throws Exception {
+    	
+    	Map<String, String> metricData = DBLoader.getMetricInfo(categoryid);
+    	return metricData;
+    }    
     
     /*********************** PIPELINE ********************************/
     @RequestMapping(value = "/admin_pipeline", method = RequestMethod.GET)

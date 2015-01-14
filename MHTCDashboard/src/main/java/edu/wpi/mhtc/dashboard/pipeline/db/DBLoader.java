@@ -100,11 +100,12 @@ public class DBLoader {
 		else {
 			do {
 				String metricID = rs.getString("Id").toLowerCase();
-				String metricName = rs.getString("Name").toLowerCase();
+				String metricName = rs.getString("Name");
 				table.put(metricName, metricID);
 			}
 			while (rs.next());  
 		}
+		
 		return table;
 	}
 	
