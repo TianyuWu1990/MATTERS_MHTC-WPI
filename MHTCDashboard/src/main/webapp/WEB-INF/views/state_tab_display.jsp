@@ -188,7 +188,7 @@
 		</td>
 		<td valign="top">
 			<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(1)" id="selectall" disabled="true">Select All</button>
-			<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(2)" id="unselectall" disabled="true">Unselect All</button>
+			<button class="btn btn-info" onClick="as.SelectUnSelectAllTabs(2)" id="unselectall" disabled="true">Deselect All</button>
 			<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 			<button data-toggle="modal" data-target="#myModal" class="btn btn-info" onClick="as.showMultiGraphOnSelected()">Compare</button>
 			</td>

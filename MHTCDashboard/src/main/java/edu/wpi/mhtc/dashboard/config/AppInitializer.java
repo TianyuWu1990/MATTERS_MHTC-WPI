@@ -1,10 +1,15 @@
 package edu.wpi.mhtc.dashboard.config;
 
+import java.sql.SQLException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
+import edu.wpi.mhtc.dashboard.util.Logger;
 
 public class AppInitializer implements WebApplicationInitializer {
 
@@ -18,6 +23,22 @@ public class AppInitializer implements WebApplicationInitializer {
 		//ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
        // dispatcher.setLoadOnStartup(1);
         //dispatcher.addMapping("/*");
+		/*try {
+			Logger.log("Server", "Server has been restarted.");
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
+		
+		try {
+			JobScheduler.createScheduler();
+			JobScheduler.start();
+			System.out.println("Scheduler started");
+		} catch (Exception e) {
+			System.out.println("Error starting the job scheduler.");
+		}
+		
+
 	}
 	
 	@SuppressWarnings("unused")
