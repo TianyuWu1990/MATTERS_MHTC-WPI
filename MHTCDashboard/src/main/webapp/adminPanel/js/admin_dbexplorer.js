@@ -54,6 +54,18 @@ $(function() {
 		$('#dbrows').show();
 		
 	});
+	
+	// Controls tab functionality
+	$('#databaseTab a[href="#bySource"]').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	});
+	
+	$('#databaseTab a[href="#byCategory"]').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	});
+
 });
 
 
