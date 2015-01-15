@@ -40,11 +40,11 @@ $(function() {
 		}
 				
 		// DataTable implementation
-		if ($.fn.dataTable.isDataTable('#test')) {
-			$('#test').DataTable().destroy();
+		if ($.fn.dataTable.isDataTable('#categoryTable')) {
+			$('#categoryTable').DataTable().destroy();
 		}
 		
-		$('#test').DataTable({
+		$('#categoryTable').DataTable({
 			"ajax": {
 				"url": "admin_dbexplorer/getMetricData?categoryid="+value,
 				"dataSrc": ""
@@ -53,6 +53,17 @@ $(function() {
 		
 		$('#dbrows').show();
 		
+	});
+	
+	if ($.fn.dataTable.isDataTable('#metricTable')) {
+		$('#metricTable').DataTable().destroy();
+	}
+	
+	$('#metricTable').DataTable({
+		"ajax": {
+			"url": "admin_dbexplorer/getDetailedMetricData",
+			"dataSrc": ""
+		}
 	});
 	
 	// Controls tab functionality

@@ -265,6 +265,36 @@ public class DBLoader {
 	}
 	
 	/**
+	 * For use with the Database Explorer to look at detailed info about metric
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ArrayList<ArrayList<String>> getDetailedMetricData() throws SQLException {
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();
+		
+		String sql = "SELECT m.\"Name\" AS \"metricName\", m.\"DisplayName\", m.\"Source\", m.\"URL\", c.\"Name\" AS \"categoryName\" FROM mhtc_sch.metrics m "
+    			+ "INNER JOIN mhtc_sch.categoriesxmetrics cxm ON m.\"Id\" = cxm.\"metricId\" "
+    					+ "INNER JOIN mhtc_sch.categories c ON cxm.\"categoryId\" = c.\"Id\"";
+    	PreparedStatement pstatement = conn.prepareStatement(sql);
+    	ResultSet rs = pstatement.executeQuery();
+    	
+    	while (rs.next()) 
+    	{
+    		ArrayList<String> dataRows = new ArrayList<String>();
+    		dataRows.add(rs.getString("categoryName"));
+    		dataRows.add(rs.getString("metricName"));
+    		dataRows.add(rs.getString("DisplayName"));
+    		dataRows.add(rs.getString("Source"));
+    		dataRows.add(rs.getString("URL"));
+    		data.add(dataRows);
+    	}
+    	
+    	return data;
+	}
+	
+	/**
 	 * Gets the list of DataTypes for metrics (numeric, rank, etc.)
 	 * @return list of data types
 	 * @throws SQLException

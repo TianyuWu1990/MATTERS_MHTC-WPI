@@ -45,6 +45,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
+					<!-- Tabbed content start -->
 					<div class="tab-content">
 						<div class="tab-pane active" id="byCategory">
 							<div class="top-buffer"></div>
@@ -67,30 +68,11 @@
 											</td>
 										</tr>
 									</table>
-									<div id="subcattable" hidden>
-										<table class="table" hidden>
-											<thead>
-												<tr>
-													<td>Talend jobname</td>
-													<td>Date/time of last run</td>
-													<td>Status</td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>talend_pipeline_1</td>
-													<td>January 1st, 1970 12:34:56</td>
-													<td class="success"><i class="fa fa-check fa-fw"></i> Success!</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
 								</div>
 								<!-- /.panel-heading -->
 								<div id="dbrows" class="panel-body" hidden>
 									<div class="dataTable_wrapper">
-										<table class="table table-striped table-bordered table-hover"
-											id="test">
+										<table class="table table-striped table-bordered table-hover" id="categoryTable">
 											<thead>
 												<tr>
 													<th>State</th>
@@ -113,8 +95,28 @@
 						
 						<div class="tab-pane" id="bySource">
 							<div class="top-buffer"></div>
-							
-							Test!
+							<div class="panel panel-default">
+								<div class="panel-heading"> 
+									Metric Information
+								</div>
+								<div id="metricData" class="panel-body">
+									<div class="dataTable_wrapper">
+										<table class="table table-striped table-bordered table-hover" id="metricTable">
+											<thead>
+												<tr>
+													<th>Category Name</th>
+													<th>Metric Name</th>
+													<th>Display Name</th>
+													<th>Source</th>
+													<th>URL</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
 						</div>
 						
 					</div><!-- /#tab-content -->

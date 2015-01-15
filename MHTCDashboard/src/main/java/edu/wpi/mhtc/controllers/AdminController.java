@@ -159,6 +159,14 @@ public class AdminController {
     	return metricData;
     }
     
+    @RequestMapping(value ="/admin_dbexplorer/getDetailedMetricData", method = RequestMethod.GET)
+    public @ResponseBody List<ArrayList<String>> getDetailedMetricData() throws SQLException {
+    	
+    	List<ArrayList<String>> metricData = DBLoader.getDetailedMetricData();
+    	
+		return metricData;
+    }
+    
     /*********************** UPLOAD ********************************/
     @RequestMapping(value = "/admin_upload", method = RequestMethod.GET)
     public String admin_upload(Locale locale, Model model) throws Exception {
