@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="admin_header.jsp" %> 
+
 <style>
 	.input-group {
 		padding-top: 10px;
@@ -7,8 +8,8 @@
 	}
 </style>
 <%@ include file="admin_navigation_bar.jsp" %> 
-
 <script src="adminPanel/js/admin_scheduler.js"></script>
+
 
 		
         <div id="page-wrapper">
@@ -31,8 +32,8 @@
 		       	<div class="row">
 		        	<div class="col-lg-12">		
 		        		<p>
-		        			<button data-toggle="modal" data-target="#addSchedModal" id="addSchedBtn" class="btn btn-sm btn-success" type="button"><i class="fa fa-calendar"></i> New Schedule</button>
-							<button data-toggle="modal" data-target="#addCronSchedModal" id="addCronSchedBtn" class="btn btn-sm btn-success" type="button"><i class="fa fa-repeat"></i> New Cron Schedule</button>
+		        			<button data-toggle="modal" id="addSchedBtn" class="btn btn-sm btn-success" type="button"><i class="fa fa-calendar"></i> New Schedule</button>
+							<button data-toggle="modal" id="addCronSchedBtn" class="btn btn-sm btn-success" type="button"><i class="fa fa-repeat"></i> New Cron Schedule</button>
 					
 							<c:choose>
 							    <c:when test="${inStandbyMode}">
@@ -86,7 +87,7 @@
 						          				<td>${schedule.getSched_job() }</td>
 						          				<td>${schedule.getSched_description() }</td> 
 						          				<td>
-						          					<a href="admin_scheduler_stop?job_name=${schedule.getJob_name()}"><button class="btn btn-xs btn-danger" type="button"><i class="glyphicon glyphicon-off"></i> Stop / Remove</button> </a> 
+						          					<a href="admin_scheduler_stop?job_name=${schedule.getJob_name()}"><button class="btn btn-xs btn-danger" type="button"><i class="fa fa-times-circle"></i> Stop / Remove</button> </a> 
 						          				</td> 			
 						        			</tr>
 					        			</c:forEach>

@@ -34,6 +34,7 @@ CREATE TABLE mhtc_sch.users
   "FirstName" character varying(25),
   "LastName" character varying(25),
   "PasswordHash" text NOT NULL,
+  "Token" text NOT NULL,
   "IsApproved" boolean NOT NULL DEFAULT false,
   "GroupId" integer NOT NULL,
   CONSTRAINT "PK_users" PRIMARY KEY ("Id"),
@@ -44,8 +45,8 @@ CREATE TABLE mhtc_sch.users
 );
 
 -- Insert some users
-INSERT INTO mhtc_sch.users VALUES (1, 'wpi', 'mhtc-students@wpi.edu', 'WPI', 'Students', 'a5da186fb55ee638cd74ce437ddfa534', true, 1);
-INSERT INTO mhtc_sch.users VALUES (nextval('mhtc_sch.user_id_seq'), 'wpi-user', 'mhtc-users@wpi.edu', 'WPI', 'Users', 'a5da186fb55ee638cd74ce437ddfa534', true, 2);
+INSERT INTO mhtc_sch.users VALUES (1, 'wpi', 'mhtc-students@wpi.edu', 'WPI', 'Students', 'a5da186fb55ee638cd74ce437ddfa534', '', true, 1);
+INSERT INTO mhtc_sch.users VALUES (nextval('mhtc_sch.user_id_seq'), 'wpi-user', 'mhtc-users@wpi.edu', 'WPI', 'Users', 'a5da186fb55ee638cd74ce437ddfa534', '', true, 2);
 
 -----------------------------------------------------------
 -- This holds user roles such as ROLE_ADMIN, ROLE_USER

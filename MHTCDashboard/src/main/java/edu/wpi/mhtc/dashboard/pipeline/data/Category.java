@@ -50,20 +50,20 @@ public class Category {
 	public Metric getMetric(String name) throws CategoryException {
 		
 		for (Metric metric: metrics) {
-			if (name.equals(metric.getName())) {
+			if (name.equalsIgnoreCase(metric.getName())) {
 				return metric;
 			}
 		}
 		
 		// Metric wasn't found in the DB, let user know
-		CategoryException c = new CategoryException("No metric in category \"" + this.name + "\" matches metric \""+name+"\"");
-		c.setSolution("The possible metrics are:<ul>");
+		CategoryException c = new CategoryException("No metric in category \"" + this.name + "\" matches metric \""+name+"\".");
+		c.setSolution("The possible metrics for category \"" + this.name + "\" are:<ul>");
 		
 		for (Metric metric: metrics) {
 			c.setSolution("<li>" + metric.getName() + "</li>");
 		}
 		
-		c.setSolution("</ul>Please confirm that you are uploading the right metric to the right category");
+		c.setSolution("</ul>Please confirm that you are uploading the right metric to the right category.");
 				
 		throw c;
 	}

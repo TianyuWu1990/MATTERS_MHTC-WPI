@@ -10,7 +10,7 @@
 <link href="css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet">
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 <link href="css/dataTables.css" rel="stylesheet">
-<link href="css/style.css" id="base-style"  rel="stylesheet">
+<link href="css/style.css" id="base-style" rel="stylesheet">
 <link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext'
 	rel='stylesheet' type='text/css'>
@@ -36,7 +36,6 @@
 <script src="js/jquery-ui-1.10.0.custom.min.js"></script>
 <script src="js/jquery.ui.touch-punch.js"></script>
 <script src="js/modernizr.js"></script>
-<script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.cookie.js"></script>
 <script src='js/fullcalendar.min.js'></script>
 <script src='js/jquery.dataTables.min.js'></script>
@@ -119,15 +118,12 @@
 					                </label>
 					                </fieldset>
 					                
-					                <fieldset class="remb">
-					                <label class="remember">
-					                <input type="checkbox" value="1" name="remember_me">
-					                <span>Remember me</span>
-					                </label>
 					                <input class="submit button" type="submit" value="Login">
-					                </fieldset>
 					                <p align="center">
-					               		 <a class="forgot" href="">Forgot your password</a>
+					               		 <a class="forgot" href="<c:url value="/user/forgot" />">Forgot your password</a>
+					                </p>
+					                <p align="center">
+					                	<a class="register" href="<c:url value="/user/register" />">Register</a>
 					                </p>
 					                </form>
 								</div>

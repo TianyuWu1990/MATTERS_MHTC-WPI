@@ -52,6 +52,32 @@ $(function() {
 		
 	});
 	
+	/**
+	 * Populate the list of metrics for the selected subcategory
+	 */
+	$('form#uploadFile select#category').change(function() {
+		var value = $('form#uploadFile select#category').val();
+		var text = $('form#uploadFile select#category option:selected').text();
+		
+		var $div = $('#displayMetrics');
+		
+		$.getJSON('admin/metrics', {"categoryid":value}, function(data) {
+			var divContents = "The possible metrics for category \""+text+"\" are:\n<ul>";
+
+			for (var key in data) {
+				if (data.hasOwnProperty(key)) {
+					divContents = divContents + "<li>" + key + "</li>";
+				}
+			}
+			
+			divContents = divContents + "</ul>";
+						
+			$div.html(divContents);
+		});
+		
+
+	})
+	
 	$('#uploadData').click(function() {
 		var $fileInput = $('input[type="file"]');
 		

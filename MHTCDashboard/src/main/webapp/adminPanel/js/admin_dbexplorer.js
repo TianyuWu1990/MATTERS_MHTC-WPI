@@ -38,30 +38,15 @@ $(function() {
 		if ($.isEmptyObject(value)) {
 			value = $("select#category").val();
 		}
-		
-		var tbody = $("#test > tbody");
-		
-		/*$.getJSON('admin_dbexplorer/getMetrics', {"categoryid":value}, function(data) {
-			for (var i = 0; i < data.length; i++) {
-				var st = "";
-				st += '<tr>';
-				st += '<td>'+data[i]["StateName"]+'</td>';
-				st += '<td>'+data[i]["MetricName"]+'</td>';
-				st += '<td>'+data[i]["Value"]+'</td>';
-				st += '<td>'+data[i]["Year"]+'</td>';
-				st += '</tr>';
-				tbody.append(st);
-			}
-		});*/
-		
+				
 		// DataTable implementation
-		if ($.fn.dataTable.isDataTable('#test')) {
-			$('#test').DataTable().destroy();
+		if ($.fn.dataTable.isDataTable('#categoryTable')) {
+			$('#categoryTable').DataTable().destroy();
 		}
 		
-		$('#test').DataTable({
+		$('#categoryTable').DataTable({
 			"ajax": {
-				"url": "admin_dbexplorer/getMetrics?categoryid="+value,
+				"url": "admin_dbexplorer/getMetricData?categoryid="+value,
 				"dataSrc": ""
 			}
 		});
@@ -69,6 +54,29 @@ $(function() {
 		$('#dbrows').show();
 		
 	});
+	
+	if ($.fn.dataTable.isDataTable('#metricTable')) {
+		$('#metricTable').DataTable().destroy();
+	}
+	
+	$('#metricTable').DataTable({
+		"ajax": {
+			"url": "admin_dbexplorer/getDetailedMetricData",
+			"dataSrc": ""
+		}
+	});
+	
+	// Controls tab functionality
+	$('#databaseTab a[href="#bySource"]').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	});
+	
+	$('#databaseTab a[href="#byCategory"]').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	});
+
 });
 
 

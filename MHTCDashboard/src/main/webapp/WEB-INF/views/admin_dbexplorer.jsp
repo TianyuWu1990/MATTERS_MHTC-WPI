@@ -3,6 +3,10 @@
 <%@ include file="admin_navigation_bar.jsp" %> 
 
 		<script src="adminPanel/js/admin_dbexplorer.js"></script>
+		
+		<style>
+		.top-buffer { margin-top:20px; }
+		</style>
 
         <div id="page-wrapper">
             <div class="row">
@@ -27,72 +31,99 @@
 	        		</p>
 	        	</div>
 	        </div>
+	        <div class="row">
+	        	<div class="col-lg-12">
+			        <ul id="databaseTab" class="nav nav-tabs">
+			        	<li class="active">
+			        		<a href="#byCategory" data-toggle="tab">
+			        			Search by Category
+			        		</a>
+			        	</li>
+			        	<li><a href="#bySource">Search by Source</a></li>
+			        </ul>
+			    </div>
+			</div>
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<table id="form">
-								<tr>
-									<td>
-										Choose a category:
-										<select id="category" name="category">
-											<option value="">-- Select a category --</option>
-											<c:forEach items="${categories}" var="category">
-												<option value="${category.value}">${category.key}</option>
-											</c:forEach>
-										</select>
-									</td>
-									<td id="subcat" hidden>
-										Choose a subcategory:
-										<select id="subcatdd"></select>
-									</td>
-								</tr>
-							</table>
-							<div id="subcattable" hidden>
-								<table class="table" hidden>
-									<thead>
+					<!-- Tabbed content start -->
+					<div class="tab-content">
+						<div class="tab-pane active" id="byCategory">
+							<div class="top-buffer"></div>
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<table id="form">
 										<tr>
-											<td>Talend jobname</td>
-											<td>Date/time of last run</td>
-											<td>Status</td>
+											<td>
+												Choose a category:
+												<select id="category" name="category">
+													<option value="">-- Select a category --</option>
+													<c:forEach items="${categories}" var="category">
+														<option value="${category.value}">${category.key}</option>
+													</c:forEach>
+												</select>
+											</td>
+											<td id="subcat" hidden>
+												Choose a subcategory:
+												<select id="subcatdd"></select>
+											</td>
 										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>talend_pipeline_1</td>
-											<td>January 1st, 1970 12:34:56</td>
-											<td class="success"><i class="fa fa-check fa-fw"></i> Success!</td>
-										</tr>
-									</tbody>
-								</table>
+									</table>
+								</div>
+								<!-- /.panel-heading -->
+								<div id="dbrows" class="panel-body" hidden>
+									<div class="dataTable_wrapper">
+										<table class="table table-striped table-bordered table-hover" id="categoryTable">
+											<thead>
+												<tr>
+													<th>State</th>
+													<th>Metric Name</th>
+													<th>Metric Value</th>
+													<th>Year</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+									<!-- /.table-responsive -->
+			
+								</div>
+								<!-- /.panel-body -->
+							</div>
+							<!-- /.panel -->
+						</div>
+						
+						<div class="tab-pane" id="bySource">
+							<div class="top-buffer"></div>
+							<div class="panel panel-default">
+								<div class="panel-heading"> 
+									Metric Information
+								</div>
+								<div id="metricData" class="panel-body">
+									<div class="dataTable_wrapper">
+										<table class="table table-striped table-bordered table-hover" id="metricTable">
+											<thead>
+												<tr>
+													<th>Category Name</th>
+													<th>Metric Name</th>
+													<th>Display Name</th>
+													<th>Source</th>
+													<th>URL</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
 						</div>
-						<!-- /.panel-heading -->
-						<div id="dbrows" class="panel-body" hidden>
-							<div class="table-responsive">
-								<table class="table table-striped table-bordered table-hover"
-									id="test">
-									<thead>
-										<tr>
-											<th>State</th>
-											<th>Metric Name</th>
-											<th>Metric Value</th>
-											<th>Year</th>
-										</tr>
-									</thead>
-									<tbody>
-									</tbody>
-								</table>
-							</div>
-							<!-- /.table-responsive -->
-	
-						</div>
-						<!-- /.panel-body -->
-					</div>
-					<!-- /.panel -->
-				</div>
-				<!-- /.col-lg-12 -->
-			</div>
+						
+					</div><!-- /#tab-content -->
+					
+				</div><!-- /.col-lg-12 -->
+				
+			</div> <!-- row -->
 	
 		</div>
         <!-- /#page-wrapper -->
