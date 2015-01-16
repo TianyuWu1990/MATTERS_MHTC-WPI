@@ -3,8 +3,7 @@ package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 import java.io.PrintWriter;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
-import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONArray;
-import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONObject;
+import org.json.*;
 
 public class EIADownload implements IWrapper {
 	final private String apiKey = "606B66BBE8BB7EDF94953ADF6430E182";
