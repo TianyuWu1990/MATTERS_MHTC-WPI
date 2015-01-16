@@ -7,7 +7,8 @@ package edu.wpi.mhtc.dashboard.pipeline.scheduler;
 import java.sql.SQLException;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
-import edu.wpi.mhtc.dashboard.pipeline.db.MD5;
+import edu.wpi.mhtc.helpers.MD5;
+
 
 // TODO: Abstract this class into multiple type of Schedule: TalendSchedule, NormalSchedule
 public class Schedule {
