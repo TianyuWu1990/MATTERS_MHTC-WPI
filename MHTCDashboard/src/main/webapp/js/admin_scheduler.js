@@ -1,3 +1,9 @@
+ /*
+  * Copyright (C) 2013 Worcester Polytechnic Institute
+  * All Rights Reserved. 
+  *  
+ */  
+
 $("#addSchedBtn").click(function(e) {
 	$("#addSchedModal").modal("show");
 	d = new Date();

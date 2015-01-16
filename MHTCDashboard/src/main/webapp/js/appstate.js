@@ -1,7 +1,10 @@
-
 /*
- * This module handles the Application User responses and State.
+  * Copyright (C) 2013 Worcester Polytechnic Institute
+  * All Rights Reserved. 
+  *  
+  *  This module handles the Application User responses and State.
  */
+
 
 var AS= (function($) {
     function AppState() {
