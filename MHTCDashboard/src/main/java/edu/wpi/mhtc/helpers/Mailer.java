@@ -1,14 +1,18 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.helpers;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class Mailer {
 	private JavaMailSender mailSender;
+//	TODO:change to SMTP server
 	private String fromAddress = "hlong290494@gmail.com";
 	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
