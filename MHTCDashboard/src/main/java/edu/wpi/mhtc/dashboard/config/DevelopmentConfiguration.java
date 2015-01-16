@@ -19,10 +19,10 @@ public class DevelopmentConfiguration {
 		
 		/*dataSource.setUrl("jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc-dev");
 		dataSource.setUsername("server");
-		dataSource.setPassword("mhtcboxofducks");
-	    */
+		dataSource.setPassword("mhtcboxofducks");*/
+	    
 /********************************************************/
-/** COnfigure your own local connection ***/
+/** Configure your own local connection ***/
 /********************************************************/
 		
 		dataSource.setUrl("jdbc:postgresql://localhost:5432/mhtc_local");

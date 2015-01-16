@@ -1,4 +1,4 @@
-package edu.wpi.mhtc.dashboard.pipeline.db;
+	package edu.wpi.mhtc.dashboard.pipeline.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,9 +6,17 @@ import java.sql.DriverManager;
 public class DBConnector {
 
 	private static DBConnector dbConnector;
+	
+	/* Local DB Configuration */
 	private String url = "jdbc:postgresql://localhost:5432/mhtc_local";
 	private String user = "postgres";
 	private String password = "12345";
+	
+	/*Production Configuration*/
+	/*private String url = "jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc-dev";
+	private String user ="server";
+	private String password ="mhtcboxofducks";*/
+	
 	private Connection conn = null;
 
 	private DBConnector() {

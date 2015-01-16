@@ -1,8 +1,13 @@
 package edu.wpi.mhtc.controllers;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -14,7 +19,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
+import edu.wpi.mhtc.helpers.Mailer;
 import edu.wpi.mhtc.model.Data.DataSeries;
 import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
@@ -29,6 +40,7 @@ public class HomeController {
 	
 	private StatsService statsService;
 	private StateService stateService;
+	static Connection conn = DBConnector.getInstance().getConn();
 	
 	@Autowired
 	public HomeController(StatsService statsService, StateService stateService)
@@ -60,7 +72,7 @@ public class HomeController {
 		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
 		List<DataSeries> massEconomy = statsService.getStateBinData(maId, 29);
 		List<State> peers = stateService.getAllPeers();
-		
+		List<State> allstates= stateService.getAllStates(); 
 		// TODO un-hardcode these bin ids
 		model.addAttribute("jv_stats_profile",massProfile );
 		model.addAttribute("jv_stats_national", massNational);
@@ -68,6 +80,8 @@ public class HomeController {
 		model.addAttribute("jv_stats_cost", massCost);
 		model.addAttribute("jv_stats_economy", massEconomy);
 		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
+		model.addAttribute("jv_all_states", new PeerStates(allstates).getAsGrid(13));
+		
 		
         model.addAttribute("jv_current_state", "MA");
 		
@@ -90,6 +104,7 @@ public class HomeController {
 		List<DataSeries> cost = statsService.getStateBinData(stateId, 37);
 		List<DataSeries> economy = statsService.getStateBinData(stateId, 29);
 		List<State> peers = stateService.getAllPeers();
+		List<State> allstates= stateService.getAllStates(); 
 		
         model.addAttribute("jv_stats_profile",profile );
         model.addAttribute("jv_stats_national", national);
@@ -97,11 +112,137 @@ public class HomeController {
         model.addAttribute("jv_stats_cost", cost);
         model.addAttribute("jv_stats_economy", economy);
         model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
-        
+        model.addAttribute("jv_all_states", new PeerStates(allstates).getAsGrid(13));
         model.addAttribute("jv_current_state", state);
         
         return "state_tab_display";
 	    
 	}
-	
+    
+    /*************************** User services ***********************************/
+    @RequestMapping(value = "/user/forgot", method = RequestMethod.GET)
+    public String request_reset(Locale locale, Model model) throws Exception {
+        
+        return "forgot_password_form";
+    }
+    
+    @RequestMapping(value = "/user/forgot/sent", method = RequestMethod.POST)
+    public String request_reset_sent(Locale locale, Model model, @RequestParam("email") String email) throws Exception {
+        // First, randomize the token
+    	Random rand = new Random();
+    	int randomNum = rand.nextInt(100) + 1;
+    	String unencryptedTokenString = email + randomNum;
+    	
+    	// SQL Query execution
+		String sql = "UPDATE mhtc_sch.users SET \"Token\" = MD5(?) WHERE \"Email\" = ?";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, unencryptedTokenString); // set parameter 1 (FIRST_NAME)
+		pstatement.setString(2, email);
+		pstatement.execute();
+		
+		if (pstatement.getUpdateCount() == 1) {
+			model.addAttribute("completed", true);
+			
+			// Send the email for that user
+	    	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
+	    
+	       	Mailer mm = (Mailer) context.getBean("mailMail");
+	           mm.sendResetPasswordMail(email, unencryptedTokenString);
+	    
+		} else {
+			model.addAttribute("completed", false);
+		}
+		
+		pstatement.close();	
+    	
+        return "forgot_password_form_submit";
+    }  
+
+    @RequestMapping(value = "/user/reset", method = RequestMethod.GET)
+    public String reset_password_form(Locale locale, Model model, @RequestParam("token") String token) throws Exception {
+    	if (!token.equals("")) {
+	    	// Query the token string in the database
+	    	String sql = "SELECT * FROM mhtc_sch.users WHERE \"Token\" = ?";
+			PreparedStatement pstatement = conn.prepareStatement(sql);
+			pstatement.setString(1, token);
+			ResultSet rs = pstatement.executeQuery();
+			
+			if (!rs.next()) {
+				model.addAttribute("error", true);
+			} else {
+				model.addAttribute("error", false);
+				model.addAttribute("email", rs.getString("Email"));
+				model.addAttribute("token", token);
+			}
+    	} else {
+    		model.addAttribute("error", true);
+    	}
+    	
+    	model.addAttribute("token", token);
+        return "reset_password";
+    } 
+    
+    @RequestMapping(value = "/user/reset/submit", method = RequestMethod.POST)
+    public String reset_password(Locale locale, Model model, @RequestParam("token") String token, @RequestParam("password") String password) throws Exception {
+    	if (token.equals("")) {
+    		model.addAttribute("error", true);
+    	} else {
+        	/* Reset password and clear the token*/
+    		String sql = "UPDATE mhtc_sch.users SET \"PasswordHash\" = MD5(?), \"Token\" = '' WHERE \"Token\" = ?";
+    		PreparedStatement pstatement = conn.prepareStatement(sql);
+    		pstatement.setString(1, password); // set parameter 1 (FIRST_NAME)
+    		pstatement.setString(2, token);
+    		pstatement.execute();
+    		
+    		if (pstatement.getUpdateCount() == 1) {
+    			model.addAttribute("error", false);
+    		} else {
+    			model.addAttribute("error", true);
+    		}
+    	}
+		
+        return "reset_password_submit";
+    }
+    /********** Registration **********/
+    @RequestMapping(value = "/user/register", method = RequestMethod.GET)
+    public String register(Locale locale, Model model) {
+        return "registerPage";
+    }    
+    
+    @RequestMapping(value = "/user/register/submit", method = RequestMethod.POST)
+    public String register_submit(Locale locale, Model model, @RequestParam("UserName") String username, @RequestParam("Email") String email, @RequestParam("Password") String password, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) throws SQLException {
+    	// First, create an entry in the user table.
+		try {
+			String sql = "INSERT INTO mhtc_sch.users VALUES (nextval('mhtc_sch.user_id_seq'), ?, ?, ?, ?, md5(?), '', true, 2);";
+	    	sql += " INSERT INTO mhtc_sch.user_roles VALUES(?, 'USER');";
+			PreparedStatement pstatement = conn.prepareStatement(sql);
+			
+			pstatement.setString(1, username); // set parameter 1 (FIRST_NAME)
+			pstatement.setString(2, email);
+			pstatement.setString(3, firstName);
+			pstatement.setString(4, lastName);
+			pstatement.setString(5, password); // set parameter 1 (FIRST_NAME)
+			pstatement.setString(6, username);
+			
+			pstatement.execute();
+			
+			model.addAttribute("error", false);
+		} catch (SQLException e) {
+			model.addAttribute("error", true);
+		}
+		
+        return "register_page_submit";
+    }     
+    /********** Authentication **********/
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logoutPage() {
+        return "logoutPage";
+    }
+    
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "loginPage";
+    }
+    /********** End authentication pages **********/
+    
 }

@@ -1,20 +1,28 @@
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
+import java.sql.SQLException;
+import java.util.List;
+
+import com.swabunga.spell.engine.Word;
+
+import edu.wpi.mhtc.dashboard.pipeline.cleaner.SpellCheckManager;
+import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
+
 public class State implements Cloneable{
-	private String stateID;
+	private int id;
 	private String fullName;
 	private String initial;
 	
 	public State() {
 	}
 
-	public State(String stateID, String fullName){
-		this.stateID = stateID;
+	public State(int id, String fullName){
+		this.id = id;
 		this.fullName = fullName;
 	}
 	
-	public State(String stateID, String fullName, String initial){
-		this(stateID, fullName);
+	public State(int id, String fullName, String initial){
+		this(id, fullName);
 		this.initial = initial;
 	}
 	
@@ -23,7 +31,7 @@ public class State implements Cloneable{
 	 */
 	@Override
 	public Object clone(){
-		State state = new State(this.stateID, this.fullName, this.initial);
+		State state = new State(this.id, this.fullName, this.initial);
 		return state;
 	}
 	
@@ -31,29 +39,41 @@ public class State implements Cloneable{
 	 * getters and setters
 	 */
 	
-	public String getStateID() {
-		return stateID;
-	}
-
-	public void setStateID(String stateID) {
-		this.stateID = stateID;
+	public int getStateID() {
+		return id;
 	}
 
 	public String getFullName() {
 		return fullName;
 	}
 
-	public void setFullName(String stateName) {
-		this.fullName = stateName;
-	}
-
 	public String getInitial() {
 		return initial;
 	}
+	
+	static int getStateID(String stateName) throws SQLException{
+		int id = -1;
+		for(State state : DBLoader.getStateMapper()){
+			if(stateName.equalsIgnoreCase(state.getFullName())){
+				id = state.getStateID();
+			}
+		}
+		return id;
+	}
 
-	public void setInitial(String initial) {
-		this.initial = initial;
+	public static List<State> getList() throws SQLException {
+		return DBLoader.getStateMapper();
 	}
 	
+	public static State getStateByName(String name) throws Exception {
+		List<State> stateList = getList();
+		for(State state : stateList){
+			if(name.equalsIgnoreCase(state.getFullName())){
+				return state;
+			}
+		}
+
+		return null;
+	}
 
 }

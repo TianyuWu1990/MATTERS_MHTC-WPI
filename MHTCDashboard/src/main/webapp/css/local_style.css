@@ -33,11 +33,11 @@ right:0;
 
 .title
 {
-	color: #2d6ca2;
+	color: #222;
 	display: inline-block;
-	font-size: 28px;
-	margin-top:10px;
-	
+	font-size: 22px;
+	margin-top:15px;
+	padding-left:15%;
 }
 
 .btn-right
@@ -194,20 +194,13 @@ background-position: 0px -240px;
 {
 	width: 125;
 }
-input[type="checkbox"]{
+/*input[type="checkbox"]{
 	display:none;
-}
+}*/
 
 table.table tbody tr td.tabbed_metric
 {
 	padding-left:30px;
-	
-}
-
-.tab-pane
-{
-	height:70%;
-	overflow:auto;
 	
 }
 
@@ -316,31 +309,31 @@ table.table tbody tr td.tabbed_metric
 */
 #Profile tbody tr:hover td
   {
-  background-color:  #ADC2FF; 
+  background-color:  transparent; 
   }
 
 #national tbody tr:hover td
 
  {
- background-color:#CBFFF2;	 /**#7ECB98;**/
+ background-color:transparent;	 /**#7ECB98;**/
  }
+ 
 /*
  #national tbody tr:hover tr td{
-  background-color:#D0A9F5;	 /**#7ECB98;**/
+  background-color:#D0A9F5;	 #7ECB98;  }
  
- }
-*/
+ */
 #talent tbody tr:hover td
  {
- background-color:#F27B7B;
+ background-color: transparent;
  }
  #cost tbody tr:hover td
  {
- background-color:#DAC2F2;
+ background-color:transparent;
  }
  #economy tbody tr:hover td 
   {
-  background-color: #FFE48A;
+  background-color: transparent;
   } 
 
 .topContainer{
@@ -362,15 +355,6 @@ background-repeat: repeat-x;}
 width: 85%;	
 }
 
-
-.nav >li.active>a{
-	font-size:14px;
-	font-weight:bold;
-	background-color:#fff;
-	border:1px solid #ddd;
-	border-bottom-color:transparent;
-	cursor:default
-}
 
 .arrow { 
 	width: 0; 
