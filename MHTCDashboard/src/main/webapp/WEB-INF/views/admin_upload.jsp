@@ -75,7 +75,7 @@
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form>
         		</div>
-        		<div class="col-lg-4" id="displayMetrics">
+        		<div class="col-lg-6" id="displayMetrics">
         		</div>
         	</div>
         	<hr />
