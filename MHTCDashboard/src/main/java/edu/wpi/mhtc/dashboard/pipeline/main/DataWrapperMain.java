@@ -64,12 +64,12 @@ public class DataWrapperMain {
 		data_gov_downloader.smartDownload("https://inventory.data.gov/dataset/032e19b4-5a90-41dc-83ff-6e4cd234f565/resource/38625c3d-5388-4c16-a30f-d105432553a4", "tmp/ipeds.csv");
 		data_gov_downloader.queryDownload("SELECT \"STABBR\", COUNT(*) from \"38625c3d-5388-4c16-a30f-d105432553a4\" GROUP BY \"STABBR\"", "tmp/ipeds_count.json");
 		
-		//Energy
-		try {
-			EIADownload eiaDownloader = new EIADownload();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		//Energy
+//		try {
+//			EIADownload eiaDownloader = new EIADownload();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		//NSF - 8th grade performance
 		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=8", "#my_table", "tmp/8th_grade_performance.xls", Arrays.asList(-1));
@@ -107,7 +107,7 @@ public class DataWrapperMain {
 		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Sales%2C%20Gasoline%2C%20Cigarette%20and%20Alcohol%20Taxes%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Sales_Tax_Rate.xls");
 				
 		//Unemployment
-		dol.getEmployerRateYears(2010, 2014, DATA_DIRECTORY);
+		dol.getEmployerRateYears(2009, 2014, DATA_DIRECTORY);
 		
 	}
 	
