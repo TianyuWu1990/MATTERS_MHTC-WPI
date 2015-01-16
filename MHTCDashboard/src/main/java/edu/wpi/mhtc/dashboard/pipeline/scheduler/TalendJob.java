@@ -1,12 +1,8 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.scheduler;
-
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.PersistJobDataAfterExecution;
-
-import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,8 +11,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
+
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.PersistJobDataAfterExecution;
+
+import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 
 @PersistJobDataAfterExecution 
 public class TalendJob implements Job {

@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
 import java.sql.SQLException;
@@ -5,6 +9,10 @@ import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
+/**
+ * All information pertaining to a US State in db.
+ *
+ */
 public class State implements Cloneable{
 	private int id;
 	private String fullName;

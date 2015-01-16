@@ -1,25 +1,22 @@
 /*
- * IPEDS Data Downloader - Browser Simulator
- * Author: Long Nguyen Duc Hoang @ WPI'16 - Any maintenance issue, please contact: hlong290494@gmail.com
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
  */
 
 package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.core.Response;
 
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+
+/**
+ * IPEDS Data Downloader - Browser Simulator.
+ * @author: Long Nguyen Duc Hoang @ WPI'16 - Any maintenance issue, please contact: hlong290494@gmail.com.
+ */
 
 public class IPEDSDownload {
 	public IPEDSDownload() throws IOException {

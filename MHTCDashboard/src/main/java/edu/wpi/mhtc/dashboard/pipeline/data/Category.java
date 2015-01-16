@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
 import java.sql.SQLException;
@@ -7,6 +11,11 @@ import java.util.Map;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
+/**
+ * Corresponds to tuples in categories table in db.
+ * @author cakuhlman
+ *
+ */
 public class Category {
 	
 	private int id;

@@ -1,6 +1,8 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.config;
-
-import java.sql.SQLException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -9,7 +11,6 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
-import edu.wpi.mhtc.dashboard.util.Logger;
 
 public class AppInitializer implements WebApplicationInitializer {
 

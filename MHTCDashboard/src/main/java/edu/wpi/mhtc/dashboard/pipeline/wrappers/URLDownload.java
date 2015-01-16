@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 import java.io.BufferedInputStream;
@@ -12,6 +16,10 @@ import java.net.URLConnection;
 import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
 
+/**
+ * Wrapper for direct download links.
+ *
+ */
 public class URLDownload {
 	private HashMap<String, String> requestData = new HashMap<String, String>();
 	/**

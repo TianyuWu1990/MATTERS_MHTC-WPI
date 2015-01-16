@@ -1,6 +1,9 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
-// Download JSON data from DataGov
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -9,7 +12,10 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 
-
+/**
+ * Wrapper for data.gov.
+ *
+ */
 public class DataGovDownload {
 	private String base_url = "https://inventory.data.gov/api/action/";
 	private URLDownload downloader;

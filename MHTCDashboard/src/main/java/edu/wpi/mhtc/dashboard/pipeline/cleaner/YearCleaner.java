@@ -1,5 +1,14 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
+
 package edu.wpi.mhtc.dashboard.pipeline.cleaner;
 
+/**
+ * Cleaner to validate year values.
+ *
+ */
 public class YearCleaner implements ICleaner {
 
 //	TODO: One file we found had 20121 20131 for years - need to remove extraneous digits

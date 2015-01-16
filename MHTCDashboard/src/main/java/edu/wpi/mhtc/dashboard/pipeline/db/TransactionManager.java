@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.db;
 
 import java.sql.Connection;
@@ -9,7 +13,7 @@ import java.util.List;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 /**
- * Handles the inserting of all data tuples from a source
+ * Handles the inserting of all data tuples from a source.
  * @author Alex Fortier
  *
  */

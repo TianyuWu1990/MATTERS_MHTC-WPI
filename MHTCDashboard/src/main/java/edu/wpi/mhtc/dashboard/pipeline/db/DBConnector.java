@@ -1,8 +1,16 @@
-	package edu.wpi.mhtc.dashboard.pipeline.db;
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
+package edu.wpi.mhtc.dashboard.pipeline.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * Connect to db.
+ *
+ */
 public class DBConnector {
 
 	private static DBConnector dbConnector;
