@@ -90,7 +90,7 @@
 						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 					</a> 
-					<img src="css/img/MHTC_Logo.jpg" alt="Mass High Technology Council" >
+					<img class="nav pull-left" src="css/img/MHTC_Logo.jpg" alt="Mass High Technology Council" >
 					
 					<ul class="nav pull-right" id="main-menu">
 						<li id="explore"><a href="#">Explore</a></li>
@@ -139,8 +139,9 @@
 				<!-- /.container-fluid -->
 			
 
-		<div style="background:#7b0020; margin:0px; padding:7px;">
-		<p align="center" valign="middle" style="font-size:20px;">Massachusetts' Technology, Talent and Economic Reporting System - MATTERS</p></div>
+		<div style="background:#7b0020; margin:0px; padding:30px;">
+		<p align = "center" style="font-size:27px"> <b> MATTERS: </b></p>
+		<p align="center" style="font-size:20px;"> <b> Massachusetts Technology, Talent, and Economic Reporting System </b></p></div>
 		</div>
 	</div>
 
@@ -271,77 +272,63 @@
 						</li>
 					</ul>
 					</div>
-					<%/*<div  id="stateSelection" style="margin-top:5px;">
-							Select states to display data <select id="ms" multiple="multiple">
-							<c:forEach items="${jv_all_states}" var="stat">
-								<c:forEach items="${stat.row}" var="row">
-									<option value="${row.id}">${row.name}</option>
 
-
-								</c:forEach>
-							</c:forEach>
-						</select>
-					</div>*/ %>
 					<div class="tab-content">
 
+
 						<div class="tab-pane fade" id="line">
-	
+
 							<div class="box-content">
 								<h4 class="modal-title" id="graphTitle"></h4>
-								<%/*<h4 class="small" id="graphStates"></h4>*/%>
-								<div id="mbody" style="margin-right:5px; margin-top:20px;">
+								<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
 									<svg style="height: 90%;"></svg>
 								</div>
 							</div>
 						</div>
 
-						<%/*<div class="tab-pane fade" id="national">
-						
-							<div class="box-content">
-								<div id="timelinetable" ></div>
-								<%/*<select id="yearsMultipleQuery"
-									class="btn btn-primary btn-right"></select>*/ %>
-								<%/*<h6 class="modal-title" >NV: No Value for the year selected</h6>
-							<div class="modal-body" id="mbodyMultipleQuery" >
-								<svg style="height: auto"></svg>
-							</div>
-							</div>
-							
-						</div>*/ %>
 						<div class="tab-pane active" id="table">
 							<div class="box-content">
-								<table style="width:98%"><tr style="width:98%; "><td id="timelinetable">
-								</td></tr>
-								<tr style="width:98%"><td class="modal-body" id="mbodyMultipleQuery"> </td></tr>
+								<table style="width: 98%">
+									<tr style="width: 98%;">
+										<td id="timelinetable"></td>
+									</tr>
+									<tr style="width: 98%">
+										<td class="modal-body" id="mbodyMultipleQuery"></td>
+									</tr>
 								</table>
 							</div>
 						</div>
-						
-						<div class="tab-pane fade" id="bar">
 
+						<div class="tab-pane fade" id="line">
+							<div class="box-content">
+								<h4 class="modal-title" id="graphTitle"></h4>
+								<div id="mbody" style="margin-right:100px; margin-top:20px;"></div>
+							</div>
+						</div>	
+
+						<div class="tab-pane fade" id="bar">
 							<div class="box-content">
 								<h4 class="modal-title" id="graphTitleBar"></h4>
-								<%/*<h4 class="small" id="graphStatesBar">Selected States:
-									Massachusetts, California, Texas</h4>*/ %>
-								<div id="mbodyBar" style="margin-top:20px;">
-									<svg style="height: 400%;"></svg>
-								</div>
+
+								<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
+
 							</div>
 						</div>
+						
 						<div class="tab-pane fade" id="heatmaptab">
-							<div class="box-content" >
-								<table style="width: 98%; height: 650px;">
+							<div class="box-content">
+							
+								<table style="width: 100%;">
 									<tr>
 										<td align="left" nowrap="true">
 											<table align="center">
 												<tr>
 
-													<td  nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
+													<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
 
-													<td  nowrap="true"><div id="timeline"></div></td>
-													<td   style="padding-left:40px">
-														<button type="button" id="playbuttonanimation"
-															>Play</button>
+													<td nowrap="true"><div id="timeline"></div></td>
+													<td style="padding-left: 40px">
+														<button type="button" id="playbuttonanimation">Play</button>
 														<button type="button" id="stopbuttonanimation"
 															disabled="true">Stop</button>
 													</td>
@@ -351,20 +338,14 @@
 										</td>
 									</tr>
 
-
-									<tr>
-										<td align="center">
-											<table style="width: 100%; height: 650px; overflow: auto;">
-												<tr>
-													<td valign="top"><div id="mbodyHeatMap" text-align="center"
-															style=""></div> </td>
-													<td valign="top" align="left" style="width:10%; padding-left:10px;"> <div id="verticalheatmapmeter"></div></td>
-
-												</tr>
-											</table>
-										</td>
-									</tr>
 								</table>
+								<div class="row">
+    								<div class="span10" >
+    								<div id ="mbodyHeatMap" style=""></div>
+    								</div>
+    								<div class="span2" id="verticalheatmapmeter"></div>
+    							</div>
+    							
 							</div>
 						</div>
 

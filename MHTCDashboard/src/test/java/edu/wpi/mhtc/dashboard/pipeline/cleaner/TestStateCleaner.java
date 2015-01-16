@@ -14,6 +14,9 @@ public class TestStateCleaner {
 		/*
 		 * test clean function
 		 */
+		
+		//missing dictionary?
+		
 		assertEquals(stateCleaner.clean("AL"), "alabama");
 		//assertEquals(stateCleaner.clean("New Hamphire"), "new hampshire");
 		assertEquals(stateCleaner.clean("Massachusetts"), "massachusetts");
@@ -71,18 +74,17 @@ public class TestStateCleaner {
 				"massachusetts");
 	}
 
+
 	@Test
 	public void testGetFullNameBySpellCheck() throws Exception {
 		/*
 		 * test getFullNameBySpellCheck function
 		 */
-		assertEquals(stateCleaner.getFullNameBySpellCheck("Massachusett"),
-				"massachusetts");
-		assertEquals(stateCleaner.getFullNameBySpellCheck("New Hampshirw"),
-				"new hampshire");
-		assertEquals(stateCleaner.getFullNameBySpellCheck("qwer"), null);
-//		assertEquals(stateCleaner.getFullNameBySpellCheck("aaaa"), null);
-		assertEquals(stateCleaner.getFullNameBySpellCheck("Minesota"), "minnesota");
+		assertEquals("massachusetts", stateCleaner.getFullNameBySpellCheck("Massachusett"));
+		assertEquals("new hampshire", stateCleaner.getFullNameBySpellCheck("New Hampshirw"));
+		assertEquals(null, stateCleaner.getFullNameBySpellCheck("qwer"));
+//		assertEquals(null, stateCleaner.getFullNameBySpellCheck("aaaa"));
+		assertEquals("minnesota", stateCleaner.getFullNameBySpellCheck("Minesota"));
 	}
 
 }

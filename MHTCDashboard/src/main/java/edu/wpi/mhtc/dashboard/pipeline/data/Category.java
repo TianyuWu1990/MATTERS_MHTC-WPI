@@ -51,6 +51,7 @@ public class Category {
 		
 		for (Metric metric: metrics) {
 			if (name.equalsIgnoreCase(metric.getName())) {
+
 				return metric;
 			}
 		}

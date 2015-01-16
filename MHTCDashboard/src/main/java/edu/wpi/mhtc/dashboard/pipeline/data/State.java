@@ -3,9 +3,6 @@ package edu.wpi.mhtc.dashboard.pipeline.data;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.swabunga.spell.engine.Word;
-
-import edu.wpi.mhtc.dashboard.pipeline.cleaner.SpellCheckManager;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 
 public class State implements Cloneable{
@@ -75,5 +72,11 @@ public class State implements Cloneable{
 
 		return null;
 	}
+	
+	@Override
+	public String toString(){
+		return fullName;
+	}
+	
 
 }
