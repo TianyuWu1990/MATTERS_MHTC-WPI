@@ -1,4 +1,10 @@
-<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModal" aria-hidden="true">
+<% /*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
+ %>
+ 
+ <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModal" aria-hidden="true">
         		<form id="admin_addCategory" action="admin_addCategory" method="POST">
 	        		<div class="modal-dialog">
 	        			<div class="modal-content">

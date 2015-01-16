@@ -1,3 +1,9 @@
+ /*
+  * Copyright (C) 2013 Worcester Polytechnic Institute
+  * All Rights Reserved. 
+  *  
+ */  
+
 $(function() {
 	/*
 	 * Handles populating drop down for subcategories in Manual Upload

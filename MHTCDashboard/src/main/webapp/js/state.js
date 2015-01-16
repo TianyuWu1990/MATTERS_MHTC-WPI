@@ -1,3 +1,8 @@
+ /*
+  * Copyright (C) 2013 Worcester Polytechnic Institute
+  * All Rights Reserved. 
+  *  
+ */  
 /**
  * @author salah
  */

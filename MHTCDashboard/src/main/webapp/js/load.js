@@ -1,4 +1,9 @@
- var global_timer = null;
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
+
+var global_timer = null;
  var year_global=-1;
 
  var globalcounter=0;

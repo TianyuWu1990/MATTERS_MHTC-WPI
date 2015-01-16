@@ -1,9 +1,17 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
 import java.io.File;
 
 import edu.wpi.mhtc.dashboard.pipeline.parser.ParserType;
 
+/**
+ * Wraps an input file and all associated metadata.
+ *
+ */
 public abstract class DataSource {
 	
 	FileType fileType;

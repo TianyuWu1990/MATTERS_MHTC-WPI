@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 import java.io.File;
@@ -10,7 +14,7 @@ public class DOLDownload {
 	
 	
 	/**
-	 * download Average Employer Contribution Rates by State from http://www.ows.doleta.gov/unemploy/avg_employ.asp.
+	 * Download Average Employer Contribution Rates by State from http://www.ows.doleta.gov/unemploy/avg_employ.asp.
 	 * Excel files are download, pdf files are converted to text
 	 * available years: 2005 - 2014
 	 * @param beginyear

@@ -1,4 +1,8 @@
-
+ /*
+  * Copyright (C) 2013 Worcester Polytechnic Institute
+  * All Rights Reserved. 
+  *  
+ */  
 /**
  * This module handles the display functionality of different type of charts.  
  */

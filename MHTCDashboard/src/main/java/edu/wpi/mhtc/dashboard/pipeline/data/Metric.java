@@ -1,5 +1,14 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
+/**
+ * Corresponds to one value to be inserted into db.
+ * @author cakuhlman
+ *
+ */
 public class Metric {
 	
 	int id;

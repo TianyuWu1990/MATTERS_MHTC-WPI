@@ -1,3 +1,8 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
+
 package edu.wpi.mhtc.dashboard.pipeline.cleaner;
 
 import java.util.List;
@@ -6,21 +11,12 @@ import com.swabunga.spell.engine.Word;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
 
+/**
+ * 
+ * Cleaner to validate and repair state names.
+ *
+ */
 public class StateCleaner implements ICleaner {
-
-	/*
-	 * clean method must return the State full name String please call
-	 * StateInfoConfig 's method to get the State according to the initial or
-	 * full name
-	 */
-	
-	
-//	TODO: test cases for state cleaner. 
-	private boolean flag;
-	
-	public StateCleaner(){
-		this.flag = false;
-	}
 	
 	@Override
 	public String clean(String val) throws Exception {
@@ -102,11 +98,9 @@ public class StateCleaner implements ICleaner {
 		for (int i = 0; i < stateArray.length; i++) {
 			for (State state : stateList) {
 				if (stateArray[i].contains(state.getFullName())) {
-					this.flag = true;
 					return state.getFullName();
 				}
 				if (stateArray[i].equalsIgnoreCase(state.getInitial())) {
-					this.flag = true;
 					return state.getFullName();
 				}
 			}
@@ -123,11 +117,9 @@ public class StateCleaner implements ICleaner {
 		List<State> stateList = State.getList();
 		for (State state : stateList) {
 			if (val.equals(state.getFullName())) {
-				this.flag = true;
 				return state.getFullName();
 			}
 			if (val.equals(state.getInitial())) {
-				this.flag = true;
 				return state.getFullName();
 			}
 		}

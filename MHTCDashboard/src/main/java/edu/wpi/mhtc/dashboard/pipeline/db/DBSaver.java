@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.db;
 
 import java.sql.Connection;
@@ -10,8 +14,8 @@ import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 public class DBSaver {
 
-	/*
-	 * save line data into DB
+	/**
+	 * Save line data into DB.
 	 */
 
 	public static void saveLine(Connection conn, Line line) throws SQLException {

@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.data;
 
 import java.io.File;
@@ -5,6 +9,11 @@ import java.io.File;
 import edu.wpi.mhtc.dashboard.pipeline.parser.ParserType;
 import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedFormatException;
 
+/**
+ * Excel containing data organized in unified format.
+ * @author cakuhlman
+ *
+ */
 public class UnifiedDataSource extends DataSource {
 	
 	public UnifiedDataSource(File file, Category category) throws UnifiedFormatException {

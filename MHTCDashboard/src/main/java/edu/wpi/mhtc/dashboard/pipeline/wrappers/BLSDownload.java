@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 import java.io.DataOutputStream;
@@ -9,8 +13,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-//test push into git
-//Downloads Unemployment (Not Seasonally adjusted) Data from Bureau of Labor Statistics
+
+/*
+ * Wrapper for Unemployment (Not Seasonally adjusted) Data from Bureau of Labor Statistics.
+ */
 public class BLSDownload {
 	
 	static final HashMap<String, String[]> map;

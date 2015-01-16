@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.model.state;
 
 import java.util.HashMap;

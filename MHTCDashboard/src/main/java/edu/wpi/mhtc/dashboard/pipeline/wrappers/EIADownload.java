@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 import java.io.PrintWriter;
@@ -5,6 +9,10 @@ import java.io.PrintWriter;
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
 import org.json.*;
 
+/**
+ * Wrapper for EIA.gov.
+ *
+ */
 public class EIADownload implements IWrapper {
 	final private String apiKey = "606B66BBE8BB7EDF94953ADF6430E182";
 	final private String apiUrl = "http://api.eia.gov/series/?api_key=" + apiKey;

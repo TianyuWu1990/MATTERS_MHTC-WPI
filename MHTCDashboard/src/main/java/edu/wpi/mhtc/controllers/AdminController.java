@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.controllers;
 
 import java.io.File;
@@ -51,7 +55,6 @@ import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
-import edu.wpi.mhtc.dashboard.pipeline.scheduler.TalendJob;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
 import edu.wpi.mhtc.dashboard.util.Logger;
