@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
-import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONObject;
+import org.json.*;
 
 public class Logger {
 	 // Database connection

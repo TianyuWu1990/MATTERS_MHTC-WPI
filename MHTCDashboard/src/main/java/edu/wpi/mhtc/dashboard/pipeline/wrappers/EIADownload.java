@@ -7,8 +7,7 @@ package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 import java.io.PrintWriter;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.State;
-import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONArray;
-import edu.wpi.mhtc.dashboard.pipeline.parser.json.JSONObject;
+import org.json.*;
 
 /**
  * Wrapper for EIA.gov.
