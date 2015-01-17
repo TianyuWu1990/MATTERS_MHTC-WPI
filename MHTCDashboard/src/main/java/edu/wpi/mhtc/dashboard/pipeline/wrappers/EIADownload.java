@@ -43,7 +43,6 @@ public class EIADownload implements IWrapper {
 	 */
 	public void DownloadAverageElectricityCost() throws Exception {
 		System.out.println("* Downloading Average Electricity Rate from eia.gov...");
-		URLDownload downloader = new URLDownload();
 		writerRate = new PrintWriter("tmp/eia-rate.txt", "UTF-8");
 		
 		for (State state: State.getList()) {
@@ -51,7 +50,7 @@ public class EIADownload implements IWrapper {
 			String stateInit = state.getInitial();
 			String url = apiUrl + String.format("&series_id=ELEC.PRICE.%s-COM.A", stateInit.toUpperCase());
 			
-			String jsonStr = downloader.getText(url);
+			String jsonStr = URLDownload.getText(url);
 
 			processJsonToFile(stateInit.toUpperCase(), jsonStr, writerRate);
 		}
