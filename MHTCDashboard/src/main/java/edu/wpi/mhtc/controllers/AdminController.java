@@ -187,9 +187,10 @@ public class AdminController {
     
     @RequestMapping(value = "/admin_addCategory", method = RequestMethod.POST, params = {"parentcategory", "categoryName", "source"})
     public String admin_addCategory(Locale locale, Model model, RedirectAttributes redir, HttpServletRequest request,
-    		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, @RequestParam("source") String source) throws SQLException 
+    		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, 
+    		@RequestParam("source") String source, @RequestParam("url") String url) throws SQLException 
     {
-    	DBSaver.insertNewCategory(categoryName, parentid, source);
+    	DBSaver.insertNewCategory(categoryName, parentid, source, url);
     	String referer = request.getHeader("Referer");
     	
     	// For status message

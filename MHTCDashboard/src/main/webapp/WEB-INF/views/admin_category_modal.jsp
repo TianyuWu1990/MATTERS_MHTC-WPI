@@ -31,6 +31,10 @@
 	        						<label>Enter the source:</label>
 	        						<input class="form-control" name="source" placeholder="i.e. NSF, Tax Foundation, CNBC, etc." required>
 	        					</div>
+	        					<div class="form-group">
+	        						<label>Enter the URL:</label>
+	        						<input class="form-control" name="url">
+	        					</div>
 	        				</div>
 	        				<div class="modal-footer">
 								<button type="button" class="btn btn-danger" data-dismiss="modal">

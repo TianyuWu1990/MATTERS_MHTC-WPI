@@ -13,3 +13,33 @@ CREATE TABLE mhtc_sch."manual_upload" (
     path text NOT NULL,
     CONSTRAINT upload_pkey PRIMARY KEY (id)
 );
+
+-- Function: mhtc_sch.insertcategory(character varying, integer, character varying)
+
+-- DROP FUNCTION mhtc_sch.insertcategory(character varying, integer, character varying);
+
+CREATE OR REPLACE FUNCTION mhtc_sch.insertcategory(categname character varying, parentid integer, source character varying, url character varying)
+  RETURNS integer AS
+$BODY$
+declare 
+  maxId int;
+  num_rows int;
+ begin
+	select max("Id") + 1 from mhtc_sch.categories into maxId;
+
+	if maxId is null then
+	  maxId = 1;
+	  end if;
+	
+	insert into mhtc_sch.categories ("Id", "Name","ParentId","Source","URL")
+	values (maxId,categName,parentid,source,url);
+
+	GET DIAGNOSTICS num_rows = ROW_COUNT;
+
+	return num_rows;
+ end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION mhtc_sch.insertcategory(character varying, integer, character varying)
+  OWNER TO postgres;

@@ -29,11 +29,11 @@ public class DBSaver {
 		pstatement.close();
 	}
 
-	public static boolean insertNewCategory(String name, String parentID, String source) throws SQLException {
+	public static boolean insertNewCategory(String name, String parentID, String source, String url) throws SQLException {
 
 		Connection conn = DBConnector.getInstance().getConn();
 
-		String sql = "select * from mhtc_sch.insertcategory(?,?,?)";
+		String sql = "SELECT mhtc_sch.insertcategory(?, ?, ?, ?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setString(1, name); 
 
@@ -45,14 +45,9 @@ public class DBSaver {
 		}
 
 		pstatement.setString(3, source); 
-		ResultSet rs = pstatement.executeQuery();
-
-		rs.next();
-
-		if (Integer.parseInt(rs.getString("insertcategory")) == 1)
-			return true;
-		else 
-			return false;
+		pstatement.setString(4, url);
+		
+		return pstatement.execute();
 	}
 
 	//	Category must exist in db already !!!
