@@ -516,30 +516,43 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
-    public String uploadAddFile(RedirectAttributes redir, @RequestParam("file") MultipartFile file, @RequestParam("category") String categoryID) throws Exception {
+    public String uploadAddFile(RedirectAttributes redir, @RequestParam("file") MultipartFile dataFile, @RequestParam("category") String subCategoryID, 
+    		@RequestParam("parentcategory") String parentCategoryID) throws Exception 
+    {
+    	// In this function, the "parentcategory" parameter is the actual string name of the category
+    	// whereas the "category" parameter is the ID of the subcategory
     	
-    	System.out.println("\n\nCategory id from admin panel: " + categoryID);
+    	// Need to get actual name of subcategory
+    	String subCategory = DBLoader.getCategoryNameFromID(Integer.parseInt(subCategoryID));
+    	String parentCategory = DBLoader.getCategoryNameFromID(Integer.parseInt(parentCategoryID));
     	
-        String name = "Upload - " + fileDateFormat.format(new Date()) + ".xlsx";
-        if (!file.isEmpty()) {
-               	File localFile = new File(name);
-            	file.transferTo(localFile);
-//                byte[] bytes = file.getBytes();
-//                BufferedOutputStream stream =
-//                        new BufferedOutputStream(new FileOutputStream(name));
-//                stream.write(bytes);
-//                stream.close();
-//                
-//                BufferedReader br = new BufferedReader(new FileReader(name));
-////                String category = br.readLine().split(",")[0];
-//                br.close();
-                
-                DataPipeline.run(localFile, categoryID);
-                
-        }
+    	// Create directory structure
+    	final String DATA_DIRECTORY = "/matters/data";
+    	String parentDir = parentCategory.toLowerCase().replaceAll(" ", "_");
+    	String childDir = subCategory.toLowerCase().replaceAll(" ", "_");
+    	
+    	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
+    	String dataFileLocation = dir.toString() + "/" + dataFile.getOriginalFilename();
+    	
+    	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
+    	
+    	if (!createFolderSuccess) {
+    		// TODO: Yell at the user or something. 
+    	}
+    	
+    	// Now save file to location
+    	File localFile = new File(dataFileLocation);
+    	dataFile.transferTo(localFile);
+    	
+        // Now that the file is saved, time to run it
+        DataPipeline.run(localFile, subCategoryID);
+        
+        // Once completed, need to add entry to database for record keeping
+        // TODO Need to somehow get the metric from the spreadsheet for DB record
+        DBSaver.insertManualUpload(parentCategory, subCategory, "metric", dataFile.getOriginalFilename(), dir.toString());
         
         redir.addFlashAttribute("upload_file_success", true);
-        redir.addFlashAttribute("filename", file.getOriginalFilename());
+        redir.addFlashAttribute("filename", dataFile.getOriginalFilename());
         
         return "redirect:/admin_upload";
         

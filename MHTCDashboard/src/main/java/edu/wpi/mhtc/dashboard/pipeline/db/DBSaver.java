@@ -115,5 +115,30 @@ public class DBSaver {
 		
 		return pstatement.execute();
 	}
+	
+	/**
+	 * Insert record after manually uploading a data file
+	 * @param parentCategory
+	 * @param subCategory
+	 * @param metric
+	 * @param filename
+	 * @param path
+	 * @return
+	 * @throws SQLException
+	 */
+	public static boolean insertManualUpload(String parentCategory, String subCategory, String metric, String filename, String path) throws SQLException
+	{
+		String sql = "INSERT INTO mhtc_sch.manual_upload(\"parentcategory\", \"subcategory\", \"metric\", \"filename\", \"path\") VALUE (?, ?, ?, ?, ?)";
+		Connection conn = DBConnector.getInstance().getConn();
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		
+		pstatement.setString(1, parentCategory);
+		pstatement.setString(2, subCategory);
+		pstatement.setString(3, metric);
+		pstatement.setString(4, filename);
+		pstatement.setString(5, path);
+		
+		return pstatement.execute();
+	}
 
 }
