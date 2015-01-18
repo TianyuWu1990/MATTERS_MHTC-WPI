@@ -4,6 +4,11 @@
  */
 package edu.wpi.mhtc.dashboard.pipeline.scheduler;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.sql.SQLException;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
@@ -61,6 +66,18 @@ public class Schedule {
 
 	public String getSched_date() {
 		return sched_date;
+	}
+	
+	public String getSched_datePassed() throws ParseException {
+		Date today = new Date();
+		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a", Locale.ENGLISH);
+		Date runDate = format.parse(sched_date);
+		
+		if (today.after(runDate)) {
+			return "Pipeline executed."; 
+		} else {
+			return "Will run at " + sched_date;
+		}		
 	}
 
 	public String getJob_name() {
