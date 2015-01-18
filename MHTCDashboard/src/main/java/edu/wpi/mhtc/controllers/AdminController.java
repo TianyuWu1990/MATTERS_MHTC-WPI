@@ -79,8 +79,8 @@ public class AdminController {
     }
 
     /********** Admin manager page **********/
-    @RequestMapping(value = "admin/manage", method = RequestMethod.GET)
-    public String manage() {
+    @RequestMapping(value = "admin_manager", method = RequestMethod.GET)
+    public String admin_manager() {
         return "admin_manager";
     }
     
