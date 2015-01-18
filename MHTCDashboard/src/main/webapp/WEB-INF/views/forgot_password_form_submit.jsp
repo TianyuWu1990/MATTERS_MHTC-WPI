@@ -1,4 +1,7 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,11 +75,17 @@ body {
                     <div style="padding-top:20px" class="panel-body" >
 	                    <c:choose>
 	                       <c:when test="${completed}">
-	                       		An email with password reset detail has been sent. Please check and follow the instruction in that email.
+	                       		An email with password reset detail has been sent. Please check and follow the instruction in that email. <br>
+	                       		<p>Click <a href="<c:url value="/" />">here</a> to return to the dashboard.</p>
 	                       </c:when>  
 	                       <c:otherwise>
 		                        <div id="login-alert" class="alert alert-danger">
-		                        	We could not find any account associated with the email address you provided.
+		                        	<c:if test="${invalid_captcha}">
+		                        		Invalid Captcha Verification.
+		                        	</c:if>
+		                        	<c:if test="${!invalid_captcha}">
+		                        		We could not find any account associated with the email address you provided.
+		                        	</c:if>
 		                        </div>
 		                        <div>    
 		                        <form id="resetRequestForm" class="form-horizontal" role="form" action="sent" method="post">
@@ -86,6 +95,14 @@ body {
 		                                    <input type="email" class="form-control" name="email" placeholder="Email">
 											<div class="help-block with-errors"></div>                                       
 		                            </div>
+		                            
+		                          	<div style="margin-bottom: 25px;" align="center">
+	                                   <%
+							                ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb",
+							                                    "6LfXmgATAAAAAP_qkRZBcBBqnb8yRuUKMm9LJYSW", false);
+							                out.print(c.createRecaptchaHtml(null, null));
+							            %> 
+	                        		</div>
 		                               
 		                            <div style="margin-top:10px" class="form-group">
 		                                <div class="col-sm-12 controls center" align="center">

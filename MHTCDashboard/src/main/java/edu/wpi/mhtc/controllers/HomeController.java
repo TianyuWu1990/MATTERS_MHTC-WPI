@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import javax.servlet.ServletRequest;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.slf4j.Logger;
@@ -20,11 +22,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -35,16 +39,20 @@ import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.service.StateService;
 import edu.wpi.mhtc.service.StatsService;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 
 /**
  * Handles requests for the application home page.
  */
 @Controller
 public class HomeController {
-	
 	private StatsService statsService;
 	private StateService stateService;
 	static Connection conn = DBConnector.getInstance().getConn();
+	
+	@Autowired
+    ReCaptchaImpl reCaptcha;
 	
 	@Autowired
 	public HomeController(StatsService statsService, StateService stateService)
@@ -131,35 +139,48 @@ public class HomeController {
     }
     
     @RequestMapping(value = "/user/forgot/sent", method = RequestMethod.POST)
-    public String request_reset_sent(Locale locale, Model model, @RequestParam("email") String email) throws Exception {
-        // First, randomize the token
-    	Random rand = new Random();
-    	int randomNum = rand.nextInt(100) + 1;
-    	String unencryptedTokenString = email + randomNum;
-    	
-    	// SQL Query execution
-		String sql = "UPDATE mhtc_sch.users SET \"Token\" = MD5(?) WHERE \"Email\" = ?";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-		pstatement.setString(1, unencryptedTokenString); // set parameter 1 (FIRST_NAME)
-		pstatement.setString(2, email);
-		pstatement.execute();
-		
-		if (pstatement.getUpdateCount() == 1) {
-			model.addAttribute("completed", true);
+    public String request_reset_sent(Locale locale, Model model, @RequestParam("email") String email, 
+    															@RequestParam("recaptcha_challenge_field") String challangeField,
+    															@RequestParam("recaptcha_response_field") String responseField,
+    															ServletRequest servletRequest,
+    												            SessionStatus sessionStatus) throws Exception {
+    	String remoteAddress = servletRequest.getRemoteAddr();
+        ReCaptchaResponse reCaptchaResponse = this.reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
+ 
+        if(reCaptchaResponse.isValid()){
+	    	// First, randomize the token
+	    	Random rand = new Random();
+	    	int randomNum = rand.nextInt(100) + 1;
+	    	String unencryptedTokenString = email + randomNum;
+	    	
+	    	// SQL Query execution
+			String sql = "UPDATE mhtc_sch.users SET \"Token\" = MD5(?) WHERE \"Email\" = ?";
+			PreparedStatement pstatement = conn.prepareStatement(sql);
+			pstatement.setString(1, unencryptedTokenString); // set parameter 1 (FIRST_NAME)
+			pstatement.setString(2, email);
+			pstatement.execute();
 			
-			// Send the email for that user
-	    	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
-	    
-	       	Mailer mm = (Mailer) context.getBean("mailMail");
-	           mm.sendResetPasswordMail(email, unencryptedTokenString);
-	    
-		} else {
-			model.addAttribute("completed", false);
-		}
-		
-		pstatement.close();	
-    	
-        return "forgot_password_form_submit";
+			if (pstatement.getUpdateCount() == 1) {
+				model.addAttribute("completed", true);
+				
+				// Send the email for that user
+		    	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
+		    
+		       	Mailer mm = (Mailer) context.getBean("mailMail");
+		           mm.sendResetPasswordMail(email, unencryptedTokenString);
+		    
+			} else {
+				model.addAttribute("completed", false);
+			}
+			
+			pstatement.close();	
+	    	
+	        return "forgot_password_form_submit";
+        } else {
+        	model.addAttribute("completed", false);
+        	model.addAttribute("invalid_captcha", true);
+        	return "forgot_password_form_submit";
+        }
     }  
 
     @RequestMapping(value = "/user/reset", method = RequestMethod.GET)
