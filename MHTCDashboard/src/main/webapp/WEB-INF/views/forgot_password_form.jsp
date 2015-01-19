@@ -1,4 +1,7 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
+<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,7 +84,15 @@ body {
                                     <input type="email" class="form-control" name="email" placeholder="Email">
 									<div class="help-block with-errors"></div>                                       
                             </div>
-                               
+                            
+                            <div style="margin-bottom: 25px;" align="center">
+                                   <%
+						                ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb",
+						                                    "6LfXmgATAAAAAP_qkRZBcBBqnb8yRuUKMm9LJYSW", false);
+						                out.print(c.createRecaptchaHtml(null, null));
+						            %> 
+	                        </div>
+                            
                             <div style="margin-top:10px" class="form-group">
                                 <div class="col-sm-12 controls center" align="center">
                                   <a id="btn-login" href="#" class="btn btn-success" onclick="$('#resetRequestForm').submit();">Request password reset</a>

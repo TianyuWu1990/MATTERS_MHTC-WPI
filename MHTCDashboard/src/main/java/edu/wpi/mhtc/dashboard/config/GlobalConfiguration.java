@@ -7,6 +7,8 @@ package edu.wpi.mhtc.dashboard.config;
 import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
 
+import net.tanesha.recaptcha.ReCaptchaImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -94,6 +96,15 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	public CommonsMultipartResolver multipartResolver() {
 	    CommonsMultipartResolver mr = new CommonsMultipartResolver();
 	    return mr;
+	} 
+	
+	@Bean
+	public ReCaptchaImpl recaptcha() {
+		ReCaptchaImpl rc = new ReCaptchaImpl();
+		rc.setPrivateKey("6LfXmgATAAAAAP_qkRZBcBBqnb8yRuUKMm9LJYSW");
+		rc.setPublicKey("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb");
+		
+		return rc;
 	}
 
 }

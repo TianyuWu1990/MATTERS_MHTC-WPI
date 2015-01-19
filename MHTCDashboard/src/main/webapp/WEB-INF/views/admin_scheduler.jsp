@@ -89,7 +89,7 @@
 					        			
 						        			<tr>
 						          				<td>${schedule.getSched_name()}</td>
-						          				<td>${schedule.getSched_date() }</td>
+						          				<td>${schedule.getSched_datePassed() }</td>
 						          				<td>${schedule.getSched_job() }</td>
 						          				<td>${schedule.getSched_description() }</td> 
 						          				<td>

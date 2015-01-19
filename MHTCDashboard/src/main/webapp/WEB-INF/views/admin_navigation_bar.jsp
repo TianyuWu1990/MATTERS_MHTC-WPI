@@ -38,6 +38,7 @@
 					<ul class="nav nav-sidebar" id="side-menu">
 						<li class="divider"></li>
 						<li id="admin"><a href="<c:url value="/admin"/>"><i class="fa fa-dashboard fa-fw"></i>  Admin Dashboard</a></li>
+						<li id="admin_manager"><a href="<c:url value="/admin_manager"/>"><i class="fa fa-user fa-fw"></i>  Admin Manager</a></li>
 						<li id="admin_dbexplorer"><a href="<c:url value="/admin_dbexplorer"/>"><i class="fa fa-database fa-fw"></i>  Database Explorer</a></li>
 						<li id="admin_upload"><a href="<c:url value="/admin_upload"/>"><i class="fa fa-upload fa-fw"></i>  Manual Upload</a></li>
 						<li id="admin_pipeline"><a href="<c:url value="/admin_pipeline"/>"><i class="fa fa-cog fa-fw"></i>  Pipeline Manager</a></li>
