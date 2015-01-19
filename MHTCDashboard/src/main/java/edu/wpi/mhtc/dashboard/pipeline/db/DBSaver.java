@@ -98,8 +98,8 @@ public class DBSaver {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static boolean insertPipeline(String pipelineName, String pipelineDesc, String path, String filename) throws SQLException {
-		String sql = "INSERT INTO mhtc_sch.pipelines(\"pipelinename\", \"pipelinedesc\", \"path\", \"filename\") VALUES (?, ?, ?, ?)";
+	public static boolean insertPipeline(String pipelineName, String pipelineDesc, String path, String filename, String user) throws SQLException {
+		String sql = "INSERT INTO mhtc_sch.pipelines(\"pipelinename\", \"pipelinedesc\", \"path\", \"filename\", \"uploadedby\") VALUES (?, ?, ?, ?, ?)";
 		Connection conn = DBConnector.getInstance().getConn();
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		
@@ -107,6 +107,7 @@ public class DBSaver {
 		pstatement.setString(2, pipelineDesc);
 		pstatement.setString(3, path);
 		pstatement.setString(4, filename);
+		pstatement.setString(5, user);
 		
 		return pstatement.execute();
 	}

@@ -248,7 +248,8 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addPipeline", method = RequestMethod.POST)
-    public String admin_addPipeline(Locale locale, Model model, RedirectAttributes redir, @RequestParam("parentcategory") String parentCategory,
+    public String admin_addPipeline(Locale locale, Model model, RedirectAttributes redir, Principal principal,
+    								@RequestParam("parentcategory") String parentCategory,
     								@RequestParam("subcategory") String subCategory, @RequestParam("script") MultipartFile script,
     								@RequestParam("pipelineName") String pipelineName, @RequestParam("pipelineDesc") String pipelineDesc) throws SQLException 
     {
@@ -295,25 +296,15 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		
+		// Get the path to the file and set the file as executable
 		Path scriptFilePath = finder.done();
 		scriptFilePath.toFile().setExecutable(true);
-		System.out.println(scriptFilePath);
+		
+		// Figure out what user submitted the pipeline
+		String user = principal.getName();
 		
     	// Now let's add the entry to the database if nothing has failed yet    	
-    	DBSaver.insertPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename());
-    	
-    	//Now run job on server
-    	/**
-    	 * 
-    	try {
-    		scriptFilePath.toFile().setExecutable(true);
-//    		Runtime.getRuntime().exec("chmod +x" + scriptFilePath.toString());
-			TalendJob.runPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-    	*/
+    	DBSaver.insertPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename(), user);
     	
     	redir.addFlashAttribute("pipeline_add_success", true);
     	redir.addFlashAttribute("pipelineName", pipelineName);
@@ -338,8 +329,8 @@ public class AdminController {
 			HashMap<String,String> row = new HashMap<String,String>();
 			String pipelineName = rs.getString("pipelinename");
 			String pipelineDesc = rs.getString("pipelinedesc");	
-			String path = rs.getString("path");
 			String filename = rs.getString("filename");
+			String user = rs.getString("uploadedby");
 			
 			// Need to convert Date to String
 			Date dateAdded = rs.getTimestamp("dateadded");
@@ -348,9 +339,9 @@ public class AdminController {
 			
 			row.put("pipelinename",pipelineName);
 			row.put("pipelinedesc", pipelineDesc);
-			//row.put("path", path);
 			row.put("filename", filename);
 			row.put("dateadded", date);
+			row.put("user", user);
 			
 			data.add(row);
 		}

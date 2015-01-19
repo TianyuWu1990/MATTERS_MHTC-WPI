@@ -138,6 +138,7 @@
 											<th>Pipeline Description</th>
 											<th>Filename</th>
 											<th>Date Added</th>
+											<th>Uploaded by</th>
 											<th>Delete</th>
 										</tr>
 									</thead>

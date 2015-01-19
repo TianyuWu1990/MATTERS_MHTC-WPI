@@ -116,9 +116,9 @@ $(function() {
 		"aoColumns": [
 			            { "mData": "pipelinename" },
 			            { "mData": "pipelinedesc" },
-//			            { "mData": "path" },
 			            { "mData": "filename" },
 			            { "mData": "dateadded" },
+			            { "mData": "user"},
 			            { "mData": null,
 			            	"sClass": "center",
 			            	"bSortable": false,
