@@ -13,25 +13,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
+
 import org.json.*;
 
 public class Logger {
 	 // Database connection
 	static Connection conn = DBConnector.getInstance().getConn();
 	
-	public static void jsonTalendLog(String jsonStr) throws SQLException {
-		JSONObject json = new JSONObject(jsonStr);
-		JSONObject data = json.getJSONArray("data").getJSONObject(0);
-		
-		// Parse JSON properties
-		String message = data.getString("message");
-		int priority = data.getInt("priority");
-		String moment = data.getString("moment");
-		String origin = data.getString("origin");
-		String job = data.getString("job");
+	public static void jsonTalendLog(String moment, String message, int priority, String job, String origin, int code) throws SQLException {
 		String status;
 		
-		// Decide which status
 		switch (priority) {
 			case 6: status = "fatal"; break;
 			case 5: status = "error"; break;
@@ -40,7 +31,7 @@ public class Logger {
 		}
 		
 		// Post the log
-		Logger.postLogWithDate(job, "[" + origin + "] " + message, status, moment);
+		Logger.postLogWithDate(job, "[" + origin + " - " + code + "] " + message, status, moment);
 	}
 	
 	public static void log(String componentName, String message) throws SQLException {

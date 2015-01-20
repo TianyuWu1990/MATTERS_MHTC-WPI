@@ -450,9 +450,15 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/post_reports", method = RequestMethod.POST)
-    public @ResponseBody String admin_post_reports(Locale locale, Model model, @RequestParam("data") String data) throws Exception {
+    public @ResponseBody String admin_post_reports(Locale locale, Model model, 
+    												@RequestParam("moment") String moment,
+    												@RequestParam("message") String message,
+    												@RequestParam("priority") int priority,
+    												@RequestParam("job") String job,
+    												@RequestParam("origin") String origin,
+    												@RequestParam("code") int code) throws Exception {
     	// TODO: Add some security measures to prevent unauthorized users to access this RESTful service.
-    	Logger.jsonTalendLog(data);
+    	Logger.jsonTalendLog(moment, message, priority, job, origin, code);
     	return "{\"success\" : true}";
     }    
     
