@@ -148,24 +148,24 @@ public class AdminController {
         return "admin_dbexplorer";
     }
     
-    @RequestMapping(value = "/getSubCategories", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/getSubCategories", method = RequestMethod.GET)
     public @ResponseBody Map<String, String> getSubCategories(@RequestParam("categoryid") String categoryid) throws Exception {
     	
     	Map<String, String> subCategories = DBLoader.getSubCategories(categoryid);
     	return subCategories;
     }
     
-    @RequestMapping(value = "/admin_dbexplorer/getMetricData", method = RequestMethod.GET)
-    public @ResponseBody List<ArrayList<String>> getMetricData(@RequestParam("categoryid") String categoryid) throws Exception {
+    @RequestMapping(value = "/admin_dbexplorer/getDataByMetric", method = RequestMethod.GET)
+    public @ResponseBody List<ArrayList<String>> getDataByMetric(@RequestParam("categoryid") String categoryid) throws Exception {
     	
-    	List<ArrayList<String>> metricData = DBLoader.getMetricData(categoryid);
+    	List<ArrayList<String>> metricData = DBLoader.getDataByMetric(categoryid);
     	return metricData;
     }
     
-    @RequestMapping(value ="/admin_dbexplorer/getDetailedMetricData", method = RequestMethod.GET)
-    public @ResponseBody List<ArrayList<String>> getDetailedMetricData() throws SQLException {
+    @RequestMapping(value ="/admin_dbexplorer/getDetailedMetrics", method = RequestMethod.GET)
+    public @ResponseBody List<ArrayList<String>> getDetailedMetrics() throws SQLException {
     	
-    	List<ArrayList<String>> metricData = DBLoader.getDetailedMetricData();
+    	List<ArrayList<String>> metricData = DBLoader.getDetailedMetrics();
     	
 		return metricData;
     }

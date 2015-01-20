@@ -5,7 +5,7 @@ $(function() {
 	$('form#uploadFile select#parentcategory').change(function() {
 		var value = $("form#uploadFile select#parentcategory").val();
 		
-		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
+		$.getJSON('admin/getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
 			var options = $("form#uploadFile #category");
 			
@@ -14,7 +14,6 @@ $(function() {
 			
 			// Add default <option>
 			options.append('<option value="">-- Select a subcategory --</option>');
-			options.append('<option value="">No subcategory</option>');
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
@@ -30,7 +29,7 @@ $(function() {
 	$('form#admin_addMetric select#parentcategory').change(function() {
 		var value = $('form#admin_addMetric select#parentcategory').val();
 		
-		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
+		$.getJSON('admin/getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
 			var options = $("form#admin_addMetric #category");
 			
@@ -39,7 +38,6 @@ $(function() {
 			
 			// Add default <option>
 			options.append('<option value="">-- Select a subcategory --</option>');
-			options.append('<option value="">No subcategory</option>');
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>

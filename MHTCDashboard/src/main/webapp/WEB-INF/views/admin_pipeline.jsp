@@ -76,6 +76,13 @@
 						</div>
 						
 						<div class="form-group">
+							<label>Choose a metric:</label>
+							<select class="form-control" id="metric" name="metric" required>
+								<option value="">-- Select a metric --</option>
+							</select>
+						</div>
+						
+						<div class="form-group">
 							<label>Enter a name for the pipeline:</label>
 							<input class="form-control" name="pipelineName" placeholder="Enter pipeline name" required>
 						</div>
