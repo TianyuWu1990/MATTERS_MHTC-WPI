@@ -16,9 +16,9 @@ $(function() {
 			var $cell = $('td', row).eq(4);
 			var classToAdd = "";
 			switch (data.status) {
-				case "Success": classToAdd = "alert-success"; break;
-				case "Warning": classToAdd = "alert-warning"; break;
-				case "Error": classToAdd = "alert-danger"; break;
+				case "success": classToAdd = "alert-success"; break;
+				case "warning": classToAdd = "alert-warning"; break;
+				case "error": classToAdd = "alert-danger"; break;
 				default: classToAdd = ""; break;
 			}
 			$cell.addClass(classToAdd);
