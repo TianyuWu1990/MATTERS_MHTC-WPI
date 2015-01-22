@@ -80,7 +80,10 @@ public class DataWrapperMain {
 		//WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.xls", Arrays.asList(-1));
 		
 		//CNBC rankings
+		//2013
 		WebTableWrapper.download("http://www.cnbc.com/id/100824779", ".csvData.data", "tmp/cnbc-13-overall-ranks.xls", Arrays.asList(-1));
+		//2014
+		WebTableWrapper.download("http://www.cnbc.com/id/101758236", ".csvData.data", "tmp/cnbc-14-overall-ranks.xls", Arrays.asList(-1));
 		
 		//IPEDS STEM Degrees
 		IPEDSDownload ipeds = new IPEDSDownload();
