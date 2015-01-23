@@ -109,6 +109,9 @@ public class DataWrapperMain {
 		//Unemployment
 		dol.getEmployerRateYears(2009, 2014, DATA_DIRECTORY);
 		
+		// BLS Wrapper
+		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2011&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_test.xls");
+		
 	}
 	
 }
