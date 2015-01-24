@@ -38,7 +38,7 @@ public class UnZip {
 
 			// get the zip file content
 			ZipInputStream zis = new ZipInputStream(
-					new FileInputStream(zipFile));
+					new FileInputStream(new java.io.File(zipFile)));
 			// get the zipped file list entry
 			ZipEntry ze = zis.getNextEntry();
 

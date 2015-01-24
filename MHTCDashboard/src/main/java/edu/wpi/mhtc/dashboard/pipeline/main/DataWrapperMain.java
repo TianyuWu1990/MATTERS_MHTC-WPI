@@ -31,12 +31,12 @@ public class DataWrapperMain {
 		//		create this directory if it doesn't already exist
 		dir.mkdir();
 
-		URLDownload down = new URLDownload();
-		BLSDownload bls = new BLSDownload();
-		BEADownload bea = new BEADownload();
-		DOLDownload dol = new DOLDownload();
-		UnZip unZip = new UnZip();
-
+//		URLDownload down = new URLDownload();
+//		BLSDownload bls = new BLSDownload();
+//		BEADownload bea = new BEADownload();
+//		DOLDownload dol = new DOLDownload();
+//		UnZip unZip = new UnZip();
+		IPEDSDownload ipeds = new IPEDSDownload();
 //		//US Census-State and Local Tax Burden
 //		down.HTTPDownload("http://www2.census.gov/govs/statetax/state_tax_collections.zip", DATA_DIRECTORY+"/state_tax_collections_1.zip");
 //		unZip.unZipIt(DATA_DIRECTORY+"/state_tax_collections_1.zip", DATA_DIRECTORY);
@@ -110,7 +110,7 @@ public class DataWrapperMain {
 //		dol.getEmployerRateYears(2009, 2014, DATA_DIRECTORY);
 		
 		// BLS Wrapper
-		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2011&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average annual wage.xls");
+		//WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2011&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average annual wage.xls");
 		
 	}
 	
