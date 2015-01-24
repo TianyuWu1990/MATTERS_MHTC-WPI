@@ -57,7 +57,7 @@ import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
-import edu.wpi.mhtc.dashboard.util.Logger;
+import edu.wpi.mhtc.helpers.Logger;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
@@ -458,7 +458,7 @@ public class AdminController {
     												@RequestParam("origin") String origin,
     												@RequestParam("code") int code) throws Exception {
     	// TODO: Add some security measures to prevent unauthorized users to access this RESTful service.
-    	Logger.jsonTalendLog(moment, message, priority, job, origin, code);
+    	Logger.jsonTalendLog(job, code, message, origin, moment, priority);
     	return "{\"success\" : true}";
     }    
     

@@ -8,9 +8,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.helpers.MD5;
 
@@ -23,6 +28,7 @@ public class Schedule {
 	private String sched_date;
 	private String job_name;
 	private boolean sched_cron;
+	static Connection conn = DBConnector.getInstance().getConn();
 	
 	public Schedule(String sched_name, String sched_job, String sched_description, String sched_date, boolean sched_cron) {
 		this.sched_name = sched_name;
@@ -68,15 +74,34 @@ public class Schedule {
 		return sched_date;
 	}
 	
-	public String getSched_datePassed() throws ParseException {
+	public String getSched_datePassed() throws ParseException, SQLException {
 		Date today = new Date();
-		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a", Locale.ENGLISH);
+		DateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss", Locale.ENGLISH);
 		Date runDate = format.parse(sched_date);
 		
 		if (today.after(runDate)) {
-			return "Pipeline executed."; 
+			// Now, check the Logger to see the current status
+			String sql = "SELECT * FROM mhtc_sch.logs WHERE message = 'Pipeline has finished' AND job = ?";
+			
+			PreparedStatement pstatement = conn.prepareStatement(sql);
+			pstatement.setString(1, this.sched_job);
+			ResultSet rs = pstatement.executeQuery();
+			
+			// Loop through the record
+			while (rs.next()) {
+				String moment = rs.getString("moment");
+				DateFormat finishDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+				Date finishDate = finishDateFormat.parse(moment);
+				long timediff = finishDate.getTime() - runDate.getTime();
+				
+				if (timediff <= 604800) { // Check if the difference between finish date and execution date is less than 1 week 
+					return "Completed"; 
+				}
+			}
+			
+			return "Running..."; 
 		} else {
-			return "Will run at " + sched_date;
+			return "Scheduled to run at " + sched_date;
 		}		
 	}
 
