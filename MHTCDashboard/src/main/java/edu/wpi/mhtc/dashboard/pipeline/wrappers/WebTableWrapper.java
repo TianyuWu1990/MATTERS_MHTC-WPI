@@ -110,7 +110,17 @@ public final class WebTableWrapper {
 		}			
 	}
 	
-	public static void downloadHtmlUnit(String url, String tblSelector, String filename) 
+	/**
+	 * Used for JavaScript-generated HTML tables
+	 * @param url
+	 * @param tblSelector must be the ID of the table, or else it won't work
+	 * @param filename
+	 * @param seconds how long to wait for the JavaScript to populate the page
+	 * @throws FailingHttpStatusCodeException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	public static void downloadHtmlUnit(String url, String tblSelector, String filename, long seconds) 
 			throws FailingHttpStatusCodeException, MalformedURLException, IOException 
 	{
 		WebClient webClient = new WebClient(BrowserVersion.CHROME);
@@ -118,7 +128,7 @@ public final class WebTableWrapper {
 		
 		// This is the important part! For tables loaded via JS, you need to wait
 		// until they have time to complete. For BLS, 3 * 1000 (3 sec) seems to work
-		webClient.waitForBackgroundJavaScript(10 * 1000);
+		webClient.waitForBackgroundJavaScript(seconds * 1000);
 		
 		// Now, continue to get the table
 		HtmlTable dataTable = webPage.getFirstByXPath("//*[@id=\""+tblSelector+"\"]");

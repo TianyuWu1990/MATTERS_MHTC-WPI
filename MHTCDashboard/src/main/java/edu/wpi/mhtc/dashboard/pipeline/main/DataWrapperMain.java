@@ -110,7 +110,7 @@ public class DataWrapperMain {
 //		dol.getEmployerRateYears(2009, 2014, DATA_DIRECTORY);
 		
 		// BLS Wrapper
-		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2011&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average annual wage.xls");
+		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2011&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average annual wage.xls", 10);
 		
 	}
 	
