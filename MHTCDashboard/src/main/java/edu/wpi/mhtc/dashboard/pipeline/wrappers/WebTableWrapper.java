@@ -118,7 +118,7 @@ public final class WebTableWrapper {
 		
 		// This is the important part! For tables loaded via JS, you need to wait
 		// until they have time to complete. For BLS, 3 * 1000 (3 sec) seems to work
-		webClient.waitForBackgroundJavaScript(3 * 1000);
+		webClient.waitForBackgroundJavaScript(10 * 1000);
 		
 		// Now, continue to get the table
 		HtmlTable dataTable = webPage.getFirstByXPath("//*[@id=\""+tblSelector+"\"]");
