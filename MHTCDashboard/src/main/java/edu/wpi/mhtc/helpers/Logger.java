@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 
@@ -39,26 +40,52 @@ public class Logger {
 		System.out.println(job + " - " + message + " (" + moment + ")");
 	}
 	
-	public static ArrayList<HashMap<String,String>> retriveLog() throws SQLException, ParseException {
+	public static ArrayList<HashMap<String,String>> retriveLogSummary() throws SQLException, ParseException {
 		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
 		Connection conn = DBConnector.getInstance().getConn();
 		
-		String sql = "SELECT * FROM mhtc_sch.logs";
+		String sql = "SELECT message, job, recent_tbl.log_count FROM mhtc_sch.logs RIGHT JOIN (SELECT COUNT(*) as log_count, MAX(id) as recent_id FROM mhtc_sch.logs GROUP BY job) as recent_tbl ON recent_id = id;"; 
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		ResultSet rs = pstatement.executeQuery();
 		
 		while (rs.next()) {
 			HashMap<String,String> row = new HashMap<String,String>();
-			String id = rs.getString("id");
+			String log_count = rs.getString("log_count");
 			String job = rs.getString("job");	
+			String message = rs.getString("message");
+
+			row.put("job", job);
+			row.put("message", message);
+			row.put("log_count", log_count);
+			
+			data.add(row);
+		}
+		
+		return data;	
+	}
+
+	public static List<HashMap<String, String>> retrieveLogByJobName(String job) throws SQLException {
+		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "SELECT * FROM mhtc_sch.logs WHERE job = ?";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, job);
+		ResultSet rs = pstatement.executeQuery();
+		
+		while (rs.next()) {
+			HashMap<String,String> row = new HashMap<String,String>();
+			String id = rs.getString("id");
 			String message = rs.getString("message");
 			String code = rs.getString("code");
 			String priority = rs.getString("priority");
 			String moment = rs.getString("moment");
+			String origin = rs.getString("origin");
 			
 			row.put("id",id);
 			row.put("job", job);
 			row.put("message", message);
+			row.put("origin", origin);
 			row.put("moment", moment);
 			row.put("priority", priority);
 			row.put("code", code);
@@ -66,6 +93,6 @@ public class Logger {
 			data.add(row);
 		}
 		
-		return data;	
+		return data;
 	}
 }

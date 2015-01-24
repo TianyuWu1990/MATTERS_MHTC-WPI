@@ -449,6 +449,19 @@ public class AdminController {
         return "admin_reports";
     }
     
+    @RequestMapping(value = "/admin_reports_detail", method = RequestMethod.GET)
+    public String admin_reports_detail(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
+      
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Reporting";
+    	
+    	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+        model.addAttribute("job", job);      
+        
+        return "admin_reports_detail";
+    }
+    
     @RequestMapping(value = "/post_reports", method = RequestMethod.POST)
     public @ResponseBody String admin_post_reports(Locale locale, Model model, 
     												@RequestParam("moment") String moment,
@@ -463,8 +476,12 @@ public class AdminController {
     }    
     
     @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model) throws Exception {
-    	return Logger.retriveLog();
+    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
+    	if (job.equals("")) {
+    		return Logger.retriveLogSummary();
+    	} else {
+    		return Logger.retrieveLogByJobName(job);
+    	}
     }    
     
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)

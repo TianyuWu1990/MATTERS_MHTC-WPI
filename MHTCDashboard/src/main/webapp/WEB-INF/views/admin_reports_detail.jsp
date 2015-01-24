@@ -10,7 +10,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Reports</h1>
+                    <h1 class="page-header">Logs for pipeline job <span id="pipelineName">${job}</span></h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -19,7 +19,8 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Availabe Logs      
+                            Pipeline Log Explorer
+                            
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -27,10 +28,12 @@
                                 <table class="table table-bordered table-hover" id="reports-tbl">
                                     <thead>
                                         <tr>
-                                            <th>Pipeline Name</th>
-                                            <th>Recent Message</th>
-                                            <th>Log counts</th>
-                                            <th>View detail</th>
+                                            <th>Log ID</th>
+                                            <th>Origin</th>
+                                            <th>Code</th>
+                                            <th>Message</th>
+                                            <th>Date and Time</th>
+                                            <th>Priority</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -57,20 +60,27 @@ $(function() {
 	$('#reports-tbl').DataTable({
 		"processing": true,
 		"ajax": {
-			"url": "admin_get_logs?job=",
+			"url": "admin_get_logs?job=${job}",
 			"dataSrc": ""
 		},
 		"aoColumns": [
-					{ "mData": "job" },
+		            { "mData": "id" },
+		            { "mData": "origin" },
+		            { "mData": "code" },
+		            { "mData": "moment" }, 
 		            { "mData": "message" },
-		            { "mData": "log_count" }, 
-		            { "mData": "job" }
-     
+		            { "mData": "priority" },        
 		],
 		"createdRow": function ( row, data, index ) {
-			console.log(data);
-			var $cell = $('td', row).eq(3);
-			$cell.html("<a href=\"admin_reports_detail?job=" +  data['job'] +" \"> View </a>");
+			var $cell = $('td', row).eq(4);
+			var classToAdd = "";
+			switch (data.status) {
+				case "success": classToAdd = "alert-success"; break;
+				case "warning": classToAdd = "alert-warning"; break;
+				case "error": classToAdd = "alert-danger"; break;
+				default: classToAdd = ""; break;
+			}
+			$cell.addClass(classToAdd);
         }
 	});
 });
