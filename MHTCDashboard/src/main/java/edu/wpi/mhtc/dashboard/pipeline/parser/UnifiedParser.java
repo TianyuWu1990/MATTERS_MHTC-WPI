@@ -85,7 +85,7 @@ public class UnifiedParser implements IParser {
 		for (Row row : sheet) {
 
 			if(row.getRowNum() > headerRow){	//skip extra info above header
-
+				int i = row.getRowNum();
 				if (!isRowEmpty(row)){		
 
 					String state = null;
@@ -93,28 +93,31 @@ public class UnifiedParser implements IParser {
 
 //					get state field
 					Cell stateCell = row.getCell(stateCol);
-					try {
-						state = stateCleaner.clean(stateCell.getStringCellValue());
-					} 
-					catch (Exception e) {
-						//	TODO: use this to report error to admin
-						e.printStackTrace();
+					if(stateCell != null){
+						try {
+							state = stateCleaner.clean(stateCell.getStringCellValue());
+						} 
+						catch (Exception e) {
+							//	TODO: use this to report error to admin
+							e.printStackTrace();
+						}
 					}
 
 //					get year field
 					Cell yearCell = row.getCell(yearCol);
-					
-					try{
-						if(yearCell.getCellType() == Cell.CELL_TYPE_STRING){
-							year = yearCleaner.clean(yearCell.getStringCellValue());		//clean year
+					if(yearCell != null){
+						try{
+							if(yearCell.getCellType() == Cell.CELL_TYPE_STRING){
+								year = yearCleaner.clean(yearCell.getStringCellValue());		//clean year
+							}
+							else{
+								year = yearCleaner.clean(yearCell.getNumericCellValue());
+							}
 						}
-						else{
-							year = yearCleaner.clean(yearCell.getNumericCellValue());
+						catch(Exception e){
+							//TODO: use this to report error to admin
+							e.printStackTrace();
 						}
-					}
-					catch(Exception e){
-						//TODO: use this to report error to admin
-						e.printStackTrace();
 					}
 
 					if(year == null || state == null){
@@ -204,7 +207,7 @@ public class UnifiedParser implements IParser {
 	 * @return the row number of the header
 	 * @throws UnifiedFormatException if a header row containing column headers for "state" and "year" is not found
 	 */
-	private int findHeader() throws UnifiedFormatException{
+	int findHeader() throws UnifiedFormatException{
 		
 		boolean foundYear = false;
 		boolean foundState = false;
@@ -230,20 +233,17 @@ public class UnifiedParser implements IParser {
 	}
 
 
-
-//TODO: test this
-	private boolean isRowEmpty(Row row) {
-		if (row.getLastCellNum() == -1) {
-			return true;
-		}
-		
-		/*for (int c = row.getFirstCellNum(); c <= row.getLastCellNum(); c++) {
+	boolean isRowEmpty(Row row) {
+//		int i = row.getPhysicalNumberOfCells();
+//		return  i == 0;
+		for (int c = row.getFirstCellNum(); c <= row.getLastCellNum(); c++) {
 			Cell cell = row.getCell(c);
 			if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
+			
 				return false;
-		}*/
+		}
 		
-		return false;
+		return true;
 	}
 
 
