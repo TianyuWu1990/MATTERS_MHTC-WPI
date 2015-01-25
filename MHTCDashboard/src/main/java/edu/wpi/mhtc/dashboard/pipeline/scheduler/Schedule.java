@@ -74,6 +74,18 @@ public class Schedule {
 		return sched_date;
 	}
 	
+	public String getTalendJob() throws SQLException {
+		String sql = "SELECT * FROM mhtc_sch.pipelines WHERE pipelinename = ?";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pstatement.setString(1, this.sched_job);
+		ResultSet rs = pstatement.executeQuery();
+		String filename = "";
+		while (rs.next()) {
+			filename = rs.getString("path");
+		}
+		return filename.substring(filename.lastIndexOf("\\")+1,filename.lastIndexOf('.')-4);		
+	}
+	
 	public String getSched_datePassed() throws ParseException, SQLException {
 		Date today = new Date();
 		DateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss", Locale.ENGLISH);

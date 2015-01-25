@@ -95,14 +95,4 @@ public class Logger {
 		
 		return data;
 	}
-	
-	public static String getPipelineJobName(String pipelineName) throws SQLException {
-		String sql = "SELECT * FROM mhtc_sch.pipelines WHERE pipelinename = ?";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-		pstatement.setString(1, pipelineName);
-		ResultSet rs = pstatement.executeQuery();
-		rs.next();
-		String filename = rs.getString("filename");
-		return filename.substring(0,filename.lastIndexOf('.'));
-	}
 }
