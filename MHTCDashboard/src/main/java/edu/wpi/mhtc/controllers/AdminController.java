@@ -264,7 +264,7 @@ public class AdminController {
     	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
     	
     	if (!createFolderSuccess) {
-    		// TODO: Yell at the user or something. 
+    		System.out.println("Error! Can't create folder.");
     	}
     	
     	// Now save file to location

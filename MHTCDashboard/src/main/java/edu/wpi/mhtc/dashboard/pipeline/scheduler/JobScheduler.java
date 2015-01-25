@@ -95,7 +95,7 @@ public class JobScheduler {
      * @return The trigger
      */
     public static SimpleTrigger specificDateTimeTrigger(String dateStr) {
-    	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+    	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 
     	try {
      
