@@ -10,6 +10,7 @@ CREATE TABLE mhtc_sch.logs
 	  job text NOT NULL,
 	  message text NOT NULL,
 	  code integer,
+	  priority integer,
 	  origin character varying(100) DEFAULT NULL::character varying,
 	  CONSTRAINT logs_pkey PRIMARY KEY (id)
 )
