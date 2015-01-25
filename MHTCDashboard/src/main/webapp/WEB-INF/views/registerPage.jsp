@@ -75,32 +75,32 @@ body {
                         <div>
                         	<form id="registerForm" class="form-horizontal" role="form" action="register/submit" method="POST">                         
                            		<div style="margin-bottom: 25px" class="input-group">
-                                   	<span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                   	<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                    	<input type="text" class="form-control" name="UserName" placeholder="Username"> 
                                    </div>
                                    
                                    <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
                                     <input type="text" class="form-control" name="Email" placeholder="Email">  
                                    </div>
                                    
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
                                     <input type="password" class="form-control" name="Password" placeholder="Password">  
                                    </div>
                                               
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
                                     <input type="password" class="form-control" placeholder="Password confirm">  
                                    </div>
                                    
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-info fa-fw"></i></span>
                                     <input type="text" class="form-control" name="FirstName" placeholder="First Name">  
                                    </div>
                                    
                                    <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-info fa-fw"></i></span>
                                     <input type="text" class="form-control" name="LastName" placeholder="Last Name">  
                                    </div>	                                    
                                    			                               
