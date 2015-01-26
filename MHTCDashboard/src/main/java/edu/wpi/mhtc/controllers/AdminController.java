@@ -80,7 +80,11 @@ public class AdminController {
 
     /********** Admin manager page **********/
     @RequestMapping(value = "admin_manager", method = RequestMethod.GET)
-    public String admin_manager() {
+    public String admin_manager(Model model) {
+    	
+    	String title = "MATTERS: Administrator Management";
+        model.addAttribute("title", title);
+
         return "admin_manager";
     }
     

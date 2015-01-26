@@ -24,6 +24,7 @@
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user fa-fw"></i><i class="fa fa-caret-down"></i></a>
 					<ul class="dropdown-menu dropdown-user">
 						<li><a href="<c:url value="/admin_help"/>"><i class="fa fa-question fa-fw"></i> Help</a></li>
+						<li><a href="<c:url value="/admin_manager"/>"><i class="fa fa-cogs fa-fw"></i> Management</a></li>
 						<li class="divider"></li>
 						<li><a href="<c:url value="/logout/"/>"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 					</ul> <!-- /.dropdown-user -->
@@ -38,7 +39,6 @@
 					<ul class="nav nav-sidebar" id="side-menu">
 						<li class="divider"></li>
 						<li id="admin"><a href="<c:url value="/admin"/>"><i class="fa fa-dashboard fa-fw"></i>  Admin Dashboard</a></li>
-						<li id="admin_manager"><a href="<c:url value="/admin_manager"/>"><i class="fa fa-user fa-fw"></i>  Admin Manager</a></li>
 						<li id="admin_dbexplorer"><a href="<c:url value="/admin_dbexplorer"/>"><i class="fa fa-database fa-fw"></i>  Database Explorer</a></li>
 						<li id="admin_upload"><a href="<c:url value="/admin_upload"/>"><i class="fa fa-upload fa-fw"></i>  Manual Upload</a></li>
 						<li id="admin_pipeline"><a href="<c:url value="/admin_pipeline"/>"><i class="fa fa-cog fa-fw"></i>  Pipeline Manager</a></li>

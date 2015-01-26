@@ -138,34 +138,33 @@ $(function(){
                         		<div id="form-error" class="alert alert-danger" style="margin-bottom: 25px; padding-left: 25px; display:none;"></div>
                         		                         
                            		<div style="margin-bottom: 25px" class="input-group">
-                                   	<span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                   	<input type="text" class="form-control" name="UserName" placeholder="Username" data-parsley-error-message="Please provide a valid username. It can only contain alphanumerical characters." data-parsley-type="alphanum" required> 
-                                </div>
-                                <div class="parsley_container"></div>
+                                   	<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                   	<input type="text" class="form-control" name="UserName" placeholder="Username"> 
+                                   </div>
                                    
                                    <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="text" class="form-control" name="Email" placeholder="Email" data-parsley-trigger="change" data-parsley-type="email" data-parsley-error-message="Please provide a valid email address." required>  
+                                    <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
+                                    <input type="text" class="form-control" name="Email" placeholder="Email">  
                                    </div>
                                    
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                    <input type="password" id="pass" class="form-control" name="Password" placeholder="Password"  data-parsley-error-message="Please provide a password with minimum 6 characters."  data-parsley-minlength="6" required>  
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                    <input type="password" class="form-control" name="Password" placeholder="Password">  
                                    </div>
                                               
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                    <input type="password" id="passConf" class="form-control" placeholder="Password confirm" data-parsley-equalto="#pass" data-parsley-error-message="Please provide a valid and matching password confirmation." required>  
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                    <input type="password" class="form-control" placeholder="Password confirm">  
                                    </div>
                                    
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-info"></i></span>
-                                    <input type="text" class="form-control" name="FirstName" placeholder="First Name" required data-parsley-error-message="Please provide a valid first name.">  
+                                    <span class="input-group-addon"><i class="fa fa-info fa-fw"></i></span>
+                                    <input type="text" class="form-control" name="FirstName" placeholder="First Name">  
                                    </div>
                                    
                                    <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-info"></i></span>
-                                    <input type="text" class="form-control" name="LastName" placeholder="Last Name" required data-parsley-error-message="Please provide a valid last name.">  
+                                    <span class="input-group-addon"><i class="fa fa-info fa-fw"></i></span>
+                                    <input type="text" class="form-control" name="LastName" placeholder="Last Name">  
                                    </div>	                                    
                                    			                               
 	                            <div style="margin-top:10px" class="form-group">
