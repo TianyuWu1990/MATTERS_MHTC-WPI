@@ -110,8 +110,11 @@ public class DataWrapperMain {
 //		dol.getEmployerRateYears(2009, 2014, DATA_DIRECTORY);
 		
 		// BLS Wrapper
-		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2011&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average annual wage.xls", 10);
-		
+		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2009&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average_annual_wage_2009.xls", 10);
+		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2010&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average_annual_wage_2010.xls", 10);
+		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2011&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average_annual_wage_2011.xls", 10);
+		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2012&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average_annual_wage_2012.xls", 10);
+		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2013&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average_annual_wage_2013.xls", 10);
 	}
 	
 }
