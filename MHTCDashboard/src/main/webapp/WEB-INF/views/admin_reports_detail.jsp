@@ -24,8 +24,8 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover" id="reports-tbl">
+                            <div class="dataTable-wrapper">
+                                <table class="table table-striped table-bordered table-hover" id="reports-tbl">
                                     <thead>
                                         <tr>
                                             <th>Log ID</th>
