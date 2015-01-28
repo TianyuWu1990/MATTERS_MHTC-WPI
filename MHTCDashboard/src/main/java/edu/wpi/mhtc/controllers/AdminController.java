@@ -290,8 +290,18 @@ public class AdminController {
     		unZipper.unZipIt(zipFile, dir.toString());
     	}
     	
-    	// Need to find path to the .sh file
-    	String pattern = "*.sh";
+    	// Determine if system is Windows vs Unix/Linux/Mac
+    	// .bat vs .sh
+    	String OS = System.getProperty("os.name").toLowerCase();
+    	String pattern;
+    	
+    	if (OS.contains("win")) {
+        	pattern = "*.bat";
+    	} else {
+        	pattern = "*.sh";
+    	}
+    	
+    	// Need to find path to the file
 		FileFinder finder = new FileFinder(pattern);
 		try {
 			Files.walkFileTree(dir, finder);
