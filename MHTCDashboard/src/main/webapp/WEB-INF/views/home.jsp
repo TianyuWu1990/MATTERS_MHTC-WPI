@@ -42,6 +42,7 @@
 <script src="js/jquery-ui-1.10.0.custom.min.js"></script>
 <script src="js/jquery.ui.touch-punch.js"></script>
 <script src="js/modernizr.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.cookie.js"></script>
 <script src='js/fullcalendar.min.js'></script>
 <script src='js/jquery.dataTables.min.js'></script>
@@ -146,8 +147,7 @@
 			
 
 		<div style="background:#7b0020; margin:0px; padding:30px;">
-		<p align = "center" style="font-size:27px"> <b> MATTERS: </b></p>
-		<p align="center" style="font-size:20px;"> <b> Massachusetts Technology, Talent, and Economic Reporting System </b></p></div>
+		<p align="center" style="font-size:20px;"> <b>MATTERS: Massachusetts Technology, Talent, and Economic Reporting System </b></p></div>
 		</div>
 	</div>
 

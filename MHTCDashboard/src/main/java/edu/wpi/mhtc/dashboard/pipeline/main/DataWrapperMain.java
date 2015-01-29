@@ -109,8 +109,43 @@ public class DataWrapperMain {
 //		//Unemployment
 //		dol.getEmployerRateYears(2009, 2014, DATA_DIRECTORY);
 		
-		// BLS Wrapper
-		WebTableWrapper.downloadHtmlUnit("http://www.bls.gov/cew/cewind.htm#year=2011&qtr=A&own=5&ind=10&size=0", "table1", "tmp/bls_average annual wage.xls", 10);
+		//NSF - BS degrees in workforce
+		WebTableWrapper.download("http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=33", "#my_table", "tmp/bs_workforce.xls", Arrays.asList(13));
+
+		//WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.xls", Arrays.asList(-1));
+		
+		//CNBC rankings
+		//2013
+		WebTableWrapper.download("http://www.cnbc.com/id/100824779", ".csvData.data", "tmp/cnbc-13-overall-ranks.xls", Arrays.asList(-1));
+		//2014
+		WebTableWrapper.download("http://www.cnbc.com/id/101758236", ".csvData.data", "tmp/cnbc-14-overall-ranks.xls", Arrays.asList(-1));
+		
+		//IPEDS STEM Degrees
+		IPEDSDownload ipeds = new IPEDSDownload();
+		
+		
+		//Mass High Tech Clusters - files are named Indicator 1 ...
+		down.HTTPDownload("http://index.masstech.org/sites/index/files/ff/10/Indicator%201%20raw%20data.zip", DATA_DIRECTORY+"/mass_tech_clusters.zip");
+		unZip.unZipIt(DATA_DIRECTORY+"/mass_tech_clusters.zip", DATA_DIRECTORY);
+		
+		//Milken rankings
+//		Can't find table???
+//		WebTableWrapper.download("http://statetechandscience.org/stateTech.taf?page=state-ranking", "table_id", "tmp/milken-ranks.xls", Arrays.asList(-1));
+			
+		//Tax foundation - personal income tax
+		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Individual%20Income%20Tax%20Rates%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Personal_Income_Tax_Rate.xls");
+
+		//Tax foundation - capital gains tax
+		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/FF414dataset_1.xls", DATA_DIRECTORY+"/Capital_Gains_Tax_Rate.xls");
+
+		//Tax foundation - Corporate Income Tax 
+		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Corporate%20Income%20Tax%20Rates%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Corporate_Income_Tax_Rate.xls");
+		
+		//Tax foundation - Sales tax 
+		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Sales%2C%20Gasoline%2C%20Cigarette%20and%20Alcohol%20Taxes%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Sales_Tax_Rate.xls");
+				
+		//Unemployment
+		dol.getEmployerRateYears(2010, 2014, DATA_DIRECTORY);
 		
 	}
 	
