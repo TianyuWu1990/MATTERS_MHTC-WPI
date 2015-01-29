@@ -13,7 +13,4 @@ CREATE TABLE mhtc_sch.logs
 	  priority integer,
 	  origin character varying(100) DEFAULT NULL::character varying,
 	  CONSTRAINT logs_pkey PRIMARY KEY (id)
-)
-
-ALTER TABLE ONLY mhtc_sch."logs"
-    ADD CONSTRAINT logs_pkey PRIMARY KEY (id);
+);
