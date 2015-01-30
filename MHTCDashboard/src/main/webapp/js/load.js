@@ -221,35 +221,40 @@ stopHeatMapAnimation=function() {
 // new loadfunction to be called from body-onload
 
 
-loadFunction = function() {
-	//$('#map').usmap({});
-	
+loadFunction = function() {	
 	
 	/**********************************************************************/
 	/***************CHECKING LEFT MENU ************************************/	
 	/**********************************************************************/
 
-	
-	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
-	$("div.tab-pane").scroll(adjustDropDown);
-	$("#selectallmultiplemetric").addClass("hidden");
-	$("#unselectallmultiplemetric").addClass("hidden");
-	$("#selectpeerstates").addClass("hidden");
 	cm=CM.create();
 	as=AS.create();
 	
 	//cm.loadFunction();
 	as.loadFunction();
-	/*$(function() {
-        $('#ms').change(function() {
-        	
-        	as.setStatesSelected($(this).val());
-        }).multipleSelect({
-            width: '20%'
-        });
-        
-    });*/
-	 $('select').multiselect({
+
+    // Initializes button that closes the left sidebar
+    $("#close-sidebar-left").click(function() {
+    	$("#sidebar-left").hide("slide", { direction: "left" }, 300);
+    	
+    	// When we close the sidebar, slide over the state selection.
+    	$("#stateSelection").animate({marginLeft: "0px"}, 300);
+    	
+    	$("#open-sidebar-left").attr("style", "opacity: 1;filter: alpha(opacity=1);");
+    	
+    	
+    });
+    
+    // Initializes the button that opens the left sidebar
+    $("#open-sidebar-left").click(function() {
+    	$("#sidebar-left").show("slide", { direction: "left" }, 300);
+    	
+    	$("#stateSelection").animate({marginLeft: "200px"}, 300);
+    	
+    	$("#open-sidebar-left").attr("style", "opacity: 0;filter: alpha(opacity=0);");
+    });
+    
+	 $('#stateSelection-select').multiselect({
 		 noneSelectedText: "Select to display",
 		 header: false,
 		   click: function(e){
@@ -297,18 +302,15 @@ loadFunction = function() {
 					    }
 				   }
 				   as.setStatesSelected(selectedItems,-1);
-				   //console.log("values",selectedItems);
 			   }
 		   }
 	 }); 
-	// $(".ui-widget-header").css('display','none');
+	 
 	$("#chartType" ).change(function() {
-		
 		  cm.current_graph = this.value;
-		  //alert("current_graph11"+cm.current_graph);
-		  //cm.showMultiGraph(cm.selected);
 		  cm.showMultiGraph(as.selected);
-		});
+	});
+	
 	$("#yearHeatMap").change(function(){
 		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', this.value);
 	});

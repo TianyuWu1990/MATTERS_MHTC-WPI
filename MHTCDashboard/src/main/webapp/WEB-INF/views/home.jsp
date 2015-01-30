@@ -12,7 +12,6 @@
 <meta charset="utf-8" />
 <link href="css/nv.d3.css" rel="stylesheet">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="css/local_style.css" rel="stylesheet">
 <link href="css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet">
 <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 <link href="css/dataTables.css" rel="stylesheet">
@@ -20,6 +19,7 @@
 <link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext'
 	rel='stylesheet' type='text/css'>
+	
 <link rel="stylesheet" href="css/jquery.multiselect.css" />
 
 <script src="js/d3.v3.min.js"></script>
@@ -50,7 +50,6 @@
 <script src="js/jquery.flot.pie.js"></script>
 <script src="js/jquery.flot.stack.js"></script>
 <script src="js/jquery.flot.resize.min.js"></script>
-<script src="js/jquery.chosen.min.js"></script>
 <script src="js/jquery.uniform.min.js"></script>
 <script src="js/jquery.cleditor.min.js"></script>
 <script src="js/jquery.noty.js"></script>
@@ -70,18 +69,6 @@
 
 <script src="js/jquery.multiselect.js"></script>
 
-<%
-	/*
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-	<script src="js/jquery.multiple.select.js"></script>
-	<link rel="stylesheet" href="css/sumoselect.css"></link> 
-	<script src="js/jquery.multiple.select.js"></script>
-	<script src="js/jquery.flot.js"></script>
-	<script src="http://d3js.org/d3.v3.min.js"></script>
-	 */
-%>
-
 <title>MATTERS: Massachusetts' Technology, Talent and Economy
 	Reporting System</title>
 
@@ -89,13 +76,7 @@
 <body onLoad="loadFunction()">
 	<div class="navbar">
 		<div class="navbar-inner">
-			
 				<div class="container-fluid">
-					<a class="btn btn-navbar" data-toggle="collapse"
-						data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
-						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-					</a> 
 					<img class="nav pull-left" src="css/img/MHTC_Logo.jpg" alt="Mass High Technology Council" >
 					
 					<ul class="nav pull-right" id="main-menu">
@@ -143,239 +124,296 @@
 					<!-- /.navbar-collapse -->
 				</div>
 				<!-- /.container-fluid -->
-			
 
-		<div style="background:#7b0020; margin:0px; padding:30px;">
-		<p align="center" style="font-size:20px;"> <b>MATTERS: Massachusetts Technology, Talent, and Economic Reporting System </b></p></div>
+			<div style="background:#7b0020; margin:0px; padding:20px;">
+				<p align="center" style="font-size:20px;"> 
+					<b>MATTERS: Massachusetts Technology, Talent, and Economic Reporting System </b>
+				</p>
+			</div>
 		</div>
 	</div>
 
 	<div class="container-fluid-full">
 		<div class="row-fluid">
-
-			<!-- start: Main Menu -->
-			<div id="sidebar-left" class="span2">
-				<div class="nav-collapse sidebar-nav">
-
+			<!-- start: left sidebar -->
+			<div id="sidebar-left" class="sidebar">
+				<div class="sidebar-title">
+					<span>
+						Metrics
+					</span>
+					<a id="close-sidebar-left" href="#">
+						<i class="fa fa-times fa-2x"></i>
+					</a> 
+				</div>
+				<div class="sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked main-menu">
-						<li class=''><a class="dropmenu" href="blank0.html"><span
-								class="hidden-tablet"> State Profile</span> </a>
+						<li>
+							<a class="dropmenu" href="#">
+								<span class="hidden-tablet"> State Profile</span> 
+							</a>
 							<ul id="stateMetric" class="listcontent">
-								<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox" checked style="display:none"><a style="text-align:right;" ">Deselect All</a></li>
+								<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
+									<input type="checkbox" checked style="display:none"><a style="text-align:right;">Deselect All</a>
+								</li>
 								<c:forEach items="${jv_stats_profile}" var="stat1">
-									<li><a class="submenu" id="${stat1.metric.id}"> <span class="hidden-tablet">
+									<li>
+										<a class="submenu" id="${stat1.metric.id}"> 
+											<span class="hidden-tablet">
 												<input type="checkbox" id="check${stat1.metric.id}" checked> 
 												${stat1.metric.name}
-										</span></a></li>
+											</span>
+										</a>
+									</li>
 								</c:forEach>
-							</ul></li>
-						<li class=''><a class="dropmenu" href="blank1.html"><span
-								class="hidden-tablet"> National Ranking</span> </a>
+							</ul>
+						</li>
+						<li>
+							<a class="dropmenu" href="#">
+								<span class="hidden-tablet"> National Ranking</span> 
+							</a>
 							<ul id="nationalProfileList">
-							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox"  style="display:none" data-toggle="tooltip" title="Click to select/unselect all"><a style="text-align:right;">Select All</a></li>
+								<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
+									<input type="checkbox"  style="display:none" data-toggle="tooltip" title="Click to select/unselect all">
+									<a style="text-align:right;">Select All</a>
+								</li>
 								<c:forEach items="${jv_stats_national}" var="stat2">
-									<li><a class="submenu"> <span class="hidden-tablet">
-												<input type="checkbox" id="check${stat2.metric.id}" disabled="disabled"
-												> ${stat2.metric.name} 
-										</span></a></li>
+									<li>
+										<a class="submenu"> 
+											<span class="hidden-tablet">
+												<input type="checkbox" id="check${stat2.metric.id}" disabled="disabled"> 
+												${stat2.metric.name} 
+											</span>
+										</a>
+									</li>
 								</c:forEach>
-							</ul></li>
-						<li class=''><a class="dropmenu" href="blank2.html"><span
-								class="hidden-tablet"> Talent Metrics</span> </a>
+							</ul>
+						</li>
+						<li>
+							<a class="dropmenu" href="#">
+								<span class="hidden-tablet"> Talent Metrics</span> 
+							</a>
 							<ul id="talentProfileList" >
-							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
+								<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
+									<input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a>
+								</li>
 								<c:forEach items="${jv_stats_talent}" var="stat3">
-									<li><a class="submenu"> <span class="hidden-tablet">
-												<input type="checkbox" id="check${stat3.metric.id}" disabled="disabled"
-												> ${stat3.metric.name}
-										</span></a></li>
+									<li>
+										<a class="submenu"> 
+											<span class="hidden-tablet">
+												<input type="checkbox" id="check${stat3.metric.id}" disabled="disabled"> 
+												${stat3.metric.name}
+											</span>
+										</a>
+									</li>
 								</c:forEach>
-							</ul></li>
-						<li class=''><a class="dropmenu" href="blank3.html"><span
-								class="hidden-tablet"> Cost Metrics</span> </a>
+							</ul>
+						</li>
+						<li>
+							<a class="dropmenu" href="#">
+								<span class="hidden-tablet"> Cost Metrics</span> 
+							</a>
 							<ul id= "costProfileList">
-							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
+								<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
+									<input type="checkbox"  style="display:none">
+									<a style="text-align:right;">Select All</a>
+								</li>
 								<c:forEach items="${jv_stats_cost}" var="stat4">
-									<li><a class="submenu"><span class="hidden-tablet">
-												<input type="checkbox" id="check${stat4.metric.id}" disabled="disabled"
-												> ${stat4.metric.name}
-										</span></a></li>
+									<li>
+										<a class="submenu">
+											<span class="hidden-tablet">
+												<input type="checkbox" id="check${stat4.metric.id}" disabled="disabled"> 
+												${stat4.metric.name}
+											</span>
+										</a>
+									</li>
 								</c:forEach>
-							</ul></li>
-						<li class=''><a class="dropmenu" href="blank4.html"><span
-								class="hidden-tablet">Economy Metrics </span> </a>
+							</ul>
+						</li>
+						<li>
+							<a class="dropmenu" href="#">
+								<span class="hidden-tablet">Economy Metrics </span> 
+							</a>
 							<ul id="economyProfileList">
-							<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all"><input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a></li>
+								<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
+									<input type="checkbox"  style="display:none">
+									<a style="text-align:right;">Select All</a>
+								</li>
 								<c:forEach items="${jv_stats_economy}" var="stat5">
-									<li><a class="submenu"> <span class="hidden-tablet">
-												<input type="checkbox" id="check${stat5.metric.id}" disabled="disabled"
-												> ${stat5.metric.name}<% /*style="display: none;"*/%>
-										</span></a></li>
+									<li>
+										<a class="submenu"> 
+											<span class="hidden-tablet">
+												<input type="checkbox" id="check${stat5.metric.id}" disabled="disabled"> 
+												${stat5.metric.name}
+											</span>
+										</a>
+									</li>
 								</c:forEach>
-							</ul></li>
-
+							</ul>
+						</li>
 					</ul>
 				</div>
 			</div>
-    
+		  	<!--  end: left sidebar -->
+	    
 			<!-- start: Content -->
-			<div id="content" class="span10">
-
-				<div class="row-fluid" >
-				<table width="100%"><tr><td style="width:60%">
-					<table >
-						<tr style="padding: 0px;"><td nowrap="true">
-							<button class="backButton"  id="" disabled="disabled" style="display:none;" data-toggle="tooltip" title="back" ><<</button>&nbsp;
-							<button  class="nextButton" id="" disabled="disabled" style="display:none;" data-toggle="tooltip" title="next">>></button>&nbsp;</td>
-							<td ><div id="MultipleMetricTitle" ><i><strong>Choose a metric from the left menu</strong></i></div></td>
-						</tr>
-
-					</table></td>
-					<td style="padding-left:10px;"><div  id="stateSelection" >
-							 <p style="font-size:14px;">
-							States&nbsp;<select id="ms" multiple="multiple" size="4" style="min-width: 100px;">
-							<option value="60" name="Peer">Peer states</option>
-							<option value="61" name="Top 10">Top 10 states</option>
-							<option value="62" name = "Bottom">Bottom 10 states</option>
-							<optgroup label="All States">
-							<c:forEach items="${jv_all_states}" var="stat">
-								<c:forEach items="${stat.row}" var="row">
-									<c:choose>
-								        <c:when test="${row.id == (21)}">
-								            <option value="${row.id}" name="${row.abbr}" selected>${row.name}(${row.abbr})</option>
-								        </c:when>
-								        <c:otherwise>
-								        	
-								            <option value="${row.id}" name="${row.abbr}">${row.name}(${row.abbr})</option>
-								        </c:otherwise>
-								    </c:choose>
-								</c:forEach>
-							</c:forEach></optgroup>
-						</select></p>
-					</div></td>
-					</tr></table>
-				</div>
-				<br>
-				<div class="row-fluid" id="graph-area" >
-				<div class="pagination pagination-right" >
-					<ul class="nav nav-tabs">										
+		
+			<div id="content">
+				<div class="pagination pagination-right">
+					<!-- Left side of the pagination header. -->
+					<div class="pagination-header-left">
+					
+						<!-- Display none at first b/c metrics menu is open by default --> 
+						<a href="#" id="open-sidebar-left" style="opacity:0; filter: alpha(opacity=0);"> 
+							<i class="fa fa-bars fa-2x"></i>
+						</a>
+					
+						<div id="stateSelection" style="margin-left: 200px;">
+							<select id="stateSelection-select" data-placeholder="Choose states to compare..." multiple>
+								<option value="60" name="All">Select All States</option>
+								<option value="61" name="Peer">Select Peer States</option>
+								<option value="62" name="None">Deselect All States</option>
+								<optgroup label="States">
+									<c:forEach items="${jv_all_states}" var="stat">
+										<c:forEach items="${stat.row}" var="row">
+											<c:choose>
+									        	<c:when test="${row.id == (21)}">
+									            	<option value="${row.id}" name="${row.abbr}" selected>${row.name}(${row.abbr})</option>
+									        	</c:when>
+									        	<c:otherwise>
+									        		<option value="${row.id}" name="${row.abbr}">${row.name}(${row.abbr})</option>
+									        	</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</c:forEach>
+								</optgroup>
+							</select>
+						</div>
+					</div>
+				
+					<!--  Right side of the pagination header. -->
+					<ul class="nav nav-tabs" id="viz-tabs">					
 						<li class="graph-tab active" id="table-tab" >
-							<a href="#table" data-toggle="tab" title="Table" onclick="as.showMultipleMetricsStatesYears(-1)" valign="middle">
-							<i class="fa fa-table fa-2x"></i></a>
+							<a href="#table" data-toggle="tab" title="Table" onclick="as.showMultipleMetricsStatesYears(-1); as.hideGraphTitle();">
+								<i class="fa fa-table fa-2x"></i>
+							</a>
 						</li>
 						<li class=" graph-tab " id="line-tab">
-							<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.graphDeployer(0,'line')">
-							<i class="fa fa-line-chart fa-2x"></i></a>
+							<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.graphDeployer(0,'line'); as.showGraphTitle();">
+								<i class="fa fa-line-chart fa-2x"></i>
+							</a>
 						</li>
 						<li class="graph-tab" id="bar-tab">
-							<a href="#bar" data-toggle="tab" title="Bar Chart" onclick="as.graphDeployer(0,'bar')"> 
-							<i class="fa fa-bar-chart fa-2x"></i></a>
+							<a href="#bar" data-toggle="tab" title="Bar Chart" onclick="as.graphDeployer(0,'bar'); as.showGraphTitle();"> 
+								<i class="fa fa-bar-chart fa-2x"></i>
+							</a>
 						</li>
 						<li class="graph-tab" id="heatmap-tab">
-							<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1)">
-							<i class="fa fa-picture-o fa-2x"></i></a>
+							<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1); as.showGraphTitle();">
+								<i class="fa fa-picture-o fa-2x"></i>
+							</a>
 						</li>
 					</ul>
-					</div>
-
-					<div class="tab-content">
-
-
-						<div class="tab-pane fade" id="line">
-
-							<div class="box-content">
-								<h4 class="modal-title" id="graphTitle"></h4>
-								<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
-									<svg style="height: 90%;"></svg>
+				</div>
+				<!--  Start Back/Forward Buttons -->
+				<div id="metricCycleButtons" style="display:none;">
+					<table>
+						<tr>
+							<td>
+								<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
+									<i class="fa fa-chevron-left"></i>
+								</button>
+							</td>
+							<td>
+								<div id="MultipleMetricTitle" >
+									Choose a metric from the left menu
 								</div>
+							</td>
+							<td>
+								<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
+									<i class="fa fa-chevron-right"></i>
+								</button>
+							</td>	
+						</tr>
+					</table>
+				</div>
+				<!--  End Back/Forward Buttons -->
+	
+				<div class="tab-content">
+					<!-- Line Graph -->
+					<div class="tab-pane fade" id="line">
+						<div class="box-content">
+							<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
+								<svg style="height: 90%;"></svg>
 							</div>
 						</div>
-
-						<div class="tab-pane active" id="table">
-							<div class="box-content">
-								<table style="width: 98%">
-									<tr style="width: 98%;">
-										<td id="timelinetable"></td>
-									</tr>
-									<tr style="width: 98%">
-										<td class="modal-body" id="mbodyMultipleQuery"></td>
-									</tr>
-								</table>
-							</div>
+					</div>
+					
+					<!-- Table -->
+					<div class="tab-pane active" id="table">
+						<div class="box-content">
+							<table>
+								<tr>
+									<td id="timelinetable"></td>
+								</tr>
+								<tr>
+									<td class="modal-body" id="mbodyMultipleQuery"></td>
+								</tr>
+							</table>
 						</div>
-
-						<div class="tab-pane fade" id="line">
-							<div class="box-content">
-								<h4 class="modal-title" id="graphTitle"></h4>
-								<div id="mbody" style="margin-right:100px; margin-top:20px;"></div>
-							</div>
-						</div>	
-
-						<div class="tab-pane fade" id="bar">
-							<div class="box-content">
-								<h4 class="modal-title" id="graphTitleBar"></h4>
-
-								<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
-
-							</div>
+					</div>
+					
+					<!-- Bar Chart -->
+					<div class="tab-pane fade" id="bar">
+						<div class="box-content">
+							<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
 						</div>
-						
-						<div class="tab-pane fade" id="heatmaptab">
-							<div class="box-content">
-							
-								<table style="width: 100%;">
-									<tr>
-										<td align="left" nowrap="true">
-											<table align="center">
-												<tr>
-
-													<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
-
-													<td nowrap="true"><div id="timeline"></div></td>
-													<td style="padding-left: 40px">
-														<button type="button" id="playbuttonanimation">Play</button>
-														<button type="button" id="stopbuttonanimation"
-															disabled="true">Stop</button>
-													</td>
-												</tr>
-
-											</table>
-										</td>
-									</tr>
-
-								</table>
-								<div class="row">
-    								<div class="span10" >
-    								<div id ="mbodyHeatMap" style=""></div>
-    								</div>
-    								<div class="span2" id="verticalheatmapmeter"></div>
-    							</div>
-    							
-							</div>
+					</div>
+					
+					<!-- Heatmap -->		
+					<div class="tab-pane fade" id="heatmaptab">
+						<div class="box-content">			
+							<table style="width: 100%;">
+								<tr>
+									<td align="left" nowrap="true">
+										<table align="center">
+											<tr>
+												<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
+												<td nowrap="true"><div id="timeline"></div></td>
+												<td style="padding-left: 40px">
+													<button type="button" id="playbuttonanimation">Play</button>
+													<button type="button" id="stopbuttonanimation" disabled="true">Stop</button>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+							<div class="row">
+	    						<div class="span10" >
+	    							<div id ="mbodyHeatMap" style=""></div>
+	    						</div>
+	    						<div class="span2" id="verticalheatmapmeter"></div>
+	    					</div>
+	    							
 						</div>
-
-
 					</div>
 				</div>
 			</div>
+		
 		</div>
-		<!--/.fluid-container-->
-
-		<!-- end: Content -->
+		
 	</div>
-	<!--/#content.span10-->
-	<!--/fluid-row-->
-
-	<footer>
-
-		<p>
-			<span style="text-align: left; float: left">&copy; 2014 <a
-				href="" > Worcester Polytechnic Institute. All rights reserved.
-					Sponsored by Mass High Technology Council</a></span>
-
-		</p>
-
-	</footer>
+	<!-- end: Content -->
+		<footer>
+	
+			<p>
+				<span style="text-align: left; float: left">&copy; 2014 <a
+					href="" > Worcester Polytechnic Institute. All rights reserved.
+						Sponsored by Mass High Technology Council</a></span>
+	
+			</p>
+	
+		</footer>
 
 	<%
 		/*<div class="modal fade in" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -417,8 +455,6 @@
 		 <div class="modal-backdrop fade in"></div>
 		 */
 	%>
-	<script src="js/load.js"></script>
-
-
-</body>
+		<script src="js/load.js"></script>
+	</body>
 </html>
