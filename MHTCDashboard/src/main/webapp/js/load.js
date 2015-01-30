@@ -237,9 +237,6 @@ loadFunction = function() {
     $("#close-sidebar-left").click(function() {
     	$("#sidebar-left").hide("slide", { direction: "left" }, 300);
     	
-    	// When we close the sidebar, slide over the state selection.
-    	$("#stateSelection").animate({marginLeft: "0px"}, 300);
-    	
     	$("#open-sidebar-left").attr("style", "opacity: 1;filter: alpha(opacity=1);");
     	
     	
@@ -247,13 +244,26 @@ loadFunction = function() {
     
     // Initializes the button that opens the left sidebar
     $("#open-sidebar-left").click(function() {
-    	$("#sidebar-left").show("slide", { direction: "left" }, 300);
-    	
-    	$("#stateSelection").animate({marginLeft: "200px"}, 300);
+    	$("#sidebar-left").show("slide", { direction: "left" }, 300);	
     	
     	$("#open-sidebar-left").attr("style", "opacity: 0;filter: alpha(opacity=0);");
     });
     
+    // Enable "drop menus" in sidebar
+    $('.dropmenu').click(function(e){
+
+		e.preventDefault();
+
+		$(this).parent().find('ul').slideToggle();
+		var className = $(this).parent().attr('class');
+		/*if(className == '' || className==undefined)
+			$(this).parent().addClass('active');
+		else
+			$(this).parent().attr('class','');*/
+	
+	});
+    
+    /*
 	 $('#stateSelection-select').multiselect({
 		 noneSelectedText: "Select to display",
 		 header: false,
@@ -304,7 +314,7 @@ loadFunction = function() {
 				   as.setStatesSelected(selectedItems,-1);
 			   }
 		   }
-	 }); 
+	 }); */
 	 
 	$("#chartType" ).change(function() {
 		  cm.current_graph = this.value;

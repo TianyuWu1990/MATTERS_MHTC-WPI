@@ -183,43 +183,65 @@ a.brand span {
 /* Navigation Section
 =================================================================== */
 
-.sidebar {
-	background: #FFF;
-		
-	z-index: 999;
-	height: 100%;
-	margin:0px !important;
-	
-	position:absolute;
-	
-	width: 250px;
-	
-	overflow: hidden;
-	
-	opacity: 0.90;
-	filter: alpha(opacity=0.90);
-	
-	box-shadow: 0px 0px 5px 0px black;		
-}
-
-.sidebar > div.sidebar-title
+#stateSelection
 {
-	background: #7b0020;
-	height: 49px;	
-	
 	width: 100%;
 }
 
-.sidebar > div.sidebar-title > span {
+#stateSelection > li:last-child
+{
+	padding-bottom: 50px;
+}
+
+.sidebar 
+{
+	background: #FFF;	
+	opacity: 0.90;
+	filter: alpha(opacity=0.90);
+	
+	box-shadow: 0px 0px 5px 0px black;
+	
+	position:absolute;
+	margin:0px !important;
+	
+	z-index: 999;
+	
+	height: 100%;
+	width: auto;
+	
+	overflow: hidden;			
+}
+
+.sidebar > .column 
+{
+	width: 250px;
+	height: 100%;	
+		
+	float: left;
+
+	border-left: 2px solid black;
+}
+
+.sidebar > .column > .title
+{
+	background: #7b0020;
+	
+	height: 49px;	
+	width: 100%;
+}
+
+.sidebar > .column > .title > span
+{
 	display: inline-block;
 	
 	font-size:18px;
 	font-weight: bold;
 	color: #fff;
+	
 	padding: 15px 10px 14px;
 }
 
-.sidebar > div.sidebar-title > a
+.sidebar > .column > .title > a
 {
 	display: inline-block;
 	
@@ -232,24 +254,27 @@ a.brand span {
 	padding: 10px 20px;
 }
 
-.sidebar > div.sidebar-title > a:hover
+.sidebar > .column > .title > a:hover
 {
 	color: #000;	
 }
 
-.sidebar-nav > ul{
+.sidebar-nav > ul
+{
 	margin: 0px;
 	padding-bottom: 1px;
 	font-size: 14px;
 }
 
-.sidebar-nav > ul > li > ul {
+.sidebar-nav > ul > li > ul 
+{
 	list-style: none;
 	margin: 0px;
 	display: none;
 }
 
-.nav-tabs.nav-stacked > li > a {
+.nav-tabs.nav-stacked > li > a 
+{
 	padding: 15px 10px 14px 10px;
 	color: #000;
 	border-top: none;
@@ -262,7 +287,8 @@ a.brand span {
 	border-radius: 0px;		
 }
 
-.nav-tabs.nav-stacked > li > ul > li > a {
+.nav-tabs.nav-stacked > li > ul > li > a 
+{
 	border-top: none;
   	border-bottom: 1px solid #D8D8D8;
 	border-left: none;
@@ -278,7 +304,8 @@ a.brand span {
   	background: #fff;
 }
 
-.nav-tabs.nav-stacked > li > ul  {
+.nav-tabs.nav-stacked > li > ul  
+{
 	
 	height: 175px;
 	overflow-y : scroll;
@@ -295,35 +322,40 @@ a.brand span {
 	display:block;
 }
 
-.nav-tabs.nav-stacked > li:last-child > ul  {
+.nav-tabs.nav-stacked > li:last-child > ul  
+{
 	height: 100%;
 	overflow-y : scroll;
 }
 
-.nav-tabs.nav-stacked > li:last-child > a {
+.nav-tabs.nav-stacked > li:last-child > a 
+{
   	border-bottom: 1px solid transparent;		
 }
 
-.nav-tabs.nav-stacked > li.active > ul {
+.nav-tabs.nav-stacked > li.active > ul 
+{
   	background-color: #fff;
 }
 
 .nav-tabs.nav-stacked  > li.active > a:hover,
 .nav-tabs.nav-stacked  > li > ul > li > a:hover 
- {
+{
  	color: #666 ;
 	text-shadow: -0.5px -0.5px 0 rgba(0,0,0,0.3);
 	
 }
 
-.nav-tabs.nav-stacked > li:first-child > a {
+.nav-tabs.nav-stacked > li:first-child > a 
+{
 	margin: 0px 0px 0px 0px;
   	-webkit-border-radius: 0px;
        -moz-border-radius: 0px;
           	border-radius: 0px;
 }
 
-.nav-tabs.nav-stacked > li:last-child > a {
+.nav-tabs.nav-stacked > li:last-child > a 
+{
   	-webkit-border-radius: 0px;
        -moz-border-radius: 0px;
           	border-radius: 0px;
@@ -331,14 +363,16 @@ a.brand span {
 
 .navbar .nav li.dropdown.open > .dropdown-toggle,
 .navbar .nav li.dropdown.active > .dropdown-toggle,
-.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+.navbar .nav li.dropdown.open.active > .dropdown-toggle 
+{
   	  	outline: 0;
         background :#444;
         color : #fff;
         text-shadow:none;
 }
 
-.dropdown-menu {
+.dropdown-menu 
+{
   	background-color:#202020;
 	border-bottom-left-radius:5px;
 	border-bottom-right-radius:5px;
@@ -350,7 +384,8 @@ a.brand span {
 	right:0;
 	display:none;
 }
-.dropdown-menu  form{
+.dropdown-menu  form
+{
 	cursor:pointer;
 	padding-left:10px;
 	padding-right :10px;
@@ -366,6 +401,12 @@ a.brand span {
 
 /* Content and Main Elements
 =================================================================== */
+
+.container-fluid-full
+{
+	height: 100%;
+	width: 100%;	
+}
 
 /* Content pane for visualization */
 #content {
@@ -734,18 +775,6 @@ footer > p > span > a:hover
 	max-height: 30px;
 }
 
-#stateSelection
-{
-	margin-top: 15px;
-}
-
-#stateSelection-select
-{
-	text-align: left;
-	
-	width: 400px;
-}
-
 .pagination-header-left > a 
 {
 	padding: 10px 20px;
@@ -778,27 +807,14 @@ footer > p > span > a:hover
 	margin:0px;
 }
 
-#selectUnselectAll
+.selectUnselectAll
 {
- padding-left : 40px;
- padding-top:7px;
- padding-bottom:none;
- padding-right : 10px;
- border-bottom: none;
- font-size:14px;
+	cursor: pointer;
 }
 
-#selectUnselectAll > a
+.selectUnselectAll > input > a:hover
 {
-	padding:0px;
-	font-size:15px;
- 	font-weight: 500;
- 	text-decoration:underline;
-	border:none;
-}
-
-#selectUnselectAll > a:hover, #selectUnselectAll > a:focus{
-	font-weight : 600;
+	text-decoration: underline;
 }
 
 /* Buttons for the Previous and Next metric selection */
