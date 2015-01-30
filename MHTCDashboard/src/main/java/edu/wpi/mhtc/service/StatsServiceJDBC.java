@@ -104,14 +104,14 @@ public class StatsServiceJDBC implements StatsService
 
 		State dbState = stateMapper.getStateFromString(state);
 		List<Metric> dbMetrics = metricsService.getMetricsInCategory(binId);
-		try {
-			for(String s : DBLoader.getSubCategories(binId.toString()).values()){
-				dbMetrics.addAll(metricsService.getMetricsInCategory(Integer.parseInt(s)));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			for(String s : DBLoader.getSubCategories(binId.toString()).values()){
+//				dbMetrics.addAll(metricsService.getMetricsInCategory(Integer.parseInt(s)));
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return getDataForState(dbState, dbMetrics);
 	}
 
