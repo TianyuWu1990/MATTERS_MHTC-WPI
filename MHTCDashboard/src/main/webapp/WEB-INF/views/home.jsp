@@ -235,20 +235,29 @@
 							<ul class="nav nav-tabs nav-stacked main-menu">
 								<li>
 									<ul id="stateSelection" class="listcontent" >
-										<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox" checked style="display:none"><a style="text-align:right;">Deselect All</a>
+										<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
+											<a style="text-align:right;">
+												Deselect All
+											</a>
+										</li>
+										<li style="border-bottom: 10px solid gray;">
+											<a class="selectPeerStates" id="${row.id}">
+												<span class="hidden-tablet">
+													<input type="checkbox" class="checkPeerStates"> Select Peer States
+												</span>
+											</a>
 										</li>
 										<c:forEach items="${jv_all_states}" var="stat">
 											<c:forEach items="${stat.row}" var="row">
 												<li>
-													<a class="submenu" id="${row.id}">
+													<a class="stateSelectionOption" id="${row.id}">
 														<span class="hidden-tablet">
 															<c:choose>
 											        			<c:when test="${row.id == (21)}">
-											        				<input type="checkbox" id="check${row.id}" checked>  
+											        				<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}" checked>  
 											        			</c:when>
 											        			<c:otherwise>
-											        				<input type="checkbox" id="check${row.id}"> 
+											        				<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}"> 
 											        			</c:otherwise>
 											        		</c:choose>			
 															${row.name} (${row.abbr})

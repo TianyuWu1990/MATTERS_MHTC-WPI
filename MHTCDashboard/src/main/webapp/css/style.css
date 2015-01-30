@@ -394,11 +394,6 @@ a.brand span {
 	text-align:left;
 }
 
-.hidden-tablet
-{
-	cursor: pointer;
-}
-
 /* Content and Main Elements
 =================================================================== */
 
@@ -815,6 +810,31 @@ footer > p > span > a:hover
 .selectUnselectAll > input > a:hover
 {
 	text-decoration: underline;
+}
+
+.selectUnselectAllStates
+{
+	cursor: pointer;
+}
+
+.selectUnselectAllStates > input > a:hover
+{
+	text-decoration: underline;
+}
+
+.stateSelectionOption
+{
+	cursor: pointer;
+}
+
+.selectPeerStates
+{
+	cursor: pointer;
+}
+
+.submenu
+{
+	cursor: pointer;
 }
 
 /* Buttons for the Previous and Next metric selection */
