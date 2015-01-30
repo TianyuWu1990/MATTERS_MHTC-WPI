@@ -7,7 +7,7 @@ table.dataTable {
   clear: both;
   border-collapse: separate;
   border-spacing: 0;
-  border:2px solid #ffd9d9;
+  border:2px solid #e0e0e0;
   /*
    * Header and footer styles
    */
@@ -16,7 +16,7 @@ table.dataTable {
    */
 }
 table.dataTable tbody tr:nth-child(even) {
-   background-color: #ffd9d9;
+   background-color: #e0e0e0;
 }
 table.dataTable thead th,
 table.dataTable tfoot th {
@@ -44,30 +44,30 @@ table.dataTable thead .sorting {
   *cursor: hand;
 }
 table.dataTable thead .sorting {
-  background: url("../images/sort_both.png") no-repeat center right;
-  background-color:#ffd9d9;
+  background: url("../img/sort_both.png") no-repeat center right;
+  background-color:#e0e0e0;
 }
 table.dataTable thead .sorting_asc {
-  background: url("../images/sort_asc.png") no-repeat center right;
-  background-color:#ffd9d9;
+  background: url("../img/sort_asc.png") no-repeat center right;
+  background-color:#e0e0e0;
 }
 table.dataTable thead .sorting_desc {
-  background: url("../images/sort_desc.png") no-repeat center right;
-  background-color:#ffd9d9;
+  background: url("../img/sort_desc.png") no-repeat center right;
+  background-color:#e0e0e0;
 }
 table.dataTable thead .sorting_asc_disabled {
-  background: url("../images/sort_asc_disabled.png") no-repeat center right;
-  background-color:#ffd9d9;
+  background: url("../img/sort_asc_disabled.png") no-repeat center right;
+  background-color:#e0e0e0;
 }
 table.dataTable thead .sorting_desc_disabled {
-  background: url("../images/sort_desc_disabled.png") no-repeat center right;
-  background-color:#ffd9d9;
+  background: url("../img/sort_desc_disabled.png") no-repeat center right;
+  background-color:#e0e0e0;
 }
 table.dataTable tbody tr {
   background-color: white;
 }
 table.dataTable tbody tr.selected {
-  background-color: #b0bed9;
+  background-color: #a7a9aa;
 }
 table.dataTable tbody th,
 table.dataTable tbody td {

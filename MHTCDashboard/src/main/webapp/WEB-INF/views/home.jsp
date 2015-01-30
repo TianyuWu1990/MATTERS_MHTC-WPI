@@ -146,7 +146,7 @@
 				<!-- /.container-fluid -->
 			
 
-		<div style="background:#7b0020; margin:0px; padding:30px;">
+		<div style="background:#7b0020; margin:0px; padding:20px;">
 		<p align="center" style="font-size:20px;"> <b>MATTERS: Massachusetts Technology, Talent, and Economic Reporting System </b></p></div>
 		</div>
 	</div>
