@@ -227,7 +227,7 @@ loadFunction = function() {
     $("#open-sidebar-left").click(function() {
     	$("#sidebar-left").show("slide", { direction: "left" }, 300);	
     	
-    	$("#open-sidebar-left").attr("style", "opacity: 0;filter: alpha(opacity=0);");
+    	$("#open-sidebar-left").attr("style", "opacity: 0;filter: alpha(opacity=0);");    	
     });
     
     // Enable "drop menus" in sidebar
@@ -239,7 +239,9 @@ loadFunction = function() {
 		var className = $(this).parent().attr('class');
 	});
     
-    // Initialize State selection logic
+    /******************************************
+     * Start state selection logic
+     ******************************************/
     
     // When a state selection option is clicked, designate it as selected
     $(".stateSelectionOption").click(function(e){
@@ -251,13 +253,15 @@ loadFunction = function() {
     	    	
     	$(".checkPeerStates").prop("checked", false) // Deselect Peer States checkbox
     	
-    	updateStateSelection();
+    	updateStateSelection(); // Reflect changes in data
     });
     
+    // When unselect/select all button is clicked, do the appropriate action
     $(".selectUnselectAllStates").click(function(e){
     	
     	var checked = $(this).attr("id") == "select";
 
+    	// Go through and deselect/select all of the states
     	var stateOptions = $(".checkState");
     	
     	for(i = 0; i < stateOptions.length; i++)
@@ -267,18 +271,19 @@ loadFunction = function() {
     	
     	$(".checkPeerStates").prop("checked", false); // Deselect Peer States checkbox
     	
-    	updateStateSelection();
+    	updateStateSelection(); // Reflect changes in data
     });
     
+    // When select peers is clicked, select only the peer states.
     $(".selectPeerStates").click(function(e){
     	
     	if ($(".checkPeerStates").is(":checked"))
     		return; // Do nothing if already checked
     	
+    	// Check peer states checkbox
     	$(".checkPeerStates").prop("checked", true);
-    	
-    	var peerStates = States.getPeers();
-    	
+    
+    	// Deselect all states to start
     	var allStates = $(".checkState");
     	
     	for(i = 0; i < allStates.length; i++)
@@ -286,15 +291,44 @@ loadFunction = function() {
     		$(allStates[i]).prop("checked", false);
     	}
     	
+    	// Then go through and select only the peer states
+    	var peerStates = States.getPeers();
+    	
     	for(i = 0; i < peerStates.length; i++)
     	{
     		$("#checkState" + peerStates[i].id).prop("checked", true);
     	}
     	
-    	
+    	// Reflect updated state selection within data.
     	updateStateSelection();
     });
 	 
+    // When the user filters the states...
+    $(".stateFilter > input").on("input", function(e){
+    	// First, show all options
+    	var allOptions = $(".stateSelectionOptionWrapper");
+    	for(i = 0; i < allOptions.length; i++)
+    	{
+    		$(allOptions[i]).removeClass("hidden");
+    	}
+    	
+    	var inputVal = $(this).val().trim();
+    	
+    	var nonMatchingStates = States.filterStates(inputVal);
+    	
+    	for(i = 0; i < nonMatchingStates.length; i++)
+    	{
+    		var matchingText = "#" + nonMatchingStates[i].id + ".stateSelectionOptionWrapper";
+
+    		$(matchingText).addClass("hidden");
+    	}
+    	
+    });
+    
+    /******************************************
+     * End state selection logic
+     ******************************************/
+    
 	$("#chartType" ).change(function() {
 		  cm.current_graph = this.value;
 		  cm.showMultiGraph(as.selected);
@@ -578,6 +612,7 @@ function updateStateSelection()
 {
 	var stateOptions = $(".checkState");
 	
+	// Get the list of all states that are checked
 	var selectedItems = [];
 	for (i = 0; i < stateOptions.length; i++)
 	{
@@ -587,9 +622,11 @@ function updateStateSelection()
 		}
 	}
 	
+	// Update the data visualization
 	as.setStatesSelected(selectedItems, -1); // -1 means set to list of selected states.
 	
 	
+	// Update the text of the select/unselect button based on how many states are selected
 	if (selectedItems.length > 0)
 	{
 		$(".selectUnselectAllStates > a").html("Deselect All");

@@ -240,16 +240,19 @@
 												Deselect All
 											</a>
 										</li>
-										<li style="border-bottom: 10px solid gray;">
+										<li>
 											<a class="selectPeerStates" id="${row.id}">
 												<span class="hidden-tablet">
 													<input type="checkbox" class="checkPeerStates"> Select Peer States
 												</span>
 											</a>
 										</li>
+										<li class="stateFilter">
+											<input type="text" placeholder="Filter states...">
+										</li>
 										<c:forEach items="${jv_all_states}" var="stat">
 											<c:forEach items="${stat.row}" var="row">
-												<li>
+												<li class="stateSelectionOptionWrapper" id="${row.id}">
 													<a class="stateSelectionOption" id="${row.id}">
 														<span class="hidden-tablet">
 															<c:choose>
