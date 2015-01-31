@@ -827,9 +827,21 @@ footer > p > span > a:hover
 	cursor: pointer;
 }
 
+.stateSelectionOption.selected
+{
+	color: black !important;
+	font-weight: bold;
+}
+
 .selectPeerStates
 {
 	cursor: pointer;
+}
+
+.selectPeerStates.selected
+{
+	color: black !important;
+	font-weight: bold;
 }
 
 .stateFilter

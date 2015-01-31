@@ -250,8 +250,14 @@ loadFunction = function() {
     	var clickedInput = $(this).find(".checkState");
     	var isCheckedAlready = $(clickedInput).is(':checked');
     	$(clickedInput).prop('checked', !isCheckedAlready);
+    	
+    	if (!isCheckedAlready)
+    		$(this).addClass("selected");
+    	else
+    		$(this).removeClass("selected");
     	    	
     	$(".checkPeerStates").prop("checked", false) // Deselect Peer States checkbox
+    	$(".selectPeerStates").removeClass("selected");
     	
     	updateStateSelection(); // Reflect changes in data
     });
@@ -266,10 +272,22 @@ loadFunction = function() {
     	
     	for(i = 0; i < stateOptions.length; i++)
     	{
-    		$(stateOptions[i]).prop("checked", checked);
+    		var curNode = stateOptions[i]
+    		
+    		if (checked)
+    		{
+    			$(curNode).parent().parent().addClass("selected");
+    			$(curNode).prop("checked", true);
+    		}
+    		else
+    		{
+    			$(curNode).parent().parent().removeClass("selected");
+    			$(curNode).prop("checked", false);
+    		}
     	}
     	
     	$(".checkPeerStates").prop("checked", false); // Deselect Peer States checkbox
+    	$(".selectPeerStates").removeClass("selected");
     	
     	updateStateSelection(); // Reflect changes in data
     });
@@ -282,13 +300,15 @@ loadFunction = function() {
     	
     	// Check peer states checkbox
     	$(".checkPeerStates").prop("checked", true);
-    
+    	$(".selectPeerStates").addClass("selected");
+    	
     	// Deselect all states to start
     	var allStates = $(".checkState");
     	
     	for(i = 0; i < allStates.length; i++)
     	{
     		$(allStates[i]).prop("checked", false);
+    		$(allStates[i]).parent().parent().removeClass("selected");
     	}
     	
     	// Then go through and select only the peer states
@@ -296,7 +316,10 @@ loadFunction = function() {
     	
     	for(i = 0; i < peerStates.length; i++)
     	{
-    		$("#checkState" + peerStates[i].id).prop("checked", true);
+    		var curNode = "#checkState" + peerStates[i].id;
+    		
+    		$(curNode).prop("checked", true);
+    		$(curNode).parent().parent().addClass("selected");
     	}
     	
     	// Reflect updated state selection within data.

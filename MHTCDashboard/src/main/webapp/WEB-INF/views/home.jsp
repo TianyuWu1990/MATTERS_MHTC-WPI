@@ -253,19 +253,23 @@
 										<c:forEach items="${jv_all_states}" var="stat">
 											<c:forEach items="${stat.row}" var="row">
 												<li class="stateSelectionOptionWrapper" id="${row.id}">
-													<a class="stateSelectionOption" id="${row.id}">
-														<span class="hidden-tablet">
+													
 															<c:choose>
 											        			<c:when test="${row.id == (21)}">
-											        				<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}" checked>  
+											        			<a class="stateSelectionOption selected" id="${row.id}">
+																	<span class="hidden-tablet">
+											        					<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}" checked> 
 											        			</c:when>
 											        			<c:otherwise>
-											        				<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}"> 
+											        			<a class="stateSelectionOption" id="${row.id}">
+																	<span class="hidden-tablet">
+											        					<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}"> 
+											        				
 											        			</c:otherwise>
 											        		</c:choose>			
 															${row.name} (${row.abbr})
 														</span>
-													</a>
+											        </a>
 												</li>
 											</c:forEach>
 										</c:forEach>	
