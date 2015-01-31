@@ -243,7 +243,7 @@
 										<li>
 											<a class="selectPeerStates" id="${row.id}">
 												<span class="hidden-tablet">
-													<input type="checkbox" class="checkPeerStates"> Select Peer States
+													<input type="radio" class="checkPeerStates"> Select Peer States
 												</span>
 											</a>
 										</li>

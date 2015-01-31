@@ -762,14 +762,6 @@ footer > p > span > a:hover
 	display: inline-block;
 }
 
-.pagination-header-left > div
-{
-	padding: 0px 20px;
-	display: inline-block;	
-	
-	max-height: 30px;
-}
-
 .pagination-header-left > a 
 {
 	padding: 10px 20px;
