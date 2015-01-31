@@ -311,13 +311,14 @@ var CM = (function($) {
 				this.setAttribute( 'title', States.getStateFromString(sTitle).name );	
 
 			} );
-			if( !$.fn.DataTable.isDataTable( '#myTable' ) )
-				var oTable = $('#myTable').dataTable({"iDisplayLength": 10});
+			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
+				var oTable = $('#myTable').dataTable({"iDisplayLength": 20}, {});
+			}
 			else
 			{
 				console.log("table already present");
 				$('#myTable').dataTable().fnDestroy();
-				var oTable = $('#myTable').dataTable({"iDisplayLength": 10});
+				var oTable = $('#myTable').dataTable({"iDisplayLength": 20});
 			}
 		 /* Apply the tooltips */
 			oTable.$('tr').tooltip( {
