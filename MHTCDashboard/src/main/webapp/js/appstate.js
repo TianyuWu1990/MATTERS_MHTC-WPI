@@ -1669,6 +1669,27 @@ AppState.prototype.graphDeployer=function(ind, graph_type){
 	cm.current_graph=graph_type;
 	this.showGraphReloaded(ind);
 };
+
+AppState.prototype.exportExcelData = function () {
+	var data = {
+		year : $("ul.timelineListStyle button#tableTimeLineButton.active").text(),
+		rows : []
+	};
+	
+	// Column heads
+	var header = [];
+	dt.find("thead th").each(function(index) {
+		header.push($(this).text());
+	}); 
+	data.rows.push(header);
+	// Table data
+	$.each(dt.fnGetData(), function(key, value) {
+		data.rows.push(value);
+	});
+	var url = "excel?data=" + encodeURIComponent(JSON.stringify(data));
+	window.location = url;
+};
+
 AppState.prototype.setStatesSelected=function(states,opt){
 	
 	if(states==null || states==undefined){

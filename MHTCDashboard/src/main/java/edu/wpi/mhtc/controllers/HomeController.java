@@ -4,19 +4,32 @@
  */
 package edu.wpi.mhtc.controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -268,6 +281,42 @@ public class HomeController {
     public String loginPage() {
         return "loginPage";
     }
-    /********** End authentication pages **********/
+    /********** Excel exporter 
+     * Exports excel file for the chart data
+     * @throws IOException **********/
+    @RequestMapping(value = "/excel", method = RequestMethod.GET)
+    public @ResponseBody String excel_exporter(Locale locale, Model model, @RequestParam("data") String data, HttpServletResponse response) throws IOException {	
+		Workbook wb;
+		wb = new XSSFWorkbook();
+		Sheet sheet = wb.createSheet();
+
+    	JSONObject json = new JSONObject(data);
+    	String year = json.getString("year");
+		JSONArray rows =  json.getJSONArray("rows");
+		
+		// For the first row, put the year number into
+		Row yearRow = sheet.createRow(0);
+		Cell sheetCell = yearRow.createCell(0);
+		sheetCell.setCellValue(year);
+		
+		// Read and put data into the Excel file
+		for (int i = 0; i < rows.length(); i++) {
+			JSONArray row = rows.getJSONArray(i);
+			Row sheetRow = sheet.createRow(i+1);
+			for (int j = 0; j < row.length(); j++) {
+				Cell cell = sheetRow.createCell(j);
+				cell.setCellValue(row.getString(j));
+			}
+		}
+		
+		response.setHeader( "Content-Disposition", "attachment;filename=matters_data.xlxs");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		ServletOutputStream out = response.getOutputStream();
+        wb.write(out);
+        out.flush();
+        out.close();
+		
+    	return "";
+    }
     
 }

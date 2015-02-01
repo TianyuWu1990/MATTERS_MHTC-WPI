@@ -276,6 +276,10 @@
 							<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1)">
 							<i class="fa fa-picture-o fa-2x"></i></a>
 						</li>
+						<li class="graph-tab" id="table-tab" >
+							<a href="#table" data-toggle="tab" title="Excel Data" onclick="as.exportExcelData()">
+							<i class="fa fa-file-excel-o fa-2x"></i></a>
+						</li>
 					</ul>
 					</div>
 
