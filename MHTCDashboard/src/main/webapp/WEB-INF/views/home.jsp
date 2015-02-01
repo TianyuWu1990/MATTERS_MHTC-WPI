@@ -101,9 +101,9 @@
 					</div>
 					<!-- /.container-fluid -->
 	
-				<div style="background:#7b0020; margin:0px; padding:20px;">
-					<p align="center" style="font-size:20px;"> 
-						<b>MATTERS: Massachusetts Technology, Talent, and Economic Reporting System </b>
+				<div style="background:#7b0020; margin:0px; padding-top: 20px; padding-bottom: 10px;">
+					<p align="center" style="font-size:20px;font-weight:200;"> 
+						MATTERS: Massachusetts Technology, Talent, and Economic Reporting System
 					</p>
 				</div>
 			</div>
@@ -114,7 +114,7 @@
 				<div id="sidebar-left" class="sidebar">
 					<div class="column">
 						<div class="title">
-							<span>1. Select Metrics</span>
+							<span>Select Metrics</span>
 						</div>
 						<div class="sidebar-nav">
 							<ul class="nav nav-tabs nav-stacked main-menu">
@@ -226,7 +226,7 @@
 					</div>
 					<div class="column">
 						<div class="title">
-							<span>2. Select States</span>
+							<span>Select States</span>
 							<a id="close-sidebar-left" href="#">
 								<i class="fa fa-times fa-2x"></i>
 							</a> 
@@ -407,14 +407,10 @@
 		<!-- end: Content -->
 		
 		<footer>
-	
-			<p>
-				<span style="text-align: left; float: left">&copy; 2014 <a
-					href="" > Worcester Polytechnic Institute. All rights reserved.
-						Sponsored by Mass High Technology Council</a></span>
-	
-			</p>
-	
+				<div>
+				&copy; 2014 Worcester Polytechnic Institute. All rights reserved.
+						Sponsored by Mass High Technology Council
+				</div>	
 		</footer>
 
 	<%

@@ -11,6 +11,14 @@
 
 /* Basic
 =================================================================== */
+body 
+{
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
+	
+	background-color: #f9f9f9;
+}
+
 
 h1 {
 	font-size: 32px;
@@ -195,7 +203,7 @@ a.brand span {
 
 .sidebar 
 {
-	background: #FFF;	
+	background: #f9f9f9;	
 	opacity: 0.90;
 	filter: alpha(opacity=0.90);
 	
@@ -219,7 +227,7 @@ a.brand span {
 		
 	float: left;
 
-	border-left: 2px solid black;
+	border-left: 1px solid black;
 }
 
 .sidebar > .column > .title
@@ -235,7 +243,6 @@ a.brand span {
 	display: inline-block;
 	
 	font-size:18px;
-	font-weight: bold;
 	color: #fff;
 	
 	padding: 15px 10px 14px;
@@ -301,7 +308,7 @@ a.brand span {
 	padding: 8px 15px;
 	color: #666 ;
   	font-size:13px;
-  	background: #fff;
+  	background: #f9f9f9;
 }
 
 .nav-tabs.nav-stacked > li > ul  
@@ -309,7 +316,7 @@ a.brand span {
 	
 	height: 175px;
 	overflow-y : scroll;
-	background : #fff;
+	background : #f9f9f9;
 }
 
 .nav-tabs > li > a:hover
@@ -341,9 +348,7 @@ a.brand span {
 .nav-tabs.nav-stacked  > li.active > a:hover,
 .nav-tabs.nav-stacked  > li > ul > li > a:hover 
 {
- 	color: #666 ;
-	text-shadow: -0.5px -0.5px 0 rgba(0,0,0,0.3);
-	
+ 	color: black ;	
 }
 
 .nav-tabs.nav-stacked > li:first-child > a 
@@ -405,7 +410,7 @@ a.brand span {
 
 /* Content pane for visualization */
 #content {
-	background: #ffffff;
+	background: #f9f9f9;
 	min-height: 100%;
 	
 	width: 100% !important;
@@ -415,7 +420,7 @@ a.brand span {
 
 .box {
 	border: 2px solid #eee;
-	background: #fff !important;
+	background: #f9f9f9 !important;
 	margin-bottom: 28px;	
 }
 
@@ -486,7 +491,7 @@ a.brand span {
 
 	padding: 0px;
 
-	background: #fff !important;
+	background: #f9f9f9 !important;
 	align:center;
 }
 
@@ -705,16 +710,21 @@ footer {
 	      	border-radius: 0px;
 }
 
-footer > p > span > a
+footer > div
 {
-	color:#fff;
-	text-shadow: -1px -1px 0 rgba(0,0,0,0.9);
+	width: 100%;
+	text-align: center;
 }
-footer > p > span > a:hover
+
+footer > div > a
 {
 	color:#fff;
-	text-shadow: -1px -1px 0 rgba(0,0,0,0.9);
-	text-decoration:none;
+}
+
+footer > div > a:hover
+{
+	color:#fff;
+	text-decoration: underline;
 }
 
 /*******************added by manik*******************************/
