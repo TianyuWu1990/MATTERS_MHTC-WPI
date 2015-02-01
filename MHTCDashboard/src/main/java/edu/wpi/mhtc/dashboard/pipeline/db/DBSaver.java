@@ -28,6 +28,18 @@ public class DBSaver {
 		pstatement.execute();
 		pstatement.close();
 	}
+	
+	public static void mergeLine(Connection conn, Line line) throws SQLException {
+		String sql = "SELECT mhtc_sch.merge_statistics(?, ?, ?, ?)";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+		
+		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
+		pstatement.setInt(2, line.getMetricID()); // set parameter 2 (ID)
+		pstatement.setInt(3, line.getYear());
+		pstatement.setFloat(4, line.getMetricValue());
+		pstatement.execute();
+		pstatement.close();
+	}
 
 	public static boolean insertNewCategory(String name, String parentID, String source, String url) throws SQLException {
 
@@ -124,7 +136,7 @@ public class DBSaver {
 	 */
 	public static boolean insertManualUpload(String parentCategory, String subCategory, String metric, String filename, String path) throws SQLException
 	{
-		String sql = "INSERT INTO mhtc_sch.manual_upload(\"parentcategory\", \"subcategory\", \"metric\", \"filename\", \"path\") VALUE (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO mhtc_sch.manual_upload(\"parentcategory\", \"subcategory\", \"metric\", \"filename\", \"path\") VALUES (?, ?, ?, ?, ?)";
 		Connection conn = DBConnector.getInstance().getConn();
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		

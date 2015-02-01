@@ -77,6 +77,14 @@
 							<input type="file" name="file">
 						</div>
 						
+						<div class="form-group">
+							<div class="alert alert-warning">
+								<label class="checkbox-inline">
+									<input name="overwrite" type="checkbox" value="true"><i class="fa fa-exclamation-triangle fa-fw"></i><b> Overwrite data in database</b>
+								</label>
+							</div>
+						</div>
+						
 						<button type="submit" class="btn btn-default" id="uploadData"><i class="fa fa-upload fa-fw"></i>Upload File</button>
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</form>

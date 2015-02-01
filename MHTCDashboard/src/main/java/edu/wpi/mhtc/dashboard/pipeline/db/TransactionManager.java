@@ -24,7 +24,7 @@ public class TransactionManager {
 	 * @param parser
 	 * @throws SQLException 
 	 */
-	public static void insertData(List<Line> data) throws SQLException {
+	public static void insertData(List<Line> data, boolean overwrite) throws SQLException {
 		// Get the connection singleton
 		Connection conn = DBConnector.getInstance().getConn();
 		conn.setAutoCommit(false);
@@ -34,7 +34,11 @@ public class TransactionManager {
 		while (iter.hasNext()) {
 			Line line = iter.next();
 			try {
-				DBSaver.saveLine(conn, line);
+				if (overwrite) {
+					DBSaver.mergeLine(conn, line);
+				} else {
+					DBSaver.saveLine(conn, line);
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				conn.rollback();
