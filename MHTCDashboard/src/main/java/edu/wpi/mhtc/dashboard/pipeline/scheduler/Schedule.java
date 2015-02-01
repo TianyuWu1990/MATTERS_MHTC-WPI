@@ -96,7 +96,7 @@ public class Schedule {
 			String sql = "SELECT * FROM mhtc_sch.logs WHERE message = 'Pipeline has finished' AND job = ?";
 			
 			PreparedStatement pstatement = conn.prepareStatement(sql);
-			pstatement.setString(1, this.sched_job);
+			pstatement.setString(1, this.getTalendJob());
 			ResultSet rs = pstatement.executeQuery();
 			
 			// Loop through the record
