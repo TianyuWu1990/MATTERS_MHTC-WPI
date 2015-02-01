@@ -7,6 +7,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
 <html>
 <head>
 <meta charset="utf-8" />
@@ -88,6 +90,53 @@
 
 </head>
 <body onLoad="loadFunction()">
+	<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
+		<form action="feedback_post" method="POST" style="margin-bottom: 0px;">
+			<div class="modal-dialog modal-md" style="width:100%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Site Feedback</h4>
+					</div>
+					<div class="modal-body" style="padding: 15 15 15 15;">
+						<div class="input-group">
+							<strong>Your accountname</strong><br /> 
+							${username}
+						</div>
+						
+						<div class="input-group">
+							<strong>Subject</strong><br /> 
+							<input style="height:30px" type="text" name="subject" class="form-control">
+						</div>
+
+						<div class="input-group">
+							<strong>Comments</strong><br />
+							<div class='input-group date' id='run-date-picker'>
+								<textarea class="form-control" name="comments" style="width: 530px; height: 180px;"/></textarea>
+							</div>
+						</div>
+						
+						<div style="margin-bottom: 25px;" align="center">
+                           <%
+				                ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb",
+				                                    "6LfXmgATAAAAAP_qkRZBcBBqnb8yRuUKMm9LJYSW", false);
+				                out.print(c.createRecaptchaHtml(null, null));
+				            %> 
+	                   </div>
+	
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							<i class="fa fa-times"></i> Close
+						</button>
+						<button type="submit" class="btn btn-primary">
+							<i class="fa fa-envelope"></i> Send
+						</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 	<div class="navbar">
 		<div class="navbar-inner">
 			
@@ -138,6 +187,7 @@
 						</sec:authorize>
 						
                         <sec:authorize access="isAuthenticated()">
+                        	<li id="feedback" onclick="$('#feedbackModal').modal('show');"><a href="#feedback">Feedback</a></li>
 							<li id="login"><a href="logout/">Logout</a></li>
 						</sec:authorize>
 					</ul>

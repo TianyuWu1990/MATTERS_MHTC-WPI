@@ -33,6 +33,8 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,6 +54,7 @@ import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.service.StateService;
 import edu.wpi.mhtc.service.StatsService;
+import edu.wpi.mhtc.service.UserService;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
@@ -85,7 +88,9 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model)
 	{
-		
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String username = auth.getName();
+	      
 		Logger logger = LoggerFactory.getLogger(this.getClass());
 		logger.info("Home called");
 		
@@ -106,7 +111,7 @@ public class HomeController {
 		model.addAttribute("jv_stats_economy", massEconomy);
 		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
 		model.addAttribute("jv_all_states", new PeerStates(allstates).getAsGrid(13));
-		
+		model.addAttribute("username", username);
 		
         model.addAttribute("jv_current_state", "MA");
 		
@@ -270,7 +275,40 @@ public class HomeController {
 		}
 		
         return "register_page_submit";
-    }     
+    } 
+    /********** Feedback Page 
+     * @throws SQLException **********/
+    @RequestMapping(value = "/feedback_post", method = RequestMethod.POST)
+    public String feedback_post(Locale locale, Model model, @RequestParam("subject") String subject, @RequestParam("comments") String comments, 
+															    		@RequestParam("recaptcha_challenge_field") String challangeField,
+																		@RequestParam("recaptcha_response_field") String responseField,
+																		ServletRequest servletRequest,
+															            SessionStatus sessionStatus) throws SQLException 
+    {
+    	
+    	String remoteAddress = servletRequest.getRemoteAddr();
+        ReCaptchaResponse reCaptchaResponse = this.reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
+ 
+        if(reCaptchaResponse.isValid()){
+        	// Retrieve necessary information
+    	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        	// Send the email
+        	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
+		    
+	       	Mailer mm = (Mailer) context.getBean("mailMail");
+	        mm.sendFeedbackEmail(UserService.getEmailByUser(auth.getName()), subject, comments);
+	        
+        	// Load the notification
+        	model.addAttribute("completed", true);
+        	model.addAttribute("invalid_captcha", false);
+	        return "feedback_submit";
+        } else {
+        	model.addAttribute("completed", false);
+        	model.addAttribute("invalid_captcha", true);
+        	return "feedback_submit";
+        }
+    }    
     /********** Authentication **********/
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage() {
