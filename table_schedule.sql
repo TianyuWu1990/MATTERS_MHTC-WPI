@@ -1,3 +1,4 @@
+
 -- --------------------------------------------------------
 -- Host:                         localhost
 -- Server version:               PostgreSQL 9.3.5, compiled by Visual C++ build 1600, 64-bit
@@ -11,7 +12,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table mhtc_sch.schedules
-CREATE TABLE IF NOT EXISTS "schedules" (
+CREATE TABLE IF NOT EXISTS mhtc_sch."schedules" (
 	"sched_name" CHARACTER VARYING NULL,
 	"sched_description" TEXT NULL,
 	"sched_job" TEXT NULL,
