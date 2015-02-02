@@ -29,9 +29,9 @@ public class DevelopmentConfiguration {
 /** Configure your own local connection ***/
 /********************************************************/
 		
-//		dataSource.setUrl("jdbc:postgresql://localhost:5432/mhtc_local");
-//		dataSource.setUsername("postgres");
-//		dataSource.setPassword("12345");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/mhtc_local");
+		dataSource.setUsername("postgres");
+		dataSource.setPassword("12345");
   		
 		return dataSource;
 	}
