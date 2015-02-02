@@ -13,7 +13,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 public class Mailer {
 	private JavaMailSender mailSender;
 //	TODO:change to SMTP server
-	private String fromAddress = "hlong290494@gmail.com";
+	private String fromAddress = "no-reply@mhtc.wpi.edu";
+	private String toAddress = "feedback@mhtc.wpi.edu";
 	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
@@ -39,5 +40,15 @@ public class Mailer {
 		helper.setSubject("MHTC - Password Reset Detail");
 		helper.setFrom(fromAddress);
 		mailSender.send(mimeMessage);		
+	}
+	
+	public void sendFeedbackEmail(String email, String subject, String comments) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		 
+		message.setFrom(fromAddress);
+		message.setTo(toAddress);
+		message.setSubject("[Feedback] " + subject);
+		message.setText(comments);
+		mailSender.send(message);		
 	}
 }

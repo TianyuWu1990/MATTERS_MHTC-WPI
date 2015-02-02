@@ -4,22 +4,37 @@
  */
 package edu.wpi.mhtc.controllers;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +54,7 @@ import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.service.StateService;
 import edu.wpi.mhtc.service.StatsService;
+import edu.wpi.mhtc.service.UserService;
 import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
@@ -72,7 +88,9 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model)
 	{
-		
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String username = auth.getName();
+	      
 		Logger logger = LoggerFactory.getLogger(this.getClass());
 		logger.info("Home called");
 		
@@ -93,7 +111,7 @@ public class HomeController {
 		model.addAttribute("jv_stats_economy", massEconomy);
 		model.addAttribute("jv_peer_states", new PeerStates(peers).getAsGrid(13));
 		model.addAttribute("jv_all_states", new PeerStates(allstates).getAsGrid(13));
-		
+		model.addAttribute("username", username);
 		
         model.addAttribute("jv_current_state", "MA");
 		
@@ -257,7 +275,40 @@ public class HomeController {
 		}
 		
         return "register_page_submit";
-    }     
+    } 
+    /********** Feedback Page 
+     * @throws SQLException **********/
+    @RequestMapping(value = "/feedback_post", method = RequestMethod.POST)
+    public String feedback_post(Locale locale, Model model, @RequestParam("subject") String subject, @RequestParam("comments") String comments, 
+															    		@RequestParam("recaptcha_challenge_field") String challangeField,
+																		@RequestParam("recaptcha_response_field") String responseField,
+																		ServletRequest servletRequest,
+															            SessionStatus sessionStatus) throws SQLException 
+    {
+    	
+    	String remoteAddress = servletRequest.getRemoteAddr();
+        ReCaptchaResponse reCaptchaResponse = this.reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
+ 
+        if(reCaptchaResponse.isValid()){
+        	// Retrieve necessary information
+    	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        	// Send the email
+        	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
+		    
+	       	Mailer mm = (Mailer) context.getBean("mailMail");
+	        mm.sendFeedbackEmail(UserService.getEmailByUser(auth.getName()), subject, comments);
+	        
+        	// Load the notification
+        	model.addAttribute("completed", true);
+        	model.addAttribute("invalid_captcha", false);
+	        return "feedback_submit";
+        } else {
+        	model.addAttribute("completed", false);
+        	model.addAttribute("invalid_captcha", true);
+        	return "feedback_submit";
+        }
+    }    
     /********** Authentication **********/
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logoutPage() {
@@ -268,6 +319,54 @@ public class HomeController {
     public String loginPage() {
         return "loginPage";
     }
-    /********** End authentication pages **********/
+    /********** Excel exporter 
+     * Exports excel file for the chart data
+     * @throws IOException **********/
+    @RequestMapping(value = "/excel", method = RequestMethod.GET)
+    public @ResponseBody String excel_exporter(Locale locale, Model model, @RequestParam("data") String data, HttpServletResponse response) throws IOException {	
+		Workbook wb;
+		wb = new XSSFWorkbook();
+		Sheet sheet = wb.createSheet();
+
+    	JSONObject json = new JSONObject(data);
+    	String year = json.getString("year");
+		JSONArray rows =  json.getJSONArray("rows");
+		
+		// For the first row, put the year number into
+		Row yearRow = sheet.createRow(0);
+		Cell sheetCell = yearRow.createCell(0);
+		sheetCell.setCellValue(year);
+		
+		
+		//Write header row, first col State followed by metric names
+		Row headerRow = sheet.createRow(1);
+		Cell cell = headerRow.createCell(0);
+		cell.setCellValue("State");
+		
+		JSONArray row = rows.getJSONArray(0);
+		for (int j = 1; j < row.length(); j++) {
+			cell = headerRow.createCell(j);
+			cell.setCellValue(row.getString(j));
+		}
+		
+		// Read and put data into the Excel file
+		for (int i = 0; i < rows.length()-1; i++) {
+			row = rows.getJSONArray(i+1);
+			Row sheetRow = sheet.createRow(i+2);
+			for (int j = 0; j < row.length(); j++) {
+				cell = sheetRow.createCell(j);
+				cell.setCellValue(row.getString(j));
+			}
+		}
+		
+		response.setHeader( "Content-Disposition", "attachment;filename=matters_data.xlsx");
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		ServletOutputStream out = response.getOutputStream();
+        wb.write(out);
+        out.flush();
+        out.close();
+		
+    	return "";
+    }
     
 }

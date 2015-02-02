@@ -57,7 +57,7 @@ import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
-import edu.wpi.mhtc.dashboard.util.Logger;
+import edu.wpi.mhtc.helpers.Logger;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
@@ -268,7 +268,7 @@ public class AdminController {
     	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
     	
     	if (!createFolderSuccess) {
-    		// TODO: Yell at the user or something. 
+    		System.out.println("Error! Can't create folder.");
     	}
     	
     	// Now save file to location
@@ -290,8 +290,18 @@ public class AdminController {
     		unZipper.unZipIt(zipFile, dir.toString());
     	}
     	
-    	// Need to find path to the .sh file
-    	String pattern = "*.sh";
+    	// Determine if system is Windows vs Unix/Linux/Mac
+    	// .bat vs .sh
+    	String OS = System.getProperty("os.name").toLowerCase();
+    	String pattern;
+    	
+    	if (OS.contains("win")) {
+        	pattern = "*.bat";
+    	} else {
+        	pattern = "*.sh";
+    	}
+    	
+    	// Need to find path to the file
 		FileFinder finder = new FileFinder(pattern);
 		try {
 			Files.walkFileTree(dir, finder);
@@ -399,7 +409,10 @@ public class AdminController {
 		newSched.insertToDB();
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
+    	String title = "MATTERS: Scheduler";
+		
 		// TODO: Error message/ Success message
+        model.addAttribute("title", title);
 		model.addAttribute("success_add", true);
 		model.addAttribute("sched_name", sched_name);
 		model.addAttribute("schedList", schedList);
@@ -426,7 +439,10 @@ public class AdminController {
 		// Get the jobs
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
+    	String title = "MATTERS: Scheduler";
+		
 		// TODO: Error message/ Success message
+        model.addAttribute("title", title);
 		model.addAttribute("success_stop", true);
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		model.addAttribute("schedList", schedList);
@@ -453,6 +469,19 @@ public class AdminController {
         return "admin_reports";
     }
     
+    @RequestMapping(value = "/admin_reports_detail", method = RequestMethod.GET)
+    public String admin_reports_detail(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
+      
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Reporting";
+    	
+    	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+        model.addAttribute("job", job);      
+        
+        return "admin_reports_detail";
+    }
+    
     @RequestMapping(value = "/post_reports", method = RequestMethod.POST)
     public @ResponseBody String admin_post_reports(Locale locale, Model model, 
     												@RequestParam("moment") String moment,
@@ -462,13 +491,17 @@ public class AdminController {
     												@RequestParam("origin") String origin,
     												@RequestParam("code") int code) throws Exception {
     	// TODO: Add some security measures to prevent unauthorized users to access this RESTful service.
-    	Logger.jsonTalendLog(moment, message, priority, job, origin, code);
+    	Logger.jsonTalendLog(job, code, message, origin, moment, priority);
     	return "{\"success\" : true}";
     }    
     
     @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model) throws Exception {
-    	return Logger.retriveLog();
+    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
+    	if (job.equals("")) {
+    		return Logger.retriveLogSummary();
+    	} else {
+    		return Logger.retrieveLogByJobName(job);
+    	}
     }    
     
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
