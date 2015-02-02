@@ -337,12 +337,24 @@ public class HomeController {
 		Cell sheetCell = yearRow.createCell(0);
 		sheetCell.setCellValue(year);
 		
+		
+		//Write header row, first col State followed by metric names
+		Row headerRow = sheet.createRow(1);
+		Cell cell = headerRow.createCell(0);
+		cell.setCellValue("State");
+		
+		JSONArray row = rows.getJSONArray(0);
+		for (int j = 1; j < row.length(); j++) {
+			cell = headerRow.createCell(j);
+			cell.setCellValue(row.getString(j));
+		}
+		
 		// Read and put data into the Excel file
-		for (int i = 0; i < rows.length(); i++) {
-			JSONArray row = rows.getJSONArray(i);
-			Row sheetRow = sheet.createRow(i+1);
+		for (int i = 0; i < rows.length()-1; i++) {
+			row = rows.getJSONArray(i+1);
+			Row sheetRow = sheet.createRow(i+2);
 			for (int j = 0; j < row.length(); j++) {
-				Cell cell = sheetRow.createCell(j);
+				cell = sheetRow.createCell(j);
 				cell.setCellValue(row.getString(j));
 			}
 		}
