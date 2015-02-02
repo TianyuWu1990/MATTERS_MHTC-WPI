@@ -409,7 +409,10 @@ public class AdminController {
 		newSched.insertToDB();
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
+    	String title = "MATTERS: Scheduler";
+		
 		// TODO: Error message/ Success message
+        model.addAttribute("title", title);
 		model.addAttribute("success_add", true);
 		model.addAttribute("sched_name", sched_name);
 		model.addAttribute("schedList", schedList);
@@ -436,7 +439,10 @@ public class AdminController {
 		// Get the jobs
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
+    	String title = "MATTERS: Scheduler";
+		
 		// TODO: Error message/ Success message
+        model.addAttribute("title", title);
 		model.addAttribute("success_stop", true);
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		model.addAttribute("schedList", schedList);
