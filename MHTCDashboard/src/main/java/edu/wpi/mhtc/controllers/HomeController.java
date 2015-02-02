@@ -347,7 +347,7 @@ public class HomeController {
 			}
 		}
 		
-		response.setHeader( "Content-Disposition", "attachment;filename=matters_data.xlxs");
+		response.setHeader( "Content-Disposition", "attachment;filename=matters_data.xlsx");
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		ServletOutputStream out = response.getOutputStream();
         wb.write(out);
