@@ -55,14 +55,17 @@ var AS= (function($) {
        */
     AppState.prototype.loadFunction = function() {
 	    $('#sidebar li:eq(0) a').tab('show');
+	    
+	    // Initializes all tooltips on the page.
 	    $(function() {
 	        $("[rel='tooltip']").tooltip();
 	    });
-	    $("#toggle").toggle("slide");
+	    	    
 	    $(".statebutton").click(function (){ 
 	    	stateClicked = $(this).attr("id").substr(3, 2); 
 	    	as.clickCallback(stateClicked);
 	    });
+	    
 	    /*
 	     * Initializes the US Map with custom styles. 
 	     */
@@ -333,7 +336,7 @@ var AS= (function($) {
 					seltimeline.append(liststring);	
 					document.getElementById("playbuttonanimation").style.visibility = "visible";
 					document.getElementById("stopbuttonanimation").style.visibility = "visible";
-					document.getElementById("modal-title").innerHTML = "Timeline:&nbsp;&nbsp;";
+					document.getElementById("modal-title").innerHTML = "";
 					/*******************************************************************************/
 					
         			var j;
@@ -1293,9 +1296,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 		//pos=this.selected_multiple_metrics.length-1;
 		if(this.selected_multiple_metrics.length ==1) {
 			array_next_back=this.getBackNextMultipleMetric(this.currentind);
-			console.log(array_next_back[0],array_next_back[1]);
-			//sel.append('<button class="backButton"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;');
-			//sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+
 			$(".backButton").css("display","inline");
 			$(".backButton").attr("disabled","disabled");
 			$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
@@ -1305,9 +1306,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 		}
 		else if(this.selected_multiple_metrics.length > 1) {
 			array_next_back=this.getBackNextMultipleMetric(this.currentind);
-			console.log(array_next_back[0],array_next_back[1]);
-			//sel.append('<button class="backButton"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;');
-			//sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
+
 			$(".backButton").css("display","inline");
 			$(".backButton").removeAttr("disabled");
 			$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
@@ -1716,6 +1715,15 @@ AppState.prototype.showGraphReloaded = function(ind) {
    cm.showMultiGraphReloded(this.selected);
     
 };
+
+AppState.prototype.showGraphTitle = function() {
+	$("#metricCycleButtons").show();
+}
+
+AppState.prototype.hideGraphTitle = function() {
+	$("#metricCycleButtons").hide();
+}
+
 /*************************************************************/
 /*********************NEW DESIGN******************************/
 /*************************************************************/

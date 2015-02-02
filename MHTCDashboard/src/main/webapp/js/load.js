@@ -37,26 +37,6 @@ adjustDropDown = function(e) {
         
     }, 20);
 };
-/**
- * 
- * Returns the value of the style selector. The color returned is used to paint the background of the modal windows and peerStates depending
- * on the tab tabbed
- */
- /**getStyleRuleValue=function(style, selector, sheet) {
-    var sheets = typeof sheet !== 'undefined' ? [sheet] : document.styleSheets;
-    //for (var i = 0, l = sheets.length; i < l; i++) {
-        var sheet = sheets[3];
-       // if( !sheet.cssRules ) { continue; }
-        for (var j = 0, k = sheet.cssRules.length; j < k; j++) {
-            var rule = sheet.cssRules[j];
-            if (rule.selectorText && rule.selectorText.split(',').indexOf(selector) !== -1) {
-            	//alert("This is style: "+rule.style[style]);
-                return rule.style[style];
-            }
-        }
-    //}
-    return null;
-}**/
  
 getStyleRuleValue=function(styleName, className) {
 
@@ -71,6 +51,7 @@ getStyleRuleValue=function(styleName, className) {
 	       // }
 	    }
 	}
+
  /**
   * Converts a hexadimal color into a RGB
   */
@@ -221,94 +202,161 @@ stopHeatMapAnimation=function() {
 // new loadfunction to be called from body-onload
 
 
-loadFunction = function() {
-	//$('#map').usmap({});
-	
+loadFunction = function() {	
 	
 	/**********************************************************************/
 	/***************CHECKING LEFT MENU ************************************/	
 	/**********************************************************************/
 
-	
-	$("div.tab-pane button.dropdown-toggle").click(adjustDropDown);
-	$("div.tab-pane").scroll(adjustDropDown);
-	$("#selectallmultiplemetric").addClass("hidden");
-	$("#unselectallmultiplemetric").addClass("hidden");
-	$("#selectpeerstates").addClass("hidden");
 	cm=CM.create();
 	as=AS.create();
 	
 	//cm.loadFunction();
 	as.loadFunction();
-	/*$(function() {
-        $('#ms').change(function() {
-        	
-        	as.setStatesSelected($(this).val());
-        }).multipleSelect({
-            width: '20%'
-        });
-        
-    });*/
-	 $('select').multiselect({
-		 noneSelectedText: "Select to display",
-		 header: false,
-		   click: function(e){
-			  
-			   list2 = $(this).multiselect("widget")
-			   selectAll = list2.find("li.ui-multiselect-optgroup-label ");
-			    inputs = $(this).multiselect("widget").find('input');
-			   console.log("input list : ",inputs.length);
-			   if($(inputs[0]).attr('checked')){
-				   for (i=1;i<inputs.length;i++)
-				   {
-					   $(inputs[i]).attr('disabled','disabled');
-				   }
-				   $(selectAll).attr("disabled","disabled");
-				   as.setStatesSelected([],0);
-				}
-			   else if($(inputs[1]).attr('checked'))
-			   {
-				   for (i=0;i<inputs.length;i++)
-				   {
-					   if(i!=1)
-					    $(inputs[i]).attr('disabled','disabled');
-				   }
-				   as.setStatesSelected([],1);
-			   }
-			   else if($(inputs[2]).attr('checked'))
-			   {
-				   for (i=0;i<inputs.length;i++)
-				   {
-					   if(i!=2)
-					    $(inputs[i]).attr('disabled','disabled');
-				   }
-				   as.setStatesSelected([],2);
-			   }
-			   else
-			   {
-				   selectedItems = []
-				   j=0
-				   for (i=0;i<inputs.length;i++)
-				   {
-					    $(inputs[i]).removeAttr('disabled');
-					    if($(inputs[i]).attr('checked'))
-					    {
-					    	selectedItems.push($(inputs[i]).attr('value'))
-					    }
-				   }
-				   as.setStatesSelected(selectedItems,-1);
-				   //console.log("values",selectedItems);
-			   }
-		   }
-	 }); 
-	// $(".ui-widget-header").css('display','none');
+
+    // Initializes button that closes the left sidebar
+    $("#close-sidebar-left").click(function() {
+    	$("#sidebar-left").hide("slide", { direction: "left" }, 300);
+    	
+    	$("#open-sidebar-left").attr("style", "opacity: 1;filter: alpha(opacity=1);");
+    	
+    	
+    });
+    
+    // Initializes the button that opens the left sidebar
+    $("#open-sidebar-left").click(function() {
+    	$("#sidebar-left").show("slide", { direction: "left" }, 300);	
+    	
+    	$("#open-sidebar-left").attr("style", "opacity: 0;filter: alpha(opacity=0);");    	
+    });
+    
+    // Enable "drop menus" in sidebar
+    $('.dropmenu').click(function(e){
+
+		e.preventDefault();
+
+		$(this).parent().find('ul').slideToggle();
+		var className = $(this).parent().attr('class');
+	});
+    
+    /******************************************
+     * Start state selection logic
+     ******************************************/
+    
+    // When a state selection option is clicked, designate it as selected
+    $(".stateSelectionOption").click(function(e){
+    	
+    	// Check the clicked input if it has not already been checked.
+    	var clickedInput = $(this).find(".checkState");
+    	var isCheckedAlready = $(clickedInput).is(':checked');
+    	$(clickedInput).prop('checked', !isCheckedAlready);
+    	
+    	if (!isCheckedAlready)
+    		$(this).addClass("selected");
+    	else
+    		$(this).removeClass("selected");
+    	    	
+    	$(".checkPeerStates").prop("checked", false) // Deselect Peer States checkbox
+    	$(".selectPeerStates").removeClass("selected");
+    	
+    	updateStateSelection(); // Reflect changes in data
+    });
+    
+    // When unselect/select all button is clicked, do the appropriate action
+    $(".selectUnselectAllStates").click(function(e){
+    	
+    	var checked = $(this).attr("id") == "select";
+
+    	// Go through and deselect/select all of the states
+    	var stateOptions = $(".checkState");
+    	
+    	for(i = 0; i < stateOptions.length; i++)
+    	{
+    		var curNode = stateOptions[i]
+    		
+    		if (checked)
+    		{
+    			$(curNode).parent().parent().addClass("selected");
+    			$(curNode).prop("checked", true);
+    		}
+    		else
+    		{
+    			$(curNode).parent().parent().removeClass("selected");
+    			$(curNode).prop("checked", false);
+    		}
+    	}
+    	
+    	$(".checkPeerStates").prop("checked", false); // Deselect Peer States checkbox
+    	$(".selectPeerStates").removeClass("selected");
+    	
+    	updateStateSelection(); // Reflect changes in data
+    });
+    
+    // When select peers is clicked, select only the peer states.
+    $(".selectPeerStates").click(function(e){
+    	
+    	if ($(".checkPeerStates").is(":checked"))
+    		return; // Do nothing if already checked
+    	
+    	// Check peer states checkbox
+    	$(".checkPeerStates").prop("checked", true);
+    	$(".selectPeerStates").addClass("selected");
+    	
+    	// Deselect all states to start
+    	var allStates = $(".checkState");
+    	
+    	for(i = 0; i < allStates.length; i++)
+    	{
+    		$(allStates[i]).prop("checked", false);
+    		$(allStates[i]).parent().parent().removeClass("selected");
+    	}
+    	
+    	// Then go through and select only the peer states
+    	var peerStates = States.getPeers();
+    	
+    	for(i = 0; i < peerStates.length; i++)
+    	{
+    		var curNode = "#checkState" + peerStates[i].id;
+    		
+    		$(curNode).prop("checked", true);
+    		$(curNode).parent().parent().addClass("selected");
+    	}
+    	
+    	// Reflect updated state selection within data.
+    	updateStateSelection();
+    });
+	 
+    // When the user filters the states...
+    $(".stateFilter > input").on("input", function(e){
+    	// First, show all options
+    	var allOptions = $(".stateSelectionOptionWrapper");
+    	for(i = 0; i < allOptions.length; i++)
+    	{
+    		$(allOptions[i]).removeClass("hidden");
+    	}
+    	
+    	var inputVal = $(this).val().trim();
+    	
+    	var nonMatchingStates = States.filterStates(inputVal);
+    	
+    	for(i = 0; i < nonMatchingStates.length; i++)
+    	{
+    		var matchingText = "#" + nonMatchingStates[i].id + ".stateSelectionOptionWrapper";
+
+    		$(matchingText).addClass("hidden");
+    	}
+    	
+    });
+    
+    /******************************************
+     * End state selection logic
+     ******************************************/
+    
 	$("#chartType" ).change(function() {
-		
 		  cm.current_graph = this.value;
-		  //alert("current_graph11"+cm.current_graph);
-		  //cm.showMultiGraph(cm.selected);
 		  cm.showMultiGraph(as.selected);
-		});
+	});
+	
 	$("#yearHeatMap").change(function(){
 		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', this.value);
 	});
@@ -343,61 +391,9 @@ loadFunction = function() {
 /**********************************************************************/
 /**********************************************************************/
 	 
-/**********************************************************************/
-/***************CHECKING LEFT MENU *************************************/	
-/**********************************************************************/
-	/***COMMNETED BY MANIK */
-	/**TODO 101 is the number of metrics.***/
-	/*var isChecked;	
-	for(var t=1;t<101;t++){ 
-		
-		isChecked = $('#check'+t).attr('checked')?true:false;
-		if(isChecked==true){
-			t=t.toString();
-			as.SelectUnselectMultipleMetric(t,1);
-		}
-			
-			
-		
-			
-		var checkboxchecked="check"+t;	
-		$('input[id="'+checkboxchecked+'"]').click(function(){
-			var  str= $(this).attr('id');
-			var checkboxcheckedid = str.substr(5, str.length);
-
-			if($(this).is(":checked")){
-				as.SelectUnselectMultipleMetric(checkboxcheckedid,1);
-				
-			}else if($(this).is(":not(:checked)")){
-				as.SelectUnselectMultipleMetric(checkboxcheckedid,2);
-			}
-		});
-	}
-/**********************************************************************/
-/***************CHECKING LEFT MENU *************************************/	
-/**********************************************************************/
-	  
-	
-/**********************************************************************/
-/**********************NEW DESIGN**************************************/
-/**********************************************************************/
-/**********************************************************************/
-	 
-	/*$("#selectedmultiplemetrics").addClass("hidden");//make the selection box hidden.But it is used in the multiple metric selection
-
-    window.asd = $('.SlectBox').SumoSelect({ csvDispCount: 3 });
-    window.test = $('.testsel').SumoSelect({okCancelInMulti:true });
-	
-	 $("#multiplemetrics").change(function(){
-		
-		as.getMetricMultipleSelect(this.options);
-		
-
-});*/
 	/***********************added by manik*********************************************/
 	
 	$(".submenu").click(function(){
-		//console.log("submenu")
 		var inputTag = this.getElementsByTagName("input")[0];
 		var isChecked = inputTag.checked;
 		var checkedMetricId = inputTag.id;
@@ -405,18 +401,15 @@ loadFunction = function() {
 		console.log(currentParentId);
 		if(!isChecked)
 		{		
-			//$("#"+checkedMetricId).css({"display":"inline"});
 			$("#"+checkedMetricId).removeAttr("disabled");
 			inputTag.checked = true;
 			this.style.color = "#000";
 			this.style.fontWeight = "bold"
-			//as.SelectUnselectMultipleMetric([1,3,4],1);	
 			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),1);
 			duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
 			if(duplicateMetricParentId !== "")
 			{
 				var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
-				//console.log("duplicatecategory: ",duplicatecategory);
 				for(d = 1;d<duplicatecategory.length;d++)
 				{
 					if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
@@ -441,7 +434,6 @@ loadFunction = function() {
 			if(duplicateMetricParentId !== "")
 			{
 				var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
-				//console.log("duplicatecategory: ",duplicatecategory);
 				for(d = 1;d<duplicatecategory.length;d++)
 				{
 					if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
@@ -473,13 +465,11 @@ loadFunction = function() {
 				
 				$("#"+aTag.id).css("color","#000");
 				$("#"+aTag.id).css("font-weight","bold");
-				//as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),1);
 				defaultlist[i-1] = checkedMetricId.substr(5, checkedMetricId.length);
 				duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
 				if(duplicateMetricParentId !== "")
 				{
 					var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
-					//console.log("duplicatecategory: ",duplicatecategory);
 					for(d = 1;d<duplicatecategory.length;d++)
 					{
 						if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
@@ -495,7 +485,6 @@ loadFunction = function() {
 				}
 			}
 		}
-	    //console.log("defaultlist len: [",defaultlist);
 	    as.SelectUnselectMultipleMetric(defaultlist,1);
 	
 		
@@ -554,7 +543,7 @@ loadFunction = function() {
 			this.getElementsByTagName("a")[0].innerHTML = "Deselect All"
 			var index = 0;
 			var i = 0;
-			//for(i = 0; i < allListMetrics.length; i++ )
+
 			while(i < allListMetrics.length)
 			{
 				var inputTag = allListMetrics[i].getElementsByTagName("input")[0];
@@ -592,13 +581,11 @@ loadFunction = function() {
 	});
 
 	$(".backButton" ).click(function(){ 
-		//console.log("back button pressed");
 		var currentIdString = $(this).attr('id');
 		var currentId = currentIdString.substr(19, 2);	 
 		as.SelectUnselectMultipleMetric(currentId,3);
 	});
 	$(".nextButton" ).click(function(){ 
-		//console.log("next button pressed");
 		var currentIdString = $(this).attr('id');
 		var currentId = currentIdString.substr(19, 2);	 
 		as.SelectUnselectMultipleMetric(currentId,3);
@@ -638,28 +625,39 @@ loadFunction = function() {
 	 heatmapButtonClicked = function(year_in)
 	 { 	
 		 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
-	 }
-	/**needed if selection states does not want in graph mode*/
-	/*$(".graph-tab").click(function(){
-		 
-		 var id = this.id;
-		 if(id =="heatmap-tab")
-		 {
-			//console.log("prev display:",document.getElementById("stateSelection").style.display);
-			 $('#stateSelection').css("display","none");
-		 }
-		 else
-		 {
-			 //document.getElementById("stateSelection").style.display="inline";
-			 $('#stateSelection').css("display","block");
-			 //$('#stateSelection').css("margin-top","7px");
-		 }
-	});*/
-	
-	 //$("#myTable").tablesorter(); 
-	// console.log("table", $('#myTable').HTML(),"jfghjh");
-	 /*$('#myTable').dataTable( {
-	        "aaSorting": [[ 4, "desc" ]]
-	    } );*/
-	
+	 }	
 };
+
+/**
+ * Updates the list of selected states
+ */
+function updateStateSelection() 
+{
+	var stateOptions = $(".checkState");
+	
+	// Get the list of all states that are checked
+	var selectedItems = [];
+	for (i = 0; i < stateOptions.length; i++)
+	{
+		if ($(stateOptions[i]).is(':checked'))
+		{
+			selectedItems.push($(stateOptions[i]).attr('value'));
+		}
+	}
+	
+	// Update the data visualization
+	as.setStatesSelected(selectedItems, -1); // -1 means set to list of selected states.
+	
+	
+	// Update the text of the select/unselect button based on how many states are selected
+	if (selectedItems.length > 0)
+	{
+		$(".selectUnselectAllStates > a").html("Deselect All");
+		$(".selectUnselectAllStates").attr("id", "deselect");
+	}
+	else
+	{
+		$(".selectUnselectAllStates > a").html("Select All");
+		$(".selectUnselectAllStates").attr("id", "select");
+	}
+}

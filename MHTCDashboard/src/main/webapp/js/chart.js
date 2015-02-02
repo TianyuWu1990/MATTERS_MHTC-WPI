@@ -190,7 +190,7 @@ var CM = (function($) {
 		    			array_years.sort(function(a,b){return b - a;});
 						if(cm.year_selected==-1)
 		    				cm.year_selected=array_years[0];
-						liststring += '<table align="center"><tr><td><h4 style="width:auto">Timeline:&nbsp;&nbsp; </h4></td><td><ul class="timelineListStyle">';
+						liststring += '<table align="center"><tr><td></td><td><ul class="timelineListStyle">';
 						for(var k=array_years.length-1; k>=0; k--){
 							if(cm.year_selected!=array_years[k]){
 								liststring += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+array_years[k]+')" >'+array_years[k]+'</button></li>';
