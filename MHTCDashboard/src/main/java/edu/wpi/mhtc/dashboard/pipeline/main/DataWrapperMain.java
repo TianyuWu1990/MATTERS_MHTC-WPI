@@ -95,7 +95,7 @@ public class DataWrapperMain {
 		
 		//Milken rankings
 //		Can't find table???
-//		WebTableWrapper.download("http://statetechandscience.org/stateTech.taf?page=state-ranking", "table_id", "tmp/milken-ranks.xls", Arrays.asList(-1));
+		WebTableWrapper.downloadHtmlUnit("http://statetechandscience.org/stateTech.taf?page=state-ranking", "table_id", "tmp/milken-ranks.xls", 10);
 			
 		//Tax foundation - personal income tax
 		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Individual%20Income%20Tax%20Rates%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Personal_Income_Tax_Rate.xls");
