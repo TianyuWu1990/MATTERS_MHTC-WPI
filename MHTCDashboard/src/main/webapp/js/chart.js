@@ -84,7 +84,7 @@ var CM = (function($) {
 			        	var row;
 			        	var array_years=cm.getYearsMetricState(states,multiData);
 			        	if(array_years.length==0){
-			        		 row="<tr><td> Please select atleast one state </td></tr>";
+			        		 row="<tr><td>No data available for your current selection.</td></tr>";
 			        		 table.append(row);
 			        	}else{
 			        		 row="<thead><th>States</th>";

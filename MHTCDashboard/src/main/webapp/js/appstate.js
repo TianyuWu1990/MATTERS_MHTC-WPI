@@ -25,34 +25,52 @@ var AS= (function($) {
 		this.selected_multiple_years=[];/********Array where multiple years selected are stored*********/
 		var array_years_global=[];
 		this.metric_category_table =new Object(); /********hashtable to suggest duplicate metric categories*********/
+    
+    
+		/**************************
+		 * Error Handling
+		 **************************/
+		
+		// Error codes are handled as bit flags. 
+		// This way, multiple errors can easily be active at once.
+		this.errorCodes = {
+			NO_ERROR: 0, // 0000
+			NO_METRIC_SELECTED: 1, // 0001
+			NO_STATE_SELECTED: 2, // 0010
+		};
+		
+		this.errorMsgs = [
+			"Fatal error!<br/>If you're seeing this message, something has gone wrong.", // O: No Error (0000)
+			"No metrics selected!<br/>You must select a metric to explore the visualization.", // 1: No Metric Selected (0001)
+			"No states selected!<br/>You must select a state to explore the visualiation.", // 2: No state selected (0010)
+			"No states or metrics selected!<br/>You must select atleast one state and one metric to explore the visualization." // 3: No state & no metric (0011)
+		];
+		
+		this.errorCode = this.errorCodes.NO_ERROR;
     }
-
+    
       AppState.prototype.selectState = function(state) {
 		
 	    if (state == this.stateAbbr) {
              
 	        return;
 	    }
-	
-	  // $('#map').usmap('changeStateColor', state, 'green',false);
-	    
+		    
 	    $('#map').usmap('select', state, false);
 	    if (!this.multiMode)
-	    	{
+	    {
 	    	
 	    	this.loadState(state);
-	    	}
+	    }
 	    else
-	      {
-	    	//$('#map').usmap('click', this.stateAbbr);
+	    {
 		    	
-	      }
-	        
+	    }        
 	}
     
-      /*
-       * Initializes the application. Called when page is loaded.
-       */
+	  /*
+	   * Initializes the application. Called when page is loaded.
+	   */
     AppState.prototype.loadFunction = function() {
 	    $('#sidebar li:eq(0) a').tab('show');
 	    
@@ -925,10 +943,6 @@ AppState.prototype.SelectPeerStates=function(){
     for(var i=0; i<selected_states.length;i++){
     	this.clickCallback(selected_states[i]);
 	}
-   /* $("#selectallmultiplemetric").prop("disabled",false);
-	$("#unselectallmultiplemetric").prop("disabled", false);
-	$("#selectpeerstates").prop("disabled",true);	*/	
-		
 };
 
  	
@@ -1178,10 +1192,9 @@ AppState.prototype.getBackNextMultipleMetric=function(metric_id_in){
 		}
 	}
 	
-	
-	
 	return array_next_back;
 };
+
 /*
  * 
  * Modified by Manik
@@ -1190,12 +1203,11 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 	sel = $("#MultipleMetricTitle");
 	sel.empty();
     var array_next_back=[];
-   
+    
     if(option_in==1) {/***INSERTION**/
     	
     	var pos=this.selected_multiple_metrics.length;
-    	//console.log("for adding in array: ",metric_id_in);
-    	//console.log("position to add next ",pos);
+
     	if(metric_id_in instanceof Array)
 		{
 			for(j = 0 ;j < metric_id_in.length; j++ )
@@ -1212,14 +1224,13 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 			this.selected_multiple_metrics[pos]=metric_id_in;
 		}
     	var lastpos=this.selected_multiple_metrics.length-1;
-    	//console.log("lastpos : ",lastpos,"muliple: ",this.selected_multiple_metrics);
 		
 		/*******************************************************/
 		/***ALWAYS SHOW WHATEVER IS ON THE FIRST POSITION AND LATER LOOP THROUFGG THE METRICS IF
 		 * MOR than one metric was selected
 		 */
 		this.currentind=this.selected_multiple_metrics[lastpos];
-		//pos=this.selected_multiple_metrics.length-1;
+
 		if(this.selected_multiple_metrics.length ==1) {
 			array_next_back=this.getBackNextMultipleMetric(this.currentind);
 
@@ -1258,29 +1269,25 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 				 if(i != -1) {
 						 this.selected_multiple_metrics.splice(i, 1);
 				 }
-				// console.log("element to delete: ",metric_id_in[j],this.selected_multiple_metrics.length );
 			}
 		}
 		else if((typeof metric_id_in) == "string"){
 
 			var i = this.selected_multiple_metrics.indexOf(metric_id_in);
-			//console.log("i=",i)
-			 if(i != -1) 
-			 {
-				 this.selected_multiple_metrics.splice(i, 1);
-			 } 
+
+			if(i != -1) 
+			{
+				this.selected_multiple_metrics.splice(i, 1);
+			} 
 		}
-		//this.currentind = this.selected_multiple_metrics[]
 		
 		if(this.selected_multiple_metrics.length > 0){
-		
+			
 			var lastpos=this.selected_multiple_metrics.length-1;
 			this.currentind=this.selected_multiple_metrics[lastpos];
 			array_next_back=this.getBackNextMultipleMetric(this.currentind);
 			if(this.selected_multiple_metrics.length > 1){
 				
-				//sel.append('<button  class="backButton" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>&nbsp;&nbsp;');
-				//sel.append('<button  class="nextButton" id="clickMultipleMetric'+array_next_back[1]+'" disabled="true">Next</button>&nbsp;&nbsp;'); 
 				$(".backButton").css("display","inline");
 				$(".backButton").removeAttr("disabled");
 				$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[0]);
@@ -1297,7 +1304,6 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 				$(".nextButton").attr("disabled","disabled");
 				$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
 			}
-			//console.log("deletion: ",i);
 			
 			sel.append( Metrics.getMetricByID(this.selected_multiple_metrics[lastpos]).getName() );
 			this.showHeatMapGraphReloaded(this.selected_multiple_metrics[lastpos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
@@ -1305,16 +1311,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 			this.showMultipleMetricsStatesYears(-1);
 			
 		}else{
-			this.currentind=null;
-			sel.append("<strong>Choose a metric from the left menu</strong>");
-			$(".backButton").css("display","none");
-			$(".backButton").attr("disabled","disabled");
-			$(".backButton").attr("id","");
-			$(".nextButton").css("display","none");
-			$(".nextButton").attr("disabled","disabled");
-			$(".nextButton").attr("id","");
-			this.ClearGraphArea();
-				
+			this.currentind=null;		
 		}
 			
 	 }else if(option_in==3){/// BACK AND FORTH BUTTON
@@ -1326,7 +1323,7 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 
 		 if(i==0){
 
-			 $(".backButton").css("display","inline");
+			$(".backButton").css("display","inline");
 			$(".backButton").attr("disabled","disabled");
 			$(".backButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
 			$(".nextButton").css("display","inline");
@@ -1349,43 +1346,76 @@ AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in)
 				$(".nextButton").attr("id",'clickMultipleMetric'+array_next_back[1]);
 		 }
 		 sel.append(  Metrics.getMetricByID(this.selected_multiple_metrics[i]).getName() );
+		 
 		 this.showHeatMapGraphReloaded(this.selected_multiple_metrics[i],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
 		 this.showGraphReloaded(this.selected_multiple_metrics[i]);
 		 this.showMultipleMetricsStatesYears(-1);
-			
 	}
 	
+	 if (this.selected_multiple_metrics.length > 0)
+	 {
+		 this.clearError(this.errorCodes.NO_METRIC_SELECTED);
+	 }
+	 else
+	 {
+		 this.handleError(this.errorCodes.NO_METRIC_SELECTED);
+	 }
+    
 };
-/*Added by manik
- * TODO: Please reset tab-pane area (Alexis).
- * 
- * */
-AppState.prototype.ClearGraphArea = function()
-{
-	console.log("clearing graph");
-	var activeTab = document.getElementsByClassName('tab-pane active')[0];
-	var  content = activeTab.getElementsByClassName("box-content")[0];
-	if(activeTab.id == "heatmaptab")
-	{
-		document.getElementById("playbuttonanimation").style.visibility = "hidden";
-		document.getElementById("stopbuttonanimation").style.visibility = "hidden";
-		document.getElementById("timeline").innerHTML = "";
-		document.getElementById("modal-title").innerText = "";
-		
-		//document.getElementById("mbodyHeatMap").innerHTML = "";
-	}
-	if(activeTab.id == "profile")
-	{
-		content.getElementsByTagName("h4")[0].innerText = "Please select atleast one metric";
 
-	}
-	if(activeTab.id == "national")
-	{
-		$(".modal-body").html('<svg style="height: auto; overflow:auto"></svg>');
-		$("#timelinetable").html("Please select atleast one metric..");
-	}
+/**
+ * Handles the given error code
+ * @param errorCode The error code to handle
+ */
+AppState.prototype.handleError = function(errorCode)
+{	
+	this.errorCode = this.errorCode | errorCode; // Make sure the error code flag is flagged
+		
+	this.refreshErrorView();
+};
+
+/**
+ * Clears the current error, if there is one.
+ */
+AppState.prototype.clearError = function(errorCode)
+{
+	if (!this.inError())
+		return; // Return if we aren't in error.
 	
-}
+	this.errorCode = this.errorCode & (~errorCode); // Clear error code flag.
+	
+	this.refreshErrorView();	
+};
+
+/**
+ * Refreshes the error view to reflect the current error code.
+ */
+AppState.prototype.refreshErrorView = function()
+{
+	$("#errorMsg").empty();
+	
+	if (this.inError())
+	{
+		$("#vizView").hide();
+		$("#errorView").show();
+		
+		$("#errorMsg").html(this.errorMsgs[this.errorCode]);
+	}
+	else
+	{
+		$("#errorView").hide();
+		$("#vizView").show();
+	}
+};
+
+/**
+ * Returns whether or not the app is currently in an error state
+ * @returns {Boolean} Whether or not the app is in an error state
+ */
+AppState.prototype.inError = function()
+{
+	return this.errorCode != this.errorCodes.NO_ERROR;
+};
 
 AppState.prototype.HeatMapMeter=function(type_in, category_in,ordered_states_metrics,arrayNewColor,stateAbbr){
 	if(type_in==1){
@@ -1524,24 +1554,27 @@ AppState.prototype.setStatesSelected=function(states,opt){
 	else{
 		if(opt == 0)
 		{
-			console.log("peer selected");
 			this.selected =States.getPeers().map(function(s){
 				return s.abbr; 
 			});
-			console.log("peer states: ",this.selected);
 		}
-		else if(opt == 1){
-			this.showMultiGraphOnTopTen()
-		}
-		else if(opt == 2){
-			this.showMultiGraphOnBottomTen()
-		}
-		else{
+		else
+		{
 			this.selected = States.getArrayStateByID(states);
 		}
 	}
-	this.showGraphReloaded(this.currentind);
-	this.showMultipleMetricsStatesYears(-1);
+	
+	if (this.selected.length == 0)
+	{
+		this.handleError(this.errorCodes.NO_STATE_SELECTED);
+	}
+	else
+	{
+		this.clearError(this.errorCodes.NO_STATE_SELECTED);
+		this.showGraphReloaded(this.currentind);
+		this.showMultipleMetricsStatesYears(-1);
+	}
+	
 };
 AppState.prototype.showGraphReloaded = function(ind) {
 	if(this.currentind == null)
@@ -1554,11 +1587,7 @@ AppState.prototype.showGraphReloaded = function(ind) {
 		ind=this.selected_multiple_metrics.indexOf(ind);
 		this.currentind=this.selected_multiple_metrics[ind];
 		
-	}/*else {
-		ind=this.selected_multiple_metrics.length-1;
-		
-	}*/
-		
+	}
    
    cm.showMultiGraphReloded(this.selected);
     
@@ -1573,7 +1602,7 @@ AppState.prototype.hideGraphTitle = function() {
 }
 
 /*************************************************************/
-/*********************NEW DESIGN******************************/
+/*********************NEW DESIGN******************************/	
 /*************************************************************/
 var publicInterface = {};
 
