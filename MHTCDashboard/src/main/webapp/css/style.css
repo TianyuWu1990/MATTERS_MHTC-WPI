@@ -991,10 +991,9 @@ img
 	margin-left:18%%
 }
 
-#mbody .nv-lineChart circle.nv-point
+.nvtooltip
 {
-    fill-opacity: 1;
-    stroke-opacity: 1;
+	margin-top: 75px;
 }
 
 /******login form style*****************/
