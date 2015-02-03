@@ -243,10 +243,7 @@ var AS= (function($) {
      * This function generates Heat Map 
      * Input: Metric ID and Base Color for heat map
      */
-    AppState.prototype.SetHeatMap=function (ind,baseColor, tag_id,year_in){
-    	//if(!this.multiMode) /** This was causing a weird error specially because the dropdown menu was heatmapping other metrics*/
-    	//this.currentind=ind;
-    	
+    AppState.prototype.SetHeatMap=function (ind,baseColor, tag_id,year_in){    	
     	var selected_states_global= States.getAllstates().map(function(s) {
     		return s.abbr;
     	});
@@ -259,64 +256,18 @@ var AS= (function($) {
         			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
         			/*******************************************************************************/
         			
-        			/*var array_years=[];
-        			var k=0;
-        			for(var i=0; i<multiData.length; i++){
-        				for(var j=0; j<multiData[i][0].dataPoints.length; j++){
-        					if(array_years.indexOf(multiData[i][0].dataPoints[j].year) < 0){
-        						array_years[k]=multiData[i][0].dataPoints[j].year;
-        						k++;
-        					}
-        				}
-        			}*/
-        			 /*var selplaybutton = $("#playbutton");
-        			 selplaybutton.empty();
-        			 selplaybutton.append('<div class="btn btn-info" id="#playbuttonanimation">Play</div>');
-        			  */    			
-						
-					
-        			
         			var array_years=as.getYearsMetric(multiData);
         			array_years_global=as.getYearsMetric(multiData);///HAVE TO MAKE THIS CALL. WIL ELIMINATE ONE OR THE OTHER
         			
-        			/*var sel = $("#yearHeatMap");
-        			sel.empty();
-        			var size_tam=array_years.length-1;
-        			*/
         			array_years.sort(function(a,b){return b - a});
         			array_years_global.sort(function(a,b){return a - b});
-        			/*for(var k=0; k<array_years.length; k++){
-        				if(year_in!=array_years[k]){
-        					console.log("array_years "+array_years[k]);
-        					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
-        				}   				 
-        					
-        				else{
-        					console.log("year_in "+year_in);
-        					sel.append('<option value="' + array_years[k] + '" selected>' + year_in + '</option>');
-        				}
-        					
-        			}*/
+
         			/*******************************************************************************/
         			/***GET ALL POSSIBLES YEARS IN WHICH THE METRIC APPEARS FOR AT LEAST ONE STATE**/
         			/*******************************************************************************/
         			if(year_in==-1){
 						year_in = array_years[0];
-						//alert(year_in);
 					}
-        			
-        			/*var seltimeline=$("#timeline");
-					seltimeline.empty();
-				
-					seltimeline.append('<table ><tr>');
-					for(var k=array_years.length-1; k>=0; k--){
-						if(year_in!=array_years[k]){
-							seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-default" id="click'+array_years[k]+'"><li  >'+array_years[k]+'</li></button></td><td></td>');
-						}else{
-							seltimeline.append('<td nowrap="true" valign="top"><button  class="btn btn-primary btn-right" ><li id="click"+'+array_years[k]+'>'+year_in+'</li></button></td><td></td>');
-						}
-					}
-					seltimeline.append('</tr></table>');*/
         			
         			/*******************************************************************************/
         			/*modified by manik*/
@@ -443,23 +394,17 @@ var AS= (function($) {
     		              $("#graphStatesHeatMapPos1").text("Ranking");
     		            },
     		    });
-    			//as.changeColor(as.stateAbbr, as.stateSelectedColor); // AAEJ 23/11/2014
     			
 				var arrayNewColor=[];
 				for(var i=0; i<as.ordered_states_metrics.length;i++){
         	    	if(multiData[0][0].metric.binName!="National"){
         	    		newColor=getNewColor(baseColor,as.ordered_states_metrics[i].value_element,as.ordered_states_metrics[0].value_element);
-        	    	}
-        	    	else{
+        	    	} else {
         	    		newColor=getNewColor(baseColor,as.ordered_states_metrics[0].value_element-as.ordered_states_metrics[i].value_element +1,as.ordered_states_metrics[0].value_element);
         	    	}
         	    	arrayNewColor[i]=newColor;
-        	    	//if( as.ordered_states_metrics[i].state_element!=as.stateAbbr){// AAEJ 23/11/2014
         	    		
-        	    		$(tag_id).usmap('changeStateColor',  as.ordered_states_metrics[i].state_element, newColor);
-        	    	//}// AAEJ 23/11/2014
-        	    		
-        				
+        	    	$(tag_id).usmap('changeStateColor',  as.ordered_states_metrics[i].state_element, newColor);			
         		}
 				
 /****************************************************************************/
@@ -521,11 +466,7 @@ var AS= (function($) {
         	    		selheatmapmeter.append('<td  valign="top" bgcolor="'+arrayNewColor[i]+'">&nbsp;&nbsp;</td>');
         	    	} 
         	    }
-        	    selheatmapmeter.append('</tr></table>');
-				
-        	    
-        	    
-        	    
+        	    selheatmapmeter.append('</tr></table>');        	    
         	    
         	    /*************************************************************************************************************/
         	    /*********************VERTICAL HEAT MAP **********************************************************************/
@@ -543,8 +484,6 @@ var AS= (function($) {
     	    	    	var position;
     	    	    	var written_to_detail=false;
         	    		if(multiData[0][0].metric.binName!="National"){
-        	    	    	
-        	    	    	
         	    	    	
         	    	    	for(var i=0; i<as.ordered_states_metrics.length;i++){
         	    	    		if((i==as.ordered_states_metrics.length-1)){
@@ -628,22 +567,9 @@ var AS= (function($) {
         	    
         	    
         		});	
-        });
-       
-         
-    };
-/* AppState.prototype.getYearMultipleSelect=function(selectedOptions){
-	 var sel=$("yearmultiplemetric");
-	 sel.empty();
-	 var j=0;
-	 this.selected_multiple_years=[];
-	 for(var i=0; i<selectedOptions.length; i++){
-		 if(selectedOptions[i].selected){
-			 this.selected_multiple_years[j]=selectedOptions[i].value;
-			 j++;
-		 }
-	 }
- };  */
+        });         
+};
+
  AppState.prototype.getMetricMultipleSelect=function(selectedOptions){
 	 var sel = $("#selectedmultiplemetrics");
      sel.empty();
@@ -1460,75 +1386,7 @@ AppState.prototype.ClearGraphArea = function()
 	}
 	
 }
-/***
- * MANIK CHANGED A FEW THINGS HERE 
- *AppState.prototype.SelectUnselectMultipleMetric=function(metric_id_in,option_in){
-	var sel = $("#MultipleMetricTitle");
-    sel.empty();
-    var array_next_back=[];
-    if(option_in==1) {/***INSERTION **//**
-		var pos=this.selected_multiple_metrics.length;
-		this.selected_multiple_metrics[pos]=metric_id_in;
-		/*******************************************************/
-		/***ALWAYS SHOW WHATEVER IS ON THE FIRST POSITION AND LATER LOOP THROUFGG THE METRICS IF
-		 * MOR than one metric was selected
-		 */
-		/**
-		this.currentind=this.selected_multiple_metrics[pos];
-		pos=this.selected_multiple_metrics.length-1;
-		sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName());
-		this.showHeatMapGraphReloaded(this.selected_multiple_metrics[pos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
-		this.showGraphReloaded(this.selected_multiple_metrics[pos]);// CALL THE LINE GRAPH WITH THIS  PARAM 
-		this.showMultipleMetricsStatesYears(-1);
-		if(this.selected_multiple_metrics.length>1){
-			
-			array_next_back=this.getBackNextMultipleMetric(this.currentind);
-			sel.append('<br><button class="btn btn-default"  id="clickMultipleMetric'+array_next_back[0]+'">Back</button>');
-		}
-		
-	}else if(option_in==2){ /***DELETION **//**
-		var i = this.selected_multiple_metrics.indexOf(metric_id_in);
-		 if(i != -1) {
-			 this.selected_multiple_metrics.splice(i, 1);
-		 } 
-		if(this.selected_multiple_metrics.length>0){
-			pos=this.selected_multiple_metrics.length-1;
-			sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[pos]).getName());
-			this.showHeatMapGraphReloaded(this.selected_multiple_metrics[pos],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
-			this.showGraphReloaded(this.selected_multiple_metrics[pos]);
-			this.showMultipleMetricsStatesYears(-1);
-			if(this.selected_multiple_metrics.length>1){
-				array_next_back=this.getBackNextMultipleMetric(this.currentind);
-				sel.append('<br><button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>');
-			}
-				
-		}else{
-			
-			this.currentind=null;
-			sel.append("<strong>Choose a metric from the left menu</strong>");
-		}
-			
-	 }else if(option_in==3){/// BACK AND FORTH BUTTON
-		 var i = this.selected_multiple_metrics.indexOf(metric_id_in);
-		 this.currentind=this.selected_multiple_metrics[i];
-		 var last_pos=this.selected_multiple_metrics.length-1;
-		 
-		 sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[i]).getName());
-		 this.showHeatMapGraphReloaded(this.selected_multiple_metrics[i],'#mbodyHeatMap',-1); //CALL THE HEATMAP BACK AGAIN BUT WITH THIS METRIC
-		 this.showGraphReloaded(this.selected_multiple_metrics[i]);
-		 this.showMultipleMetricsStatesYears(-1);
-		 array_next_back=this.getBackNextMultipleMetric(this.currentind);
-		 if(i==0){
-			 sel.append('<br><button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[0]+'">Next</button>'); 
-		 }else if (i==last_pos){
-			 sel.append('<br><button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>'); 
-		 }else{
-			 sel.append('<br><button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[0]+'">Back</button>');
-			 sel.append('<button  class="btn btn-default" id="clickMultipleMetric'+array_next_back[1]+'">Next</button>'); 
-		 }
-	}
-	
-};*/
+
 AppState.prototype.HeatMapMeter=function(type_in, category_in,ordered_states_metrics,arrayNewColor,stateAbbr){
 	if(type_in==1){
 		$("#verticalheatmapmeter").removeClass("hidden");
@@ -1617,12 +1475,13 @@ AppState.prototype.HeatMapMeter=function(type_in, category_in,ordered_states_met
 	    }
 	}//VERTICAL HEATMAP
 };
+
 AppState.prototype.showHeatMapGraphReloaded=function (ind,tag_id, year_in){
 	
 	if(this.selected_multiple_metrics.length==0){
 		//document.getElementById("graphTitleHeatMap").innerHTML ='NO value';
 		
-	}else{
+	} else {
 		this.current_tab_style="#talenttab a";//"#nationaltab a";
 		//document.getElementById("graphTitleHeatMap").innerHTML ='Heat map: '+ Metrics.getMetricByID(this.selected_multiple_metrics[ind]).getName(); 
 		
@@ -1643,22 +1502,11 @@ AppState.prototype.showHeatMapGraphReloaded=function (ind,tag_id, year_in){
 			this.currentind=this.selected_multiple_metrics[ind];
 			
 		}
-		/*if(ind!=0){
-			
-			ind=this.selected_multiple_metrics.indexOf(ind);
-			
-		}else{
-			ind=this.selected_multiple_metrics.length-1;
-			
-		}
-		
-		this.currentind=this.selected_multiple_metrics[ind];	
-		**/
+
 		this.SetHeatMap(this.selected_multiple_metrics[ind],baseColor, tag_id,year_in);
 	}
-	
-
 };
+
 AppState.prototype.graphDeployer=function(ind, graph_type){
 	if(this.currentind == null || this.currentind == undefined)
 	{
