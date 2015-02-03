@@ -373,91 +373,91 @@
 						</ul>
 					</div>
 					
-					<div id="vizView">
-						<!--  Start Back/Forward Buttons -->
-						<div id="metricCycleButtons" style="display:none;">
-							<table>
-								<tr>
-									<td>
-										<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
-											<i class="fa fa-chevron-left"></i>
-										</button>
-									</td>
-									<td>
-										<div id="MultipleMetricTitle" >
-											Choose a metric from the left menu
-										</div>
-									</td>
-									<td>
-										<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
-											<i class="fa fa-chevron-right"></i>
-										</button>
-									</td>	
-								</tr>
-							</table>
-						</div>
-						<!--  End Back/Forward Buttons -->	
-						<div class="tab-content" id="vizView">
-							<!-- Line Graph -->
-							<div class="tab-pane fade" id="line">
-								<div class="box-content">
-									<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
-										<svg style="height: 90%;"></svg>
+
+					<!--  Start Back/Forward Buttons -->
+					<div id="metricCycleButtons" style="display:none;">
+						<table>
+							<tr>
+								<td>
+									<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
+										<i class="fa fa-chevron-left"></i>
+									</button>
+								</td>
+								<td>
+									<div id="MultipleMetricTitle" >
+										Choose a metric from the left menu
 									</div>
-								</div>
-							</div>
-							
-							<!-- Table -->
-							<div class="tab-pane active" id="table">
-								<div class="box-content">
-									<table>
-										<tr>
-											<td id="timelinetable"></td>
-										</tr>
-										<tr>
-											<td class="modal-body" id="mbodyMultipleQuery"></td>
-										</tr>
-									</table>
-								</div>
-							</div>
-							
-							<!-- Bar Chart -->
-							<div class="tab-pane fade" id="bar">
-								<div class="box-content">
-									<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
-								</div>
-							</div>
-							
-							<!-- Heatmap -->		
-							<div class="tab-pane fade" id="heatmaptab">
-								<div class="box-content">			
-									<table style="width: 100%;">
-										<tr>
-											<td align="left" nowrap="true">
-												<table align="center">
-													<tr>
-														<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
-														<td nowrap="true"><div id="timeline"></div></td>
-														<td style="padding-left: 40px">
-															<button type="button" id="playbuttonanimation">Play</button>
-															<button type="button" id="stopbuttonanimation" disabled="true">Stop</button>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-									</table>
-									<div class="row">
-			    						<div class="span10" >
-			    							<div id ="mbodyHeatMap" style=""></div>
-			    						</div>
-			    						<div class="span2" id="verticalheatmapmeter"></div>
-			    					</div>
-			    							
+								</td>
+								<td>
+									<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
+										<i class="fa fa-chevron-right"></i>
+									</button>
+								</td>	
+							</tr>
+						</table>
+					</div>
+					
+					<!--  End Back/Forward Buttons -->	
+					<div class="tab-content">
+						<!-- Line Graph -->
+						<div class="tab-pane fade" id="line">
+							<div class="box-content">
+								<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
+									<svg style="height: 90%;"></svg>
 								</div>
 							</div>
 						</div>
-					</div>	
+						
+						<!-- Table -->
+						<div class="tab-pane active" id="table">
+							<div class="box-content">
+								<table>
+									<tr>
+										<td id="timelinetable"></td>
+									</tr>
+									<tr>
+										<td class="modal-body" id="mbodyMultipleQuery"></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						
+						<!-- Bar Chart -->
+						<div class="tab-pane fade" id="bar">
+							<div class="box-content">
+								<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
+							</div>
+						</div>
+						
+						<!-- Heatmap -->		
+						<div class="tab-pane fade" id="heatmaptab">
+							<div class="box-content">			
+								<table style="width: 100%;">
+									<tr>
+										<td align="left" nowrap="true">
+											<table align="center">
+												<tr>
+													<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
+													<td nowrap="true"><div id="timeline"></div></td>
+													<td style="padding-left: 40px">
+														<button type="button" id="playbuttonanimation">Play</button>
+														<button type="button" id="stopbuttonanimation" disabled="true">Stop</button>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+								<div class="row">
+		    						<div class="span10" >
+		    							<div id ="mbodyHeatMap" style=""></div>
+		    						</div>
+		    						<div class="span2" id="verticalheatmapmeter"></div>
+		    					</div>
+		    							
+							</div>
+						</div>
+					</div>
 					<!-- Error Reporting -->
 					<div id="errorView" style="display:none;">
 						
