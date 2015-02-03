@@ -21,16 +21,6 @@ var CM = (function($) {
 		this.kcounter;/**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
 		this.kcounterexecute;/**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
 		this.year_selected; /**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
-	    $("#graph_toggle").click(function(e) {
-	       if (cm.current_graph == 'line') {
-	           cm.current_graph = 'bar';
-	           $("#graph_toggle").html("Switch to Line");
-	       } else /*if (cm.current_graph == 'bar')*/ {
-	           cm.current_graph = 'line';
-	           $("#graph_toggle").html("Switch to Bar");
-	       }
-	       cm.showMultiGraph(as.selected);
-	   });	   
 	};
 	/*********************************************************************************************/
 	/**************GET ONLY THE POSSIBLE YEARS ACCORDING TO THE METRICS SELECTED ****************/
@@ -78,18 +68,16 @@ var CM = (function($) {
 		var query;
 		this.year_selected=year_in;
 		$("#mbodyMultipleQuery > *").remove();
-		//document.getElementById("graphStatesMultipleQuery").innerHTML = states.join(", ");
 		
 		$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='font-size: 13px; background-color:#fff'></table>");
 		var table = $("#mbodyMultipleQuery table");
-		//table.dataTable();
+
 		if(selected_multiple_metrics.length>0){
 			
 			if(selected_multiple_metrics.length==1){
 				$("#yearsMultipleQuery").addClass("hidden");
 				$("#timelinetable").addClass("hidden");
 				query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[0]).getName());
-				//document.getElementById("graphTitleMultipleQuery").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(selected_multiple_metrics[0]).getName();
 				
 				query.execute(function(multiData) {
 			        setTimeout(function() {
@@ -153,13 +141,13 @@ var CM = (function($) {
 					this.multiDataMultipleQuery=[];
 					
 					for(this.kcounter=0; this.kcounter<selected_multiple_metrics.length;this.kcounter++){
-						//alert("passing : this.kcounter "+this.kcounter+" "+selected_multiple_metrics[this.kcounter]);
+
 						this.multiDataMultipleQuery=[];
 						query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[this.kcounter]).getName());
-						//alert("selected_multiple_metrics[this.kcounter]: "+selected_multiple_metrics[this.kcounter]);
+
 						query.execute(function(multiData) {
 							cm.multiDataMultipleQuery[cm.kcounterexecute]=multiData;
-							//alert("this.multiDataMultipleQuery[this.kcounter][0][0].metric.name: "+cm.multiDataMultipleQuery[cm.kcounterexecute][0][0].metric.name);
+
 							cm.kcounterexecute++;
 						});
 						
@@ -294,11 +282,11 @@ var CM = (function($) {
 	};
 	/**added by manik*/
 	Chart.prototype.setDataTable = function() {
-		//console.log("states",States.getAllstates());
+
 		stateList = States.getAllstates();
-		//console.log("stateList: ",stateList[0].id);
+
 		
-		if ( $("#myTable").html().indexOf("<thead>") != -1 ){//&& ! $.fn.DataTable.isDataTable( '#myTable' ) ) {
+		if ( $("#myTable").html().indexOf("<thead>") != -1 ){
 			
 			$('#myTable tbody tr td').each( function() {
 				var sTitle= $(this).text();
@@ -347,8 +335,6 @@ var CM = (function($) {
 		
 		   if (this.current_graph == 'table') {
 		    	$("#mbody > *").remove();
-	    	/*document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();*/
-		    /*document.getElementById("graphStates").innerHTML = states.join(", ");*/
 		    
 	    	$("#mbody").append("<table id='myTable' class='table table-condensed' style='font-size: 13px; background-color:#fff'></table>");
 	    	var table=$("#mbody table");
@@ -385,9 +371,7 @@ var CM = (function($) {
 	    	}
 	    	
 		    d3.selectAll("#mbody svg > *").remove();
-		    
-		    /*document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
-		    document.getElementById("graphStates").innerHTML = states.join(", ");*/
+
 		    
 		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
 		    query.execute(function(
@@ -464,17 +448,14 @@ var CM = (function($) {
 		    	if($("#mbody svg").length==0){
 		    		
 		    		$("#mbody").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
-		    		/*commented by manik: we are already showing current metric at the top..no need to show it twice*/
-		    		/*document.getElementById("graphTitle").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
-				    document.getElementById("graphStates").innerHTML = states.join(", ");*/
+
 				    d3.selectAll("#mbody svg > *").remove();
 		    	}
 	    	}else{
 	    		$("#mbodyBar > *").remove();
 	    		if($("#mbodyBar svg").length==0){
 		    		$("#mbodyBar").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
-		    		/*document.getElementById("graphTitleBar").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(as.currentind).getName();
-				    document.getElementById("graphStatesBar").innerHTML = states.join(", ");*/
+
 				    d3.selectAll("#mbodyBar svg > *").remove();
 				        
 		    	}
@@ -532,8 +513,7 @@ var CM = (function($) {
 		                if(multiData[0][0].metric.binName!="National"){ //Attemnpting to fix the inverted line and bar graphs
 		                												//For national ranking. Unsuccesful so far
 		                	for (var i = 0; i < multiData.length; i++) {
-		                		//if(multiData[i][0].dataPoints.length>0){ // For bar graphs, not doing this was preventing the graph
-		                													//from showing. It is ok for line graph
+		                		
 		                			data[i] = {
 			                				key : multiData[i][0].state.abbr,
 			                				color: cm.array_colors[i%cm.array_colors.length]
@@ -541,14 +521,10 @@ var CM = (function($) {
 			                		data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
 			                			return [ d["year"], d["value"] ];
 			                		});
-		                		//}
-		                		
 		                	}
 		                }else{
 		                	var limit_array=multiData.length-1;
 		                	for (var i = limit_array; i>=0  ; i--) {
-		                		//if(multiData[i][0].dataPoints.length>0){ // For bar graphs, not doing this was preventing the graph
-									//from showing. It is ok for line graph
 		                			data[i] = {
 		                				key : multiData[i][0].state.abbr,
 		                				color: cm.array_colors[i%cm.array_colors.length]
@@ -556,7 +532,6 @@ var CM = (function($) {
 		                			data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
 		                			return [ d["year"], d["value"] ];
 		                			});
-		                		//}
 		                	}
 		                }
 		                if(data[0].values.length==0){
@@ -597,7 +572,6 @@ var CM = (function($) {
 		var query;
 		this.year_selected=year_in;
 		$("#mbodyMultipleQuery > *").remove();
-		//document.getElementById("graphStatesMultipleQuery").innerHTML = states.join(", ");
 		
 		$("#mbodyMultipleQuery").append("<table id='myTable' class='table table-condensed' style='font-size: 13px; background-color:#fff'></table>");
 		var table=$("#mbodyMultipleQuery table");
@@ -629,28 +603,24 @@ var CM = (function($) {
 			        }, 500);
 				});
 			}else{
-				/*var d = new Date();
-			    var current_year = d.getFullYear();
-			    var first_year =current_year-10;*/
 				
 				document.getElementById("graphTitleMultipleQuery").innerHTML = this.graph_title_prefix + "Multiple metrics selected";
 					this.kcounterexecute=0;
 					this.multiDataMultipleQuery=[];
 					
 					for(this.kcounter=0; this.kcounter<selected_multiple_metrics.length;this.kcounter++){
-						//alert("passing : this.kcounter "+this.kcounter+" "+selected_multiple_metrics[this.kcounter]);
+
 						this.multiDataMultipleQuery=[];
 						query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[this.kcounter]).getName());
-						//alert("selected_multiple_metrics[this.kcounter]: "+selected_multiple_metrics[this.kcounter]);
+
 						query.execute(function(multiData) {
 							cm.multiDataMultipleQuery[cm.kcounterexecute]=multiData;
-							//alert("this.multiDataMultipleQuery[this.kcounter][0][0].metric.name: "+cm.multiDataMultipleQuery[cm.kcounterexecute][0][0].metric.name);
+
 							cm.kcounterexecute++;
 						});
 					}
 					
 					
-						//alert(this.multiDataMultipleQuery.length);
 					setTimeout(function() {	
 						var array_years=cm.getMultipleYearsMetricState(states,cm.multiDataMultipleQuery);
 					    $("#yearsMultipleQuery").removeClass("hidden");
@@ -668,7 +638,7 @@ var CM = (function($) {
 		    			}
 						
 						var row="<th>&nbsp;</th>";
-						//alert(cm.multiDataMultipleQuery.length);
+
 						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
 							row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";
 						}
@@ -692,11 +662,7 @@ var CM = (function($) {
 								sentinel=false;
 								w=0;
 								while((w<cm.multiDataMultipleQuery[r][j][0].dataPoints.length)&&(!sentinel)){
-								//for(var w=0;w<cm.multiDataMultipleQuery[r][j][0].dataPoints.length; w++){
-									/*alert("UPPER HEADER: "+r+" "+cm.multiDataMultipleQuery[r][0][0].metric.name);
-									alert("Value: "+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value);
-									alert("Year: "+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year);
-									alert("Year selected: "+cm.year_selected);*/
+
 									if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year==cm.year_selected){
 										if(!band){
 											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
@@ -706,7 +672,6 @@ var CM = (function($) {
 										if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value!=null){
 											row = row +"<td>"+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value+"</td>";
 											foundvalue=true;
-											//alert("VALUE NOT NULL " +cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value);	
 										}
 									sentinel=true;		
 									}
