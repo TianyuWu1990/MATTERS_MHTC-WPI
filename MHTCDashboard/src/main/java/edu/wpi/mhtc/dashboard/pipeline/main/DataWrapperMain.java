@@ -80,7 +80,10 @@ public class DataWrapperMain {
 		//WebTableWrapper.download("http://taxfoundation.org/article/2014-state-business-tax-climate-index", ".tablesorter.printImitationTable.plainTable", "tmp/tf-14-tci.xls", Arrays.asList(-1));
 		
 		//CNBC rankings
+		//2013
 		WebTableWrapper.download("http://www.cnbc.com/id/100824779", ".csvData.data", "tmp/cnbc-13-overall-ranks.xls", Arrays.asList(-1));
+		//2014
+		WebTableWrapper.download("http://www.cnbc.com/id/101758236", ".csvData.data", "tmp/cnbc-14-overall-ranks.xls", Arrays.asList(-1));
 		
 		//IPEDS STEM Degrees
 		IPEDSDownload ipeds = new IPEDSDownload();
@@ -92,7 +95,7 @@ public class DataWrapperMain {
 		
 		//Milken rankings
 //		Can't find table???
-//		WebTableWrapper.download("http://statetechandscience.org/stateTech.taf?page=state-ranking", "table_id", "tmp/milken-ranks.xls", Arrays.asList(-1));
+		WebTableWrapper.downloadHtmlUnit("http://statetechandscience.org/stateTech.taf?page=state-ranking", "table_id", "tmp/milken-ranks.xls", 10);
 			
 		//Tax foundation - personal income tax
 		down.HTTPDownload("http://taxfoundation.org/sites/taxfoundation.org/files/docs/State%20Individual%20Income%20Tax%20Rates%2C%202000-2014.xlsx", DATA_DIRECTORY+"/Personal_Income_Tax_Rate.xls");
