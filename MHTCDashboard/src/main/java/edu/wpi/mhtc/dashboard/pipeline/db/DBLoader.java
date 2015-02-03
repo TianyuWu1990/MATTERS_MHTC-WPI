@@ -238,7 +238,7 @@ public class DBLoader {
 		return schedLlist;		
 	}	 
 
-	public static ArrayList<ArrayList<String>> getMetricData(String category) throws SQLException, CategoryException
+	public static ArrayList<ArrayList<String>> getDataByMetric(String category) throws SQLException, CategoryException
 	{
 		// Get all metrics with associated category, in the form of key:name, value:id
 		Map<String, String> metrics = getMetricInfo(category);
@@ -274,7 +274,7 @@ public class DBLoader {
 	 * @return
 	 * @throws SQLException
 	 */
-	public static ArrayList<ArrayList<String>> getDetailedMetricData() throws SQLException {
+	public static ArrayList<ArrayList<String>> getDetailedMetrics() throws SQLException {
 		Connection conn = DBConnector.getInstance().getConn();
 		
 		ArrayList<ArrayList<String>> data = new ArrayList<ArrayList<String>>();

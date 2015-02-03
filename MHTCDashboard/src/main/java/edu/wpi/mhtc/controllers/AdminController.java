@@ -57,7 +57,7 @@ import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
-import edu.wpi.mhtc.dashboard.util.Logger;
+import edu.wpi.mhtc.helpers.Logger;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
 //import edu.wpi.mhtc.persistence.JdbcProcedure;
@@ -79,8 +79,12 @@ public class AdminController {
     }
 
     /********** Admin manager page **********/
-    @RequestMapping(value = "admin/manage", method = RequestMethod.GET)
-    public String manage() {
+    @RequestMapping(value = "admin_manager", method = RequestMethod.GET)
+    public String admin_manager(Model model) {
+    	
+    	String title = "MATTERS: Administrator Management";
+        model.addAttribute("title", title);
+
         return "admin_manager";
     }
     
@@ -148,24 +152,24 @@ public class AdminController {
         return "admin_dbexplorer";
     }
     
-    @RequestMapping(value = "/getSubCategories", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/getSubCategories", method = RequestMethod.GET)
     public @ResponseBody Map<String, String> getSubCategories(@RequestParam("categoryid") String categoryid) throws Exception {
     	
     	Map<String, String> subCategories = DBLoader.getSubCategories(categoryid);
     	return subCategories;
     }
     
-    @RequestMapping(value = "/admin_dbexplorer/getMetricData", method = RequestMethod.GET)
-    public @ResponseBody List<ArrayList<String>> getMetricData(@RequestParam("categoryid") String categoryid) throws Exception {
+    @RequestMapping(value = "/admin_dbexplorer/getDataByMetric", method = RequestMethod.GET)
+    public @ResponseBody List<ArrayList<String>> getDataByMetric(@RequestParam("categoryid") String categoryid) throws Exception {
     	
-    	List<ArrayList<String>> metricData = DBLoader.getMetricData(categoryid);
+    	List<ArrayList<String>> metricData = DBLoader.getDataByMetric(categoryid);
     	return metricData;
     }
     
-    @RequestMapping(value ="/admin_dbexplorer/getDetailedMetricData", method = RequestMethod.GET)
-    public @ResponseBody List<ArrayList<String>> getDetailedMetricData() throws SQLException {
+    @RequestMapping(value ="/admin_dbexplorer/getDetailedMetrics", method = RequestMethod.GET)
+    public @ResponseBody List<ArrayList<String>> getDetailedMetrics() throws SQLException {
     	
-    	List<ArrayList<String>> metricData = DBLoader.getDetailedMetricData();
+    	List<ArrayList<String>> metricData = DBLoader.getDetailedMetrics();
     	
 		return metricData;
     }
@@ -248,7 +252,8 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_addPipeline", method = RequestMethod.POST)
-    public String admin_addPipeline(Locale locale, Model model, RedirectAttributes redir, @RequestParam("parentcategory") String parentCategory,
+    public String admin_addPipeline(Locale locale, Model model, RedirectAttributes redir, Principal principal,
+    								@RequestParam("parentcategory") String parentCategory,
     								@RequestParam("subcategory") String subCategory, @RequestParam("script") MultipartFile script,
     								@RequestParam("pipelineName") String pipelineName, @RequestParam("pipelineDesc") String pipelineDesc) throws SQLException 
     {
@@ -263,7 +268,7 @@ public class AdminController {
     	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
     	
     	if (!createFolderSuccess) {
-    		// TODO: Yell at the user or something. 
+    		System.out.println("Error! Can't create folder.");
     	}
     	
     	// Now save file to location
@@ -285,8 +290,18 @@ public class AdminController {
     		unZipper.unZipIt(zipFile, dir.toString());
     	}
     	
-    	// Need to find path to the .sh file
-    	String pattern = "*.sh";
+    	// Determine if system is Windows vs Unix/Linux/Mac
+    	// .bat vs .sh
+    	String OS = System.getProperty("os.name").toLowerCase();
+    	String pattern;
+    	
+    	if (OS.contains("win")) {
+        	pattern = "*.bat";
+    	} else {
+        	pattern = "*.sh";
+    	}
+    	
+    	// Need to find path to the file
 		FileFinder finder = new FileFinder(pattern);
 		try {
 			Files.walkFileTree(dir, finder);
@@ -295,25 +310,15 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		
+		// Get the path to the file and set the file as executable
 		Path scriptFilePath = finder.done();
 		scriptFilePath.toFile().setExecutable(true);
-		System.out.println(scriptFilePath);
+		
+		// Figure out what user submitted the pipeline
+		String user = principal.getName();
 		
     	// Now let's add the entry to the database if nothing has failed yet    	
-    	DBSaver.insertPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename());
-    	
-    	//Now run job on server
-    	/**
-    	 * 
-    	try {
-    		scriptFilePath.toFile().setExecutable(true);
-//    		Runtime.getRuntime().exec("chmod +x" + scriptFilePath.toString());
-			TalendJob.runPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-    	*/
+    	DBSaver.insertPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename(), user);
     	
     	redir.addFlashAttribute("pipeline_add_success", true);
     	redir.addFlashAttribute("pipelineName", pipelineName);
@@ -338,8 +343,8 @@ public class AdminController {
 			HashMap<String,String> row = new HashMap<String,String>();
 			String pipelineName = rs.getString("pipelinename");
 			String pipelineDesc = rs.getString("pipelinedesc");	
-			String path = rs.getString("path");
 			String filename = rs.getString("filename");
+			String user = rs.getString("uploadedby");
 			
 			// Need to convert Date to String
 			Date dateAdded = rs.getTimestamp("dateadded");
@@ -348,9 +353,9 @@ public class AdminController {
 			
 			row.put("pipelinename",pipelineName);
 			row.put("pipelinedesc", pipelineDesc);
-			//row.put("path", path);
 			row.put("filename", filename);
 			row.put("dateadded", date);
+			row.put("user", user);
 			
 			data.add(row);
 		}
@@ -404,7 +409,10 @@ public class AdminController {
 		newSched.insertToDB();
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
+    	String title = "MATTERS: Scheduler";
+		
 		// TODO: Error message/ Success message
+        model.addAttribute("title", title);
 		model.addAttribute("success_add", true);
 		model.addAttribute("sched_name", sched_name);
 		model.addAttribute("schedList", schedList);
@@ -431,7 +439,10 @@ public class AdminController {
 		// Get the jobs
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
+    	String title = "MATTERS: Scheduler";
+		
 		// TODO: Error message/ Success message
+        model.addAttribute("title", title);
 		model.addAttribute("success_stop", true);
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		model.addAttribute("schedList", schedList);
@@ -458,16 +469,39 @@ public class AdminController {
         return "admin_reports";
     }
     
+    @RequestMapping(value = "/admin_reports_detail", method = RequestMethod.GET)
+    public String admin_reports_detail(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
+      
+    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	String title = "MATTERS: Reporting";
+    	
+    	model.addAttribute("categories", categories);
+        model.addAttribute("title", title);
+        model.addAttribute("job", job);      
+        
+        return "admin_reports_detail";
+    }
+    
     @RequestMapping(value = "/post_reports", method = RequestMethod.POST)
-    public @ResponseBody String admin_post_reports(Locale locale, Model model, @RequestParam("data") String data) throws Exception {
+    public @ResponseBody String admin_post_reports(Locale locale, Model model, 
+    												@RequestParam("moment") String moment,
+    												@RequestParam("message") String message,
+    												@RequestParam("priority") int priority,
+    												@RequestParam("job") String job,
+    												@RequestParam("origin") String origin,
+    												@RequestParam("code") int code) throws Exception {
     	// TODO: Add some security measures to prevent unauthorized users to access this RESTful service.
-    	Logger.jsonTalendLog(data);
+    	Logger.jsonTalendLog(job, code, message, origin, moment, priority);
     	return "{\"success\" : true}";
     }    
     
     @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model) throws Exception {
-    	return Logger.retriveLog();
+    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
+    	if (job.equals("")) {
+    		return Logger.retriveLogSummary();
+    	} else {
+    		return Logger.retrieveLogByJobName(job);
+    	}
     }    
     
     @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
@@ -518,8 +552,13 @@ public class AdminController {
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
     public String uploadAddFile(RedirectAttributes redir, @RequestParam("file") MultipartFile dataFile, @RequestParam("category") String subCategoryID, 
-    		@RequestParam("parentcategory") String parentCategoryID) throws Exception 
+    		@RequestParam("parentcategory") String parentCategoryID, @RequestParam(value = "overwrite", required=false) boolean overwrite) throws Exception 
     {
+    	String fileName = dataFile.getOriginalFilename();
+    	String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
+    	
+    	String newFileName = tokens[0] + "_" + fileDateFormat.format(new Date()) + "." + tokens[1];
+    	
     	// In this function, the "parentcategory" parameter is the actual string name of the category
     	// whereas the "category" parameter is the ID of the subcategory
     	
@@ -533,7 +572,7 @@ public class AdminController {
     	String childDir = subCategory.toLowerCase().replaceAll(" ", "_");
     	
     	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
-    	String dataFileLocation = dir.toString() + "/" + dataFile.getOriginalFilename();
+    	String dataFileLocation = dir.toString() + "/" + newFileName;
     	
     	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
     	
@@ -546,7 +585,7 @@ public class AdminController {
     	dataFile.transferTo(localFile);
     	
         // Now that the file is saved, time to run it
-        DataPipeline.run(localFile, subCategoryID);
+        DataPipeline.run(localFile, subCategoryID, overwrite);
         
         // Once completed, need to add entry to database for record keeping
         // TODO Need to somehow get the metric from the spreadsheet for DB record
@@ -554,7 +593,7 @@ public class AdminController {
         
         redir.addFlashAttribute("upload_file_success", true);
         redir.addFlashAttribute("filename", dataFile.getOriginalFilename());
-        
+         
         return "redirect:/admin_upload";
         
     }
@@ -584,6 +623,8 @@ public class AdminController {
     	
     	mav.addObject("title", title);
     	mav.addObject("exception", e);
+    	
+    	e.printStackTrace();
     	
     	return mav;
     }
@@ -616,6 +657,7 @@ public class AdminController {
 	    	mav.addObject("title", title);
 	    	mav.addObject("sqlException", ex);
 	    	
+	    	ex.printStackTrace();
     	}
 
 		return mav;
@@ -634,6 +676,8 @@ public class AdminController {
     	
     	mav.addObject("title", title);
     	mav.addObject("mhtcEx", ex);
+    	
+    	ex.printStackTrace();
     	
     	return mav;
     }

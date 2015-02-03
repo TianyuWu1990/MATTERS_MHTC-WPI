@@ -5,7 +5,7 @@ $(function() {
 	$('select#category').change(function() {
 		var value = $("select#category").val();
 		
-		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
+		$.getJSON('admin/getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
 			var options = $("#subcatdd");
 			
@@ -14,7 +14,6 @@ $(function() {
 			
 			// Add default <option>
 			options.append('<option value="">-- Select a subcategory --</option>');
-			options.append('<option value="">Uncategorized</option>');
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
@@ -46,7 +45,7 @@ $(function() {
 		
 		$('#categoryTable').DataTable({
 			"ajax": {
-				"url": "admin_dbexplorer/getMetricData?categoryid="+value,
+				"url": "admin_dbexplorer/getDataByMetric?categoryid="+value,
 				"dataSrc": ""
 			}
 		});
@@ -61,7 +60,7 @@ $(function() {
 	
 	$('#metricTable').DataTable({
 		"ajax": {
-			"url": "admin_dbexplorer/getDetailedMetricData",
+			"url": "admin_dbexplorer/getDetailedMetrics",
 			"dataSrc": ""
 		}
 	});

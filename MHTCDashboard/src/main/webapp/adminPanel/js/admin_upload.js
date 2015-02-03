@@ -5,7 +5,7 @@ $(function() {
 	$('form#uploadFile select#parentcategory').change(function() {
 		var value = $("form#uploadFile select#parentcategory").val();
 		
-		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
+		$.getJSON('admin/getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
 			var options = $("form#uploadFile #category");
 			
@@ -14,7 +14,6 @@ $(function() {
 			
 			// Add default <option>
 			options.append('<option value="">-- Select a subcategory --</option>');
-			options.append('<option value="">No subcategory</option>');
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
@@ -30,7 +29,7 @@ $(function() {
 	$('form#admin_addMetric select#parentcategory').change(function() {
 		var value = $('form#admin_addMetric select#parentcategory').val();
 		
-		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
+		$.getJSON('admin/getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
 			var options = $("form#admin_addMetric #category");
 			
@@ -39,7 +38,6 @@ $(function() {
 			
 			// Add default <option>
 			options.append('<option value="">-- Select a subcategory --</option>');
-			options.append('<option value="">No subcategory</option>');
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
@@ -76,7 +74,28 @@ $(function() {
 		});
 		
 
-	})
+	});
+	
+	$("input[name='overwrite']").click(function() {
+		
+		var thisCheck = $(this);
+		
+		if (thisCheck.is(":checked")) {
+			bootbox.dialog({
+				message: "You've selected to <b>overwrite</b> the data that already exists in the database for each metric, year and state tuple with" +
+						" the data in the manually uploaded file you selected.<br /><br /> If you are unsure if you want to do this, please confirm via the <b>" +
+						"Database Explorer</b>.",
+				title: "<i class='fa fa-exclamation-triangle fa-fw'></i> Hold on a second! Are you sure you want to do that?",
+				buttons: {
+					main: {
+						label: "OK",
+						classname: "btn-primary"
+					}
+				}
+			});
+		}
+		
+	});
 	
 	$('#uploadData').click(function() {
 		var $fileInput = $('input[type="file"]');

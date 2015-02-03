@@ -14,6 +14,7 @@ $(function() {
 		$("#run-date-picker").datetimepicker({
 			showToday: true,
 			minDate: new Date(),
+			format: 'MM/DD/YYYY HH:mm:ss',
 			useSeconds: true
 		});
 		

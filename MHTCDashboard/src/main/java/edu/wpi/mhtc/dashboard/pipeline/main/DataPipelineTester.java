@@ -47,7 +47,7 @@ public class DataPipelineTester {
 		
 		try {
 			
-			DataPipeline.run(inputFile, String.valueOf(catID));
+			DataPipeline.run(inputFile, String.valueOf(catID), false);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

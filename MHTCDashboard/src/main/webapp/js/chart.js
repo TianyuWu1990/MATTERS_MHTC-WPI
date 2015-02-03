@@ -7,7 +7,7 @@
  * This module handles the display functionality of different type of charts.  
  */
 
-
+var dt;
 var CM = (function($) {
 	
 	function Chart() {
@@ -301,12 +301,14 @@ var CM = (function($) {
 			} );
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable({"iDisplayLength": 20}, {});
+				dt = oTable;
 			}
 			else
 			{
 				console.log("table already present");
 				$('#myTable').dataTable().fnDestroy();
 				var oTable = $('#myTable').dataTable({"iDisplayLength": 20});
+				dt = oTable;
 			}
 		 /* Apply the tooltips */
 			oTable.$('tr').tooltip( {

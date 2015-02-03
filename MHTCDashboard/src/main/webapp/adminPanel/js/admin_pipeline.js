@@ -5,7 +5,7 @@ $(function() {
 	$('form#uploadPipeline #parentcategory').change(function() {
 		var value = $("form#uploadPipeline select#parentcategory").val();
 		
-		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
+		$.getJSON('admin/getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
 			var options = $("form#uploadPipeline #subcategory");
 			
@@ -14,7 +14,6 @@ $(function() {
 			
 			// Add default <option>
 			options.append('<option value="">-- Select a subcategory --</option>');
-			options.append('<option value="">No subcategory</option>');
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
@@ -23,6 +22,32 @@ $(function() {
 				}
 			}
 	
+		});
+		
+	});
+	
+	/**
+	 * Populates the metric dropdown after subcategory has been selected
+	 */
+	$('form#uploadPipeline #subcategory').change(function() {
+		var value = $('form#uploadPipeline select#subcategory').val();
+		
+		$.getJSON('admin/metrics', {"categoryid":value}, function(data) {
+			// Get the <select> tag
+			var options = $("form#uploadPipeline #metric");
+			
+			// Remove all previous entries
+			options.find('option').remove();
+			
+			// Add default <option>
+			options.append('<option value="">-- Select a metric --</option>');
+			
+			for (var key in data) {
+				if (data.hasOwnProperty(key)) {
+					options.append($("<option />").val(data[key]).text(key));
+				}
+			}
+			
 		});
 		
 	});
@@ -80,7 +105,7 @@ $(function() {
 	$('form#admin_addMetric select#parentcategory').change(function() {
 		var value = $('form#admin_addMetric select#parentcategory').val();
 		
-		$.getJSON('getSubCategories', {"categoryid":value}, function(data) {
+		$.getJSON('admin/getSubCategories', {"categoryid":value}, function(data) {
 			// Get the <select> tag
 			var options = $("form#admin_addMetric #category");
 			
@@ -89,7 +114,6 @@ $(function() {
 			
 			// Add default <option>
 			options.append('<option value="">-- Select a subcategory --</option>');
-			options.append('<option value="">No subcategory</option>');
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
@@ -116,9 +140,9 @@ $(function() {
 		"aoColumns": [
 			            { "mData": "pipelinename" },
 			            { "mData": "pipelinedesc" },
-//			            { "mData": "path" },
 			            { "mData": "filename" },
 			            { "mData": "dateadded" },
+			            { "mData": "user"},
 			            { "mData": null,
 			            	"sClass": "center",
 			            	"bSortable": false,

@@ -54,10 +54,71 @@ body {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
+
+
+input.parsley-success,
+select.parsley-success,
+textarea.parsley-success {
+  color: #468847;
+  background-color: #DFF0D8;
+  border: 1px solid #D6E9C6;
+}
+
+input.parsley-error,
+select.parsley-error,
+textarea.parsley-error {
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border: 1px solid #EED3D7;
+}
+
+.parsley-errors-list {
+  margin: 2px 0 3px;
+  padding: 0;
+  list-style-type: none;
+  font-size: 0.9em;
+  line-height: 0.9em;
+  opacity: 0;
+  -moz-opacity: 0;
+  -webkit-opacity: 0;
+
+  transition: all .3s ease-in;
+  -o-transition: all .3s ease-in;
+  -moz-transition: all .3s ease-in;
+  -webkit-transition: all .3s ease-in;
+}
+
+.parsley-errors-list.filled {
+  opacity: 1;
+}
 </style>
 
 <script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/parsley.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script>
+$(function(){
+	var parsleyConfig = {
+		    errorsContainer: function(pEle) {
+		        var $err = $("div#form-error");
+		        if ($err.text() != "") {
+		       		$err.show();
+		   		}
+		        return $err;
+		    }
+		};
+	
+	$("#registerForm").parsley(parsleyConfig).subscribe('parsley:field:error', function (formInstance) {
+		$("div#form-error").show();
+	}).subscribe('parsley:field:success', function (formInstance) {
+		$error = $("div#form-error");
+		
+		if ($error.text() == "") {
+			$error.hide();
+		}
+	});
+})
+</script>
 </head>
 
 <body>
@@ -73,34 +134,36 @@ body {
                         	Please provide the necessary information in order to create an account.
                         </div>
                         <div>
-                        	<form id="registerForm" class="form-horizontal" role="form" action="register/submit" method="POST">                         
+                        	<form id="registerForm" class="form-horizontal" role="form" action="register/submit" method="POST">
+                        		<div id="form-error" class="alert alert-danger" style="margin-bottom: 25px; padding-left: 25px; display:none;"></div>
+                        		                         
                            		<div style="margin-bottom: 25px" class="input-group">
-                                   	<span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                   	<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                    	<input type="text" class="form-control" name="UserName" placeholder="Username"> 
                                    </div>
                                    
                                    <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-envelope fa-fw"></i></span>
                                     <input type="text" class="form-control" name="Email" placeholder="Email">  
                                    </div>
                                    
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
                                     <input type="password" class="form-control" name="Password" placeholder="Password">  
                                    </div>
                                               
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
                                     <input type="password" class="form-control" placeholder="Password confirm">  
                                    </div>
                                    
                                 <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-info fa-fw"></i></span>
                                     <input type="text" class="form-control" name="FirstName" placeholder="First Name">  
                                    </div>
                                    
                                    <div style="margin-bottom: 25px" class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-info"></i></span>
+                                    <span class="input-group-addon"><i class="fa fa-info fa-fw"></i></span>
                                     <input type="text" class="form-control" name="LastName" placeholder="Last Name">  
                                    </div>	                                    
                                    			                               

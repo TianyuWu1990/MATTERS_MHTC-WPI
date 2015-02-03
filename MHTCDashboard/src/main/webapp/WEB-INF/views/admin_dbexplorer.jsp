@@ -42,10 +42,10 @@
 			        <ul id="databaseTab" class="nav nav-tabs">
 			        	<li class="active">
 			        		<a href="#byCategory" data-toggle="tab">
-			        			Search by Category
+			        			Statistic Data
 			        		</a>
 			        	</li>
-			        	<li><a href="#bySource">Search by Source</a></li>
+			        	<li><a href="#bySource">Metric Information</a></li>
 			        </ul>
 			    </div>
 			</div>
