@@ -1,29 +1,26 @@
-/*
-* Author: Dennis Ji
-* Template: Metro Admin Template - Bootstrap Theme
-* Version: 1.0.0
-* Bootstrap version: 2.3.1
-* Copyright 2013 Bootstrap Metro Dashboard
-* www: http://clabs.co
-* mail: lukasz@clabs.co
-* You can buy this theme on WrapBootstrap: https://wrapbootstrap.com/user/Bootstrap Metro Dashboard
-*/
-
 /* Basic
 =================================================================== */
 body 
 {
-	font-family: 'Open Sans', sans-serif;
-	font-weight: 300;
-	
-	background-color: #fff;
+  color: #34495e;
+  background: #f5f5f5;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
 }
 
 
 h1 {
 	font-size: 32px;
 	line-height: 32px;
-	font-weight: 300;
 }
 
 h2 {
