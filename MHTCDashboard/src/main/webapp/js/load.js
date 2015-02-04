@@ -213,15 +213,31 @@ loadFunction = function() {
 	
 	//cm.loadFunction();
 	as.loadFunction();
-
-    // Initializes button that closes the left sidebar
-    $("#close-sidebar-left").click(function() {
-    	$("#sidebar-left").hide("slide", { direction: "left" }, 300);    	
-    });
-    
-    // Initializes the button that opens the left sidebar
-    $("#open-sidebar-left").click(function() {
-    	$("#sidebar-left").show("slide", { direction: "left" }, 300);	    	
+	
+    // Initializes button that toggles the sidebar
+		
+    $("#toggle-sidebar").click(function() {
+    	
+    	var icon = $(this).find("i")[0];
+    	
+    	if ($("#sidebar-left").hasClass("open"))
+    	{    				
+    		$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#sidebar-left").removeClass("open");
+    		
+    		$(icon).removeClass("fa-caret-left");
+    		$(icon).addClass("fa-caret-right");
+    	}
+    	else
+    	{	
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300, function() { $(window).trigger('resize'); });
+    		$("#sidebar-left").addClass("open");
+    		
+    		$(icon).addClass("fa-caret-left");
+    		$(icon).removeClass("fa-caret-right");
+    	}
+    	
     });
     
     // Enable "drop menus" in sidebar

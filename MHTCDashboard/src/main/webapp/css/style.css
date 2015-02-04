@@ -6,6 +6,15 @@ body
   background: #f5f5f5;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
+
+  height: 100%;
+  width: 100%;
+}
+
+html
+{
+	height: 100%;
+	width: 100%;
 }
 
 h1,
@@ -193,11 +202,6 @@ a.brand span {
 	width: 100%;
 }
 
-#stateSelection > li:last-child
-{
-	padding-bottom: 50px;
-}
-
 .selectUnselectAll
 {
 	cursor: pointer;
@@ -291,19 +295,21 @@ a.brand span {
 
 .sidebar 
 {
-	background: #fff;	
+	display: block;
+	float: left; 
+		
+	margin: 0px;
 	
-	box-shadow: 0px 0px 5px 0px black;
-	
-	position:absolute;
-	margin:0px !important;
+	width: auto;
+	height: auto;
 	
 	z-index: 999;
 	
-	height: 100%;
-	width: auto;
+	overflow: hidden;	
 	
-	overflow: hidden;			
+	background: #fff;	
+	
+	border-right: 1px solid black;
 }
 
 .sidebar > .column 
@@ -312,7 +318,13 @@ a.brand span {
 	height: 100%;	
 		
 	float: left;
+	
+	overflow-y: scroll;
+}
 
+.sidebar > #stateSelectionCol.column
+{
+	width: 200px;	
 	border-left: 1px solid black;
 }
 
@@ -320,7 +332,7 @@ a.brand span {
 {
 	background: #7b0020;
 	
-	height: 49px;	
+	height: 50px;	
 	width: 100%;
 }
 
@@ -396,11 +408,6 @@ a.brand span {
   	font-weight: 300;
 }
 
-.nav-tabs.nav-stacked > li > ul  
-{
-	height: 175px;
-	overflow-y : scroll;
-}
 
 .nav-tabs > li > a:hover
 {
@@ -411,13 +418,6 @@ a.brand span {
 {
 	display:block;
 }
-
-.nav-tabs.nav-stacked > li:last-child > ul  
-{
-	height: 100%;
-	overflow-y : scroll;
-}
-
 
 .nav-tabs.nav-stacked  > li.active > a:hover,
 .nav-tabs.nav-stacked  > li > ul > li > a:hover 
@@ -464,17 +464,18 @@ a.brand span {
 
 .container-fluid-full
 {
-	height: 100%;
-	width: 100%;	
+	position: absolute;	
+	left: 0;
+	right: 0;
+	top: 135;
+	bottom: 40;	
+	
+	background: #fff;
 }
 
 /* Content pane for visualization */
 #content {
-	background: #fff;
-	min-height: 100%;
-	
-	width: 100% !important;
-	
+	display: block;
 	margin-left:0px !important;
 }
 
@@ -557,8 +558,7 @@ a.brand span {
 }
 
 #errorView {
-	height: 100%;
-	width: 100%;
+	display: block;
 	
 	padding-top: 50px;
 }
@@ -566,6 +566,8 @@ a.brand span {
 #errorMsgWrapper {
 	font-weight: 400;
 	font-size: 18px;
+	
+	color: #000;
 	
 	text-align: center;
 }
@@ -784,16 +786,22 @@ button.submit:hover { background:#ddd; }
 =================================================================== */
 
 footer {
-	min-height: 24px;
+	position: absolute;
+	
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	height: 40px;
+	
 	background: #7b0020;
 	color: #fff !important;
-	-webkit-border-radius: 0px;
-	   -moz-border-radius: 0px;
-	      	border-radius: 0px;
 }
 
 footer > div
 {
+	margin-top: 10px;
+	
 	width: 100%;
 	text-align: center;
 }

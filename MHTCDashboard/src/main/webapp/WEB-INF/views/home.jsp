@@ -161,8 +161,8 @@
 	
 		<div class="container-fluid-full">
 				<!-- start: left sidebar -->
-				<div id="sidebar-left" class="sidebar">
-					<div class="column">
+				<div id="sidebar-left" class="sidebar open">
+					<div class="column" id="metricSelectionCol">
 						<div class="title">
 							<span>Select Metrics</span>
 						</div>
@@ -261,12 +261,9 @@
 							</ul>
 						</div>
 					</div>
-					<div class="column">
+					<div class="column" id="stateSelectionCol">
 						<div class="title">
 							<span>Select States</span>
-							<a id="close-sidebar-left" href="#">
-								<i class="fa fa-caret-left fa-2x"></i>
-							</a> 
 						</div>
 						<div class="sidebar-nav">
 							<ul class="nav nav-tabs nav-stacked main-menu">
@@ -319,8 +316,8 @@
 						<div class="pagination-header-left">
 						
 							<!-- Display none at first b/c metrics menu is open by default --> 
-							<a href="#" id="open-sidebar-left"> 
-								<i class="fa fa-caret-right fa-2x"></i>
+							<a href="#" id="toggle-sidebar"> 
+								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
 					
