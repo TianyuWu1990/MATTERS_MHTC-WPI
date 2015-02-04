@@ -202,6 +202,11 @@ a.brand span {
 	width: 100%;
 }
 
+#stateSelection > li:last-child
+{
+	padding-bottom: 50px;
+}
+
 .selectUnselectAll
 {
 	cursor: pointer;
@@ -318,13 +323,11 @@ a.brand span {
 	height: 100%;	
 		
 	float: left;
-	
-	overflow-y: scroll;
 }
 
 .sidebar > #stateSelectionCol.column
 {
-	width: 200px;	
+	width: 200px;
 	border-left: 1px solid black;
 }
 
@@ -408,6 +411,11 @@ a.brand span {
   	font-weight: 300;
 }
 
+.nav-tabs.nav-stacked > li > ul  
+{
+	height: 175px;
+	overflow-y : scroll;
+}
 
 .nav-tabs > li > a:hover
 {
@@ -418,6 +426,13 @@ a.brand span {
 {
 	display:block;
 }
+
+.nav-tabs.nav-stacked > li:last-child > ul  
+{
+	height: 100%;
+	overflow-y : scroll;
+}
+
 
 .nav-tabs.nav-stacked  > li.active > a:hover,
 .nav-tabs.nav-stacked  > li > ul > li > a:hover 
