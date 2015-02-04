@@ -198,11 +198,100 @@ a.brand span {
 	padding-bottom: 50px;
 }
 
+.selectUnselectAll
+{
+	cursor: pointer;
+}
+
+.selectUnselectAllStates
+{
+	cursor: pointer;
+}
+
+.selectUnselectAllStates > input > a:hover
+{
+	text-decoration: underline;
+}
+
+.stateSelectionOption
+{
+	cursor: pointer;
+}
+
+.stateSelectionOption.selected
+{
+	font-weight: bold !important;
+}
+
+.stateSelectionOption.selected > i
+{
+	display: inline !important;
+}
+
+.stateSelectionOption > i
+{
+	display: none;
+}
+
+.selectPeerStates
+{
+	cursor: pointer;
+}
+
+.selectPeerStates.selected
+{
+	font-weight: bold !important;
+}
+
+.selectPeerStates.selected > i
+{
+	display: inline !important;
+}
+
+.selectPeerStates > i
+{
+	display: none;
+}
+
+.stateFilter
+{
+	height: 30px;
+	background-color: #e0e0e0;
+	padding: 5px;
+	border-bottom: 1px solid #D8D8D8;
+}
+
+.stateFilter > input
+{	
+	width: 100%;
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.metricOption
+{
+	cursor: pointer;
+}
+
+.metricOption.selected
+{
+	font-weight: bold !important;
+}
+
+.metricOption.selected > i
+{
+	display: inline !important;
+}
+
+.metricOption > i
+{
+	display: none;
+}
+
 .sidebar 
 {
 	background: #fff;	
-	opacity: 0.95;
-	filter: alpha(opacity=0.95);
 	
 	box-shadow: 0px 0px 5px 0px black;
 	
@@ -252,7 +341,7 @@ a.brand span {
 	float: right;
 	
 	color: #fff;
-	opacity: 1;
+	
 	font-size: 15px;
 	
 	padding: 10px 20px;
@@ -267,6 +356,7 @@ a.brand span {
 {
 	margin: 0px;
 	padding-bottom: 1px;
+	
 	font-size: 14px;
 }
 
@@ -293,23 +383,21 @@ a.brand span {
 
 .nav-tabs.nav-stacked > li > ul > li > a 
 {
-	border-top: none;
   	border-bottom: 1px solid #D8D8D8;
-	border-left: none;
-	border-right: none;
-	text-decoration: none;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 0px;		
+	
 	display: block;
+	
+	text-decoration: none;
+	
 	padding: 8px 15px;
-	color: #666 ;
+	color: #000;
+	
   	font-size:13px;
+  	font-weight: 300;
 }
 
 .nav-tabs.nav-stacked > li > ul  
 {
-	
 	height: 175px;
 	overflow-y : scroll;
 }
@@ -330,35 +418,11 @@ a.brand span {
 	overflow-y : scroll;
 }
 
-.nav-tabs.nav-stacked > li:last-child > a 
-{
-  	border-bottom: 1px solid transparent;		
-}
-
-.nav-tabs.nav-stacked > li.active > ul 
-{
-  	background-color: #fff;
-}
 
 .nav-tabs.nav-stacked  > li.active > a:hover,
 .nav-tabs.nav-stacked  > li > ul > li > a:hover 
 {
- 	color: black ;	
-}
-
-.nav-tabs.nav-stacked > li:first-child > a 
-{
-	margin: 0px 0px 0px 0px;
-  	-webkit-border-radius: 0px;
-       -moz-border-radius: 0px;
-          	border-radius: 0px;
-}
-
-.nav-tabs.nav-stacked > li:last-child > a 
-{
-  	-webkit-border-radius: 0px;
-       -moz-border-radius: 0px;
-          	border-radius: 0px;
+ 	background-color: rgb(240,240,240);
 }
 
 .navbar .nav li.dropdown.open > .dropdown-toggle,
@@ -384,6 +448,7 @@ a.brand span {
 	right:0;
 	display:none;
 }
+
 .dropdown-menu  form
 {
 	cursor:pointer;
@@ -819,69 +884,6 @@ footer > div > a:hover
 	font-weight : 600;
 	font-size:15px;
 	margin:0px;
-}
-
-.selectUnselectAll
-{
-	cursor: pointer;
-}
-
-.selectUnselectAll > input > a:hover
-{
-	text-decoration: underline;
-}
-
-.selectUnselectAllStates
-{
-	cursor: pointer;
-}
-
-.selectUnselectAllStates > input > a:hover
-{
-	text-decoration: underline;
-}
-
-.stateSelectionOption
-{
-	cursor: pointer;
-}
-
-.stateSelectionOption.selected
-{
-	color: black !important;
-	font-weight: bold;
-}
-
-.selectPeerStates
-{
-	cursor: pointer;
-}
-
-.selectPeerStates.selected
-{
-	color: black !important;
-	font-weight: bold;
-}
-
-.stateFilter
-{
-	height: 30px;
-	background-color: #e0e0e0;
-	padding: 5px;
-	border-bottom: 1px solid #D8D8D8;
-}
-
-.stateFilter > input
-{	
-	width: 100%;
-	height: 100%;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.submenu
-{
-	cursor: pointer;
 }
 
 /* Buttons for the Previous and Next metric selection */

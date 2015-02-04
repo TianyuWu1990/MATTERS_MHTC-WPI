@@ -170,19 +170,17 @@
 							<ul class="nav nav-tabs nav-stacked main-menu">
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> State Profile</span> 
+										State Profile 
 									</a>
 									<ul id="stateMetric" class="listcontent">
-										<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox" checked style="display:none"><a style="text-align:right;">Deselect All</a>
+										<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
+											<a style="text-align:right;">Deselect All</a>
 										</li>
 										<c:forEach items="${jv_stats_profile}" var="stat1">
 											<li>
-												<a class="submenu" id="${stat1.metric.id}"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat1.metric.id}" checked> 
-														${stat1.metric.name}
-													</span>
+												<a class="selected metricOption" id="${stat1.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat1.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -190,20 +188,17 @@
 								</li>
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> National Ranking</span> 
+										National Ranking 
 									</a>
 									<ul id="nationalProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none" data-toggle="tooltip" title="Click to select/unselect all">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_national}" var="stat2">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat2.metric.id}" disabled="disabled"> 
-														${stat2.metric.name} 
-													</span>
+												<a class="metricOption" id="${stat2.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat2.metric.name} 
 												</a>
 											</li>
 										</c:forEach>
@@ -211,19 +206,17 @@
 								</li>
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> Talent Metrics</span> 
+										Talent Metrics 
 									</a>
 									<ul id="talentProfileList" >
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a>
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_talent}" var="stat3">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat3.metric.id}" disabled="disabled"> 
-														${stat3.metric.name}
-													</span>
+												<a class="metricOption" id="${stat3.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat3.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -231,20 +224,17 @@
 								</li>
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> Cost Metrics</span> 
+										Cost Metrics
 									</a>
 									<ul id= "costProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_cost}" var="stat4">
 											<li>
-												<a class="submenu">
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat4.metric.id}" disabled="disabled"> 
-														${stat4.metric.name}
-													</span>
+												<a class="metricOption" id="${stat4.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat4.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -252,20 +242,17 @@
 								</li>
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet">Economy Metrics </span> 
+										Economy Metrics
 									</a>
 									<ul id="economyProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_economy}" var="stat5">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat5.metric.id}" disabled="disabled"> 
-														${stat5.metric.name}
-													</span>
+												<a class="metricOption" id="${stat5.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat5.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -278,7 +265,7 @@
 						<div class="title">
 							<span>Select States</span>
 							<a id="close-sidebar-left" href="#">
-								<i class="fa fa-times fa-2x"></i>
+								<i class="fa fa-caret-left fa-2x"></i>
 							</a> 
 						</div>
 						<div class="sidebar-nav">
@@ -292,9 +279,7 @@
 										</li>
 										<li>
 											<a class="selectPeerStates" id="${row.id}">
-												<span class="hidden-tablet">
-													<input type="radio" class="checkPeerStates"> Select Peer States
-												</span>
+												Select Peer States
 											</a>
 										</li>
 										<li class="stateFilter">
@@ -307,18 +292,13 @@
 															<c:choose>
 											        			<c:when test="${row.id == (21)}">
 											        			<a class="stateSelectionOption selected" id="${row.id}">
-																	<span class="hidden-tablet">
-											        					<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}" checked> 
 											        			</c:when>
 											        			<c:otherwise>
 											        			<a class="stateSelectionOption" id="${row.id}">
-																	<span class="hidden-tablet">
-											        					<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}"> 
-											        				
 											        			</c:otherwise>
 											        		</c:choose>			
+											        		<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
 															${row.name} (${row.abbr})
-														</span>
 											        </a>
 												</li>
 											</c:forEach>
@@ -339,8 +319,8 @@
 						<div class="pagination-header-left">
 						
 							<!-- Display none at first b/c metrics menu is open by default --> 
-							<a href="#" id="open-sidebar-left" style="opacity:0; filter: alpha(opacity=0);"> 
-								<i class="fa fa-bars fa-2x"></i>
+							<a href="#" id="open-sidebar-left"> 
+								<i class="fa fa-caret-right fa-2x"></i>
 							</a>
 						</div>
 					

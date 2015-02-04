@@ -216,18 +216,12 @@ loadFunction = function() {
 
     // Initializes button that closes the left sidebar
     $("#close-sidebar-left").click(function() {
-    	$("#sidebar-left").hide("slide", { direction: "left" }, 300);
-    	
-    	$("#open-sidebar-left").attr("style", "opacity: 1;filter: alpha(opacity=1);");
-    	
-    	
+    	$("#sidebar-left").hide("slide", { direction: "left" }, 300);    	
     });
     
     // Initializes the button that opens the left sidebar
     $("#open-sidebar-left").click(function() {
-    	$("#sidebar-left").show("slide", { direction: "left" }, 300);	
-    	
-    	$("#open-sidebar-left").attr("style", "opacity: 0;filter: alpha(opacity=0);");    	
+    	$("#sidebar-left").show("slide", { direction: "left" }, 300);	    	
     });
     
     // Enable "drop menus" in sidebar
@@ -247,16 +241,13 @@ loadFunction = function() {
     $(".stateSelectionOption").click(function(e){
     	
     	// Check the clicked input if it has not already been checked.
-    	var clickedInput = $(this).find(".checkState");
-    	var isCheckedAlready = $(clickedInput).is(':checked');
-    	$(clickedInput).prop('checked', !isCheckedAlready);
+    	var isCheckedAlready = $(this).hasClass("selected");
     	
     	if (!isCheckedAlready)
     		$(this).addClass("selected");
     	else
     		$(this).removeClass("selected");
     	    	
-    	$(".checkPeerStates").prop("checked", false) // Deselect Peer States checkbox
     	$(".selectPeerStates").removeClass("selected");
     	
     	updateStateSelection(); // Reflect changes in data
@@ -268,7 +259,7 @@ loadFunction = function() {
     	var checked = $(this).attr("id") == "select";
 
     	// Go through and deselect/select all of the states
-    	var stateOptions = $(".checkState");
+    	var stateOptions = $(".stateSelectionOption");
     	
     	for(i = 0; i < stateOptions.length; i++)
     	{
@@ -276,17 +267,14 @@ loadFunction = function() {
     		
     		if (checked)
     		{
-    			$(curNode).parent().parent().addClass("selected");
-    			$(curNode).prop("checked", true);
+    			$(curNode).addClass("selected");
     		}
     		else
     		{
-    			$(curNode).parent().parent().removeClass("selected");
-    			$(curNode).prop("checked", false);
+    			$(curNode).removeClass("selected");
     		}
     	}
     	
-    	$(".checkPeerStates").prop("checked", false); // Deselect Peer States checkbox
     	$(".selectPeerStates").removeClass("selected");
     	
     	updateStateSelection(); // Reflect changes in data
@@ -295,20 +283,18 @@ loadFunction = function() {
     // When select peers is clicked, select only the peer states.
     $(".selectPeerStates").click(function(e){
     	
-    	if ($(".checkPeerStates").is(":checked"))
+    	if ($(".selectPeerStates").hasClass("selected"))
     		return; // Do nothing if already checked
     	
     	// Check peer states checkbox
-    	$(".checkPeerStates").prop("checked", true);
     	$(".selectPeerStates").addClass("selected");
     	
     	// Deselect all states to start
-    	var allStates = $(".checkState");
+    	var allStates = $(".stateSelectionOption");
     	
     	for(i = 0; i < allStates.length; i++)
     	{
-    		$(allStates[i]).prop("checked", false);
-    		$(allStates[i]).parent().parent().removeClass("selected");
+    		$(allStates[i]).removeClass("selected");
     	}
     	
     	// Then go through and select only the peer states
@@ -316,10 +302,9 @@ loadFunction = function() {
     	
     	for(i = 0; i < peerStates.length; i++)
     	{
-    		var curNode = "#checkState" + peerStates[i].id;
+    		var curNode = "#" + peerStates[i].id + ".stateSelectionOption";
     		
-    		$(curNode).prop("checked", true);
-    		$(curNode).parent().parent().addClass("selected");
+    		$(curNode).addClass("selected");
     	}
     	
     	// Reflect updated state selection within data.
@@ -351,7 +336,102 @@ loadFunction = function() {
     /******************************************
      * End state selection logic
      ******************************************/
+	
+	/******************************************
+     * Start metric selection logic
+     ******************************************/
+	
+	$(".metricOption").click(function(){
+		var isChecked = $(this).hasClass("selected");
+		var checkedMetricId = $(this).attr("id");
+		
+		if(!isChecked)
+		{		
+			selectMetric(checkedMetricId);
+			
+			as.SelectUnselectMultipleMetric(checkedMetricId, 1);
+		}
+		else if (isChecked)
+		{	
+			unselectMetric(checkedMetricId);
+			
+			as.SelectUnselectMultipleMetric(checkedMetricId, 2);
+		}
+	});
+	
+	$(".selectUnselectAll" ).click(function() { 
+    	var checked = $(this).attr("id") == "select";
+
+    	var targetFunction = selectMetric;
+    	var actionID = 1;
+    	
+    	if (!checked)
+    	{
+    		targetFunction = unselectMetric;
+    		actionID = 2;
+    	}
+    	
+    	// Go through and deselect/select all of the metrics
+    	var metricOptions = $(this).parent().find(".metricOption");
+    	var metricList = [];
+    	
+    	for(i = 0; i < metricOptions.length; i++)
+    	{
+    		var curNode = metricOptions[i]
+    		var curNodeID = $(curNode).attr("id");
+    		
+    		metricList[i] = curNodeID;
+    		
+    		targetFunction(curNodeID);
+    	}    	
+    	
+		as.SelectUnselectMultipleMetric(metricList, actionID);
+	});
+	
+	$(".backButton" ).click(function(){ 
+		var currentIdString = $(this).attr('id');
+		var currentId = currentIdString.substr(19, 2);	 
+		as.SelectUnselectMultipleMetric(currentId,3);
+	});
+	$(".nextButton" ).click(function(){ 
+		var currentIdString = $(this).attr('id');
+		var currentId = currentIdString.substr(19, 2);	 
+		as.SelectUnselectMultipleMetric(currentId,3);
+	});
+	
+	/******************************************
+     * End metric selection logic
+     ******************************************/
+	
+	
+	
+	/******************************************
+     * Setup default metric selection
+     ******************************************/
+	var unorderedList   = $("#stateMetric"); // Select state metrics by default 
+    var ListItems       = $(unorderedList).find("li");
+  
+    var defaultlist = []
     
+	for(i = 1; i < ListItems.length ;i++ )
+	{
+		var linkTag = $(ListItems[i]).find("a")[0];
+		
+		var defaultMetricID = $(linkTag).attr("id");
+		
+		var parentID = 'stateMetric';
+		
+		selectMetric(defaultMetricID, parentID);
+		
+		defaultlist[i - 1] = defaultMetricID;
+	}
+    
+    as.SelectUnselectMultipleMetric(defaultlist, 1);
+
+    /******************************************
+     * End setup default metric selection
+     ******************************************/
+	 
 	$("#chartType" ).change(function() {
 		  cm.current_graph = this.value;
 		  cm.showMultiGraph(as.selected);
@@ -385,212 +465,8 @@ loadFunction = function() {
 	$("#yearsMultipleQuery").change(function(){
 		as.showMultipleMetricsStatesYears(this.value);
 	});
-	
-/**********************************************************************/
-/**********************NEW DESIGN**************************************/
-/**********************************************************************/
-/**********************************************************************/
-	 
-	/***********************added by manik*********************************************/
-	
-	$(".submenu").click(function(){
-		var inputTag = this.getElementsByTagName("input")[0];
-		var isChecked = inputTag.checked;
-		var checkedMetricId = inputTag.id;
-		var currentParentId = this.parentNode.parentNode.id;
-		console.log(currentParentId);
-		if(!isChecked)
-		{		
-			$("#"+checkedMetricId).removeAttr("disabled");
-			inputTag.checked = true;
-			this.style.color = "#000";
-			this.style.fontWeight = "bold"
-			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),1);
-			duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
-			if(duplicateMetricParentId !== "")
-			{
-				var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
-				for(d = 1;d<duplicatecategory.length;d++)
-				{
-					if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
-					{
-						duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="bold";
-						duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#000";
-						duplicatecategory[d].getElementsByTagName("input")[0].checked = true;
-						duplicatecategory[d].getElementsByTagName("input")[0].disabled = "";
-						break;
-					}
-				}
-				
-			}
-		}
-		else if ( isChecked)
-		{	
-			$("#"+checkedMetricId).attr("disabled","disabled");
-			inputTag.checked = false;
-			this.style.color = "#666";
-			this.style.fontWeight = "normal"
-			duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
-			if(duplicateMetricParentId !== "")
-			{
-				var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
-				for(d = 1;d<duplicatecategory.length;d++)
-				{
-					if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
-					{
-						duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="normal";
-						duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#666";
-						duplicatecategory[d].getElementsByTagName("input")[0].checked = false;
-						break;
-					}
-				}
-				
-			}
-			as.SelectUnselectMultipleMetric(checkedMetricId.substr(5, checkedMetricId.length),2);
-		}
-	});
-	/*******************************************************************************************
-	/*table creation and default selection*/
-		var unorderedList   = document.getElementById('stateMetric');
-	    var ListItems       = unorderedList.getElementsByTagName('li');
-	  
-	    defaultlist =[]
-		for(i = 1;i < ListItems.length ;i++ )
-		{
-			var inputTag = ListItems[i].getElementsByTagName("input")[0];
-			var aTag = ListItems[i].getElementsByTagName("a")[0];
-			checkedMetricId = inputTag.id;
-			 var currentParentId = 'stateMetric'
-			if(inputTag.checked){
-				
-				$("#"+aTag.id).css("color","#000");
-				$("#"+aTag.id).css("font-weight","bold");
-				defaultlist[i-1] = checkedMetricId.substr(5, checkedMetricId.length);
-				duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
-				if(duplicateMetricParentId !== "")
-				{
-					var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
-					for(d = 1;d<duplicatecategory.length;d++)
-					{
-						if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
-						{
-							duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="bold";
-							duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#000";
-							duplicatecategory[d].getElementsByTagName("input")[0].checked = true;
-							duplicatecategory[d].getElementsByTagName("input")[0].disabled = "";
-							break;
-						}
-					}
-					
-				}
-			}
-		}
-	    as.SelectUnselectMultipleMetric(defaultlist,1);
-	
-		
-		/*******************************************************************************************/
-		/*select and clear all the metric under category*/
-	$(".selectUnselectAll" ).click(function(){ 
-		var selectionTagInput = this.getElementsByTagName("input")[0];
-		var isChecked = selectionTagInput.checked;
-		var allListMetrics = this.parentNode.getElementsByClassName("submenu");
-		var currentParentId = this.parentNode.id;
-		var duplicateMetricParentId;
-		var metricList = []
-		if(isChecked)
-		{
-			selectionTagInput.checked = false;
-			this.getElementsByTagName("a")[0].innerHTML = "Select All"
-				var index = 0;
-			var i = 0;
-				while(i < allListMetrics.length)
-				{
-				var inputTag = allListMetrics[i].getElementsByTagName("input")[0];
-				var checkedMetricId = inputTag.id;
-				
-				if(inputTag.checked){
-					inputTag.checked = false;
-					inputTag.disabled = "disabled";
-					allListMetrics[i].style.color = "#666";
-					allListMetrics[i].style.fontWeight = "normal"
-
-					metricList[index] = checkedMetricId.substr(5, checkedMetricId.length);
-					index++;
-					duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
-					if(duplicateMetricParentId !== "")
-					{
-						var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
-						for(d = 1;d<duplicatecategory.length;d++)
-						{
-							if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
-							{
-								duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="normal";
-								duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#666";
-								duplicatecategory[d].getElementsByTagName("input")[0].checked = false;
-								break;
-							}
-						}
-						
-					}
-				}
-				i++;
-			}
-			as.SelectUnselectMultipleMetric(metricList,2);
-		}
-		else if (!isChecked)
-		{
-			selectionTagInput.checked = true;
-			this.getElementsByTagName("a")[0].innerHTML = "Deselect All"
-			var index = 0;
-			var i = 0;
-
-			while(i < allListMetrics.length)
-			{
-				var inputTag = allListMetrics[i].getElementsByTagName("input")[0];
-				var checkedMetricId = inputTag.id;
-
-				if(!inputTag.checked){
-					inputTag.checked = true;
-					inputTag.disabled = "";
-					allListMetrics[i].style.color = "#000";
-					allListMetrics[i].style.fontWeight = "bold"
-					metricList[index] = checkedMetricId.substr(5, checkedMetricId.length);
-					index++;
-					duplicateMetricParentId = as.getDuplicateMetricCategory(currentParentId,checkedMetricId);
-					if(duplicateMetricParentId !== "")
-					{
-						var duplicatecategory = document.getElementById(duplicateMetricParentId).getElementsByTagName('li');
-						for(d = 1;d<duplicatecategory.length;d++)
-						{
-							if(duplicatecategory[d].getElementsByTagName("input")[0].id == checkedMetricId)
-							{
-								duplicatecategory[d].getElementsByTagName("a")[0].style.fontWeight="bold";
-								duplicatecategory[d].getElementsByTagName("a")[0].style.color = "#000";
-								duplicatecategory[d].getElementsByTagName("input")[0].checked = true;
-								duplicatecategory[d].getElementsByTagName("input")[0].disabled = "";
-								break;
-							}
-						}
-						
-					}
-				}
-				i++;
-			}
-			as.SelectUnselectMultipleMetric(metricList,1);
-		}
-	});
-
-	$(".backButton" ).click(function(){ 
-		var currentIdString = $(this).attr('id');
-		var currentId = currentIdString.substr(19, 2);	 
-		as.SelectUnselectMultipleMetric(currentId,3);
-	});
-	$(".nextButton" ).click(function(){ 
-		var currentIdString = $(this).attr('id');
-		var currentId = currentIdString.substr(19, 2);	 
-		as.SelectUnselectMultipleMetric(currentId,3);
-	});
-	 
+    
+    
 /********************************************************************/
 	/**COMMNETED BY MANIK**/
 
@@ -633,15 +509,15 @@ loadFunction = function() {
  */
 function updateStateSelection() 
 {
-	var stateOptions = $(".checkState");
+	var stateOptions = $(".stateSelectionOption");
 	
 	// Get the list of all states that are checked
 	var selectedItems = [];
 	for (i = 0; i < stateOptions.length; i++)
 	{
-		if ($(stateOptions[i]).is(':checked'))
+		if ($(stateOptions[i]).hasClass("selected"))
 		{
-			selectedItems.push($(stateOptions[i]).attr('value'));
+			selectedItems.push($(stateOptions[i]).attr('id'));
 		}
 	}
 	
@@ -659,5 +535,70 @@ function updateStateSelection()
 	{
 		$(".selectUnselectAllStates > a").html("Select All");
 		$(".selectUnselectAllStates").attr("id", "select");
+	}
+}
+
+/**
+ * Selects the given metric ID
+ * @param metricID the ID of the metric to select
+ */
+function selectMetric(metricID)
+{
+	return selectUnselectMetricHelper(metricID, true);
+}
+
+/**
+ * Unselects the given metric ID
+ * @param metricID the ID of the metric to unselect
+ */
+function unselectMetric(metricID)
+{
+	return selectUnselectMetricHelper(metricID, false);
+}
+
+/**
+ * Helper for selecting and unselecting metrics
+ * @param metricID the ID of the metric to select/unselect
+ * @param select whether or not the metric should be selected
+ */
+function selectUnselectMetricHelper(metricID, select)
+{
+	// Get the identifier for the metric in question
+	var metricOption = $("#" + metricID + ".metricOption");
+	
+	// Either select or deselect, as appropriate
+	if (select)
+	{
+		$(metricOption).addClass("selected");
+	}
+	else
+	{
+		$(metricOption).removeClass("selected");
+	}
+
+	
+	// Metrics can be in 2 + categories. Make sure that we reflect the change to the metric selection in
+	// all categories, if applicable.
+	for (var i = 0; i < metricOption.length; i++)
+	{
+		var currMetricOption = metricOption[i];
+		var parentUL = $(currMetricOption).parent().parent();
+		
+		// Update the select all text for the parent category
+		var numberSelectedInCat = $(parentUL).find("a.selected").length;
+		var selectAllButtonForCat = $(parentUL).find(".selectUnselectAll > a")[0];
+		var selectAllWrapperForCat = $(parentUL).find(".selectUnselectAll")[0];
+		
+		
+		if (numberSelectedInCat > 0)
+		{
+			$(selectAllButtonForCat).html("Deselect All");
+			$(selectAllWrapperForCat).attr("id", "deselect");
+		}
+		else
+		{
+			$(selectAllButtonForCat).html("Select All");
+			$(selectAllWrapperForCat).attr("id", "select");
+		}	
 	}
 }
