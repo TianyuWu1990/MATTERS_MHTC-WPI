@@ -1,9 +1,10 @@
 -- Function: mhtc_sch.getmetricsbyparent(integer[])
 
--- DROP FUNCTION mhtc_sch.getmetricsbyparent(integer[]);
+DROP FUNCTION mhtc_sch.getmetricsbyparent(integer[]);
 
 CREATE OR REPLACE FUNCTION mhtc_sch.getmetricsbyparent(IN parentids integer[] DEFAULT '{}'::integer[])
-  RETURNS TABLE("Id" integer, "Name" character varying, "Visible" boolean, "IsCalculated" boolean, "DataType" character varying, "DisplayName" character varying, "URL" character varying, "Source" character varying, "TrendType" character varying) AS
+  RETURNS TABLE("Id" integer, "Name" character varying, "Visible" boolean, "IsCalculated" boolean, "DataType" character varying, 
+  "DisplayName" character varying, "URL" character varying, "Source" character varying, "TrendType" character varying, "ParentId" integer) AS
 $BODY$
 BEGIN
 IF parentids <> '{}'::int[] THEN
