@@ -20,4 +20,4 @@ BEGIN
     END LOOP;
 END;
 $$
-LANGUAGE plpsql;
+LANGUAGE plpgsql;
