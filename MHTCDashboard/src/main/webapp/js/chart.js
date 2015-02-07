@@ -189,7 +189,7 @@ var CM = (function($) {
 						liststring += '</ul ></td></tr></table>';
 						seltimeline.append(liststring);
 						
-						var row="<th>&nbsp;</th>";
+						var row="<th>State</th>";
 						var checkduplicity;//hack to fix the fact the titles and rows were strnagly duplicating
 						var array_duplicates=new Array();
 						var counter_control_duplicates=0;// Hack: the rows were duplicating like crazy but now always
@@ -636,7 +636,7 @@ var CM = (function($) {
 		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
 		    			}
 						
-						var row="<th>&nbsp;</th>";
+						var row="<th>State</th>";
 
 						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
 							row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";
