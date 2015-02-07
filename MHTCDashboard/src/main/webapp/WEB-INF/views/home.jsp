@@ -352,7 +352,7 @@
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
 								<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1); as.showGraphTitle();">
-									<i class="fa fa-picture-o fa-2x"></i>
+									<i class="fa fa-us-map"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="table-tab" >
