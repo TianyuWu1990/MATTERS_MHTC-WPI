@@ -796,6 +796,10 @@ button.submit:hover { background:#ddd; }
   -moz-border-radius-bottomright: 0px;
 }
 
+i.fa.fa-info-circle {
+    color: #A7A9AA;
+}
+
 
 /* Footer
 =================================================================== */

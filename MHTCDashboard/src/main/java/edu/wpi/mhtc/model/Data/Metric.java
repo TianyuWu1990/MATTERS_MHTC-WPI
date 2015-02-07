@@ -20,8 +20,9 @@ public class Metric
 	
     private final String type;
     private final String trendType;
+    private final String desc;
 	
-	public Metric(int id, String name, int binId, String binName, String type, String trendType, String urlFrom, String sourceName)
+	public Metric(int id, String name, int binId, String binName, String type, String trendType, String urlFrom, String sourceName, String desc)
 	{
 	    this.id = id;
 		this.name = name;
@@ -31,11 +32,16 @@ public class Metric
 		this.binId = binId;
 		this.type = type;
 		this.trendType = trendType;
+		this.desc = desc+"\n Source: "+urlFrom;
 		
 	}
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getDesc(){
+		return desc;
 	}
 
 	public String getUrlFrom() {

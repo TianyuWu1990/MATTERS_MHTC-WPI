@@ -76,7 +76,7 @@ public class MetricServiceJdbc implements MetricService {
                 String trendType = rs.getString("TrendType");
                 		
                 return new Metric(rs.getInt("Id"), rs.getString("Name"), binId, binName, rs.getString("DataType"), 
-                		trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"));
+                		trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"), rs.getString("DisplayName"));
             }
 
         });
@@ -126,7 +126,7 @@ public class MetricServiceJdbc implements MetricService {
                 		
 // trendtypes no longer used
                 return new Metric(rs.getInt("Id"), rs.getString("Name"), categoryId, categoryName, 
-                		rs.getString("DataType"), "", rs.getString("URL"), rs.getString("Source"));
+                		rs.getString("DataType"), "", rs.getString("URL"), rs.getString("Source"),rs.getString("DisplayName"));
             }
 
         });
