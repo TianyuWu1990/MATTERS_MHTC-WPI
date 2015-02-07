@@ -102,7 +102,6 @@ var CM = (function($) {
 			                var type_var;
 			                for (var i = 0; i < multiData.length; i++)
 			                {
-			                	console.log(multiData);
 			                    row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
 			                    j=0;
 			                    while(j<array_years.length)
