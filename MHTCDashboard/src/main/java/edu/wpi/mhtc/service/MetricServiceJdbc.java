@@ -4,7 +4,7 @@
  */
 package edu.wpi.mhtc.service;
 
-import java.lang.reflect.Method;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -18,9 +18,9 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
+import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.AdminMetric;
 import edu.wpi.mhtc.model.admin.TreeViewNode;
-import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
@@ -28,49 +28,55 @@ import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 public class MetricServiceJdbc implements MetricService {
 
     private JdbcTemplate template;
-
+    final int RANK = 21;
+    final int TALENT = 20;
+    final int COST = 37;
+    final int ECONOMY = 29;
+    final int PROFILE = 45; 
+    
+    
     @Autowired
     public MetricServiceJdbc(JdbcTemplate template) {
         this.template = template;
 
     }
-    
-    private int[] tabids = { 91, 92, 93, 94, 95, 32, 29, 30, 25, 34, 28, 33, 27, 31, 61, 65, 66, 67, 70, 71, 73 };
-    
+   
+    /**
+     * Create Metric objects for all metrics in category, assigning them to the bin corresponding to their parent category.
+     * 
+     */
     @Override
-    public List<Metric> getMetricsInCategory(final int categoryId) {
+    public List<Metric> getMetricsInCategory(final int categoryId, final int binId) {
         PSqlStringMappedJdbcCall<Metric> metricCall = new PSqlStringMappedJdbcCall<Metric>(template)
                 .withSchemaName("mhtc_sch").withProcedureName("getmetrics");
 
         String name = "";
-        // TODO get rid of these terrible hard coded ids
-        if (categoryId == 21) {
+        if (binId == RANK) {
             name = "National";
-        } else if (categoryId == 20) {
+
+        } else if (binId == TALENT) {
             name = "Talent";
-        } else if (categoryId == 37) {
+
+        } else if (binId == COST) {
             name = "Cost";
-        } else if (categoryId == 29) {
+            
+        } else if (binId == ECONOMY) {
             name = "Economy";
-        }else if (categoryId == 45) {
+            
+        }else if (binId == PROFILE) {
             name = "Profile";
         }
 
-        final String finalName = name;
+        final String binName = name;
 
         metricCall.addDeclaredRowMapper(new PSqlRowMapper<Metric>() {
 
             @Override
             public Metric mapRow(SqlRowSet rs, int rowNum) throws SQLException {
                 String trendType = rs.getString("TrendType");
-                
-
-                boolean tabbed = false;
-                for (int i = 0; i < tabids.length; i++)
-                	if (tabids[i] == rs.getInt("Id"))
-                			tabbed = true;
                 		
-                return new Metric(rs.getInt("Id"), rs.getString("Name"), categoryId, finalName, rs.getString("DataType"), trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"), tabbed);
+                return new Metric(rs.getInt("Id"), rs.getString("Name"), binId, binName, rs.getString("DataType"), 
+                		trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"));
             }
 
         });
@@ -86,6 +92,55 @@ public class MetricServiceJdbc implements MetricService {
 
     }
 
+    /**
+     * Retrieves all metrics under parent category ids. 
+     * @param parentIds must correspond to ParentId in categories table.
+     * @throws SQLException
+     */
+    @Override
+    public List<Metric> getMetricsFromParents(final Integer... parentIds) throws SQLException {
+    	
+        PSqlStringMappedJdbcCall<Metric> metricCall = new PSqlStringMappedJdbcCall<Metric>(template)
+                .withSchemaName("mhtc_sch").withProcedureName("getmetricsbyparent");
+
+        metricCall.addDeclaredRowMapper(new PSqlRowMapper<Metric>() {
+
+            @Override
+            public Metric mapRow(SqlRowSet rs, int rowNum) throws SQLException {
+                
+                String name = null;
+                int categoryId = rs.getInt("ParentId");
+                if (categoryId == 21) {
+                    name = "National";
+                } else if (categoryId == 20) {
+                    name = "Talent";
+                } else if (categoryId == 37) {
+                    name = "Cost";
+                } else if (categoryId == 29) {
+                    name = "Economy";
+                }else if (categoryId == 45) {
+                    name = "Profile";
+                }
+                
+                final String categoryName = name;
+                		
+// trendtypes no longer used
+                return new Metric(rs.getInt("Id"), rs.getString("Name"), categoryId, categoryName, 
+                		rs.getString("DataType"), "", rs.getString("URL"), rs.getString("Source"));
+            }
+
+        });
+
+        metricCall.addDeclaredParameter(new SqlParameter("parentids", Types.ARRAY));
+        Array ids = template.getDataSource().getConnection().createArrayOf("integer", parentIds);
+
+        Map<String, Object> metricParams = new HashMap<String, Object>();
+        metricParams.put("parentids", ids);
+
+        return metricCall.execute(metricParams);
+
+    }
+    
     @Override
     public TreeViewNode getCategoriesAsTree() {
         PSqlStringMappedJdbcCall<TreeViewNode> call = new PSqlStringMappedJdbcCall<TreeViewNode>(template)
@@ -157,6 +212,8 @@ public class MetricServiceJdbc implements MetricService {
         return metricCall.execute(metricParams);
 
     }
+    
+    
 
     @Override
     public void storeCategory(String name, int parentId, String source) {
@@ -253,13 +310,12 @@ public class MetricServiceJdbc implements MetricService {
     @Override
     public List<Metric> getAllMetrics() {
 
-        // TODO pull bin ids into a property or something
-        List<Metric> metrics = new LinkedList<Metric>();
-        metrics.addAll(getMetricsInCategory(20));
-        metrics.addAll(getMetricsInCategory(21));
-        metrics.addAll(getMetricsInCategory(29));
-        metrics.addAll(getMetricsInCategory(37));
-
-        return metrics;
+        List<Metric> metrics = null;
+    	try {
+			metrics = getMetricsFromParents(TALENT,COST,RANK,ECONOMY);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	return metrics;
     }
 }

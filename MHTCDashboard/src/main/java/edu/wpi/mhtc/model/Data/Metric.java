@@ -20,9 +20,8 @@ public class Metric
 	
     private final String type;
     private final String trendType;
-    private final boolean tabbed;
 	
-	public Metric(int id, String name, int binId, String binName, String type, String trendType, String urlFrom, String sourceName, boolean tabbed)
+	public Metric(int id, String name, int binId, String binName, String type, String trendType, String urlFrom, String sourceName)
 	{
 	    this.id = id;
 		this.name = name;
@@ -30,7 +29,6 @@ public class Metric
 		this.sourceName = sourceName;
 		this.binName = binName;
 		this.binId = binId;
-		this.tabbed = tabbed;
 		this.type = type;
 		this.trendType = trendType;
 		
@@ -56,16 +54,6 @@ public class Metric
 	    return id;
 	}
 	
-	public boolean getTabbed() {
-	    return tabbed;
-	}
-	
-	public String getTabString() {
-	    if (tabbed)
-	        return "tabbed_metric";
-	    else
-	        return "";
-	}
     public String getType() {
         return type;
     }

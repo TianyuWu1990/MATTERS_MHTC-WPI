@@ -96,7 +96,7 @@ public class HomeController {
 		
 		String maId = "21";
 		
-		List<DataSeries> massProfile = statsService.getStateBinData(maId, 45);
+//		List<DataSeries> massProfile = statsService.getStateBinData(maId, 45);
 		List<DataSeries> massNational = statsService.getStateBinData(maId, 21);
 		List<DataSeries> massTalent = statsService.getStateBinData(maId, 20);
 		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
@@ -104,7 +104,7 @@ public class HomeController {
 		List<State> peers = stateService.getAllPeers();
 		List<State> allstates= stateService.getAllStates(); 
 		// TODO un-hardcode these bin ids
-		model.addAttribute("jv_stats_profile",massProfile );
+//		model.addAttribute("jv_stats_profile",massProfile );
 		model.addAttribute("jv_stats_national", massNational);
 		model.addAttribute("jv_stats_talent", massTalent);
 		model.addAttribute("jv_stats_cost", massCost);
