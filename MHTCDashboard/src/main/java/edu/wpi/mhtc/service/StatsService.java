@@ -7,7 +7,6 @@ package edu.wpi.mhtc.service;
 import java.util.List;
 
 import edu.wpi.mhtc.model.Data.DataSeries;
-import edu.wpi.mhtc.model.state.State;
 
 /**
  * 

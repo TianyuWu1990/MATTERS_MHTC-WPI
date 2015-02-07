@@ -90,7 +90,7 @@ var CM = (function($) {
 			        		 row="<thead><th>State</th>";
 			        		 var i=0;
 			        		while(i<array_years.length){			        			
-			        			 row = row+"<th>"+array_years[i]+ "</th>";
+			        			 row = row+"<th>"+array_years[i]+"</th>";
 			        			 i++;
 			        		}
 			        		row = row +"</thead>";
@@ -135,7 +135,7 @@ var CM = (function($) {
 			        }, 500);
 				});
 			}
-			else
+			else	//multiple metrics
 			{
 					this.kcounterexecute=0;
 					this.multiDataMultipleQuery=[];
@@ -171,7 +171,6 @@ var CM = (function($) {
 		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
 		    			}
 
-		    			//modified by manik
 		    			var seltimeline=$("#timelinetable");
 		    			seltimeline.empty();
 		    			var liststring =""
@@ -198,7 +197,7 @@ var CM = (function($) {
 						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
 							checkduplicity = $.inArray(cm.multiDataMultipleQuery[r][0][0].metric.name, array_duplicates) > -1;
 							if(checkduplicity==false){
-								row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";
+								row = row + "<th>"+ '<span id="info" title="' + cm.multiDataMultipleQuery[r][0][0].metric.desc + '"><i class="fa fa-info-circle"></i><span>' + " " + cm.multiDataMultipleQuery[r][0][0].metric.name + "</th>";
 								array_duplicates[counter_control_duplicates]=cm.multiDataMultipleQuery[r][0][0].metric.name;
 								counter_control_duplicates++;
 							}
@@ -299,6 +298,7 @@ var CM = (function($) {
 				this.setAttribute( 'title', States.getStateFromString(sTitle).name );	
 
 			} );
+			
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable({"iDisplayLength": 20}, {});
 				dt = oTable;
@@ -316,6 +316,8 @@ var CM = (function($) {
 				"track": true,
 				"fade": 0
 			} );
+			
+			
 			$('#myTable tbody').on( 'click', 'tr', function () {
 		        if ( $(this).hasClass('selected') ) {
 		            $(this).removeClass('selected');

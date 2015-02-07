@@ -796,6 +796,10 @@ button.submit:hover { background:#ddd; }
   -moz-border-radius-bottomright: 0px;
 }
 
+i.fa.fa-info-circle {
+    color: #A7A9AA;
+}
+
 
 .graph-tab i.fa.fa-us-map {
     background: url("../img/us-map.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
