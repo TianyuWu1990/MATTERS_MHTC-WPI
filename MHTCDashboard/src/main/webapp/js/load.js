@@ -406,12 +406,15 @@ loadFunction = function() {
 	
 	$(".backButton" ).click(function(){ 
 		var currentIdString = $(this).attr('id');
-		var currentId = currentIdString.substr(19, 2);	 
+		//strip current Id from end of string
+		prefix = "clickMultipleMetric";
+		var currentId = currentIdString.substring(prefix.length);	 
 		as.SelectUnselectMultipleMetric(currentId,3);
 	});
 	$(".nextButton" ).click(function(){ 
 		var currentIdString = $(this).attr('id');
-		var currentId = currentIdString.substr(19, 2);	 
+		prefix = "clickMultipleMetric";
+		var currentId = currentIdString.substring(prefix.length);;	 
 		as.SelectUnselectMultipleMetric(currentId,3);
 	});
 	
