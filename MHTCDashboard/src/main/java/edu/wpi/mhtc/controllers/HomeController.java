@@ -279,12 +279,16 @@ public class HomeController {
     /********** Feedback Page 
      * @throws SQLException **********/
     @RequestMapping(value = "/feedback_post", method = RequestMethod.POST)
-    public String feedback_post(Locale locale, Model model, @RequestParam("subject") String subject, @RequestParam("comments") String comments, 
-															    		@RequestParam("recaptcha_challenge_field") String challangeField,
-																		@RequestParam("recaptcha_response_field") String responseField,
-																		ServletRequest servletRequest,
-															            SessionStatus sessionStatus) throws SQLException 
-    {
+    public String feedback_post(Locale locale, Model model, @RequestParam("name") String name,
+    														@RequestParam("affiliation") String affiliation,
+    														@RequestParam("email") String email,
+    														@RequestParam("subject") String subject,
+    														@RequestParam("comments") String comments, 
+												    		@RequestParam("recaptcha_challenge_field") String challangeField,
+															@RequestParam("recaptcha_response_field") String responseField,
+															ServletRequest servletRequest,
+														    SessionStatus sessionStatus) throws SQLException 
+{
     	
     	String remoteAddress = servletRequest.getRemoteAddr();
         ReCaptchaResponse reCaptchaResponse = this.reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
@@ -295,9 +299,10 @@ public class HomeController {
 
         	// Send the email
         	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
+        	String subjectText = "[" + affiliation + " - " + name + "] " + subject; 
 		    
 	       	Mailer mm = (Mailer) context.getBean("mailMail");
-	        mm.sendFeedbackEmail(UserService.getEmailByUser(auth.getName()), subject, comments);
+	        mm.sendFeedbackEmail(email, subjectText, comments);
 	        
         	// Load the notification
         	model.addAttribute("completed", true);

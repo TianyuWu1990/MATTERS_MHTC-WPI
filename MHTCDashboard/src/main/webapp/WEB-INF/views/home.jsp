@@ -56,21 +56,31 @@
 			<form action="feedback_post" method="POST" style="margin-bottom: 0px;">
 				<div class="modal-dialog modal-md" style="width:100%">
 					<div class="modal-content">
-						<div class="modal-header">
+						<div class="modal-header red">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title" id="myModalLabel">Site Feedback</h4>
 						</div>
 						<div class="modal-body" style="padding: 15 15 15 15;">
 							<div class="input-group">
-								<strong>Your accountname</strong><br /> 
-								${username}
+								<strong>Your Name</strong><br /> 
+								<input style="height:30px" type="text" name="name" class="form-control">
 							</div>
 							
 							<div class="input-group">
-								<strong>Subject</strong><br /> 
-								<input style="height:30px" type="text" name="subject" class="form-control">
+								<strong>Your Affiliation</strong><br /> 
+								<input style="height:30px; width: 250px;" type="text" name="affiliation" class="form-control">
 							</div>
-	
+							
+							<div class="input-group">
+								<strong>Your Email Address</strong><br /> 
+								<input style="height:30px; width: 250px;" type="text" name="email" class="form-control">
+							</div>	
+							
+							<div class="input-group">
+								<strong>Subject</strong><br /> 
+								<input style="height:30px; width: 250px;" type="text" name="subject" class="form-control">
+							</div>	
+							
 							<div class="input-group">
 								<strong>Comments</strong><br />
 								<div class='input-group date' id='run-date-picker'>
@@ -85,13 +95,15 @@
 					                out.print(c.createRecaptchaHtml(null, null));
 					            %> 
 		                   </div>
+		                   
+		                   <p>We thank you for your time</p>
 		
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">
 								<i class="fa fa-times"></i> Close
 							</button>
-							<button type="submit" class="btn btn-primary">
+							<button type="submit" class="btn btn-danger">
 								<i class="fa fa-envelope"></i> Send
 							</button>
 						</div>
@@ -107,6 +119,7 @@
 						<ul class="nav pull-right" id="main-menu">
 							<li id="explore"><a href="#">Explore</a></li>
 							<li id="about"><a>About</a></li>
+							<li id="feedback" onclick="$('#feedbackModal').modal('show');"><a href="#feedback">Feedback</a></li>
 							<sec:authorize access="hasRole('ADMIN')">
 	                            	<li id="admin"><a href="admin">Admin Panel</a></li>
 	                        </sec:authorize>
@@ -143,7 +156,6 @@
 							</sec:authorize>
 							
 	                        <sec:authorize access="isAuthenticated()">
-	                        	<li id="feedback" onclick="$('#feedbackModal').modal('show');"><a href="#feedback">Feedback</a></li>
 								<li id="logout"><a href="logout/">Logout</a></li>
 							</sec:authorize>
 						</ul>
@@ -340,7 +352,7 @@
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
 								<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1); as.showGraphTitle();">
-									<i class="fa fa-picture-o fa-2x"></i>
+									<i class="fa fa-us-map"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="table-tab" >

@@ -74,7 +74,7 @@ var CM = (function($) {
 
 		if(selected_multiple_metrics.length>0){
 			
-			if(selected_multiple_metrics.length==1){
+			if(selected_multiple_metrics.length==1) { // If we only have one metric to load
 				$("#yearsMultipleQuery").addClass("hidden");
 				$("#timelinetable").addClass("hidden");
 				query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[0]).getName());
@@ -87,7 +87,7 @@ var CM = (function($) {
 			        		 row="<tr><td>No data available for your current selection.</td></tr>";
 			        		 table.append(row);
 			        	}else{
-			        		 row="<thead><th>States</th>";
+			        		 row="<thead><th>State</th>";
 			        		 var i=0;
 			        		while(i<array_years.length){			        			
 			        			 row = row+"<th>"+array_years[i]+ "</th>";
@@ -102,7 +102,7 @@ var CM = (function($) {
 			                var type_var;
 			                for (var i = 0; i < multiData.length; i++)
 			                {
-			                    row = "<th>" + multiData[i][0].state.attr + "</th>" ;
+			                    row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
 			                    j=0;
 			                    while(j<array_years.length)
 			                    {
@@ -189,7 +189,7 @@ var CM = (function($) {
 						liststring += '</ul ></td></tr></table>';
 						seltimeline.append(liststring);
 						
-						var row="<th>&nbsp;</th>";
+						var row="<th>State</th>";
 						var checkduplicity;//hack to fix the fact the titles and rows were strnagly duplicating
 						var array_duplicates=new Array();
 						var counter_control_duplicates=0;// Hack: the rows were duplicating like crazy but now always
@@ -636,7 +636,7 @@ var CM = (function($) {
 		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
 		    			}
 						
-						var row="<th>&nbsp;</th>";
+						var row="<th>State</th>";
 
 						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
 							row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";
