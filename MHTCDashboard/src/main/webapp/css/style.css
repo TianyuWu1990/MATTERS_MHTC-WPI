@@ -1023,6 +1023,11 @@ ul.timelineListStyle > li
 	padding-left: 10%;	
 }
 
+.modal-header.red{
+	background:#7b0020;
+	color: white;
+}
+
 button.timeLineButton
 {
 	background:#00933B;
