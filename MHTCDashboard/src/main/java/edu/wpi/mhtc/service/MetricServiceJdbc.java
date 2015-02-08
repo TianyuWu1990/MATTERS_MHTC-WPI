@@ -124,7 +124,7 @@ public class MetricServiceJdbc implements MetricService {
                 
                 final String categoryName = name;
                 		
-// trendtypes no longer used
+                // trendtypes no longer used
                 return new Metric(rs.getInt("Id"), rs.getString("Name"), categoryId, categoryName, 
                 		rs.getString("DataType"), "", rs.getString("URL"), rs.getString("Source"),rs.getString("DisplayName"));
             }
@@ -132,10 +132,9 @@ public class MetricServiceJdbc implements MetricService {
         });
 
         metricCall.addDeclaredParameter(new SqlParameter("parentids", Types.ARRAY));
-        Array ids = template.getDataSource().getConnection().createArrayOf("integer", parentIds);
-
+       
         Map<String, Object> metricParams = new HashMap<String, Object>();
-        metricParams.put("parentids", ids);
+        metricParams.put("parentids", parentIds);
 
         return metricCall.execute(metricParams);
 
