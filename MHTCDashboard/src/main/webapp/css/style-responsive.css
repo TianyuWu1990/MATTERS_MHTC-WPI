@@ -1,32 +1,12 @@
 /* Higher than 1200 (desktop devices)
 ====================================================================== */
 @media (min-width: 1200px) {
-	
-	.container-fluid-full {
-		overflow: hidden;
-		height: 100%;
-	}
-	
-	footer {
-		margin: 0px 0px 0px 0px;
-		padding: 10px 20px;
-	}
-	
+
 }
 
 /* Higher than 960 (desktop devices)
 ====================================================================== */
 @media only screen and (min-width: 980px) and (max-width: 1199px){
-	
-	.container-fluid-full {
-		overflow: hidden;
-		height: 100%;
-	}
-
-	footer {
-		margin: 0px;
-		padding: 10px 20px;
-	}
 	
 }
 
@@ -34,36 +14,12 @@
 ====================================================================== */
 @media only screen and (min-width: 768px) and (max-width: 979px) {
 	
-	.container-fluid-full {
-		overflow: hidden;
-		height: 100%;
-	}
-	
-	footer {
-		margin: 0px;
-		padding: 10px 20px;
-	}
-	
 }
 
 /* All Mobile Sizes (devices and browser)
 ====================================================================== */
 @media only screen and (max-width: 767px) {
 	
-	.container-fluid-full {
-		overflow: hidden;
-		height: 100%;
-	}
-	
-	.container-fluid {
-		padding-right: 20px;
-		padding-left: 20px;
-	}
-	
-	footer {
-		margin: 0px;
-		padding: 10px 20px;
-	}
 }
 
 /* Mobile Landscape Size to Tablet Portrait (devices and browsers)
@@ -82,8 +38,4 @@
 	body {
 		padding: 0px;
 	}
-	
-	.pagination {
-		padding: 5px;
-	}	
 }

@@ -74,7 +74,7 @@ var CM = (function($) {
 
 		if(selected_multiple_metrics.length>0){
 			
-			if(selected_multiple_metrics.length==1){
+			if(selected_multiple_metrics.length==1) { // If we only have one metric to load
 				$("#yearsMultipleQuery").addClass("hidden");
 				$("#timelinetable").addClass("hidden");
 				query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[0]).getName());
@@ -87,10 +87,10 @@ var CM = (function($) {
 			        		 row="<tr><td>No data available for your current selection.</td></tr>";
 			        		 table.append(row);
 			        	}else{
-			        		 row="<thead><th>States</th>";
+			        		 row="<thead><th>State</th>";
 			        		 var i=0;
 			        		while(i<array_years.length){			        			
-			        			 row = row+"<th>"+array_years[i]+ "</th>";
+			        			 row = row+"<th>"+array_years[i]+"</th>";
 			        			 i++;
 			        		}
 			        		row = row +"</thead>";
@@ -102,7 +102,7 @@ var CM = (function($) {
 			                var type_var;
 			                for (var i = 0; i < multiData.length; i++)
 			                {
-			                    row = "<th>" + multiData[i][0].state.attr + "</th>" ;
+			                    row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
 			                    j=0;
 			                    while(j<array_years.length)
 			                    {
@@ -135,7 +135,7 @@ var CM = (function($) {
 			        }, 500);
 				});
 			}
-			else
+			else	//multiple metrics
 			{
 					this.kcounterexecute=0;
 					this.multiDataMultipleQuery=[];
@@ -171,7 +171,6 @@ var CM = (function($) {
 		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
 		    			}
 
-		    			//modified by manik
 		    			var seltimeline=$("#timelinetable");
 		    			seltimeline.empty();
 		    			var liststring =""
@@ -189,7 +188,7 @@ var CM = (function($) {
 						liststring += '</ul ></td></tr></table>';
 						seltimeline.append(liststring);
 						
-						var row="<th>&nbsp;</th>";
+						var row="<th>State</th>";
 						var checkduplicity;//hack to fix the fact the titles and rows were strnagly duplicating
 						var array_duplicates=new Array();
 						var counter_control_duplicates=0;// Hack: the rows were duplicating like crazy but now always
@@ -198,7 +197,7 @@ var CM = (function($) {
 						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
 							checkduplicity = $.inArray(cm.multiDataMultipleQuery[r][0][0].metric.name, array_duplicates) > -1;
 							if(checkduplicity==false){
-								row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";
+								row = row + "<th>"+ '<span id="info" title="' + cm.multiDataMultipleQuery[r][0][0].metric.desc + '"><i class="fa fa-info-circle"></i><span>' + " " + cm.multiDataMultipleQuery[r][0][0].metric.name + "</th>";
 								array_duplicates[counter_control_duplicates]=cm.multiDataMultipleQuery[r][0][0].metric.name;
 								counter_control_duplicates++;
 							}
@@ -299,6 +298,7 @@ var CM = (function($) {
 				this.setAttribute( 'title', States.getStateFromString(sTitle).name );	
 
 			} );
+			
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable({"iDisplayLength": 20}, {});
 				dt = oTable;
@@ -316,6 +316,8 @@ var CM = (function($) {
 				"track": true,
 				"fade": 0
 			} );
+			
+			
 			$('#myTable tbody').on( 'click', 'tr', function () {
 		        if ( $(this).hasClass('selected') ) {
 		            $(this).removeClass('selected');
@@ -636,7 +638,7 @@ var CM = (function($) {
 		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
 		    			}
 						
-						var row="<th>&nbsp;</th>";
+						var row="<th>State</th>";
 
 						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
 							row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";

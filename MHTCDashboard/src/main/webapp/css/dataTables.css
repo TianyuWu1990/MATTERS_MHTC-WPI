@@ -7,7 +7,8 @@ table.dataTable {
   clear: both;
   border-collapse: separate;
   border-spacing: 0;
-  border:2px solid #e0e0e0;
+  border:2px solid #EEEEEE;
+  color: #000000
   /*
    * Header and footer styles
    */
@@ -21,8 +22,39 @@ table.dataTable tbody tr:nth-child(even) {
 table.dataTable thead th,
 table.dataTable tfoot th {
   font-weight: bold;
+   position: relative;
+    background-color:#EEEEEE;
+  background-image: none !important;
 }
 
+
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+    position: absolute;
+    top: 8px;
+    right: 6px;
+    display: block;
+    font-family: FontAwesome;
+}
+
+table.dataTable thead th.sorting:after {
+    content: "\f0dc";
+}
+table.dataTable thead th.sorting_asc:after {
+    content: "\f0de";
+}
+table.dataTable thead th.sorting_desc:after {
+    content: "\f0dd";
+}
+
+
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting {
+  cursor: pointer;
+  *cursor: hand;
+}
 table.dataTable thead th,
 table.dataTable thead td {
  padding: 6px 10px;
@@ -36,32 +68,6 @@ table.dataTable tfoot th,
 table.dataTable tfoot td {
   padding: 6px 10px;
   /*border-top: 1px solid #111111;*/
-}
-table.dataTable thead .sorting_asc,
-table.dataTable thead .sorting_desc,
-table.dataTable thead .sorting {
-  cursor: pointer;
-  *cursor: hand;
-}
-table.dataTable thead .sorting {
-  background: url("../img/sort_both.png") no-repeat center right;
-  background-color:#e0e0e0;
-}
-table.dataTable thead .sorting_asc {
-  background: url("../img/sort_asc.png") no-repeat center right;
-  background-color:#e0e0e0;
-}
-table.dataTable thead .sorting_desc {
-  background: url("../img/sort_desc.png") no-repeat center right;
-  background-color:#e0e0e0;
-}
-table.dataTable thead .sorting_asc_disabled {
-  background: url("../img/sort_asc_disabled.png") no-repeat center right;
-  background-color:#e0e0e0;
-}
-table.dataTable thead .sorting_desc_disabled {
-  background: url("../img/sort_desc_disabled.png") no-repeat center right;
-  background-color:#e0e0e0;
 }
 table.dataTable tbody tr {
   background-color: white;

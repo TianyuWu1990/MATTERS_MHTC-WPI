@@ -126,31 +126,49 @@ public class PSqlStringMappedJdbcCall<T> {
         return returnValues;
 	}
 
+	/**
+	 * 
+	 * Construct SQL query string.
+	 * @param params map of variable name to value.
+	 * @return query string.
+	 */
 	private String buildQuery(Map<String, Object> params) {
-		String statement = "SELECT * FROM ";
-		statement += schemaName + ".";
-		statement += procedureName + "(";
+		StringBuffer statement = new StringBuffer("SELECT * FROM ");
+		statement.append(schemaName);
+		statement.append(".");
+		statement.append(procedureName);
+		statement.append("(");
 
 		for (int i = 0; i < declaredParams.size(); i++) {
-			statement += declaredParams.get(i).getName();
-			statement += " := ";
+			
+			//only handles integer arrays
+			if (declaredParams.get(i).getSqlType() == Types.ARRAY) {
+				statement.append("'");
+				statement.append(params.get(declaredParams.get(i).getName()).toString().replaceAll("\"",	""));
+				statement.append("'");
+				statement.append("::int[]");
+			}
+			else{
+				statement.append(declaredParams.get(i).getName());
+				statement.append(" := ");
 
-			if (declaredParams.get(i).getSqlType() == Types.VARCHAR) {
-				statement += "'";
-				statement += params.get(declaredParams.get(i).getName());
-				statement += "'";
+				if (declaredParams.get(i).getSqlType() == Types.VARCHAR) {
+					statement.append("'");
+					statement.append(params.get(declaredParams.get(i).getName()));
+					statement.append("'");
 
-			} else if (declaredParams.get(i).getSqlType() == Types.INTEGER
+				} else if (declaredParams.get(i).getSqlType() == Types.INTEGER
 					|| declaredParams.get(i).getSqlType() == Types.BOOLEAN) {
-				statement += params.get(declaredParams.get(i).getName());
+					statement.append(params.get(declaredParams.get(i).getName()));
+				}
 			}
 
 			if (i < declaredParams.size()-1)
-				statement += ",";
+				statement.append(",");
 		}
 
-		statement += ");";
+		statement.append(");");
 
-		return statement;
+		return statement.toString();
 	}
 }

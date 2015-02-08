@@ -52,7 +52,7 @@
 	
 	</head>
 	<body onLoad="loadFunction()">
-		<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
+		<div class="modal hide fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
 			<form action="feedback_post" method="POST" style="margin-bottom: 0px;">
 				<div class="modal-dialog modal-md" style="width:100%">
 					<div class="modal-content">
@@ -161,8 +161,8 @@
 	
 		<div class="container-fluid-full">
 				<!-- start: left sidebar -->
-				<div id="sidebar-left" class="sidebar">
-					<div class="column">
+				<div id="sidebar-left" class="sidebar open">
+					<div class="column" id="metricSelectionCol">
 						<div class="title">
 							<span>Select Metrics</span>
 						</div>
@@ -170,19 +170,17 @@
 							<ul class="nav nav-tabs nav-stacked main-menu">
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> State Profile</span> 
+										State Profile 
 									</a>
 									<ul id="stateMetric" class="listcontent">
-										<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox" checked style="display:none"><a style="text-align:right;">Deselect All</a>
+										<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
+											<a style="text-align:right;">Deselect All</a>
 										</li>
 										<c:forEach items="${jv_stats_profile}" var="stat1">
 											<li>
-												<a class="submenu" id="${stat1.metric.id}"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat1.metric.id}" checked> 
-														${stat1.metric.name}
-													</span>
+												<a class="selected metricOption" id="${stat1.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat1.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -190,20 +188,17 @@
 								</li>
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> National Ranking</span> 
+										National Ranking 
 									</a>
 									<ul id="nationalProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none" data-toggle="tooltip" title="Click to select/unselect all">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_national}" var="stat2">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat2.metric.id}" disabled="disabled"> 
-														${stat2.metric.name} 
-													</span>
+												<a class="metricOption" id="${stat2.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat2.metric.name} 
 												</a>
 											</li>
 										</c:forEach>
@@ -211,19 +206,17 @@
 								</li>
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> Talent Metrics</span> 
+										Talent Metrics 
 									</a>
 									<ul id="talentProfileList" >
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a>
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_talent}" var="stat3">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat3.metric.id}" disabled="disabled"> 
-														${stat3.metric.name}
-													</span>
+												<a class="metricOption" id="${stat3.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat3.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -231,20 +224,17 @@
 								</li>
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> Cost Metrics</span> 
+										Cost Metrics
 									</a>
 									<ul id= "costProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_cost}" var="stat4">
 											<li>
-												<a class="submenu">
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat4.metric.id}" disabled="disabled"> 
-														${stat4.metric.name}
-													</span>
+												<a class="metricOption" id="${stat4.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat4.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -252,20 +242,17 @@
 								</li>
 								<li>
 									<a class="dropmenu" href="#">
-										<span class="hidden-tablet">Economy Metrics </span> 
+										Economy Metrics
 									</a>
 									<ul id="economyProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_economy}" var="stat5">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat5.metric.id}" disabled="disabled"> 
-														${stat5.metric.name}
-													</span>
+												<a class="metricOption" id="${stat5.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat5.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -274,12 +261,9 @@
 							</ul>
 						</div>
 					</div>
-					<div class="column">
+					<div class="column" id="stateSelectionCol">
 						<div class="title">
 							<span>Select States</span>
-							<a id="close-sidebar-left" href="#">
-								<i class="fa fa-times fa-2x"></i>
-							</a> 
 						</div>
 						<div class="sidebar-nav">
 							<ul class="nav nav-tabs nav-stacked main-menu">
@@ -292,9 +276,7 @@
 										</li>
 										<li>
 											<a class="selectPeerStates" id="${row.id}">
-												<span class="hidden-tablet">
-													<input type="radio" class="checkPeerStates"> Select Peer States
-												</span>
+												Select Peer States
 											</a>
 										</li>
 										<li class="stateFilter">
@@ -307,18 +289,13 @@
 															<c:choose>
 											        			<c:when test="${row.id == (21)}">
 											        			<a class="stateSelectionOption selected" id="${row.id}">
-																	<span class="hidden-tablet">
-											        					<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}" checked> 
 											        			</c:when>
 											        			<c:otherwise>
 											        			<a class="stateSelectionOption" id="${row.id}">
-																	<span class="hidden-tablet">
-											        					<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}"> 
-											        				
 											        			</c:otherwise>
 											        		</c:choose>			
+											        		<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
 															${row.name} (${row.abbr})
-														</span>
 											        </a>
 												</li>
 											</c:forEach>
@@ -339,8 +316,8 @@
 						<div class="pagination-header-left">
 						
 							<!-- Display none at first b/c metrics menu is open by default --> 
-							<a href="#" id="open-sidebar-left" style="opacity:0; filter: alpha(opacity=0);"> 
-								<i class="fa fa-bars fa-2x"></i>
+							<a href="#" id="toggle-sidebar"> 
+								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
 					
@@ -373,91 +350,94 @@
 						</ul>
 					</div>
 					
+					<div id="vizView">
 
-					<!--  Start Back/Forward Buttons -->
-					<div id="metricCycleButtons" style="display:none;">
-						<table>
-							<tr>
-								<td>
-									<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
-										<i class="fa fa-chevron-left"></i>
-									</button>
-								</td>
-								<td>
-									<div id="MultipleMetricTitle" >
-										Choose a metric from the left menu
+						<!--  Start Back/Forward Buttons -->
+						<div id="metricCycleButtons" style="display:none;">
+							<table>
+								<tr>
+									<td>
+										<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
+											<i class="fa fa-chevron-left"></i>
+										</button>
+									</td>
+									<td>
+										<div id="MultipleMetricTitle" >
+											Choose a metric from the left menu
+										</div>
+									</td>
+									<td>
+										<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
+											<i class="fa fa-chevron-right"></i>
+										</button>
+									</td>	
+								</tr>
+							</table>
+						</div>
+						
+						<!--  End Back/Forward Buttons -->	
+						<div class="tab-content">
+							<!-- Line Graph -->
+							<div class="tab-pane fade" id="line">
+								<div class="box-content">
+									<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
+										<svg style="height: 90%;"></svg>
 									</div>
-								</td>
-								<td>
-									<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
-										<i class="fa fa-chevron-right"></i>
-									</button>
-								</td>	
-							</tr>
-						</table>
-					</div>
-					
-					<!--  End Back/Forward Buttons -->	
-					<div class="tab-content">
-						<!-- Line Graph -->
-						<div class="tab-pane fade" id="line">
-							<div class="box-content">
-								<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
-									<svg style="height: 90%;"></svg>
+								</div>
+							</div>
+							
+							<!-- Table -->
+							<div class="tab-pane active" id="table">
+								<div class="box-content">
+									<table>
+										<tr>
+											<td id="timelinetable"></td>
+										</tr>
+										<tr>
+											<td class="modal-body" id="mbodyMultipleQuery"></td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							
+							<!-- Bar Chart -->
+							<div class="tab-pane fade" id="bar">
+								<div class="box-content">
+									<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
+								</div>
+							</div>
+							
+							<!-- Heatmap -->		
+							<div class="tab-pane fade" id="heatmaptab">
+								<div class="box-content">			
+									<table style="width: 100%;">
+										<tr>
+											<td align="left" nowrap="true">
+												<table align="center">
+													<tr>
+														<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
+														<td nowrap="true"><div id="timeline"></div></td>
+														<td style="padding-left: 40px">
+															<button type="button" id="playbuttonanimation">Play</button>
+															<button type="button" id="stopbuttonanimation" disabled="true">Stop</button>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+									<div class="row">
+			    						<div class="span10" >
+			    							<div id ="mbodyHeatMap" style=""></div>
+			    						</div>
+			    						<div class="span2" id="verticalheatmapmeter"></div>
+			    					</div>
+			    							
 								</div>
 							</div>
 						</div>
-						
-						<!-- Table -->
-						<div class="tab-pane active" id="table">
-							<div class="box-content">
-								<table>
-									<tr>
-										<td id="timelinetable"></td>
-									</tr>
-									<tr>
-										<td class="modal-body" id="mbodyMultipleQuery"></td>
-									</tr>
-								</table>
-							</div>
-						</div>
-						
-						<!-- Bar Chart -->
-						<div class="tab-pane fade" id="bar">
-							<div class="box-content">
-								<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
-							</div>
-						</div>
-						
-						<!-- Heatmap -->		
-						<div class="tab-pane fade" id="heatmaptab">
-							<div class="box-content">			
-								<table style="width: 100%;">
-									<tr>
-										<td align="left" nowrap="true">
-											<table align="center">
-												<tr>
-													<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
-													<td nowrap="true"><div id="timeline"></div></td>
-													<td style="padding-left: 40px">
-														<button type="button" id="playbuttonanimation">Play</button>
-														<button type="button" id="stopbuttonanimation" disabled="true">Stop</button>
-													</td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-								</table>
-								<div class="row">
-		    						<div class="span10" >
-		    							<div id ="mbodyHeatMap" style=""></div>
-		    						</div>
-		    						<div class="span2" id="verticalheatmapmeter"></div>
-		    					</div>
-		    							
-							</div>
-						</div>
 					</div>
+					
 					<!-- Error Reporting -->
 					<div id="errorView" style="display:none;">
 						
