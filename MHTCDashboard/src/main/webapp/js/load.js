@@ -300,7 +300,10 @@ loadFunction = function() {
     $(".selectPeerStates").click(function(e){
     	
     	if ($(".selectPeerStates").hasClass("selected"))
-    		return; // Do nothing if already checked
+    	{
+    		$(".selectUnselectAllStates").click(); // Force deselect
+    		return;
+    	}
     	
     	// Check peer states checkbox
     	$(".selectPeerStates").addClass("selected");
