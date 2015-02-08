@@ -514,12 +514,6 @@ loadFunction = function() {
         $('#signin-dropdown').hide();
     });
     
-	tableButtonClicked = function(obj, year_in)
-	 { 	
-		 as.showMultipleMetricsStatesYears(year_in);
-		 return true;
-		 
-	 }
 	 heatmapButtonClicked = function(year_in)
 	 { 	
 		 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
@@ -623,4 +617,10 @@ function selectUnselectMetricHelper(metricID, select)
 			$(selectAllWrapperForCat).attr("id", "select");
 		}	
 	}
+}
+
+function tableButtonClicked(obj, year_in)
+{ 	
+	 as.showMultipleMetricsStatesYears(year_in);
+	 return true;
 }
