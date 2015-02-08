@@ -34,7 +34,6 @@
 		<script src="js/raphael.js"></script> <!-- Dependency for raphael.js -->
 		<script src="js/jquery.usmap.js"></script>
 		
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
 		
@@ -180,24 +179,6 @@
 						</div>
 						<div class="sidebar-nav">
 							<ul class="nav nav-tabs nav-stacked main-menu">
-								<li>
-									<a class="dropmenu" href="#">
-										State Profile 
-									</a>
-									<ul id="stateMetric" class="listcontent">
-										<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
-											<a style="text-align:right;">Deselect All</a>
-										</li>
-										<c:forEach items="${jv_stats_profile}" var="stat1">
-											<li>
-												<a class="selected metricOption" id="${stat1.metric.id}"> 
-													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
-													${stat1.metric.name}
-												</a>
-											</li>
-										</c:forEach>
-									</ul>
-								</li>
 								<li>
 									<a class="dropmenu" href="#">
 										National Ranking 

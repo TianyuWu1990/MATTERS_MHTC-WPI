@@ -175,14 +175,10 @@ var AS= (function($) {
 	    /************************************************************************************
 	     ************* creating a hashtable for eliminating duplicate metric selection*******
 	     ************************************************************************************/
-	    
-	    var id1 = "stateMetric"  
-	    var stateList = document.getElementById(id1).getElementsByClassName("submenu");	
-		this.addInMetricTable(stateList,id1);
 	   
-	   var id2 = "nationalProfileList"
+	    var id2 = "nationalProfileList"
 	    nationalList = document.getElementById(id2).getElementsByClassName("submenu");	
-	   this.addInMetricTable(nationalList,id2);
+	    this.addInMetricTable(nationalList,id2);
 	    
 	    //console.log(this.metric_category_table[keyofTable]);
 	    var id3="talentProfileList"

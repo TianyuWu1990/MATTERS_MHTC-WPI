@@ -424,35 +424,6 @@ loadFunction = function() {
 	/******************************************
      * End metric selection logic
      ******************************************/
-	
-	
-	
-	/******************************************
-     * Setup default metric selection
-     ******************************************/
-	var unorderedList   = $("#stateMetric"); // Select state metrics by default 
-    var ListItems       = $(unorderedList).find("li");
-  
-    var defaultlist = []
-    
-	for(i = 1; i < ListItems.length ;i++ )
-	{
-		var linkTag = $(ListItems[i]).find("a")[0];
-		
-		var defaultMetricID = $(linkTag).attr("id");
-		
-		var parentID = 'stateMetric';
-		
-		selectMetric(defaultMetricID, parentID);
-		
-		defaultlist[i - 1] = defaultMetricID;
-	}
-    
-    as.SelectUnselectMultipleMetric(defaultlist, 1);
-
-    /******************************************
-     * End setup default metric selection
-     ******************************************/
 	 
 	$("#chartType" ).change(function() {
 		  cm.current_graph = this.value;
