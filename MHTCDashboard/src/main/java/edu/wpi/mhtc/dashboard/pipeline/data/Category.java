@@ -21,6 +21,10 @@ public class Category {
 	private int id;
 	private List<Metric> metrics;
 	private String name;
+	private int parentId;
+	private String source;
+	private String URL;
+	private boolean isVisible;
 	
 	/**
 	 * Constructor for Category
@@ -34,6 +38,8 @@ public class Category {
 		metrics = getMetrics(id);
 	}
 	
+	public Category() {}
+
 	/**
 	 * Return the ID of the category
 	 * @return
@@ -107,7 +113,47 @@ public class Category {
 			throw new CategoryException("Could not retrieve metrics for catID "+ catID + " from db", e);
 		}
 	}
-	
+
+	public String getSource() {
+		return source;
+	}
+
+	public String getURL() {
+		return URL;
+	}
+
+	public int getParentId() {
+		return parentId;
+	}
+
+	public boolean getVisible() {
+		return isVisible;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public void setURL(String uRL) {
+		this.URL = uRL;
+	}
+
 }
 
 

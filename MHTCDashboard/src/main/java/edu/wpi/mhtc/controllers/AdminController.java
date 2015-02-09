@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -47,6 +46,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
+import edu.wpi.mhtc.dashboard.pipeline.dao.DAO;
+import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
@@ -60,22 +61,23 @@ import edu.wpi.mhtc.dashboard.util.FileFinder;
 import edu.wpi.mhtc.helpers.Logger;
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.admin.Admin;
-//import edu.wpi.mhtc.persistence.JdbcProcedure;
-import edu.wpi.mhtc.service.MetricService;
 
 @Controller
 public class AdminController {
 	
     private DateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
     
-    private MetricService service;
-    private JdbcTemplate template;
-    @Autowired ServletContext servletContext=null;
+    @Autowired ServletContext servletContext;
     
     @Autowired
-    public AdminController(MetricService service, JdbcTemplate template) {
-        this.service = service;
-        this.template = template;
+    private DAO<Category> categoryDAO;
+    
+    public AdminController() {}
+    
+    @RequestMapping(value = "testDAO")
+    public @ResponseBody List<Category> listCategories() {
+    	List<Category> listCategory = categoryDAO.getAll();
+    	return listCategory;
     }
 
     /********** Admin manager page **********/
