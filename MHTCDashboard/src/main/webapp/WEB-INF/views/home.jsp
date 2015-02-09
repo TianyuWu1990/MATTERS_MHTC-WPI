@@ -177,13 +177,13 @@
 						<div class="title">
 							<span>Select Metrics</span>
 						</div>
-						<div class="sidebar-nav">
-							<ul class="nav nav-tabs nav-stacked main-menu">
+						<div class="sidebar-content accordion-menu" id="metricListWrapper">
+							<ul>
 								<li>
-									<a class="dropmenu" href="#">
+									<a class="metricHeader" href="#">
 										National Ranking 
 									</a>
-									<ul id="nationalProfileList">
+									<ul id="nationalProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
@@ -198,10 +198,10 @@
 									</ul>
 								</li>
 								<li>
-									<a class="dropmenu" href="#">
+									<a class="metricHeader" href="#">
 										Talent Metrics 
 									</a>
-									<ul id="talentProfileList" >
+									<ul id="talentProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
@@ -216,10 +216,10 @@
 									</ul>
 								</li>
 								<li>
-									<a class="dropmenu" href="#">
+									<a class="metricHeader" href="#">
 										Cost Metrics
 									</a>
-									<ul id= "costProfileList">
+									<ul id= "costProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
@@ -234,10 +234,10 @@
 									</ul>
 								</li>
 								<li>
-									<a class="dropmenu" href="#">
+									<a class="metricHeader" href="#">
 										Economy Metrics
 									</a>
-									<ul id="economyProfileList">
+									<ul id="economyProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
@@ -258,43 +258,39 @@
 						<div class="title">
 							<span>Select States</span>
 						</div>
-						<div class="sidebar-nav">
-							<ul class="nav nav-tabs nav-stacked main-menu">
-								<li>
-									<ul id="stateSelection" class="listcontent" >
-										<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
-											<a style="text-align:right;">
-												Deselect All
-											</a>
-										</li>
-										<li>
-											<a class="selectPeerStates" id="${row.id}">
-												Select Peer States
-											</a>
-										</li>
-										<li class="stateFilter">
-											<input type="text" placeholder="Filter states...">
-										</li>
-										<c:forEach items="${jv_all_states}" var="stat">
-											<c:forEach items="${stat.row}" var="row">
-												<li class="stateSelectionOptionWrapper" id="${row.id}">
-													
-															<c:choose>
-											        			<c:when test="${row.id == (21)}">
-											        			<a class="stateSelectionOption selected" id="${row.id}">
-											        			</c:when>
-											        			<c:otherwise>
-											        			<a class="stateSelectionOption" id="${row.id}">
-											        			</c:otherwise>
-											        		</c:choose>			
-											        		<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
-															${row.name} (${row.abbr})
-											        </a>
-												</li>
-											</c:forEach>
-										</c:forEach>	
-									</ul>
+						<div class="sidebar-content single-section">
+							<ul id="stateSelection">
+								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
+									<a style="text-align:right;">
+										Deselect All
+									</a>
 								</li>
+								<li>
+									<a class="selectPeerStates" id="${row.id}">
+										Select Peer States
+									</a>
+								</li>
+								<li class="stateFilter">
+									<input type="text" placeholder="Filter states...">
+								</li>
+								<c:forEach items="${jv_all_states}" var="stat">
+									<c:forEach items="${stat.row}" var="row">
+										<li class="stateSelectionOptionWrapper" id="${row.id}">
+											
+													<c:choose>
+									        			<c:when test="${row.id == (21)}">
+									        			<a class="stateSelectionOption selected" id="${row.id}">
+									        			</c:when>
+									        			<c:otherwise>
+									        			<a class="stateSelectionOption" id="${row.id}">
+									        			</c:otherwise>
+									        		</c:choose>			
+									        		<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${row.name} (${row.abbr})
+									        </a>
+										</li>
+									</c:forEach>
+								</c:forEach>	
 							</ul>
 						</div>
 					</div>	

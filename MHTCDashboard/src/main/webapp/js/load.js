@@ -4,39 +4,9 @@
  */
 
 var global_timer = null;
- var year_global=-1;
+var year_global=-1;
 
- var globalcounter=0;
-
- // Hack that gets called 
- //when clicking on a button or when scrolling the div, flips the dropdown if it will make it display better
-adjustDropDown = function(e) {
-    setTimeout(function() {
-        var divWithScroll = $("#sidebar div.active");
-        var openMenuContainer = $("#sidebar div.open");
-        $("#sidebar div.open ul.dropdown-menu").each(function() {
-            
-            var height = divWithScroll.height();
-            var top = openMenuContainer.position().top + $(this).position().top;
-            var bottom = openMenuContainer.position().top + $(this).position().top + $(this).height();
-            
-            if (top < 0) {
-                $(this).css("bottom", "auto");
-                $(this).css("top", "" + openMenuContainer.height() + "px");
-            }
-            
-            if (bottom > height) {
-
-                $(this).css("top", "auto");
-                $(this).css("bottom", "" + (openMenuContainer.height() +2) + "px");
-            }
-            
-        });
-        
-        //var scrollTop = divWithScroll.scrollTop();
-        
-    }, 20);
-};
+var globalcounter=0;
  
 getStyleRuleValue=function(styleName, className) {
 
@@ -240,14 +210,68 @@ loadFunction = function() {
     	
     });
     
-    // Enable "drop menus" in sidebar
-    $('.dropmenu').click(function(e){
-
-		e.preventDefault();
-
-		$(this).parent().find('ul').slideToggle();
-		var className = $(this).parent().attr('class');
+    /**************************************************
+     * Start Sidebar Metric Menus logic
+     **************************************************/
+    
+    // Utility function to calculate the appropriate height of the metric list
+    getSizeOfMetricList = function() {
+    	var numMetricHeaders = $('.metricHeader').length;
+    	var metricHeaderHeight = $('.metricHeader').first().outerHeight();
+    	
+    	var sidebarHeightTotal = $('#metricListWrapper').height();
+    	
+    	return sidebarHeightTotal - (numMetricHeaders * metricHeaderHeight);
+    };
+    
+    // Utility function to open the given metric list.
+    // This will close all other open metric lists
+    openMetricList = function(metricList) {
+    	var heightOfList = getSizeOfMetricList();
+    	
+    	$(".metricList.open").each(function(e) {
+    		closeMetricList(this);
+    	});
+    	
+    	$(metricList).animate({ height: heightOfList}, 300);
+    	$(metricList).addClass("open");
+    	
+    };
+    
+    // Utility function to close the given metric list
+    closeMetricList = function(metricList) {
+    	$(metricList).animate({ height: 0}, 300);
+    	$(metricList).removeClass("open");
+    };
+    
+    // Make sure to resize the list when the window resizes
+    $(window).on('resize', function() {
+    	var listHeight = getSizeOfMetricList();
+    	
+    	$(".metricList.open").height(listHeight);
+    });
+    
+    // Event listener to open/close metric lists on metric header click
+    $('.metricHeader').click(function(e){
+    	
+    	var list = $(this).parent().find('.metricList').first();
+    	
+    	if (list.hasClass("open"))
+    	{
+    		closeMetricList(list);
+    	}
+    	else
+    	{
+    		openMetricList(list);
+    	}    	
 	});
+    
+    // Open national rankings by default...
+    openMetricList($("#nationalProfileList"));
+    
+    /**************************************************
+     * End Sidebar Metric Menus logic
+     **************************************************/
     
     /******************************************
      * Start state selection logic
@@ -508,10 +532,6 @@ function updateStateSelection()
 		}
 	}
 	
-	// Update the data visualization
-	as.setStatesSelected(selectedItems, -1); // -1 means set to list of selected states.
-	
-	
 	// Update the text of the select/unselect button based on how many states are selected
 	if (selectedItems.length > 0)
 	{
@@ -523,6 +543,9 @@ function updateStateSelection()
 		$(".selectUnselectAllStates > a").html("Select All");
 		$(".selectUnselectAllStates").attr("id", "select");
 	}
+	
+	// Update the data visualization
+	as.setStatesSelected(selectedItems, -1); // -1 means set to list of selected states.
 }
 
 /**

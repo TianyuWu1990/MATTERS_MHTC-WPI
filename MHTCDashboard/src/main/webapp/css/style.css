@@ -197,34 +197,14 @@ a.brand span {
 /* Navigation Section
 =================================================================== */
 
-#stateSelection
-{
-	width: 100%;
-}
 
-#stateSelection > li:last-child
+/* State Selection Specific Styling */
+#stateSelectionCol
 {
-	padding-bottom: 50px;
-}
-
-.selectUnselectAll
-{
-	cursor: pointer;
-}
-
-.selectUnselectAllStates
-{
-	cursor: pointer;
-}
-
-.selectUnselectAllStates > input > a:hover
-{
-	text-decoration: underline;
-}
-
-.stateSelectionOption
-{
-	cursor: pointer;
+	width: 200px;
+	
+	border-right: 1px solid black;
+	border-left: 1px solid black;
 }
 
 .stateSelectionOption.selected
@@ -240,11 +220,6 @@ a.brand span {
 .stateSelectionOption > i
 {
 	display: none;
-}
-
-.selectPeerStates
-{
-	cursor: pointer;
 }
 
 .selectPeerStates.selected
@@ -278,11 +253,8 @@ a.brand span {
 	margin-right: auto;
 }
 
-.metricOption
-{
-	cursor: pointer;
-}
 
+/* Metric Selection Specific Styling */
 .metricOption.selected
 {
 	font-weight: bold !important;
@@ -298,6 +270,7 @@ a.brand span {
 	display: none;
 }
 
+/* Sidebar Styling */
 .sidebar 
 {
 	display: block;
@@ -312,25 +285,19 @@ a.brand span {
 	
 	overflow: hidden;	
 	
-	background: #fff;	
-	
-	border-right: 1px solid black;
+	background: #fff;		
 }
 
 .sidebar > .column 
 {
+	position: relative;
+	
 	width: 250px;
 	height: 100%;	
-		
 	float: left;
 }
 
-.sidebar > #stateSelectionCol.column
-{
-	width: 200px;
-	border-left: 1px solid black;
-}
-
+/* Sidebar Title Styling */
 .sidebar > .column > .title
 {
 	background: #7b0020;
@@ -349,96 +316,140 @@ a.brand span {
 	padding: 15px 10px 14px;
 }
 
-.sidebar > .column > .title > a
+/* Sidebar Content Styling */
+.sidebar-content
 {
-	display: inline-block;
-	
-	float: right;
-	
-	color: #fff;
-	
-	font-size: 15px;
-	
-	padding: 10px 20px;
+	list-style: none;	
+	font-size: 13px;
 }
 
-.sidebar > .column > .title > a:hover
+/* Start Single Section Sidebar Column Content Style */
+.sidebar-content.single-section
 {
-	color: #000;	
-}
-
-.sidebar-nav > ul
-{
-	margin: 0px;
-	padding-bottom: 1px;
+	position: absolute;
+	top: 50;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	
-	font-size: 14px;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 
-.sidebar-nav > ul > li > ul 
+.sidebar-content.single-section > ul
 {
 	list-style: none;
 	margin: 0px;
-	display: none;
+	width: 100%;
 }
 
-.nav-tabs.nav-stacked > li > a 
+.sidebar-content.single-section > ul > li > a
 {
-	padding: 15px 10px 14px 10px;
-	color: #000;
-	border-top: none;
-  	border-bottom: 1px solid #E0E0E0;
-	border-left: none;
-	border-right: none;
-	text-decoration: none;
-	-webkit-border-radius: 0px;
-	-moz-border-radius: 0px;
-	border-radius: 0px;		
-}
-
-.nav-tabs.nav-stacked > li > ul > li > a 
-{
-  	border-bottom: 1px solid #D8D8D8;
-	
 	display: block;
 	
+	padding: 8px 15px 8px 15px;
+	
+	color: #000;
 	text-decoration: none;
 	
-	padding: 8px 15px;
-	color: #000;
+	border-bottom: 1px solid #E0E0E0;
 	
-  	font-size:13px;
-  	font-weight: 300;
+	cursor: pointer;
 }
 
-.nav-tabs.nav-stacked > li > ul  
+.sidebar-content.single-section > ul > li > a:hover
 {
-	height: 175px;
-	overflow-y : scroll;
+	background-color: rgb(240,240,240);
 }
 
-.nav-tabs > li > a:hover
+/* End Single Section Sidebar Column Content Style */
+
+/* Start Accordion Sidebar Column Content Style */
+
+.sidebar-content.accordion-menu
 {
-	text-decoration : underline;
+	position: absolute;
+	top: 50;
+	bottom: 0;
+	left: 0;
+	right: 0;
+		
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
-.nav-tabs.nav-stacked > li:first-child > ul 
+/* Container UL */
+.sidebar-content.accordion-menu > ul
 {
-	display:block;
+	list-style: none;
+	margin: 0px;
+	
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;	
 }
 
-.nav-tabs.nav-stacked > li:last-child > ul  
+/* Metric Category Title */
+
+.sidebar-content.accordion-menu > ul > li > a
 {
-	height: 100%;
-	overflow-y : scroll;
+	display: block;
+	
+	padding: 15px 10px 15px 10px;
+	
+	color: #000;
+	text-decoration: none;
+	
+	border-bottom: 1px solid #E0E0E0;
+	
+	cursor: pointer;
 }
 
-
-.nav-tabs.nav-stacked  > li.active > a:hover,
-.nav-tabs.nav-stacked  > li > ul > li > a:hover 
+.sidebar-content.accordion-menu > ul > li > a:hover
 {
- 	background-color: rgb(240,240,240);
+	background-color: rgb(240,240,240);
+	text-decoration: underline;
 }
+
+/* Metric Category Items */
+
+.sidebar-content.accordion-menu > ul > li > ul 
+{
+	display: block;
+	list-style: none;
+	
+	overflow-y: scroll;
+	overflow-x: hidden;
+		
+	height: 0px;	
+		
+	margin: 0px;	
+}
+
+/* Metric Category Item */
+.sidebar-content.accordion-menu > ul > li > ul > li > a 
+{
+	display: block;
+	
+	padding: 8px 15px 8px 15px;
+	
+	color: #000;
+	text-decoration: none;
+	
+	border-bottom: 1px solid #E0E0E0;
+	
+	cursor: pointer;
+}
+
+.sidebar-content.accordion-menu > ul > li > ul > li > a:hover
+{
+	background-color: rgb(240,240,240);
+}
+
+/* End Accordion Sidebar Column Content Style */
+
 
 .navbar .nav li.dropdown.open > .dropdown-toggle,
 .navbar .nav li.dropdown.active > .dropdown-toggle,
@@ -525,7 +536,6 @@ a.brand span {
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
 
-
 .box-header .box-icon {
 	float:right;
 	margin-top: 1px;
@@ -550,9 +560,6 @@ a.brand span {
 
 .box-header .box-icon a {
 	margin: 0px 5px;
-}
-
-.tab-content {	
 }
 
 /* Box containing tables/graphs for visualization */
@@ -998,7 +1005,6 @@ ul.timelineListStyle > li
 
 .tab-pane
 {
-	height:auto;
 	overflow:auto;
 	height:80%;
 }
@@ -1011,7 +1017,7 @@ ul.timelineListStyle > li
 	padding:0px;
 }
 
-.dropmenu {
+.metricHeader {
 	 font-size:16px;
 	 font-family:arial, helvetica, sans-serif; 
 	
