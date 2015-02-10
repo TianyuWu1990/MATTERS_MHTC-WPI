@@ -6,6 +6,9 @@
  */
 
 var AS = (function($) {
+	/**
+	 * Constructor
+	 */
 	function AppState() {
 		
 		/**************************
@@ -48,7 +51,7 @@ var AS = (function($) {
 		this.errorCode = this.errorCodes.NO_ERROR;
 	}
 
-	/*
+	/**
 	 * Initializes the application. Called when page is loaded.
 	 */
 	AppState.prototype.loadFunction = function() {
@@ -339,7 +342,6 @@ var AS = (function($) {
 				this.hideGraphTitle();
 				cm.displayTable();				
 				break;
-			// Line and bar take a similar path using the Chart.js module...
 			case this.visualizations.LINE:		
 				this.showGraphTitle();
 				cm.displayLineGraph();				

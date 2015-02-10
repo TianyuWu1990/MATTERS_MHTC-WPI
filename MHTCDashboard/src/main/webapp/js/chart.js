@@ -10,6 +10,9 @@
 var dt;
 var CM = (function($) {
 	
+	/**
+	 * Constructor
+	 */
 	function Chart() {
 		this.array_colors=["#F90101","#F2B50F","#00933B","#0266C8","#603CBA","#1E7145","#9F00A7",
 		                  "#7f7f7f","#bcbd22","#17becf","#F2F5A9","#FE2EF7","#6E6E6E","#F6CED8","#3B0B0B","#181907"];
@@ -83,14 +86,29 @@ var CM = (function($) {
 		}
 	};
 	
+	/**
+	 * Sets the currently selected year for the chart. 
+	 * Note: Does not refresh the charts to display the year. This must be done
+	 * manually with refresh()
+	 * @param year The year to select
+	 */
 	Chart.prototype.selectYear = function(year) {
 		this.yearSelected = year;
 	};
 	
+	/**
+	 * Resets the currently selected year for the chart to -1.
+	 * This means that the year will default to the most recent year upon refresh.
+	 * Note: Does not refresh the charts to display this year. This must be done manually
+	 * with refresh()
+	 */
 	Chart.prototype.resetYear = function() {
 		this.yearSelected = -1;
 	};
 	
+	/**
+	 * Refreshes the table view based on the currently selected states and metrics in the App State.
+	 */
 	Chart.prototype.refreshTable = function() {
 		
 		var selectedStates = as.getSelectedStates();
@@ -306,6 +324,10 @@ var CM = (function($) {
 		
 	};
 		
+	/**
+	 * Performs additional setup functions for the data table.
+	 * Should not be called on its own - is used as a utility function by refreshTable
+	 */
 	Chart.prototype.setDataTable = function() {		
 		if ( $("#myTable").html().indexOf("<thead>") != -1 ){
 			
@@ -467,13 +489,11 @@ var CM = (function($) {
 	                
                 }
                 
-                
                 if (cm.currentVisualization == cm.visualizationTypes.LINE) {
                 	d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
                 }else if (cm.currentVisualization == cm.visualizationTypes.BAR) {
                 	d3.select('#mbodyBar svg').datum(data).transition().duration(500).call(chart);
                 }
-                // TODO: Figure out a good way to do this automatically
                 
                 nv.utils.windowResize(chart.update);
                 
@@ -482,6 +502,12 @@ var CM = (function($) {
 	    });
 	};
 	
+	/**
+	 * Returns a formatted string of the given value based on the given metric type.
+	 * @param metricType The type of metric.
+	 * @param value The value of the metric.
+	 * @returns {String} A formatted string of the value based on the metric type.
+	 */
 	Chart.prototype.getFormattedMetricValue = function(metricType, value)
 	{
 		var formattedValue = "";
@@ -499,8 +525,14 @@ var CM = (function($) {
 		return formattedValue;
 	};
 	
+	/**
+	 * Returns the years where any of the metrics within the query have data.
+	 * @param states The states to look for data for
+	 * @param multiDataMultipleQuery The query data to search over
+	 * @returns {Array} An array of the years where there is data
+	 */
 	Chart.prototype.getMultipleYearsMetricState = function(states, multiDataMultipleQuery) {
-		var array_years=[];
+		var array_years = [];
 		var k=0;
 		for(var j=0; j<states.length; j++){
 			for(var i=0; i < multiDataMultipleQuery.length;i++){
@@ -515,8 +547,11 @@ var CM = (function($) {
 		return array_years;
 	};
 	
-	/*
-	 * This is a 2d table. WHen you only have one metric to show
+	/**
+	 * Returns the years where there is data within the given query data
+	 * @param states The states to look for data for
+	 * @param multiData The query data to search over
+	 * @returns {Array} An array of the years where there is data
 	 */
 	Chart.prototype.getYearsMetricState = function(states, multiData) {
 		var array_years=[];
