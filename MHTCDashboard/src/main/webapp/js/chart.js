@@ -85,12 +85,10 @@ var CM = (function($) {
 	
 	Chart.prototype.selectYear = function(year) {
 		this.yearSelected = year;
-		this.refresh();
 	};
 	
 	Chart.prototype.resetYear = function() {
 		this.yearSelected = -1;
-		this.refresh();
 	};
 	
 	Chart.prototype.refreshTable = function() {
