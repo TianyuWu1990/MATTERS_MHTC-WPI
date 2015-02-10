@@ -582,6 +582,10 @@ a.brand span {
 	width: 98%;
 }
 
+svg text {
+	font-size: 14px;
+}
+
 #errorView {
 	display: block;
 	
