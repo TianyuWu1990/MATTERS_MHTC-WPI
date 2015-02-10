@@ -173,10 +173,9 @@ stopHeatMapAnimation=function() {
 
 
 loadFunction = function() {	
-	cm=CM.create();
-	as=AS.create();
+	cm = CM.create();
+	as = AS.create();
 	
-	//cm.loadFunction();
 	as.loadFunction();
 	
     // Initializes button that toggles the sidebar
@@ -443,44 +442,7 @@ loadFunction = function() {
 	/******************************************
      * End metric selection logic
      ******************************************/
-	 
-	$("#chartType" ).change(function() {
-		  cm.current_graph = this.value;
-		  cm.showMultiGraph(as.selected);
-	});
-	
-	$("#yearHeatMap").change(function(){
-		as.showHeatMapGraph(as.currentind,as.current_tab_style,'#mbodyHeatMap', this.value);
-	});
-	
-	
-	$( "#playbuttonanimation" ).click(function() {
-			
-		if (!global_timer)
-			global_timer = setInterval(animateHeatMap,3500);
-		$("#stopbuttonanimation").prop('disabled', false); 
-		$("#playbuttonanimation").prop('disabled', true);
 
-		
-		//as.startPlayer(as.currentind,as.current_tab_style, '#mbodyHeatMap',  true);
-	});
-	$( "#stopbuttonanimation" ).click(function() {
-		//$("#yearHeatMap").prop('disabled', false);
-		
-		stopHeatMapAnimation();
-		$("#stopbuttonanimation").prop('disabled', true); 
-		$("#playbuttonanimation").prop('disabled', false);
-		global_timer = null;
-		year_global=-1;
-		globalcounter=0;
-	});
-	$("#yearsMultipleQuery").change(function(){
-		as.showMultipleMetricsStatesYears(this.value);
-	});
-    
-    
-/********************************************************************/
-	/**COMMNETED BY MANIK**/
 
 	$('.dropdown-toggle').dropdown();
 	$('.dropdown-menu form input, .dropdown-menu label').click(function(e) {
@@ -503,11 +465,6 @@ loadFunction = function() {
     $(document).click(function() {
         $('#signin-dropdown').hide();
     });
-    
-	 heatmapButtonClicked = function(year_in)
-	 { 	
-		 as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap',year_in);
-	 }	
 };
 
 /**
@@ -610,6 +567,5 @@ function selectUnselectMetricHelper(metricID, select)
 
 function tableButtonClicked(obj, year_in)
 { 	
-	 as.showMultipleMetricsStatesYears(year_in);
-	 return true;
+	cm.selectYear(year_in);
 }

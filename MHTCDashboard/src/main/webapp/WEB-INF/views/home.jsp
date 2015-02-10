@@ -313,27 +313,27 @@
 						<!--  Right side of the pagination header. -->
 						<ul class="nav nav-tabs" id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Table" onclick="as.showMultipleMetricsStatesYears(-1); as.hideGraphTitle();">
+								<a href="#table" data-toggle="tab" title="Table" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
 									<i class="fa fa-table fa-2x"></i>
 								</a>
 							</li>
 							<li class=" graph-tab " id="line-tab">
-								<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.graphDeployer(0,'line'); as.showGraphTitle();">
+								<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
 									<i class="fa fa-line-chart fa-2x"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a href="#bar" data-toggle="tab" title="Bar Chart" onclick="as.graphDeployer(0,'bar'); as.showGraphTitle();"> 
+								<a href="#bar" data-toggle="tab" title="Bar Chart" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
 									<i class="fa fa-bar-chart fa-2x"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1); as.showGraphTitle();">
+								<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i class="fa fa-us-map"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Excel Data" onclick="as.exportExcelData()">
+								<a href="#table" data-toggle="tab" title="Excel Data" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 								<i class="fa fa-file-excel-o fa-2x"></i></a>
 							</li>
 						</ul>
@@ -399,29 +399,7 @@
 							<!-- Heatmap -->		
 							<div class="tab-pane fade" id="heatmaptab">
 								<div class="box-content">			
-									<table style="width: 100%;">
-										<tr>
-											<td align="left" nowrap="true">
-												<table align="center">
-													<tr>
-														<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
-														<td nowrap="true"><div id="timeline"></div></td>
-														<td style="padding-left: 40px">
-															<button type="button" id="playbuttonanimation">Play</button>
-															<button type="button" id="stopbuttonanimation" disabled="true">Stop</button>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-									</table>
-									<div class="row">
-			    						<div class="span10" >
-			    							<div id ="mbodyHeatMap" style=""></div>
-			    						</div>
-			    						<div class="span2" id="verticalheatmapmeter"></div>
-			    					</div>
-			    							
+							
 								</div>
 							</div>
 						</div>
