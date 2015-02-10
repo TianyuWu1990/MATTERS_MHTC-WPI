@@ -392,7 +392,7 @@
 							<!-- Bar Chart -->
 							<div class="tab-pane fade" id="bar">
 								<div class="box-content">
-									<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
+									<div id="mbodyBar" style="margin-right:100px; margin-top:20px;"></div>
 								</div>
 							</div>
 							
