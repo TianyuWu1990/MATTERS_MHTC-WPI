@@ -202,9 +202,12 @@ a.brand span {
 #stateSelectionCol
 {
 	width: 200px;
-	
-	border-right: 1px solid black;
+}
+
+#stateSelectionCol > .sidebar-content
+{
 	border-left: 1px solid black;
+	border-right: 1px solid black;
 }
 
 .stateSelectionOption.selected
@@ -1006,7 +1009,7 @@ ul.timelineListStyle > li
 .tab-pane
 {
 	overflow:auto;
-	height:80%;
+	height:85%;
 }
 
 .pagination-right
