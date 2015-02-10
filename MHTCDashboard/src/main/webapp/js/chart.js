@@ -163,7 +163,7 @@ var CM = (function($) {
 			                    	else
 			                    	{
 			                    		// Format the data based on type.
-			                    		var formattedData = cm.getFormattedMetricValue(Metrics.getMetricByID(multiData[i][0].metric.id).getType(), 
+			                    		var formattedData = cm.getFormattedMetricValue(multiData[i][0].metric.type, 
 			                    				multiData[i][0].dataPoints[j].value);
 			                    		row = row + "<td>" + formattedData + "</td>";
 			                    	}
@@ -176,30 +176,19 @@ var CM = (function($) {
 				});
 			}
 			else	// Multiple metrics
-			{
-					var multiDataMultipleQuery = [];
-					var kcounterexecute = 0;
+			{					
+					var processedMetrics = selectedMetrics.map(function(e) { return Metrics.getMetricByID(e).getName(); });
 					
-					for(var kcounter = 0; kcounter < selectedMetrics.length; kcounter++){						
-						query = DQ.create().addState(selectedStates)
-							.addMetric(Metrics.getMetricByID(selectedMetrics[kcounter]).getName());
-
-						query.execute(function(multiData) {
-							multiDataMultipleQuery[kcounterexecute] = multiData;
-							kcounterexecute++;
-						});
-						
-					}
+					query = DQ.create().addState(selectedStates).addMultipleMetrics(processedMetrics);
 					
-					// Right now, this is done on a timeout waiting for the above queries to execute.
-					// This is really bad and should be changed, because it means the table wont load if the
-					// queries take longer than the timeout.
-					
-					setTimeout(function() {	
+					query.execute(function(multiData) {
 						
-						var yearsForMetrics = cm.getMultipleYearsMetricState(selectedStates, multiDataMultipleQuery);
+						if(multiData.length == 0)
+							return; // Do nothing if we got no data back.
 						
-						// Start building the timeline
+						var yearsForMetrics = cm.getYearsWhereDataExistsForMultipleMetrics(multiData);
+						
+						// Build the timeline
 						// Show the years table
 					    $("#timelinetable").removeClass("hidden");
 					    
@@ -209,7 +198,7 @@ var CM = (function($) {
 					    if(cm.yearSelected == -1)
 		    				cm.yearSelected = yearsForMetrics[0];
 			
-		    			var timeLine=$("#timelinetable");
+		    			var timeLine = $("#timelinetable");
 		    			timeLine.empty();
 		    			
 						var timeLineHTML = '<table align="center"><tr><td></td><td><ul class="timelineListStyle">';
@@ -227,101 +216,51 @@ var CM = (function($) {
 						
 						// Build Header
 						var row = "<th>State</th>";
-						var checkduplicity;//hack to fix the fact the titles and rows were strnagly duplicating
-						var array_duplicates = new Array();
-						var counter_control_duplicates = 0;// Hack: the rows were duplicating like crazy but now always
-						//.. needed a way to work around it but currently it is not the elegant  way
 						
-						for(var r = 0; r < multiDataMultipleQuery.length; r++){
-							var metricName = multiDataMultipleQuery[r][0][0].metric.name;
+						for(var r = 0; r < multiData[0].length; r++)
+						{
+							var metricName = multiData[0][r].metric.name;
 							
-							checkduplicity = $.inArray(metricName, array_duplicates) > -1;
-							if(checkduplicity == false){
-								row = row + "<th>"+ '<span id="info" title="' + multiDataMultipleQuery[r][0][0].metric.desc 
-									+ '"><i class="fa fa-info-circle"></i><span>' + " " + metricName + "</th>";
-								array_duplicates[counter_control_duplicates] = metricName;
-								counter_control_duplicates++;
-							}
-	
+							row = row + "<th>"+ '<span id="info" title="' + multiData[0][r].metric.desc 
+							+ '"><i class="fa fa-info-circle"></i><span>' + " " + metricName + "</th>";
 						}
+						
 						row = "<thead>" + row +"</thead>"; 
 						table.append(row);
 						// Finish building State header
 						
-						
-						var current_state="-1";
-						var band;
-						var foundvalue;
-						var sentinel;
-						var w;
-						var percentage;
-						var type_var;
-						for(var j = 0; j < selectedStates.length; j++){
+						// Populate data from each state
+						// Note: we assume here that there was atleast 1 metric data returned for this state.
+						for(var j = 0; j < multiData.length; j++)
+						{
+							row = "";
 							
-							if(current_state != selectedStates[j]){
-								current_state = selectedStates[j];
-								band = false;
-							}
-							
-							var rows_written = 0;// Hack: the rows were duplicating like crazy but now always
-							//.. needed a way to work around it but currently it is not the elegant way
-							
-							for(var r = 0; r < multiDataMultipleQuery.length; r++){
-								var foundvalue = false;
-								var sentinel = false;
-								var w = 0; 
+							for(var k = 0; k < multiData[j].length; k++)
+							{
+								var metricData = multiData[j][k];
 								
-								while((w < multiDataMultipleQuery[r][j][0].dataPoints.length) && (!sentinel)) {
-
-									if(multiDataMultipleQuery[r][j][0].dataPoints[w].year == cm.yearSelected){
-										
-										// Add the state name for each state as we go.
-										if(!band){
-											row = "<th>" + multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
-											band = true;
-										}
-										
-										if((multiDataMultipleQuery[r][j][0].dataPoints[w].value!=null) && (rows_written < counter_control_duplicates)){
-											rows_written++;
-											
-											var formattedMetric = cm.getFormattedMetricValue(Metrics.getMetricByID(multiDataMultipleQuery[r][j][0].metric.id).getType(),
-													multiDataMultipleQuery[r][j][0].dataPoints[w].value);
-											
-											row = row + "<td>" + formattedMetric + "</td>";
-
-											foundvalue = true;	
-										}
-										
-										sentinel=true;		
-									}
-									
-									w++;
+								if (k == 0) // First one...have to add the state header.
+								{
+									row = "<th>" + metricData.state.abbr + "</th>";
 								}
 								
-								// Ensure that we write the state name
-								if(!band){
-									row = "<th>" + multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
-									band = true;
-								}
+								var dataPointForCurrentYear = metricData.dataPoints.filter(function(point) { return point.year == cm.yearSelected; });
 								
-								// Say no value available if applicable.
-								if((!foundvalue) && (rows_written<counter_control_duplicates)){
-									rows_written++;
-									row = row +"<td>N/A</td>";
-								}
+								dataPointForCurrentYear = dataPointForCurrentYear.length == 0 ? null : dataPointForCurrentYear[0].value;
+								
+								var formattedValue = cm.getFormattedMetricValue(metricData.metric.type, dataPointForCurrentYear);
+								
+								row = row + "<td>" + formattedValue + "</td>";
 							}
 							
-							if(band){ 
-								row = "<tr>" +row +"</tr>";
-								table.append(row);
-							}
+							row = "<tr>" + row + "</tr>";
+							table.append(row);
 						}
 						cm.setDataTable();
-					}, 500);
-			}		
 					
-		}	
-		
+					});
+				}		
+			}	
 	};
 		
 	/**
@@ -512,6 +451,9 @@ var CM = (function($) {
 	{
 		var formattedValue = "";
 		
+		if (value == null)
+			return "N/A";
+		
 		if(metricType == "percentage") {
 			formattedValue = (value * 100).toFixed(2)+"%";
 		} else if(metricType =="currency") {
@@ -527,23 +469,26 @@ var CM = (function($) {
 	
 	/**
 	 * Returns the years where any of the metrics within the query have data.
-	 * @param states The states to look for data for
 	 * @param multiDataMultipleQuery The query data to search over
 	 * @returns {Array} An array of the years where there is data
 	 */
-	Chart.prototype.getMultipleYearsMetricState = function(states, multiDataMultipleQuery) {
+	Chart.prototype.getYearsWhereDataExistsForMultipleMetrics = function(multiDataMultipleQuery) {
 		var array_years = [];
 		var k=0;
-		for(var j=0; j<states.length; j++){
-			for(var i=0; i < multiDataMultipleQuery.length;i++){
-				for(var w=0;w<multiDataMultipleQuery[i][j][0].dataPoints.length; w++){
-					if(array_years.indexOf(multiDataMultipleQuery[i][j][0].dataPoints[w].year) < 0){
-						array_years[k]=multiDataMultipleQuery[i][j][0].dataPoints[w].year;
+		
+		for(var i = 0; i < multiDataMultipleQuery.length;i++) { // For every state...
+			for(var w = 0; w < multiDataMultipleQuery[i].length; w++) { // Check every returned metric
+				for(var j = 0; j < multiDataMultipleQuery[i][w].dataPoints.length; j++) // For every data point for those metrics..
+				{
+					if(array_years.indexOf(multiDataMultipleQuery[i][w].dataPoints[j].year) < 0)
+					{
+						array_years[k] = multiDataMultipleQuery[i][w].dataPoints[j].year;
 						k++;
 					}
 				}
 			}
 		}
+		
 		return array_years;
 	};
 	
