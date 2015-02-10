@@ -60,6 +60,8 @@
 							<h4 class="modal-title" id="myModalLabel">Site Feedback</h4>
 						</div>
 						<div class="modal-body" style="padding: 15 15 15 15;">
+							<p>Please provide your suggestions about the MATTERS Site. Thank you!</p>
+							
 							<div class="input-group">
 								<strong>Your Name</strong><br /> 
 								<input style="height:30px; width: 250px;" type="text" name="name" class="form-control">
