@@ -33,6 +33,8 @@ var CM = (function($) {
 		
 		this.heatMapColorMap = {};
 		this.heatMapValuesMap = {};
+		
+		this.heatMapColorScheme = ["#fff5eb",'#fee6ce', '#fdd0a2', '#fdae6b', '#fd8d3c', '#f16913', '#d94801', '#a63603', '#7f2704'];	
 	};
 	
 	/**
@@ -157,9 +159,22 @@ var CM = (function($) {
 					return f.year == cm.yearSelected;
 				});
 				
-				dataPointForYear = dataPointForYear.length == 0 ? 0.0 : dataPointForYear[0].value;
+				dataPointForYear = dataPointForYear.length == 0 ? null : dataPointForYear[0].value;
 				
 				return [e[0].state.abbr, dataPointForYear, e[0].metric.type];
+			});
+			
+			// Remove any without real data, but keep track of them for later.
+			var missingData = [];
+			stateValueInOrder = stateValueInOrder.filter(function(e) {
+				
+				if (e[1] == null)
+				{
+					missingData.push(e);
+					return false;
+				}
+				
+				return true;				
 			});
 			
 			// Then we sort so that the highest value is at the 0th position
@@ -173,85 +188,164 @@ var CM = (function($) {
 			cm.heatMapColorMap = {};
 			
 			var maxValue = stateValueInOrder[0][1];
-
+			var minValue = stateValueInOrder[stateValueInOrder.length - 1][1];
+			
+			// Add records for every state we have data for
 			for (var i = 0; i < stateValueInOrder.length; i++)
 			{
-				var rankingInclDCUSA = 52 - i;
-				var rankingJustStates = 50 - 1;
 				var value = stateValueInOrder[i][1];
 				var stateAbbr = stateValueInOrder[i][0];
 				var metricType = stateValueInOrder[i][2];
 				
-				var stateColor = cm.getHeatmapColor("#FFFFFF", value, maxValue);
+				var ranking = i + 1;
+				
+				if (metricType == "rank")
+				{
+					ranking = stateValueInOrder.length - i;
+				}
+				
+				var stateColor = cm.getHeatmapColor(cm.heatMapColorScheme, value, minValue, maxValue);
+				
+				var actualState = States.getStateByAbbreviation(stateAbbr);
 				
 				cm.heatMapValuesMap[stateAbbr] = { 
-						rankingInclDC	:	rankingInclDCUSA,
-						statesRanking	:	rankingJustStates,
-						value			:	value,
-						state			:	stateAbbr,
+						ranking	:	cm.getFormattedMetricValue("rank", ranking),
+						value			:	cm.getFormattedMetricValue(metricType, value),
+						state			:	actualState,
 						metricType		:	metricType,
 						color			:	stateColor,
 				};
 				
-				cm.heatMapColorMap[stateAbbr] = { fill : stateColor };
+				cm.heatMapColorMap[stateAbbr] = { 
+						'fill' : stateColor, 
+						'stroke' : '#000',
+						'stroke-width' : 1
+						};
 			}
-					
+			
+			// Add record for the states where we are missing data.
+			for (var i = 0; i < missingData.length; i++)
+			{
+				var stateAbbr = missingData[i][0];
+				var metricType = missingData[i][2];
+				
+				var ranking = missingData.length + 1 + i;
+				
+				var stateColor = "#fff";
+				
+				var actualState = States.getStateByAbbreviation(stateAbbr);
+				
+				cm.heatMapValuesMap[stateAbbr] = { 
+						ranking	:	cm.getFormattedMetricValue("rank", ranking),
+						value			:	null,
+						state			:	actualState,
+						metricType		:	metricType,
+						color			:	stateColor,
+				};
+				
+				cm.heatMapColorMap[stateAbbr] = { 
+						'fill' : stateColor, 
+						'stroke' : '#000',
+						'stroke-width' : 1
+						};
+			}
+			
+			// What first rank is depends on the type of metric.
+			if (stateValueInOrder[0][2] == "rank")
+			{
+				$("#heatmap-generalinfo-first").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+				$("#heatmap-generalinfo-last").html(stateValueInOrder[0][0]);
+			}
+			else
+			{
+				$("#heatmap-generalinfo-first").html(stateValueInOrder[0][0]);
+				$("#heatmap-generalinfo-last").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+			}
+			
+			
+			$("#heatmap-generalinfo-ma").html(cm.heatMapValuesMap["MA"].ranking);
+			
 			$("#heatmap-actual").empty();
 			$("#heatmap-actual").removeData("pluginUsmap");
 			$("#heatmap-actual").usmap({
 				stateHoverAnimation: 100,
 				showLabels: true,
+				stateHoverStyles: {'stroke-width': 3},
+				
+				mouseover: function(event, data) {
+					
+					var infoForState = cm.heatMapValuesMap[data.name];
+					
+					$("#heatmap-specificDetails-name").html(infoForState.state.getName() + " (" + infoForState.state.getAbbr() + ")" );
+					
+					if (infoForState.value == null)
+					{
+						$("#heatmap-specificDetails-rank").html("No Data");
+						$("#heatmap-specificDetails-value").html("No Data");
+					}
+					else
+					{
+						$("#heatmap-specificDetails-rank").html(infoForState.ranking);
+						$("#heatmap-specificDetails-value").html(infoForState.value);
+					}
+				
+					if (infoForState.state.isPeerState())
+					{
+						$("#heatmap-specificDetails-peer").show();
+					}
+					else
+					{
+						$("#heatmap-specificDetails-peer").hide();
+					}
+					
+					$("#heatmap-specificDetails-instructions").hide();
+					$("#heatmap-generalDetails").hide();
+					$("#heatmap-specificDetails-details").show();
+				},
+				
+				mouseout: function(event, data) {
+					$("#heatmap-specificDetails-details").hide();
+					$("#heatmap-specificDetails-instructions").show();
+					$("#heatmap-generalDetails").show();
+				},
+				
 				stateSpecificStyles: cm.heatMapColorMap,
 			});
 		});
 	};
 	
-	Chart.prototype.getHeatmapColor = function(hexcolor, value, highest)
-	{
-		var red=hexcolor.substring(1, 3);
-		var green=hexcolor.substring(3, 5);
-		var blue=hexcolor.substring(5, 7);
+	Chart.prototype.getHeatmapColor = function(colorMap, value, lowest, highest)
+	{	
 		
-		red=parseInt(red, 16);
-		green=parseInt(green, 16);
-		blue=parseInt(blue, 16);
+		var endVal = highest - lowest;
+		var actValue = value - lowest;
 		
-		
-		red=Math.floor(red*value/highest);
-		green=Math.floor(green*value/highest);
-		blue=Math.floor(blue*value/highest);
-	    red=red>255?255:red;
-	    green=green>255?255:green;
-	    blue=blue>255?255:blue;
-	     
-		
-		  
-		red=red.toString(16)
-		green=green.toString(16)
-		blue=blue.toString(16)
-		
-		return "#" + (red.length < 2 ? "0"+red : red) + (green.length < 2 ? "0"+green : green) + (blue.length < 2 ? "0"+blue : blue);
+		var indexInMap = Math.floor((1 - (actValue / endVal)) * colorMap.length);
+	
+		return colorMap[indexInMap];	
 	}
 	
 	Chart.prototype.refreshHeatMapSizing = function() {
-		var containerHeight = $("#viewWrapper").height() - 130;
+		var containerHeight = $("#viewWrapper").height() - 130; // 130 is room for year and metric controls at top
 		var containerWidth = $("#viewWrapper").width();
 		
 		var height = containerHeight;
-		if (height < 280)
+		if (height < 300)
 		{
-			height = 280;
+			height = 300;
 		}		
 		
 		var width = height / .6;
 		
-		if (width > containerWidth && containerWidth > 400)
+		if (width > (containerWidth) && (containerWidth) > 500)
 		{
 			width = containerWidth;
 		}
 				
 		$("#heatmap-actual").height(height);
 		$("#heatmap-actual").width(width);		
+		
+		$("#heatmap-inner-wrapper").width(width);
 	};
 	
 	/**
@@ -592,6 +686,24 @@ var CM = (function($) {
 			formattedValue = "$" + value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 		}else if(metricType == "numeric"){
 			formattedValue = value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+		}else if(metricType == "rank") {
+			var firstDigit = value % 10;
+			
+			var suffix = "th";
+			switch(firstDigit)
+			{
+				case 1:
+					suffix = "st";
+					break;
+				case 2:
+					suffix = "nd";
+					break;
+				case 3:
+					suffix = "rd";
+					break;
+			}
+			
+			formattedValue = value + suffix;
 		}else{
 			formattedValue = value;
 		}	
