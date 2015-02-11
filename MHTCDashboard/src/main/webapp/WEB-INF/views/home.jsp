@@ -403,7 +403,7 @@
 									<div class="box-content">			
 										<div id="heatmap-wrapper">
 											<div id="heatmap-timeline"></div>
-											<div id="heatmap-actual" style="height:3000px;width:3000px;"></div>
+											<div id="heatmap-actual"></div>
 										
 										</div>
 									</div>

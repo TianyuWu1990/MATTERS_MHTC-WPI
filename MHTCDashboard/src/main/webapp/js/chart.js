@@ -30,6 +30,9 @@ var CM = (function($) {
 		this.currentVisualization = this.visualizationTypes.TABLE;
 		
 		this.yearSelected = -1;
+		
+		this.heatMapColorMap = {};
+		this.heatMapValuesMap = {};
 	};
 	
 	/**
@@ -83,7 +86,17 @@ var CM = (function($) {
 			case this.visualizationTypes.BAR:
 				this.refreshGraphs();
 				break;
+			case this.visualizationTypes.HEATMAP:
+				this.refreshHeatMap();
+				break;
 		}
+	};
+	
+	/**
+	 * Handles resizing charts when window size changes.
+	 */
+	Chart.prototype.refreshSizing = function() {
+		this.refreshHeatMapSizing();
 	};
 	
 	/**
@@ -107,6 +120,141 @@ var CM = (function($) {
 	};
 	
 	/**
+	 * Refreshes the heat map based on the currently selected metric in the App State.
+	 */
+	Chart.prototype.refreshHeatMap = function() {
+		this.refreshHeatMapSizing(); // Make sure sizing is right
+		
+		// Get data from server on the currently selected metric
+		var allStates = States.getAllstates();
+		
+		var allStatesForQuery = allStates.map(function(s) {
+			return s.abbr;
+		});
+
+		var query = DQ.create().addState(allStatesForQuery)
+			.addMetric(Metrics.getMetricByID(as.currentind).getName());
+		
+		query.execute(function(multiData) {
+			var yearsForMetric = cm.getYearsMetricState(allStates, multiData); // Get the years that the metric exists for from the data
+			yearsForMetric.sort(function(a,b) {return b - a;} ); 
+			
+			if (cm.yearSelected == -1)
+				cm.selectYear(yearsForMetric[0]);
+				
+			// Show the years table		
+			var timelineTableHTML = cm.buildTimeline(yearsForMetric);
+				
+			$("#heatmap-timeline").empty();
+			$("#heatmap-timeline").append(timelineTableHTML);
+			
+			
+			// Create coloring map for all states.
+					
+			// First, separate out the info we care about (ABBR, VALUE, TYPE)
+			var stateValueInOrder = multiData.map(function(e) { 
+				var dataPointForYear = e[0].dataPoints.filter(function(f){
+					return f.year == cm.yearSelected;
+				});
+				
+				dataPointForYear = dataPointForYear.length == 0 ? 0.0 : dataPointForYear[0].value;
+				
+				return [e[0].state.abbr, dataPointForYear, e[0].metric.type];
+			});
+			
+			// Then we sort so that the highest value is at the 0th position
+			stateValueInOrder.sort(function (a,b) {
+				return b[1] - a[1];
+			});
+					
+			
+			// Create the stored data structure for each state
+			cm.heatMapValuesMap = {};
+			cm.heatMapColorMap = {};
+			
+			var maxValue = stateValueInOrder[0][1];
+
+			for (var i = 0; i < stateValueInOrder.length; i++)
+			{
+				var rankingInclDCUSA = 52 - i;
+				var rankingJustStates = 50 - 1;
+				var value = stateValueInOrder[i][1];
+				var stateAbbr = stateValueInOrder[i][0];
+				var metricType = stateValueInOrder[i][2];
+				
+				var stateColor = cm.getHeatmapColor("#FFFFFF", value, maxValue);
+				
+				cm.heatMapValuesMap[stateAbbr] = { 
+						rankingInclDC	:	rankingInclDCUSA,
+						statesRanking	:	rankingJustStates,
+						value			:	value,
+						state			:	stateAbbr,
+						metricType		:	metricType,
+						color			:	stateColor,
+				};
+				
+				cm.heatMapColorMap[stateAbbr] = { fill : stateColor };
+			}
+					
+			$("#heatmap-actual").empty();
+			$("#heatmap-actual").removeData("pluginUsmap");
+			$("#heatmap-actual").usmap({
+				stateHoverAnimation: 100,
+				showLabels: true,
+				stateSpecificStyles: cm.heatMapColorMap,
+			});
+		});
+	};
+	
+	Chart.prototype.getHeatmapColor = function(hexcolor, value, highest)
+	{
+		var red=hexcolor.substring(1, 3);
+		var green=hexcolor.substring(3, 5);
+		var blue=hexcolor.substring(5, 7);
+		
+		red=parseInt(red, 16);
+		green=parseInt(green, 16);
+		blue=parseInt(blue, 16);
+		
+		
+		red=Math.floor(red*value/highest);
+		green=Math.floor(green*value/highest);
+		blue=Math.floor(blue*value/highest);
+	    red=red>255?255:red;
+	    green=green>255?255:green;
+	    blue=blue>255?255:blue;
+	     
+		
+		  
+		red=red.toString(16)
+		green=green.toString(16)
+		blue=blue.toString(16)
+		
+		return "#" + (red.length < 2 ? "0"+red : red) + (green.length < 2 ? "0"+green : green) + (blue.length < 2 ? "0"+blue : blue);
+	}
+	
+	Chart.prototype.refreshHeatMapSizing = function() {
+		var containerHeight = $(".tab-content").height() - 100;
+		var containerWidth = $(".tab-content").width();
+		
+		var height = containerHeight;
+		if (height <= 200)
+		{
+			height -= 50;
+		}		
+		
+		var width = height / .7;
+		
+		if (width > containerWidth)
+		{
+			width = containerWidth;
+		}
+		
+		$("#heatmap-actual").height(height);
+		$("#heatmap-actual").width(width);		
+	};
+	
+	/**
 	 * Refreshes the table view based on the currently selected states and metrics in the App State.
 	 */
 	Chart.prototype.refreshTable = function() {
@@ -126,10 +274,8 @@ var CM = (function($) {
 		if(selectedMetrics.length > 0) {	
 			if(selectedMetrics.length == 1) { // If we only have one metric to load
 				
-				// Hide timeline..with 1 metric we display all years for that metric.
-				$("#yearsMultipleQuery").addClass("hidden");
-				$("#timelinetable").addClass("hidden");
-				
+				$("#timelinetable").hide();
+								
 				// Query for appropriate data
 				var query = DQ.create().addState(selectedStates).addMetric(Metrics.getMetricByID(selectedMetrics[0]).getName());
 				
@@ -187,32 +333,18 @@ var CM = (function($) {
 							return; // Do nothing if we got no data back.
 						
 						var yearsForMetrics = cm.getYearsWhereDataExistsForMultipleMetrics(multiData);
+						yearsForMetrics.sort(function(a,b) {return b - a;} ); 
 						
-						// Build the timeline
-						// Show the years table
-					    $("#timelinetable").removeClass("hidden");
-					    
-					    yearsForMetrics.sort(function(a,b) {return b - a;} );    
-					    
-					    // Set the selected year
+					    // Set the selected year if its not already set.
 					    if(cm.yearSelected == -1)
-		    				cm.yearSelected = yearsForMetrics[0];
-			
-		    			var timeLine = $("#timelinetable");
-		    			timeLine.empty();
-		    			
-						var timeLineHTML = '<table align="center"><tr><td></td><td><ul class="timelineListStyle">';
-						for(var k = yearsForMetrics.length - 1; k >= 0; k--){
-							if(cm.yearSelected != yearsForMetrics[k]){
-								timeLineHTML += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+yearsForMetrics[k]+')" >'+yearsForMetrics[k]+'</button></li>';
-							}else{
-								timeLineHTML += '<li id="clicktable'+cm.yearSelected+'"><button class="active"  id="tableTimeLineButton" >'+cm.yearSelected+'</button></li>';
-							}
-						}
+							cm.selectYear(yearsForMetrics[0]);
 						
-						timeLineHTML += '</ul ></td></tr></table>';
-						timeLine.append(timeLineHTML);
-						// Finish building the timeline
+						// Show the years table		
+						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
+						
+						$("#timelinetable").empty();
+						$("#timelinetable").append(timelineTableHTML);
+						$("#timelinetable").show();
 						
 						// Build Header
 						var row = "<th>State</th>";
@@ -328,14 +460,14 @@ var CM = (function($) {
 	    	
 	    	if($("#mbody svg").length==0){
 	    		
-	    		$("#mbody").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
+	    		$("#mbody").append( "<svg style=\"background-color:#fff\"></svg>" );
 
 			    d3.selectAll("#mbody svg > *").remove();
 	    	}
     	}else{
     		$("#mbodyBar > *").remove();
     		if($("#mbodyBar svg").length==0){
-	    		$("#mbodyBar").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
+	    		$("#mbodyBar").append( "<svg style=\"background-color:#fff\"></svg>" );
 
 			    d3.selectAll("#mbodyBar svg > *").remove();
 			        
@@ -468,6 +600,25 @@ var CM = (function($) {
 	};
 	
 	/**
+	 * Builds the timeline for year selection
+	 * @param yearsList The years to show in the timeline
+	 */
+	Chart.prototype.buildTimeline = function(yearsList) {				
+		var timeLineHTML = '<table align="center"><tr><td></td><td><ul class="timelineListStyle">';
+		for(var k = yearsList.length - 1; k >= 0; k--){
+			if(cm.yearSelected != yearsList[k]){
+				timeLineHTML += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+yearsList[k]+')" >'+yearsList[k]+'</button></li>';
+			}else{
+				timeLineHTML += '<li id="clicktable'+cm.yearSelected+'"><button class="active"  id="tableTimeLineButton" >'+cm.yearSelected+'</button></li>';
+			}
+		}
+		
+		timeLineHTML += '</ul ></td></tr></table>';
+		
+		return timeLineHTML;
+	};
+	
+	/**
 	 * Returns the years where any of the metrics within the query have data.
 	 * @param multiDataMultipleQuery The query data to search over
 	 * @returns {Array} An array of the years where there is data
@@ -513,7 +664,6 @@ var CM = (function($) {
 		}
 		return array_years;
 	};
-	
 	
 	var publicInterface = {};
 	/**

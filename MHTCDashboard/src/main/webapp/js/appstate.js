@@ -334,8 +334,9 @@ var AS = (function($) {
 	 * Deploys the given visualization type for the currently selected data set.
 	 * @param visualizationType The type of visualization to deploy.
 	 */
-	AppState.prototype.visualizationDeployer = function(visualizationType) {
-				
+	AppState.prototype.visualizationDeployer = function(visualizationType) {		
+		cm.resetYear();
+		
 		switch(visualizationType)
 		{
 			case this.visualizations.TABLE:				
