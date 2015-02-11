@@ -7,143 +7,6 @@ var global_timer = null;
 var year_global=-1;
 
 var globalcounter=0;
- 
-getStyleRuleValue=function(styleName, className) {
-
-	    //for (var i=0;i<document.styleSheets.length;i++) {
-	        var s = document.styleSheets[3];
-
-	        var classes = s.rules || s.cssRules
-	        for(var x=0;x<classes.length;x++) {
-	            if(classes[x].selectorText==className) {
-	                return classes[x].style[styleName] ? classes[x].style[styleName] : classes[x].style.getPropertyValue(styleName);
-	            }
-	       // }
-	    }
-	}
-
- /**
-  * Converts a hexadimal color into a RGB
-  */
-  hexToRgb=function(hex) {
-	  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-	    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-	        return r + r + g + g + b + b;
-	    });
-
-	    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-	    return result ? {
-	        r: parseInt(result[1], 16),
-	        g: parseInt(result[2], 16),
-	        b: parseInt(result[3], 16)
-	    } : null;
-	};
-  /**
-   * Converts an RGB color To HEXA
-   */
-  colorToHex= function (color) {
-	  	
-	  	if(color == undefined || color == null) return "#F17171"
-	  	
-	    if (color.substr(0, 1) === '#') {
-	        return color;
-	    }
-	    var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
-
-	    var red = parseInt(digits[2]);
-	    var green = parseInt(digits[3]);
-	    var blue = parseInt(digits[4]);
-
-	    var rgb = blue | (green << 8) | (red << 16);
-	    return digits[1] + '#' + rgb.toString(16);
-	}
-  /**
-   * Gets a new letter to get a different mix of a hexadecimal color
-   */
-  nextLetter=function (s){
-	    return s.replace(/([a-fA-F])[^a-fA-F]*$/, function(a){
-	        var c= a.charCodeAt(0);
-	        switch(c){
-	            case 90: return 'A';
-	            case 122: return 'a';
-	            default: return String.fromCharCode(++c);
-	        }
-	    });
-	} 
-/**
- * 
- * Returns a new mix of color. Currently not in use
- */  
-getNewMix=function(letterNum){
-	
-	if(!isNaN(letterNum)){
-		if(letterNum<9){
-			letterNum=parseInt(letterNum);
-			letterNum++;
-			
-		}else{
-			letterNum="A";
-		}
-	}else{
-		if((letterNum!='F')&&(letterNum!='f')){
-			letterNum=nextLetter(letterNum);
-		}
-		
-	}
-	return letterNum;
-}  
-/**
- * 
- * @param hexcolor hexadecimal color to be degraded
- * @param value: current element of the array   
- * @param highest : last element of array
- * @returns {String} : this functions returns a new color degraded 
- */
-getNewColor=function(hexcolor,value,highest){
-	var red=hexcolor.substring(1, 3);
-	var green=hexcolor.substring(3, 5);
-	var blue=hexcolor.substring(5, 7);
-	
-	red=parseInt(red, 16);
-	green=parseInt(green, 16);
-	blue=parseInt(blue, 16);
-	
-	
-	red=Math.floor(red*value/highest);
-	green=Math.floor(green*value/highest);
-	blue=Math.floor(blue*value/highest);
-    red=red>255?255:red;
-    green=green>255?255:green;
-    blue=blue>255?255:blue;
-     
-	
-	  
-	red=red.toString(16)
-	green=green.toString(16)
-	blue=blue.toString(16)
-	
-	var thecolor="#" + (red.length < 2 ? "0"+red : red) + (green.length < 2 ? "0"+green : green) + (blue.length < 2 ? "0"+blue : blue);
-	
-	
-	
-	/*var newColor="#";
-	var changed=false;
-	var currentLetterNum=null;
-	var i=1;
-	while(i<8){
-		currentLetterNum=hexcolor.substring(i, i+1);
-		if(!changed){
-			if(currentLetterNum!=getNewMix(currentLetterNum)){
-				currentLetterNum=getNewMix(currentLetterNum);
-				changed=true;
-			}
-		}
-		newColor=newColor+currentLetterNum;
-		i++;
-	}*/
-	
-	return thecolor;		
-};  
 
 animateHeatMap=function(){
 	var limit=array_years_global.length;
@@ -178,6 +41,11 @@ loadFunction = function() {
 	
 	as.loadFunction();
 	
+	// Perform resize functions on resize.
+	$(window).on('resize', function() {
+		cm.refreshSizing();
+	});
+	
     // Initializes button that toggles the sidebar
 		
     $("#toggle-sidebar").click(function() {
@@ -186,7 +54,9 @@ loadFunction = function() {
     	
     	if ($("#sidebar-left").hasClass("open"))
     	{    				
-    		$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300);
+    		
+    		$("#viewWrapper").animate({ left: 0 }, 300, function() { $(window).trigger('resize'); });
     		
     		$("#sidebar-left").removeClass("open");
     		
@@ -195,7 +65,10 @@ loadFunction = function() {
     	}
     	else
     	{	
-    		$("#sidebar-left").animate({ marginLeft: 0}, 300, function() { $(window).trigger('resize'); });
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300);
+    		
+    		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
     		$("#sidebar-left").addClass("open");
     		
     		$(icon).addClass("fa-caret-left");
@@ -203,7 +76,7 @@ loadFunction = function() {
     	}
     	
     });
-    
+        
     /**************************************************
      * Start Sidebar Metric Menus logic
      **************************************************/
@@ -348,8 +221,7 @@ loadFunction = function() {
     	updateStateSelection();
     });
 	 
-    // When the user filters the states...
-    $(".stateFilter > input").on("input", function(e){
+    var filterStates = function() {
     	// First, show all options
     	var allOptions = $(".stateSelectionOptionWrapper");
     	for(i = 0; i < allOptions.length; i++)
@@ -357,7 +229,7 @@ loadFunction = function() {
     		$(allOptions[i]).removeClass("hidden");
     	}
     	
-    	var inputVal = $(this).val().trim();
+    	var inputVal = $(".stateFilter > input").val().trim();
     	
     	var nonMatchingStates = States.filterStates(inputVal);
     	
@@ -367,7 +239,17 @@ loadFunction = function() {
 
     		$(matchingText).addClass("hidden");
     	}
-    	
+    }
+    
+    // When the user filters the states...
+    $(".stateFilter > input").on("input", function(e){
+    	filterStates();
+    });
+    
+    // Keyup event used as workaround for IE9 bug where backspace does not register as input
+    // Note that there are still bugs with Cut and drag in IE9.
+    $(".stateFilter > input").on("keyup", function(e){
+    	filterStates();
     });
     
     /******************************************
