@@ -234,22 +234,22 @@ var CM = (function($) {
 	}
 	
 	Chart.prototype.refreshHeatMapSizing = function() {
-		var containerHeight = $(".tab-content").height() - 100;
-		var containerWidth = $(".tab-content").width();
+		var containerHeight = $("#viewWrapper").height() - 130;
+		var containerWidth = $("#viewWrapper").width();
 		
 		var height = containerHeight;
-		if (height <= 200)
+		if (height < 280)
 		{
-			height -= 50;
+			height = 280;
 		}		
 		
-		var width = height / .7;
+		var width = height / .6;
 		
-		if (width > containerWidth)
+		if (width > containerWidth && containerWidth > 400)
 		{
 			width = containerWidth;
 		}
-		
+				
 		$("#heatmap-actual").height(height);
 		$("#heatmap-actual").width(width);		
 	};
