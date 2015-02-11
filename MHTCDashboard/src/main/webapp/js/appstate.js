@@ -45,7 +45,7 @@ var AS = (function($) {
 				"Fatal error!<br/>If you're seeing this message, something has gone wrong.", // O: No Error (0000)
 				"No metrics selected!<br/>You must select a metric to explore the visualization.", // 1: No Metric Selected (0001)
 				"No states selected!<br/>You must select a state to explore the visualization.", // 2: No state selected (0010)
-				"No states or metrics selected!<br/>You must select atleast one state and one metric to explore the visualization." // 3: No state & no metric (0011)
+				"No states or metrics selected!<br/>You must select at least one state and one metric to explore the visualization." // 3: No state & no metric (0011)
 		];
 
 		this.errorCode = this.errorCodes.NO_ERROR;
