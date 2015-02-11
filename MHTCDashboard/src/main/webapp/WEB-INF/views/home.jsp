@@ -9,9 +9,10 @@
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
 <%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		
 		<!-- Library CSS -->
 		<link href="css/nv.d3.css" rel="stylesheet">
@@ -341,81 +342,131 @@
 						</ul>
 					</div>
 					
-					<div id="vizView">
-
-						<!--  Start Back/Forward Buttons -->
-						<div id="metricCycleButtons" style="display:none;">
-							<table>
-								<tr>
-									<td>
-										<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
-											<i class="fa fa-chevron-left"></i>
-										</button>
-									</td>
-									<td>
-										<div id="MultipleMetricTitle" >
-											Choose a metric from the left menu
+					<div id="viewWrapper">
+						<div id="vizView">
+	
+							<!--  Start Back/Forward Buttons -->
+							<div id="metricCycleButtons" style="display:none;">
+								<table>
+									<tr>
+										<td>
+											<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
+												<i class="fa fa-chevron-left"></i>
+											</button>
+										</td>
+										<td>
+											<div id="MultipleMetricTitle" >
+												Choose a metric from the left menu
+											</div>
+										</td>
+										<td>
+											<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
+												<i class="fa fa-chevron-right"></i>
+											</button>
+										</td>	
+									</tr>
+								</table>
+							</div>
+							<!--  End Back/Forward Buttons -->	
+							
+							<div class="tab-content">
+								<!-- Line Graph -->
+								<div class="tab-pane fade" id="line">
+									<div class="box-content">
+										<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
+											<svg style="height: 90%;"></svg>
 										</div>
-									</td>
-									<td>
-										<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
-											<i class="fa fa-chevron-right"></i>
-										</button>
-									</td>	
-								</tr>
-							</table>
-						</div>
-						
-						<!--  End Back/Forward Buttons -->	
-						<div class="tab-content">
-							<!-- Line Graph -->
-							<div class="tab-pane fade" id="line">
-								<div class="box-content">
-									<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
-										<svg style="height: 90%;"></svg>
+									</div>
+								</div>
+								
+								<!-- Table -->
+								<div class="tab-pane active" id="table">
+									<div class="box-content">
+										<table>
+											<tr>
+												<td id="timelinetable"></td>
+											</tr>
+											<tr>
+												<td id="mbodyMultipleQuery"></td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								
+								<!-- Bar Chart -->
+								<div class="tab-pane fade" id="bar">
+									<div class="box-content">
+										<div id="mbodyBar" style="margin-top:20px;"></div>
+									</div>
+								</div>
+								
+								<!-- Heatmap -->		
+								<div class="tab-pane fade" id="heatmaptab">
+									<div class="box-content">			
+										<div id="heatmap-wrapper">
+											<div id="heatmap-timeline"></div>
+											<div id="heatmap-inner-wrapper">
+												<div id="heatmap-actual"></div>
+												<div id="heatmap-controls">
+													<div id="heatmap-details">
+														<div id="heatmap-details-title">
+															Details
+														</div>
+														<div id="heatmap-details-details">
+															<div id="heatmap-generalDetails">
+																<div class="heatmap-detailTitle">Top Ranked:</div> 
+																<span id="heatmap-generalinfo-first"></span><br/>
+																
+																<div class="heatmap-detailTitle">Bottom Ranked:</div> 
+																<span id="heatmap-generalinfo-last"></span><br/>
+																
+																<div class="heatmap-detailTitle">MA Rank:</div>
+																<span id="heatmap-generalinfo-ma"></span>
+															</div>
+															
+															<div id="heatmap-specificDetails">
+																<div id="heatmap-specificDetails-instructions">
+																	Hover over a state for info.
+																</div>
+																<div id="heatmap-specificDetails-details" style="display:none;">
+																	<div class="heatmap-detailTitle">Name:</div>
+																	<span id="heatmap-specificDetails-name"></span><br/>
+																	
+																	<div class="heatmap-detailTitle">Rank:</div>
+																	<span id="heatmap-specificDetails-rank"></span><br/>
+																	
+																	<div class="heatmap-detailTitle">Value:</div>
+																	<span id="heatmap-specificDetails-value"></span><br/>
+																	
+																	<div id="heatmap-specificDetails-peer" style="font-style:italic;">Peer State</div>
+																</div>																
+															</div>
+														</div>
+													</div>
+													<div id="heatmap-legend">
+														<div id="heatmap-legend-title">Legend</div>
+														<div id="heatmap-legend-legend">
+														
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
-							
-							<!-- Table -->
-							<div class="tab-pane active" id="table">
-								<div class="box-content">
-									<table>
-										<tr>
-											<td id="timelinetable"></td>
-										</tr>
-										<tr>
-											<td class="modal-body" id="mbodyMultipleQuery"></td>
-										</tr>
-									</table>
-								</div>
-							</div>
-							
-							<!-- Bar Chart -->
-							<div class="tab-pane fade" id="bar">
-								<div class="box-content">
-									<div id="mbodyBar" style="margin-right:100px; margin-top:20px;"></div>
-								</div>
-							</div>
-							
-							<!-- Heatmap -->		
-							<div class="tab-pane fade" id="heatmaptab">
-								<div class="box-content">			
-							
-								</div>
-							</div>
 						</div>
-					</div>
-					
-					<!-- Error Reporting -->
-					<div id="errorView" style="display:none;">
 						
-						<div id="errorMsgWrapper">
-							<i class="fa fa-exclamation-triangle fa-2x"></i>
-							<span id="errorMsg"></span>
+						<!-- Error Reporting -->
+						<div id="errorView" style="display:none;">
+							
+							<div id="errorMsgWrapper">
+								<i class="fa fa-exclamation-triangle fa-2x"></i>
+								<span id="errorMsg"></span>
+							</div>
 						</div>
+						<!-- End Error Reporting -->	
 					</div>
-					<!-- End Error Reporting -->	
 				</div>		
 		</div>
 		<!-- end: Content -->

@@ -30,6 +30,11 @@ var CM = (function($) {
 		this.currentVisualization = this.visualizationTypes.TABLE;
 		
 		this.yearSelected = -1;
+		
+		this.heatMapColorMap = {};
+		this.heatMapValuesMap = {};
+		
+		this.heatMapColorScheme = ["#fff5eb",'#fee6ce', '#fdd0a2', '#fdae6b', '#fd8d3c', '#f16913', '#d94801', '#a63603', '#7f2704'];	
 	};
 	
 	/**
@@ -83,7 +88,17 @@ var CM = (function($) {
 			case this.visualizationTypes.BAR:
 				this.refreshGraphs();
 				break;
+			case this.visualizationTypes.HEATMAP:
+				this.refreshHeatMap();
+				break;
 		}
+	};
+	
+	/**
+	 * Handles resizing charts when window size changes.
+	 */
+	Chart.prototype.refreshSizing = function() {
+		this.refreshHeatMapSizing();
 	};
 	
 	/**
@@ -107,6 +122,280 @@ var CM = (function($) {
 	};
 	
 	/**
+	 * Refreshes the heat map based on the currently selected metric in the App State.
+	 */
+	Chart.prototype.refreshHeatMap = function() {
+		this.refreshHeatMapSizing(); // Make sure sizing is right
+		
+		// Get data from server on the currently selected metric
+		var allStates = States.getAllstates();
+		
+		var allStatesForQuery = allStates.map(function(s) {
+			return s.abbr;
+		});
+
+		var query = DQ.create().addState(allStatesForQuery)
+			.addMetric(Metrics.getMetricByID(as.currentind).getName());
+		
+		query.execute(function(multiData) {
+			var yearsForMetric = cm.getYearsMetricState(allStates, multiData); // Get the years that the metric exists for from the data
+			yearsForMetric.sort(function(a,b) {return b - a;} ); 
+			
+			if (cm.yearSelected == -1)
+				cm.selectYear(yearsForMetric[0]);
+				
+			// Show the years table		
+			var timelineTableHTML = cm.buildTimeline(yearsForMetric);
+				
+			$("#heatmap-timeline").empty();
+			$("#heatmap-timeline").append(timelineTableHTML);
+			
+			
+			// Create coloring map for all states.
+					
+			// First, separate out the info we care about (ABBR, VALUE, TYPE)
+			var stateValueInOrder = multiData.map(function(e) { 
+				var dataPointForYear = e[0].dataPoints.filter(function(f){
+					return f.year == cm.yearSelected;
+				});
+				
+				dataPointForYear = dataPointForYear.length == 0 ? null : dataPointForYear[0].value;
+				
+				return [e[0].state.abbr, dataPointForYear, e[0].metric.type];
+			});
+			
+			// Remove any without real data, but keep track of them for later.
+			// Also remove US average
+			var missingData = [];
+			stateValueInOrder = stateValueInOrder.filter(function(e) {
+				
+				if (e[1] == null)
+				{
+					missingData.push(e);
+					return false;
+				}
+				
+				if (e[0] == "US")
+				{
+					return false;
+				}
+				
+				return true;				
+			});
+			
+			// Then we sort so that the highest value is at the 0th position
+			stateValueInOrder.sort(function (a,b) {
+				return b[1] - a[1];
+			});
+					
+			
+			// Create the stored data structure for each state
+			cm.heatMapValuesMap = {};
+			cm.heatMapColorMap = {};
+			
+			var maxValue = stateValueInOrder[0][1];
+			var minValue = stateValueInOrder[stateValueInOrder.length - 1][1];
+			
+			// Add records for every state we have data for
+			for (var i = 0; i < stateValueInOrder.length; i++)
+			{
+				var value = stateValueInOrder[i][1];
+				var stateAbbr = stateValueInOrder[i][0];
+				var metricType = stateValueInOrder[i][2];
+				
+				var ranking = i + 1;
+				
+				if (metricType == "rank")
+				{
+					ranking = stateValueInOrder.length - i;
+				}
+				
+				var stateColor = cm.getHeatmapColor(cm.heatMapColorScheme, value, minValue, maxValue);
+				
+				var actualState = States.getStateByAbbreviation(stateAbbr);
+				
+				cm.heatMapValuesMap[stateAbbr] = { 
+						ranking	:	cm.getFormattedMetricValue("rank", ranking),
+						value			:	cm.getFormattedMetricValue(metricType, value),
+						state			:	actualState,
+						metricType		:	metricType,
+						color			:	stateColor,
+				};
+				
+				cm.heatMapColorMap[stateAbbr] = { 
+						'fill' : stateColor, 
+						'stroke' : '#000',
+						'stroke-width' : 1
+						};
+			}
+			
+			// Add record for the states where we are missing data.
+			for (var i = 0; i < missingData.length; i++)
+			{
+				var stateAbbr = missingData[i][0];
+				var metricType = missingData[i][2];
+				
+				var ranking = missingData.length + 1 + i;
+				
+				var stateColor = "#fff";
+				
+				var actualState = States.getStateByAbbreviation(stateAbbr);
+				
+				cm.heatMapValuesMap[stateAbbr] = { 
+						ranking	:	cm.getFormattedMetricValue("rank", ranking),
+						value			:	null,
+						state			:	actualState,
+						metricType		:	metricType,
+						color			:	stateColor,
+				};
+				
+				cm.heatMapColorMap[stateAbbr] = { 
+						'fill' : stateColor, 
+						'stroke' : '#000',
+						'stroke-width' : 1
+						};
+			}
+			
+			// What first rank is depends on the type of metric.
+			if (stateValueInOrder[0][2] == "rank")
+			{
+				$("#heatmap-generalinfo-first").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+				$("#heatmap-generalinfo-last").html(stateValueInOrder[0][0]);
+			}
+			else
+			{
+				$("#heatmap-generalinfo-first").html(stateValueInOrder[0][0]);
+				$("#heatmap-generalinfo-last").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+			}
+			
+			$("#heatmap-generalinfo-ma").html(cm.heatMapValuesMap["MA"].ranking);
+			
+			
+			cm.buildHeatMapLegend(minValue, maxValue, stateValueInOrder[0][2]);
+			
+			
+			$("#heatmap-actual").empty();
+			$("#heatmap-actual").removeData("pluginUsmap");
+			$("#heatmap-actual").usmap({
+				stateHoverAnimation: 100,
+				showLabels: true,
+				stateHoverStyles: {'stroke-width': 3},
+				
+				mouseover: function(event, data) {
+					
+					var infoForState = cm.heatMapValuesMap[data.name];
+					
+					$("#heatmap-specificDetails-name").html(infoForState.state.getName() + " (" + infoForState.state.getAbbr() + ")" );
+					
+					if (infoForState.value == null)
+					{
+						$("#heatmap-specificDetails-rank").html("No Data");
+						$("#heatmap-specificDetails-value").html("No Data");
+					}
+					else
+					{
+						$("#heatmap-specificDetails-rank").html(infoForState.ranking);
+						$("#heatmap-specificDetails-value").html(infoForState.value);
+					}
+				
+					if (infoForState.state.isPeerState())
+					{
+						$("#heatmap-specificDetails-peer").show();
+					}
+					else
+					{
+						$("#heatmap-specificDetails-peer").hide();
+					}
+					
+					$("#heatmap-specificDetails-instructions").hide();
+					$("#heatmap-generalDetails").hide();
+					$("#heatmap-specificDetails-details").show();
+				},
+				
+				mouseout: function(event, data) {
+					$("#heatmap-specificDetails-details").hide();
+					$("#heatmap-specificDetails-instructions").show();
+					$("#heatmap-generalDetails").show();
+				},
+				
+				stateSpecificStyles: cm.heatMapColorMap,
+			});
+		});
+	};
+	
+	Chart.prototype.getHeatmapColor = function(colorMap, value, highest, lowest)
+	{	
+		
+		var endVal = highest - lowest;
+		var actValue = value - lowest;
+		
+		var indexInMap = Math.floor((1 - (actValue / endVal)) * (colorMap.length - 1));
+			
+		return colorMap[indexInMap];	
+	}
+	
+	Chart.prototype.buildHeatMapLegend = function(lowerBound, upperBound, metricType)
+	{
+		// Empty existing legend, if any.
+		$("#heatmap-legend-legend").empty();
+		
+		var numberBuckets = this.heatMapColorScheme.length;
+		var range = upperBound - lowerBound;
+		var increment = range / numberBuckets;
+		
+		
+		var currLowerBound = this.getFormattedMetricValue(metricType, lowerBound);
+		var currUpperBound = null;
+		
+		//Add a bucket for each.
+		for (var i = 0; i < numberBuckets; i++)
+		{
+			var bucketColor = this.heatMapColorScheme[i];
+		
+			currUpperBound = lowerBound + increment * (i + 1);
+			currUpperBound = this.getFormattedMetricValue(metricType, currUpperBound);
+			
+			var bucketRange = currLowerBound + " - " + currUpperBound;
+	
+			if (bucketRange.length > 22)
+			{
+				bucketRange = bucketRange.substr(0, 19) + "...";
+			}
+			
+			var bucketHTML = '<div class="heatmap-legend-bucket">'
+				+ '<div class="heatmap-legend-bucket-swatch" style="background-color:' + bucketColor + ';"></div>'
+				+ '<div class="heatmap-legend-bucket-num">' + bucketRange + '</div></div>';
+			
+			$("#heatmap-legend-legend").append(bucketHTML);
+			
+			currLowerBound = currUpperBound;
+		}
+	}
+	
+	Chart.prototype.refreshHeatMapSizing = function() {
+		var containerHeight = $("#viewWrapper").height() - 130; // 130 is room for year and metric controls at top
+		var containerWidth = $("#viewWrapper").width();
+		
+		var height = containerHeight;
+		if (height < 300)
+		{
+			height = 300;
+		}		
+		
+		var width = height / .6;
+		
+		if (width > (containerWidth) && (containerWidth) > 500)
+		{
+			width = containerWidth;
+		}
+				
+		$("#heatmap-actual").height(height);
+		$("#heatmap-actual").width(width);		
+		
+		$("#heatmap-inner-wrapper").width(width);
+	};
+	
+	/**
 	 * Refreshes the table view based on the currently selected states and metrics in the App State.
 	 */
 	Chart.prototype.refreshTable = function() {
@@ -126,10 +415,8 @@ var CM = (function($) {
 		if(selectedMetrics.length > 0) {	
 			if(selectedMetrics.length == 1) { // If we only have one metric to load
 				
-				// Hide timeline..with 1 metric we display all years for that metric.
-				$("#yearsMultipleQuery").addClass("hidden");
-				$("#timelinetable").addClass("hidden");
-				
+				$("#timelinetable").hide();
+								
 				// Query for appropriate data
 				var query = DQ.create().addState(selectedStates).addMetric(Metrics.getMetricByID(selectedMetrics[0]).getName());
 				
@@ -187,32 +474,18 @@ var CM = (function($) {
 							return; // Do nothing if we got no data back.
 						
 						var yearsForMetrics = cm.getYearsWhereDataExistsForMultipleMetrics(multiData);
+						yearsForMetrics.sort(function(a,b) {return b - a;} ); 
 						
-						// Build the timeline
-						// Show the years table
-					    $("#timelinetable").removeClass("hidden");
-					    
-					    yearsForMetrics.sort(function(a,b) {return b - a;} );    
-					    
-					    // Set the selected year
+					    // Set the selected year if its not already set.
 					    if(cm.yearSelected == -1)
-		    				cm.yearSelected = yearsForMetrics[0];
-			
-		    			var timeLine = $("#timelinetable");
-		    			timeLine.empty();
-		    			
-						var timeLineHTML = '<table align="center"><tr><td></td><td><ul class="timelineListStyle">';
-						for(var k = yearsForMetrics.length - 1; k >= 0; k--){
-							if(cm.yearSelected != yearsForMetrics[k]){
-								timeLineHTML += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+yearsForMetrics[k]+')" >'+yearsForMetrics[k]+'</button></li>';
-							}else{
-								timeLineHTML += '<li id="clicktable'+cm.yearSelected+'"><button class="active"  id="tableTimeLineButton" >'+cm.yearSelected+'</button></li>';
-							}
-						}
+							cm.selectYear(yearsForMetrics[0]);
 						
-						timeLineHTML += '</ul ></td></tr></table>';
-						timeLine.append(timeLineHTML);
-						// Finish building the timeline
+						// Show the years table		
+						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
+						
+						$("#timelinetable").empty();
+						$("#timelinetable").append(timelineTableHTML);
+						$("#timelinetable").show();
 						
 						// Build Header
 						var row = "<th>State</th>";
@@ -328,14 +601,14 @@ var CM = (function($) {
 	    	
 	    	if($("#mbody svg").length==0){
 	    		
-	    		$("#mbody").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
+	    		$("#mbody").append( "<svg style=\"background-color:#fff\"></svg>" );
 
 			    d3.selectAll("#mbody svg > *").remove();
 	    	}
     	}else{
     		$("#mbodyBar > *").remove();
     		if($("#mbodyBar svg").length==0){
-	    		$("#mbodyBar").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
+	    		$("#mbodyBar").append( "<svg style=\"background-color:#fff\"></svg>" );
 
 			    d3.selectAll("#mbodyBar svg > *").remove();
 			        
@@ -460,11 +733,50 @@ var CM = (function($) {
 			formattedValue = "$" + value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 		}else if(metricType == "numeric"){
 			formattedValue = value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+		}else if(metricType == "rank") {
+			var firstDigit = value % 10;
+			
+			var suffix = "th";
+			switch(firstDigit)
+			{
+				case 1:
+					suffix = "st";
+					break;
+				case 2:
+					suffix = "nd";
+					break;
+				case 3:
+					suffix = "rd";
+					break;
+			}
+			
+			formattedValue = value.toFixed(0) + suffix;
+		}else if(metricType=="integer"){
+			formattedValue = value.toFixed(0);
 		}else{
 			formattedValue = value;
 		}	
 		
 		return formattedValue;
+	};
+	
+	/**
+	 * Builds the timeline for year selection
+	 * @param yearsList The years to show in the timeline
+	 */
+	Chart.prototype.buildTimeline = function(yearsList) {				
+		var timeLineHTML = '<table align="center"><tr><td></td><td><ul class="timelineListStyle">';
+		for(var k = yearsList.length - 1; k >= 0; k--){
+			if(cm.yearSelected != yearsList[k]){
+				timeLineHTML += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+yearsList[k]+')" >'+yearsList[k]+'</button></li>';
+			}else{
+				timeLineHTML += '<li id="clicktable'+cm.yearSelected+'"><button class="active"  id="tableTimeLineButton" >'+cm.yearSelected+'</button></li>';
+			}
+		}
+		
+		timeLineHTML += '</ul ></td></tr></table>';
+		
+		return timeLineHTML;
 	};
 	
 	/**
@@ -513,7 +825,6 @@ var CM = (function($) {
 		}
 		return array_years;
 	};
-	
 	
 	var publicInterface = {};
 	/**
