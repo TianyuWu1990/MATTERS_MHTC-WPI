@@ -443,6 +443,9 @@
 													</div>
 													<div id="heatmap-legend">
 														<div id="heatmap-legend-title">Legend</div>
+														<div id="heatmap-legend-legend">
+														
+														</div>
 													</div>
 												</div>
 											</div>

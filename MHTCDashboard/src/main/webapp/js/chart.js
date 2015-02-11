@@ -165,12 +165,18 @@ var CM = (function($) {
 			});
 			
 			// Remove any without real data, but keep track of them for later.
+			// Also remove US average
 			var missingData = [];
 			stateValueInOrder = stateValueInOrder.filter(function(e) {
 				
 				if (e[1] == null)
 				{
 					missingData.push(e);
+					return false;
+				}
+				
+				if (e[0] == "US")
+				{
 					return false;
 				}
 				
@@ -262,8 +268,11 @@ var CM = (function($) {
 				$("#heatmap-generalinfo-last").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
 			}
 			
-			
 			$("#heatmap-generalinfo-ma").html(cm.heatMapValuesMap["MA"].ranking);
+			
+			
+			cm.buildHeatMapLegend(minValue, maxValue, stateValueInOrder[0][2]);
+			
 			
 			$("#heatmap-actual").empty();
 			$("#heatmap-actual").removeData("pluginUsmap");
@@ -314,15 +323,53 @@ var CM = (function($) {
 		});
 	};
 	
-	Chart.prototype.getHeatmapColor = function(colorMap, value, lowest, highest)
+	Chart.prototype.getHeatmapColor = function(colorMap, value, highest, lowest)
 	{	
 		
 		var endVal = highest - lowest;
 		var actValue = value - lowest;
 		
-		var indexInMap = Math.floor((1 - (actValue / endVal)) * colorMap.length);
-	
+		var indexInMap = Math.floor((1 - (actValue / endVal)) * (colorMap.length - 1));
+			
 		return colorMap[indexInMap];	
+	}
+	
+	Chart.prototype.buildHeatMapLegend = function(lowerBound, upperBound, metricType)
+	{
+		// Empty existing legend, if any.
+		$("#heatmap-legend-legend").empty();
+		
+		var numberBuckets = this.heatMapColorScheme.length;
+		var range = upperBound - lowerBound;
+		var increment = range / numberBuckets;
+		
+		
+		var currLowerBound = this.getFormattedMetricValue(metricType, lowerBound);
+		var currUpperBound = null;
+		
+		//Add a bucket for each.
+		for (var i = 0; i < numberBuckets; i++)
+		{
+			var bucketColor = this.heatMapColorScheme[i];
+		
+			currUpperBound = lowerBound + increment * (i + 1);
+			currUpperBound = this.getFormattedMetricValue(metricType, currUpperBound);
+			
+			var bucketRange = currLowerBound + " - " + currUpperBound;
+	
+			if (bucketRange.length > 22)
+			{
+				bucketRange = bucketRange.substr(0, 19) + "...";
+			}
+			
+			var bucketHTML = '<div class="heatmap-legend-bucket">'
+				+ '<div class="heatmap-legend-bucket-swatch" style="background-color:' + bucketColor + ';"></div>'
+				+ '<div class="heatmap-legend-bucket-num">' + bucketRange + '</div></div>';
+			
+			$("#heatmap-legend-legend").append(bucketHTML);
+			
+			currLowerBound = currUpperBound;
+		}
 	}
 	
 	Chart.prototype.refreshHeatMapSizing = function() {
@@ -703,7 +750,9 @@ var CM = (function($) {
 					break;
 			}
 			
-			formattedValue = value + suffix;
+			formattedValue = value.toFixed(0) + suffix;
+		}else if(metricType=="integer"){
+			formattedValue = value.toFixed(0);
 		}else{
 			formattedValue = value;
 		}	
