@@ -34,7 +34,58 @@ var CM = (function($) {
 		this.heatMapColorMap = {};
 		this.heatMapValuesMap = {};
 		
-		this.heatMapColorScheme = ["#fff5eb",'#fee6ce', '#fdd0a2', '#fdae6b', '#fd8d3c', '#f16913', '#d94801', '#a63603', '#7f2704'];	
+		this.heatMapColorScheme = ["#fff5eb",'#fee6ce', '#fdd0a2', '#fdae6b', '#fd8d3c', '#f16913', '#d94801', '#a63603', '#7f2704'];
+		
+		// Setup type processing for datatables to work with ranks.
+		jQuery.fn.dataTableExt.aTypes.push(
+			    function ( sData )
+			    {
+			    	if ( sData.length < 3) // can't possibly be a rank.
+			    	{
+			    		return null;
+			    	}
+			    	
+			    	var isRank = false;
+			    	
+			    	// To be a rank, must end with a rank suffix.
+			    	isRank = isRank || sData.indexOf("th", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("st", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("nd", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("rd", sData.length - 2) !== -1;
+			    	
+			    	
+			    	// And before the suffix, must have some digit.
+			    	var digitChars = "0123456789";
+			    	var charBeforeSuffix = sData.charAt(sData.length - 3);
+			    	
+			    	isRank = isRank && digitChars.indexOf(charBeforeSuffix) !== -1;
+			    	
+			    	if (isRank)
+			    	{
+						return 'rank';
+			    	}
+			    	else
+			    	{
+			    		return null;
+			    	}		
+			    }
+			);
+		
+		jQuery.fn.dataTableExt.oSort['rank-asc']  = function(x,y) {
+		    
+			// Isolate actual digits
+			var xIsolate = parseInt(x.substring(0, x.length - 2));
+			var yIsolate = parseInt(y.substring(0, y.length - 2));
+			
+			return ((xIsolate < yIsolate) ? -1 : ((xIsolate > yIsolate) ?  1 : 0));
+		};
+		 
+		jQuery.fn.dataTableExt.oSort['rank-desc'] = function(x,y) {
+			var xIsolate = parseInt(x.substring(0, x.length - 2));
+			var yIsolate = parseInt(y.substring(0, y.length - 2));
+			
+		    return ((xIsolate < yIsolate) ?  1 : ((xIsolate > yIsolate) ? -1 : 0));
+		};
 	};
 	
 	/**
@@ -734,20 +785,27 @@ var CM = (function($) {
 		}else if(metricType == "numeric"){
 			formattedValue = value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 		}else if(metricType == "rank") {
-			var firstDigit = value % 10;
 			
+			value = Math.floor(value); // Make sure we get a whole number
+			
+			var firstDigit = value % 10;
+		
 			var suffix = "th";
-			switch(firstDigit)
+			
+			if (value <= 10 || value >= 14) // 11th, 12th, 13th...
 			{
-				case 1:
-					suffix = "st";
-					break;
-				case 2:
-					suffix = "nd";
-					break;
-				case 3:
-					suffix = "rd";
-					break;
+				switch(firstDigit)
+				{
+					case 1:
+						suffix = "st";
+						break;
+					case 2:
+						suffix = "nd";
+						break;
+					case 3:
+						suffix = "rd";
+						break;
+				}
 			}
 			
 			formattedValue = value.toFixed(0) + suffix;
