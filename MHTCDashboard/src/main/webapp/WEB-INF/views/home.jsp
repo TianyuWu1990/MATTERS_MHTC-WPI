@@ -117,54 +117,6 @@
 				</div>
 			</form>
 		</div>
-		<!-- 
-		<div class="navbar">
-			<div class="navbar-inner">
-					<div class="container-fluid">
-						<img class="nav pull-left" src="img/main-logo.jpg" alt="Mass High Technology Council" >
-						
-						<ul class="nav pull-right" id="main-menu">
-							<li id="explore"><a href="#">Explore</a></li>
-							<li id="about"><a>About</a></li>
-							<li id="feedback" onclick="$('#feedbackModal').modal('show');"><a href="#feedback">Feedback</a></li>
-							<sec:authorize access="hasRole('ADMIN')">
-	                            	<li id="admin"><a href="admin">Admin Panel</a></li>
-	                        </sec:authorize>
-	                        
-	                        <sec:authorize access="!isAuthenticated()">
-								<li class="dropdown">
-									<a class="dropdown-toggle" id="dLabel" data-toggle="dropdown" data-target="#" href="">
-										<i class="fa fa-user"></i>&nbsp;Login <span class="caret"></span>
-									</a>
-									<div class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="padding: 0px;">
-										<form id="loginForm" method="post" class="signin" action="${pageContext.request.contextPath}/login/">
-						                <fieldset class="textbox">
-						            	<label class="username">
-						                <span>Username/Email*</span>
-						                <input id="username" name="username" value="" type="text" autocomplete="on">
-						                </label>
-						                
-						                <label class="password">
-						                <span>Password*</span>
-						                <input id="password" name="password" value="" type="password">
-						                </label>
-						                </fieldset>
-						            
-						                <input style="margin-top: -5px; float:right;" class="btn" type="submit" value="Login">
-						               	<a class="register" style="display: block; margin-top: 10px;" href="<c:url value="/user/register" />">Register</a>
-						               	<a class="forgot" style="display: block; margin-top: 5px;" href="<c:url value="/user/forgot" />">Forgot your password?</a>
-						                </form>
-									</div>
-								</li>
-							</sec:authorize>
-							
-	                        <sec:authorize access="isAuthenticated()">
-								<li id="logout"><a href="logout/">Logout</a></li>
-							</sec:authorize>
-						</ul>
-					</div>
-			</div>
-		</div>-->
 	<jsp:include page="unifiedHeader.jsp"/>
 
 	<div id="preContentBar"></div>

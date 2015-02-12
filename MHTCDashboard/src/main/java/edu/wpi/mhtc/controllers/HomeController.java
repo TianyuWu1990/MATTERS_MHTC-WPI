@@ -103,6 +103,18 @@ public class HomeController {
 	    return "stateProfiles";
 	}
 	
+	/**
+	 * Returns the about page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/about", method = RequestMethod.GET)
+	public String about(Locale locale, Model model)
+	{
+	    return "about";
+	}
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
