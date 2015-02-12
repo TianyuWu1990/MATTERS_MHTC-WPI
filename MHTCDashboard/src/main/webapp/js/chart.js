@@ -678,7 +678,9 @@ var CM = (function($) {
                     	.useInteractiveGuideline(true)
                     	.transitionDuration(350);     
                 } else if (cm.currentVisualization == cm.visualizationTypes.BAR) {
-                    chart = nv.models.multiBarChart();
+                    chart = nv.models.multiBarChart()
+                    	.transitionDuration(350)
+                    	.showControls(false);
                 }
                 
                 chart.margin({left : 100})
