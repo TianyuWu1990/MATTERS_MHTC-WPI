@@ -266,7 +266,8 @@
 								</li>
 								<li>
 									<a class="selectPeerStates" id="${row.id}">
-										Select Peer States
+										<i class="fa fa-circle"></i>
+										Peer States
 									</a>
 								</li>
 								<li class="stateFilter">
@@ -303,7 +304,6 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<!-- Display none at first b/c metrics menu is open by default --> 
 							<a href="#" id="toggle-sidebar"> 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
@@ -332,7 +332,7 @@
 								</a>
 							</li>
 							<li class="graph-tab" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Excel Data" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
+								<a title="Excel Data" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 								<i class="fa fa-file-excel-o fa-2x"></i></a>
 							</li>
 						</ul>
