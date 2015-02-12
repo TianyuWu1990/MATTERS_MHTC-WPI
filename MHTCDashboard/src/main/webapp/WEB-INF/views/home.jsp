@@ -24,8 +24,13 @@
 			rel='stylesheet' type='text/css'>
 			
 		<!-- Custom CSS -->
+		<link href="css/mesh-base.css" rel="stylesheet">
+		<link href="css/mesh-main.css" rel="stylesheet">
+		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
+		
+		
 		
 		<!-- Library JS -->
 		<script src="js/d3.v3.min.js"></script>
@@ -113,10 +118,11 @@
 				</div>
 			</form>
 		</div>
+		<!-- 
 		<div class="navbar">
 			<div class="navbar-inner">
 					<div class="container-fluid">
-						<img class="nav pull-left" src="css/img/MHTC_Logo.jpg" alt="Mass High Technology Council" >
+						<img class="nav pull-left" src="img/main-logo.jpg" alt="Mass High Technology Council" >
 						
 						<ul class="nav pull-right" id="main-menu">
 							<li id="explore"><a href="#">Explore</a></li>
@@ -157,19 +163,56 @@
 								<li id="logout"><a href="logout/">Logout</a></li>
 							</sec:authorize>
 						</ul>
-						<!-- /.navbar-collapse -->
 					</div>
-					<!-- /.container-fluid -->
-	
-				<div style="background:#7b0020; margin:0px; padding-top: 20px; padding-bottom: 10px;">
-					<p align="center" style="font-size:22px;font-weight:400;"> 
-						MATTERS: Massachusetts Technology, Talent, and Economic Reporting System
-					</p>
-				</div>
 			</div>
+		</div>-->
+	<header class="site-header">
+
+		<div class="container header-inner">
+
+			<div class="super-header">
+
+				<div class="super-header-inner">
+
+					<div class="super-signup"></div>
+					<div class="super-nav"></div>
+				</div>
+
+			</div>
+			<div class="site-branding">
+				<h1 class="site-title">
+					<a href="/" rel="home" class="main-logo"> </a>
+				</h1>
+			</div>
+
+			<div class="head-sponsors">
+				<img src="img/header-sponsors.jpg" alt="header-sponsors" width=""
+					height="" />
+			</div>
+
+			<nav id="site-navigation" class="main-navigation" role="navigation">
+				<h1 class="menu-toggle">Menu</h1>
+				<div class="menu-close"></div>
+				<div class="menu">
+					<ul>
+						<li class="menu-item"><a href="">About</a></li>
+						<li class="menu-item"><a href="">Explore</a></li>
+						<li class="menu-item"><a href="/page-states.html">States</a></li>
+						<li class="menu-item"><a href="">Login</a></li>
+					</ul>
+				</div>
+			</nav>
+			<!-- #site-navigation -->
+
 		</div>
-	
-		<div class="container-fluid-full">
+		<!-- .header-inner -->
+
+	</header>
+	<!-- .site-header -->
+
+	<div id="preContentBar"></div>
+
+	<div class="container-fluid-full">
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
@@ -310,28 +353,28 @@
 						</div>
 					
 						<!--  Right side of the pagination header. -->
-						<ul class="nav nav-tabs" id="viz-tabs">					
+						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
 								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
-									<i class="fa fa-table fa-2x"></i>
+									<i></i>
 								</a>
 							</li>
 							<li class=" graph-tab " id="line-tab">
 								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
-									<i class="fa fa-line-chart fa-2x"></i>
+									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
 								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
-									<i class="fa fa-bar-chart fa-2x"></i>
+									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
 								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
-									<i class="fa fa-us-map"></i>
+									<i></i>
 								</a>
 							</li>
-							<li class="graph-tab" id="table-tab" >
+							<li class="graph-tab" style="cursor: pointer;">
 								<a title="Export the data you've selected as an Excel file." onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 								<i class="fa fa-file-excel-o fa-2x"></i></a>
 							</li>
@@ -462,13 +505,18 @@
 				</div>		
 		</div>
 		<!-- end: Content -->
-		
-		<footer>
-				<div>
-				&copy; 2014 Worcester Polytechnic Institute. All rights reserved.
-						Sponsored by Mass High Technology Council
-				</div>	
-		</footer>
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		<div class="site-info container">
+			<p class="copy">
+				2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
+				Sponsored by Mass High Technology Council
+			</p>
+
+		</div>
+		<!-- .site-info -->
+	</footer>
+	<!-- #colophon -->
 
 	<%
 		/*<div class="modal fade in" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

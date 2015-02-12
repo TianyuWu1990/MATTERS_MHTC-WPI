@@ -34,8 +34,7 @@ var CM = (function($) {
 		this.heatMapColorMap = {};
 		this.heatMapValuesMap = {};
 		
-		this.heatMapColorScheme = ["#fff5eb",'#fee6ce', '#fdd0a2', '#fdae6b', '#fd8d3c', '#f16913', '#d94801', '#a63603', '#7f2704'];
-		
+		this.heatMapColorScheme = ["#0c1b26","#102c3d","#1b4255","#34586c","#586d80","#b8626d","#973d57","#8c1b36","#650c1e","#3d1218"];
 		// Setup type processing for datatables to work with ranks.
 		jQuery.fn.dataTableExt.aTypes.push(
 			    function ( sData )
@@ -511,7 +510,7 @@ var CM = (function($) {
 		        			var data = metricData.dataPoints;
 
 		        			row = "<th>"+ '<span id="info" title="' + metric.desc 
-							+ '"><i class="fa fa-info-circle"></i><span>' + " " + metric.name + "</th>";
+							+ '"><i class="fa fa-info-circle metricInfo"></i><span>' + " " + metric.name + "</th>";
 		        			
 		        			var yearIndex = 0;
 		        			for (var k = 0; k < data.length; k++)
@@ -553,7 +552,7 @@ var CM = (function($) {
 				var fullMetric = Metrics.getMetricByID(selectedMetrics[0]);
 				
 				$("#optionalTableTitle").html('<span id="info" title="' + fullMetric.desc 
-						+ '"><i class="fa fa-info-circle"></i><span>' + " " + fullMetric.name);
+						+ '"><i class="fa fa-info-circle metricInfo"></i><span>' + " " + fullMetric.name);
 				
 				$("#optionalTableTitle").show();
 				
@@ -637,7 +636,7 @@ var CM = (function($) {
 							var metricName = multiData[0][r].metric.name;
 							
 							row = row + "<th>"+ '<span id="info" title="' + multiData[0][r].metric.desc 
-							+ '"><i class="fa fa-info-circle"></i><span>' + " " + metricName + "</th>";
+							+ '"><i class="fa fa-info-circle metricInfo"></i><span>' + " " + metricName + "</th>";
 						}
 						
 						row = "<thead>" + row +"</thead>"; 
