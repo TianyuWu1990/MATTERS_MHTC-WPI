@@ -86,7 +86,7 @@
 							<div class="input-group">
 								<strong>Comments</strong><br />
 								<div class='input-group date' id='run-date-picker'>
-									<textarea class="form-control" name="comments" style="width: 530px; height: 180px;"/></textarea>
+									<textarea class="form-control" name="comments" style="width: 515px; height: 180px;"/></textarea>
 								</div>
 							</div>
 							
