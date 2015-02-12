@@ -396,6 +396,11 @@ a.brand span {
 	right: 0px;	
 }
 
+.sidebar-content.accordion-menu > ul > li
+{
+	border-bottom: 1px solid #999;
+}
+
 /* Metric Category Title */
 
 .sidebar-content.accordion-menu > ul > li > a
