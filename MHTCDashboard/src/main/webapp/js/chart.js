@@ -281,8 +281,7 @@ var CM = (function($) {
 				showLabels: true,
 				stateHoverStyles: {'stroke-width': 3},
 				
-				mouseover: function(event, data) {
-					
+				mouseover: function(event, data) {					
 					var infoForState = cm.heatMapValuesMap[data.name];
 					
 					$("#heatmap-specificDetails-name").html(infoForState.state.getName() + " (" + infoForState.state.getAbbr() + ")" );
@@ -307,15 +306,16 @@ var CM = (function($) {
 						$("#heatmap-specificDetails-peer").hide();
 					}
 					
-					$("#heatmap-specificDetails-instructions").hide();
-					$("#heatmap-generalDetails").hide();
-					$("#heatmap-specificDetails-details").show();
+					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 20;
+					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top - 80;
+					
+					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
+					
+					$("#heatmap-tooltip").show();
 				},
 				
 				mouseout: function(event, data) {
-					$("#heatmap-specificDetails-details").hide();
-					$("#heatmap-specificDetails-instructions").show();
-					$("#heatmap-generalDetails").show();
+					$("#heatmap-tooltip").hide();
 				},
 				
 				stateSpecificStyles: cm.heatMapColorMap,

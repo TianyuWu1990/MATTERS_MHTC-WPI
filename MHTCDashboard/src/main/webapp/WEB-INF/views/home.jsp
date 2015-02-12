@@ -412,20 +412,7 @@
 														
 															<!--
 															<div id="heatmap-specificDetails">
-																<div id="heatmap-specificDetails-instructions">
-																	Hover over a state for info.
-																</div>
-																<div id="heatmap-specificDetails-details" style="display:none;">
-																	<div class="heatmap-detailTitle">Name:</div>
-																	<span id="heatmap-specificDetails-name"></span><br/>
-																	
-																	<div class="heatmap-detailTitle">Rank:</div>
-																	<span id="heatmap-specificDetails-rank"></span><br/>
-																	
-																	<div class="heatmap-detailTitle">Value:</div>
-																	<span id="heatmap-specificDetails-value"></span><br/>
-																	
-																	<div id="heatmap-specificDetails-peer" style="font-style:italic;">Peer State</div>
+																
 																</div>																
 															</div>-->
 													<div id="heatmap-legend">
@@ -445,6 +432,18 @@
 														
 														</div>
 													</div>
+												</div>
+												<div id="heatmap-tooltip" style="display: none;">
+													<div class="heatmap-detailTitle">Name:</div>
+													<span id="heatmap-specificDetails-name"></span><br/>
+													
+													<div class="heatmap-detailTitle">Rank:</div>
+													<span id="heatmap-specificDetails-rank"></span><br/>
+													
+													<div class="heatmap-detailTitle">Value:</div>
+													<span id="heatmap-specificDetails-value"></span><br/>
+													
+													<div id="heatmap-specificDetails-peer" style="font-style:italic;">Peer State</div>
 												</div>
 											</div>
 										</div>
