@@ -408,22 +408,9 @@
 											<div id="heatmap-inner-wrapper">
 												<div id="heatmap-actual"></div>
 												<div id="heatmap-controls">
-													<div id="heatmap-details">
-														<div id="heatmap-details-title">
-															Details
-														</div>
-														<div id="heatmap-details-details">
-															<div id="heatmap-generalDetails">
-																<div class="heatmap-detailTitle">Top Ranked:</div> 
-																<span id="heatmap-generalinfo-first"></span><br/>
-																
-																<div class="heatmap-detailTitle">Bottom Ranked:</div> 
-																<span id="heatmap-generalinfo-last"></span><br/>
-																
-																<div class="heatmap-detailTitle">MA Rank:</div>
-																<span id="heatmap-generalinfo-ma"></span>
-															</div>
-															
+						
+														
+															<!--
 															<div id="heatmap-specificDetails">
 																<div id="heatmap-specificDetails-instructions">
 																	Hover over a state for info.
@@ -440,11 +427,20 @@
 																	
 																	<div id="heatmap-specificDetails-peer" style="font-style:italic;">Peer State</div>
 																</div>																
-															</div>
-														</div>
-													</div>
+															</div>-->
 													<div id="heatmap-legend">
 														<div id="heatmap-legend-title">Legend</div>
+														<div id="heatmap-legend-details">
+															<div class="heatmap-detailTitle">Top Ranked:</div> 
+															<span id="heatmap-generalinfo-first"></span><br/>
+															
+															<div class="heatmap-detailTitle">Bottom Ranked:</div> 
+															<span id="heatmap-generalinfo-last"></span><br/>
+															
+															<div class="heatmap-detailTitle">MA Rank:</div>
+															<span id="heatmap-generalinfo-ma"></span><br/>
+															<span style="font-style:italic;">Hover over a state for info.</span>
+														</div>
 														<div id="heatmap-legend-legend">
 														
 														</div>

@@ -545,41 +545,6 @@ svg text {
 	margin-right: auto;	
 }
 
-#heatmap-controls {
-	position: absolute;
-	top: -80px;
-	right: -160px;
-	
-	width: 180px;
-	
-	background-color: #e0e0e0;	
-	box-shadow: 0px 0px 3px black;
-}
-
-#heatmap-details {
-	border-bottom: 1px solid #7b0020;
-}
-
-#heatmap-details-title {
-	background-color: #7b0020;
-	color: white;
-	font-size: 15px;
-	padding: 7px;
-}
-
-#heatmap-details-details {
-	padding: 5px;
-	font-size: 13px;
-	
-	height: 100px;
-}
-
-#heatmap-generalDetails {
-	display: block;
-	
-	padding-bottom: 10px;
-}
-
 #heatmap-specificDetails {
 	display: block;	
 }
@@ -588,9 +553,26 @@ svg text {
 	font-style: italic;
 }
 
-.heatmap-detailTitle {
-	display: inline-block;
-	font-weight: 600;
+#heatmap-controls {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	
+	height: 340px;
+	max-height: 100%;
+	width: 180px;
+				
+	background-color: #e0e0e0;	
+	box-shadow: 0px 0px 3px black;
+}
+
+#heatmap-legend {
+	position: absolute;
+	
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
 }
 
 #heatmap-legend-title {
@@ -600,10 +582,27 @@ svg text {
 	padding: 7px;
 }
 
-#heatmap-legend-legend {
+#heatmap-legend-details {
+	padding: 5px;
+	font-size: 13px;	
+}
 
-	margin-top: 20px;	
+.heatmap-detailTitle {
+	display: inline-block;
+	font-weight: 600;
+}
+
+#heatmap-legend-legend {	
+	padding-top: 10px;	
 	padding-bottom: 10px;
+	
+	position: absolute;
+	top: 120px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	
+	overflow: scroll;
 }
 
 .heatmap-legend-bucket {

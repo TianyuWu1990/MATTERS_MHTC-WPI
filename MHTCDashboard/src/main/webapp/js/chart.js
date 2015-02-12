@@ -377,14 +377,14 @@ var CM = (function($) {
 		var containerWidth = $("#viewWrapper").width();
 		
 		var height = containerHeight;
-		if (height < 300)
+		if (height < 200)
 		{
-			height = 300;
+			height = 200;
 		}		
 		
 		var width = height / .6;
 		
-		if (width > (containerWidth) && (containerWidth) > 500)
+		if (width > (containerWidth) && (containerWidth) > 334)
 		{
 			width = containerWidth;
 		}
@@ -392,7 +392,7 @@ var CM = (function($) {
 		$("#heatmap-actual").height(height);
 		$("#heatmap-actual").width(width);		
 		
-		$("#heatmap-inner-wrapper").width(width);
+		$("#heatmap-inner-wrapper").width(width + 180);
 	};
 	
 	/**
