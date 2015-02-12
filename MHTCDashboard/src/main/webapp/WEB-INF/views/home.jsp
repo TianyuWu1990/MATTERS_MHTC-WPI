@@ -52,7 +52,7 @@
 	
 	</head>
 	<body onLoad="loadFunction()">
-		<div class="modal hide fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
+		<div class="modal hide fade" id="feedbackModal" style="position: absolute;" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
 			<form action="feedback_post" method="POST" style="margin-bottom: 0px;">
 				<div class="modal-dialog modal-md" style="width:100%">
 					<div class="modal-content">
@@ -61,9 +61,11 @@
 							<h4 class="modal-title" id="myModalLabel">Site Feedback</h4>
 						</div>
 						<div class="modal-body" style="padding: 15 15 15 15;">
+							<p>Please provide your suggestions about the MATTERS Site. Thank you!</p>
+							
 							<div class="input-group">
 								<strong>Your Name</strong><br /> 
-								<input style="height:30px" type="text" name="name" class="form-control">
+								<input style="height:30px; width: 250px;" type="text" name="name" class="form-control">
 							</div>
 							
 							<div class="input-group">
@@ -143,12 +145,12 @@
 						                </label>
 						                </fieldset>
 						                
-						                <input class="submit button" type="submit" value="Login">
+						                <input style="margin-bottom: 5px;" class="submit button" type="submit" value="Login">
 						                <p align="center">
-						               		 <a class="forgot" href="<c:url value="/user/forgot" />">Forgot your password</a>
+						               		 <a style="color:white;" class="forgot" href="<c:url value="/user/forgot" />">Forgot your password?</a>
 						                </p>
 						                <p align="center">
-						                	<a class="register" href="<c:url value="/user/register" />">Register</a>
+						                	<a style="color:white;" class="register" href="<c:url value="/user/register" />">Register</a>
 						                </p>
 						                </form>
 									</div>
