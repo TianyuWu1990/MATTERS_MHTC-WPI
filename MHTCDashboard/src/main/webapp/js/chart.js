@@ -464,12 +464,101 @@ var CM = (function($) {
 		var table = $("#mbodyMultipleQuery table");
 
 		if(selectedMetrics.length > 0) {	
-			if(selectedMetrics.length == 1) { // If we only have one metric to load
+			if(selectedStates.length == 1) { // If we only have 1 state to load data for
 				
 				$("#timelinetable").hide();
-								
+				
+				var fullState = States.getStateByAbbreviation(selectedStates[0]);
+				$("#optionalTableTitle").html(fullState.name + " (" + fullState.abbr + ")");
+				$("#optionalTableTitle").show();
+				
+				// We treat the query as if it is a multi-metric query as there can be any number of metrics selected.
+				var processedMetrics = selectedMetrics.map(function(e) { return Metrics.getMetricByID(e).getName(); });
+				
+				query = DQ.create().addState(selectedStates).addMultipleMetrics(processedMetrics);
+				
+				query.execute(function(multiData) {
+					
+					if(multiData.length == 0)
+						return; // Do nothing if we got no data back.
+					
+					var yearsForMetrics = cm.getYearsWhereDataExistsForMultipleMetrics(multiData);
+					yearsForMetrics.sort(function(a,b) {return a - b;} ); 
+					
+					
+					if(yearsForMetrics.length==0) { // If theres no data for the metric...
+		        		 table.append("<tr><td>No data available for your current selection.</td></tr>");
+		        	} else {
+		        		// Build header
+		        		
+		        		var row ="<th>Metric</th>";
+		        		
+		        		for (var r = 0; r < yearsForMetrics.length; r++)
+		        		{
+		        			var yearName = yearsForMetrics[r];
+		        			
+		        			row = row + "<th>" + yearName + "</th>";
+		        		}
+		        		
+		        		row = "<thead>" + row + "</thead>";
+		        		table.append(row);
+		        		
+		        		// Populate data for each metric.		        		
+		        		for (var r = 0; r < multiData[0].length; r++)
+		        		{
+		        			var metricData = multiData[0][r];
+		        			var metric = metricData.metric;
+		        			var data = metricData.dataPoints;
+
+		        			row = "<th>"+ '<span id="info" title="' + metric.desc 
+							+ '"><i class="fa fa-info-circle"></i><span>' + " " + metric.name + "</th>";
+		        			
+		        			var yearIndex = 0;
+		        			for (var k = 0; k < data.length; k++)
+		        			{
+		        				var year = data[k].year;
+		        				
+		        				while (year !== yearsForMetrics[yearIndex])
+		        				{
+		        					row = row + "<td>N/A</td>";
+		        					yearIndex++;
+		        				}
+		        				
+		        				row = row + "<td>" + cm.getFormattedMetricValue(metric.type, data[k].value) + "</td>";
+		        				yearIndex++;
+		        			}
+		        			
+		        			while (yearIndex < yearsForMetrics.length)
+		        			{
+		        				row = row + "<td>N/A</td>";
+		        				yearIndex++;
+		        			}
+		        			
+		        			row = "<tr>" + row + "</tr>";
+		        			
+		        			table.append(row);
+		        		}
+		        			
+		        	}
+					cm.setDataTable(false);
+				
+				});
+				
+				
+			} 
+			else if(selectedMetrics.length == 1) { // If we only have one metric to load
+				
+				$("#timelinetable").hide();
+				
+				var fullMetric = Metrics.getMetricByID(selectedMetrics[0]);
+				
+				$("#optionalTableTitle").html('<span id="info" title="' + fullMetric.desc 
+						+ '"><i class="fa fa-info-circle"></i><span>' + " " + fullMetric.name);
+				
+				$("#optionalTableTitle").show();
+				
 				// Query for appropriate data
-				var query = DQ.create().addState(selectedStates).addMetric(Metrics.getMetricByID(selectedMetrics[0]).getName());
+				var query = DQ.create().addState(selectedStates).addMetric(fullMetric.getName());
 				
 				query.execute(function(multiData) {
 			        	var yearsForMetric = cm.getYearsMetricState(selectedStates, multiData); // Get the years that the metric exists for from the data
@@ -510,11 +599,13 @@ var CM = (function($) {
 				                table.append(row);
 			                }
 			        	}
-			        	cm.setDataTable();
+			        	cm.setDataTable(true);
 				});
 			}
 			else	// Multiple metrics
 			{					
+					$("#optionalTableTitle").hide();
+				
 					var processedMetrics = selectedMetrics.map(function(e) { return Metrics.getMetricByID(e).getName(); });
 					
 					query = DQ.create().addState(selectedStates).addMultipleMetrics(processedMetrics);
@@ -580,7 +671,7 @@ var CM = (function($) {
 							row = "<tr>" + row + "</tr>";
 							table.append(row);
 						}
-						cm.setDataTable();
+						cm.setDataTable(true);
 					
 					});
 				}		
@@ -591,50 +682,35 @@ var CM = (function($) {
 	 * Performs additional setup functions for the data table.
 	 * Should not be called on its own - is used as a utility function by refreshTable
 	 */
-	Chart.prototype.setDataTable = function() {		
+	Chart.prototype.setDataTable = function(enableSort) {		
 		if ( $("#myTable").html().indexOf("<thead>") != -1 ){
 			
 			$('#myTable tbody tr td').each( function() {
 				var sTitle= $(this).text();
 				if ( sTitle == "N/A" )
-					this.setAttribute( 'title', "No Value for the year selected" );	
+					this.setAttribute( 'title', "No value for this year." );	
 				
 			} );
 			
-			$('#myTable tbody tr th').each( function() {
-				var sTitle= $(this).text();
-				this.setAttribute( 'title', States.getStateFromString(sTitle).name );	
-
-			} );
-			
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
-				var oTable = $('#myTable').dataTable({"iDisplayLength": 20}, {});
+				var oTable = $('#myTable').dataTable(
+						{
+							"iDisplayLength": 20,
+							"bSort": enableSort
+						});
 				dt = oTable;
 			}
 			else
 			{
-				console.log("table already present");
 				$('#myTable').dataTable().fnDestroy();
-				var oTable = $('#myTable').dataTable({"iDisplayLength": 20});
+				var oTable = $('#myTable').dataTable(
+						{
+							"iDisplayLength": 20,
+							"bSort": enableSort
+						});
 				dt = oTable;
 			}
-			
-		 /* Apply the tooltips */
-			oTable.$('tr').tooltip( {
-				"delay": 0,
-				"track": true,
-				"fade": 0
-			} );
-			
-			$('#myTable tbody').on( 'click', 'tr', function () {
-		        if ( $(this).hasClass('selected') ) {
-		            $(this).removeClass('selected');
-		        }
-		        else {
-		        	oTable.$('tr.selected').removeClass('selected');
-		            $(this).addClass('selected');
-		        }
-		    } );
+
 		}
 	};
 	
