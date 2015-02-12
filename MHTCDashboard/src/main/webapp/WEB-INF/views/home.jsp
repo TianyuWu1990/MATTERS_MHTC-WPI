@@ -135,23 +135,19 @@
 										<form id="loginForm" method="post" class="signin" action="${pageContext.request.contextPath}/login/">
 						                <fieldset class="textbox">
 						            	<label class="username">
-						                <span>Username or email</span>
+						                <span>Username/Email*</span>
 						                <input id="username" name="username" value="" type="text" autocomplete="on">
 						                </label>
 						                
 						                <label class="password">
-						                <span>Password</span>
+						                <span>Password*</span>
 						                <input id="password" name="password" value="" type="password">
 						                </label>
 						                </fieldset>
-						                
-						                <input style="margin-bottom: 5px;" class="submit button" type="submit" value="Login">
-						                <p align="center">
-						               		 <a style="color:white;" class="forgot" href="<c:url value="/user/forgot" />">Forgot your password?</a>
-						                </p>
-						                <p align="center">
-						                	<a style="color:white;" class="register" href="<c:url value="/user/register" />">Register</a>
-						                </p>
+						            
+						                <input style="margin-top: -5px; float:right;" class="btn" type="submit" value="Login">
+						               	<a class="register" style="display: block; margin-top: 10px;" href="<c:url value="/user/register" />">Register</a>
+						               	<a class="forgot" style="display: block; margin-top: 5px;" href="<c:url value="/user/forgot" />">Forgot your password?</a>
 						                </form>
 									</div>
 								</li>
