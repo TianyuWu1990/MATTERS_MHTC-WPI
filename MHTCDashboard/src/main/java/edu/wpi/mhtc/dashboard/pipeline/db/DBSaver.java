@@ -24,7 +24,7 @@ public class DBSaver {
 		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
 		pstatement.setInt(2, line.getMetricID()); // set parameter 2 (ID)
 		pstatement.setInt(3, line.getYear());
-		pstatement.setFloat(4, line.getMetricValue());
+		pstatement.setDouble(4, line.getMetricValue());
 		pstatement.execute();
 		pstatement.close();
 	}
@@ -36,7 +36,7 @@ public class DBSaver {
 		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
 		pstatement.setInt(2, line.getMetricID()); // set parameter 2 (ID)
 		pstatement.setInt(3, line.getYear());
-		pstatement.setFloat(4, line.getMetricValue());
+		pstatement.setDouble(4, line.getMetricValue());
 		pstatement.execute();
 		pstatement.close();
 	}
