@@ -46,6 +46,19 @@ loadFunction = function() {
 		cm.refreshSizing();
 	});
 	
+	// Init menu
+	$(".menu-close").prependTo(".menu > ul");
+	   
+	$(".menu-toggle").click(function(){
+		$(".menu").slideDown();
+	});
+
+	$(".menu-close").click(function(){
+		$(".menu").slideUp();
+	});
+
+	
+	
     // Initializes button that toggles the sidebar
 		
     $("#toggle-sidebar").click(function() {

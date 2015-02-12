@@ -28,6 +28,17 @@ option {
 	height: 50px;
 }
 
+.menu {
+	position: fixed;
+	top: 0px;
+	right: 125px;
+}
+
+.menu > ul > li > a:hover
+{
+	text-decoration: none !important;
+}
+
 table {
 	margin: auto;
 }
@@ -1043,11 +1054,6 @@ ul.timelineListStyle > li
 .modal-header.red{
 	background:#7b0020;
 	color: white;
-}
-
-img
-{
-	margin-left:18%%
 }
 
 .nvtooltip

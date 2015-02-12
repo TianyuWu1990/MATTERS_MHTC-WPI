@@ -77,6 +77,32 @@ public class HomeController {
 		this.stateService = stateService;
 	}
 	
+	/**
+	 * Returns the site landing page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String landingPage(Locale locale, Model model)
+	{
+	    return "landingPage";
+	}
+	
+	/**
+	 * Returns the state profiles page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String stateProfiles(Locale locale, Model model)
+	{
+	    return "stateProfiles";
+	}
+	
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -85,7 +111,7 @@ public class HomeController {
 	 * @throws JsonMappingException 
 	 * @throws JsonGenerationException 
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/explore", method = RequestMethod.GET)
 	public String home(Locale locale, Model model)
 	{
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();

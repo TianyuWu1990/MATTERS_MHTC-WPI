@@ -52,8 +52,7 @@
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
 		
-		<title>MATTERS: Massachusetts' Technology, Talent and Economy
-			Reporting System</title>
+		<title>MATTERS</title>
 	
 	</head>
 	<body onLoad="loadFunction()">
@@ -166,53 +165,11 @@
 					</div>
 			</div>
 		</div>-->
-	<header class="site-header">
-
-		<div class="container header-inner">
-
-			<div class="super-header">
-
-				<div class="super-header-inner">
-
-					<div class="super-signup"></div>
-					<div class="super-nav"></div>
-				</div>
-
-			</div>
-			<div class="site-branding">
-				<h1 class="site-title">
-					<a href="/" rel="home" class="main-logo"> </a>
-				</h1>
-			</div>
-
-			<div class="head-sponsors">
-				<img src="img/header-sponsors.jpg" alt="header-sponsors" width=""
-					height="" />
-			</div>
-
-			<nav id="site-navigation" class="main-navigation" role="navigation">
-				<h1 class="menu-toggle">Menu</h1>
-				<div class="menu-close"></div>
-				<div class="menu">
-					<ul>
-						<li class="menu-item"><a href="">About</a></li>
-						<li class="menu-item"><a href="">Explore</a></li>
-						<li class="menu-item"><a href="/page-states.html">States</a></li>
-						<li class="menu-item"><a href="">Login</a></li>
-					</ul>
-				</div>
-			</nav>
-			<!-- #site-navigation -->
-
-		</div>
-		<!-- .header-inner -->
-
-	</header>
-	<!-- .site-header -->
+	<jsp:include page="unifiedHeader.jsp"/>
 
 	<div id="preContentBar"></div>
 
-	<div class="container-fluid-full">
+	<div class="container-fluid-full" style="z-index: 1;">
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
