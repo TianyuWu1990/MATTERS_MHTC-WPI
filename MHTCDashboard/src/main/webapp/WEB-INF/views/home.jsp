@@ -312,27 +312,27 @@
 						<!--  Right side of the pagination header. -->
 						<ul class="nav nav-tabs" id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Table" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
 									<i class="fa fa-table fa-2x"></i>
 								</a>
 							</li>
 							<li class=" graph-tab " id="line-tab">
-								<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
+								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
 									<i class="fa fa-line-chart fa-2x"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a href="#bar" data-toggle="tab" title="Bar Chart" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
 									<i class="fa fa-bar-chart fa-2x"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i class="fa fa-us-map"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="table-tab" >
-								<a title="Excel Data" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
+								<a title="Export the data you've selected as an Excel file." onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 								<i class="fa fa-file-excel-o fa-2x"></i></a>
 							</li>
 						</ul>
