@@ -34,7 +34,58 @@ var CM = (function($) {
 		this.heatMapColorMap = {};
 		this.heatMapValuesMap = {};
 		
-		this.heatMapColorScheme = ["#fff5eb",'#fee6ce', '#fdd0a2', '#fdae6b', '#fd8d3c', '#f16913', '#d94801', '#a63603', '#7f2704'];	
+		this.heatMapColorScheme = ["#fff5eb",'#fee6ce', '#fdd0a2', '#fdae6b', '#fd8d3c', '#f16913', '#d94801', '#a63603', '#7f2704'];
+		
+		// Setup type processing for datatables to work with ranks.
+		jQuery.fn.dataTableExt.aTypes.push(
+			    function ( sData )
+			    {
+			    	if ( sData.length < 3) // can't possibly be a rank.
+			    	{
+			    		return null;
+			    	}
+			    	
+			    	var isRank = false;
+			    	
+			    	// To be a rank, must end with a rank suffix.
+			    	isRank = isRank || sData.indexOf("th", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("st", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("nd", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("rd", sData.length - 2) !== -1;
+			    	
+			    	
+			    	// And before the suffix, must have some digit.
+			    	var digitChars = "0123456789";
+			    	var charBeforeSuffix = sData.charAt(sData.length - 3);
+			    	
+			    	isRank = isRank && digitChars.indexOf(charBeforeSuffix) !== -1;
+			    	
+			    	if (isRank)
+			    	{
+						return 'rank';
+			    	}
+			    	else
+			    	{
+			    		return null;
+			    	}		
+			    }
+			);
+		
+		jQuery.fn.dataTableExt.oSort['rank-asc']  = function(x,y) {
+		    
+			// Isolate actual digits
+			var xIsolate = parseInt(x.substring(0, x.length - 2));
+			var yIsolate = parseInt(y.substring(0, y.length - 2));
+			
+			return ((xIsolate < yIsolate) ? -1 : ((xIsolate > yIsolate) ?  1 : 0));
+		};
+		 
+		jQuery.fn.dataTableExt.oSort['rank-desc'] = function(x,y) {
+			var xIsolate = parseInt(x.substring(0, x.length - 2));
+			var yIsolate = parseInt(y.substring(0, y.length - 2));
+			
+		    return ((xIsolate < yIsolate) ?  1 : ((xIsolate > yIsolate) ? -1 : 0));
+		};
 	};
 	
 	/**
@@ -281,8 +332,7 @@ var CM = (function($) {
 				showLabels: true,
 				stateHoverStyles: {'stroke-width': 3},
 				
-				mouseover: function(event, data) {
-					
+				mouseover: function(event, data) {					
 					var infoForState = cm.heatMapValuesMap[data.name];
 					
 					$("#heatmap-specificDetails-name").html(infoForState.state.getName() + " (" + infoForState.state.getAbbr() + ")" );
@@ -307,15 +357,16 @@ var CM = (function($) {
 						$("#heatmap-specificDetails-peer").hide();
 					}
 					
-					$("#heatmap-specificDetails-instructions").hide();
-					$("#heatmap-generalDetails").hide();
-					$("#heatmap-specificDetails-details").show();
+					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 20;
+					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top - 80;
+					
+					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
+					
+					$("#heatmap-tooltip").show();
 				},
 				
 				mouseout: function(event, data) {
-					$("#heatmap-specificDetails-details").hide();
-					$("#heatmap-specificDetails-instructions").show();
-					$("#heatmap-generalDetails").show();
+					$("#heatmap-tooltip").hide();
 				},
 				
 				stateSpecificStyles: cm.heatMapColorMap,
@@ -377,14 +428,14 @@ var CM = (function($) {
 		var containerWidth = $("#viewWrapper").width();
 		
 		var height = containerHeight;
-		if (height < 300)
+		if (height < 200)
 		{
-			height = 300;
+			height = 200;
 		}		
 		
 		var width = height / .6;
 		
-		if (width > (containerWidth) && (containerWidth) > 500)
+		if (width > (containerWidth) && (containerWidth) > 334)
 		{
 			width = containerWidth;
 		}
@@ -392,7 +443,7 @@ var CM = (function($) {
 		$("#heatmap-actual").height(height);
 		$("#heatmap-actual").width(width);		
 		
-		$("#heatmap-inner-wrapper").width(width);
+		$("#heatmap-inner-wrapper").width(width + 180);
 	};
 	
 	/**
@@ -413,12 +464,101 @@ var CM = (function($) {
 		var table = $("#mbodyMultipleQuery table");
 
 		if(selectedMetrics.length > 0) {	
-			if(selectedMetrics.length == 1) { // If we only have one metric to load
+			if(selectedStates.length == 1) { // If we only have 1 state to load data for
 				
 				$("#timelinetable").hide();
-								
+				
+				var fullState = States.getStateByAbbreviation(selectedStates[0]);
+				$("#optionalTableTitle").html(fullState.name + " (" + fullState.abbr + ")");
+				$("#optionalTableTitle").show();
+				
+				// We treat the query as if it is a multi-metric query as there can be any number of metrics selected.
+				var processedMetrics = selectedMetrics.map(function(e) { return Metrics.getMetricByID(e).getName(); });
+				
+				query = DQ.create().addState(selectedStates).addMultipleMetrics(processedMetrics);
+				
+				query.execute(function(multiData) {
+					
+					if(multiData.length == 0)
+						return; // Do nothing if we got no data back.
+					
+					var yearsForMetrics = cm.getYearsWhereDataExistsForMultipleMetrics(multiData);
+					yearsForMetrics.sort(function(a,b) {return a - b;} ); 
+					
+					
+					if(yearsForMetrics.length==0) { // If theres no data for the metric...
+		        		 table.append("<tr><td>No data available for your current selection.</td></tr>");
+		        	} else {
+		        		// Build header
+		        		
+		        		var row ="<th>Metric</th>";
+		        		
+		        		for (var r = 0; r < yearsForMetrics.length; r++)
+		        		{
+		        			var yearName = yearsForMetrics[r];
+		        			
+		        			row = row + "<th>" + yearName + "</th>";
+		        		}
+		        		
+		        		row = "<thead>" + row + "</thead>";
+		        		table.append(row);
+		        		
+		        		// Populate data for each metric.		        		
+		        		for (var r = 0; r < multiData[0].length; r++)
+		        		{
+		        			var metricData = multiData[0][r];
+		        			var metric = metricData.metric;
+		        			var data = metricData.dataPoints;
+
+		        			row = "<th>"+ '<span id="info" title="' + metric.desc 
+							+ '"><i class="fa fa-info-circle"></i><span>' + " " + metric.name + "</th>";
+		        			
+		        			var yearIndex = 0;
+		        			for (var k = 0; k < data.length; k++)
+		        			{
+		        				var year = data[k].year;
+		        				
+		        				while (year !== yearsForMetrics[yearIndex])
+		        				{
+		        					row = row + "<td>N/A</td>";
+		        					yearIndex++;
+		        				}
+		        				
+		        				row = row + "<td>" + cm.getFormattedMetricValue(metric.type, data[k].value) + "</td>";
+		        				yearIndex++;
+		        			}
+		        			
+		        			while (yearIndex < yearsForMetrics.length)
+		        			{
+		        				row = row + "<td>N/A</td>";
+		        				yearIndex++;
+		        			}
+		        			
+		        			row = "<tr>" + row + "</tr>";
+		        			
+		        			table.append(row);
+		        		}
+		        			
+		        	}
+					cm.setDataTable(false);
+				
+				});
+				
+				
+			} 
+			else if(selectedMetrics.length == 1) { // If we only have one metric to load
+				
+				$("#timelinetable").hide();
+				
+				var fullMetric = Metrics.getMetricByID(selectedMetrics[0]);
+				
+				$("#optionalTableTitle").html('<span id="info" title="' + fullMetric.desc 
+						+ '"><i class="fa fa-info-circle"></i><span>' + " " + fullMetric.name);
+				
+				$("#optionalTableTitle").show();
+				
 				// Query for appropriate data
-				var query = DQ.create().addState(selectedStates).addMetric(Metrics.getMetricByID(selectedMetrics[0]).getName());
+				var query = DQ.create().addState(selectedStates).addMetric(fullMetric.getName());
 				
 				query.execute(function(multiData) {
 			        	var yearsForMetric = cm.getYearsMetricState(selectedStates, multiData); // Get the years that the metric exists for from the data
@@ -459,11 +599,13 @@ var CM = (function($) {
 				                table.append(row);
 			                }
 			        	}
-			        	cm.setDataTable();
+			        	cm.setDataTable(true);
 				});
 			}
 			else	// Multiple metrics
 			{					
+					$("#optionalTableTitle").hide();
+				
 					var processedMetrics = selectedMetrics.map(function(e) { return Metrics.getMetricByID(e).getName(); });
 					
 					query = DQ.create().addState(selectedStates).addMultipleMetrics(processedMetrics);
@@ -529,7 +671,7 @@ var CM = (function($) {
 							row = "<tr>" + row + "</tr>";
 							table.append(row);
 						}
-						cm.setDataTable();
+						cm.setDataTable(true);
 					
 					});
 				}		
@@ -540,50 +682,35 @@ var CM = (function($) {
 	 * Performs additional setup functions for the data table.
 	 * Should not be called on its own - is used as a utility function by refreshTable
 	 */
-	Chart.prototype.setDataTable = function() {		
+	Chart.prototype.setDataTable = function(enableSort) {		
 		if ( $("#myTable").html().indexOf("<thead>") != -1 ){
 			
 			$('#myTable tbody tr td').each( function() {
 				var sTitle= $(this).text();
 				if ( sTitle == "N/A" )
-					this.setAttribute( 'title', "No Value for the year selected" );	
+					this.setAttribute( 'title', "No value for this year." );	
 				
 			} );
 			
-			$('#myTable tbody tr th').each( function() {
-				var sTitle= $(this).text();
-				this.setAttribute( 'title', States.getStateFromString(sTitle).name );	
-
-			} );
-			
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
-				var oTable = $('#myTable').dataTable({"iDisplayLength": 20}, {});
+				var oTable = $('#myTable').dataTable(
+						{
+							"iDisplayLength": 20,
+							"bSort": enableSort
+						});
 				dt = oTable;
 			}
 			else
 			{
-				console.log("table already present");
 				$('#myTable').dataTable().fnDestroy();
-				var oTable = $('#myTable').dataTable({"iDisplayLength": 20});
+				var oTable = $('#myTable').dataTable(
+						{
+							"iDisplayLength": 20,
+							"bSort": enableSort
+						});
 				dt = oTable;
 			}
-			
-		 /* Apply the tooltips */
-			oTable.$('tr').tooltip( {
-				"delay": 0,
-				"track": true,
-				"fade": 0
-			} );
-			
-			$('#myTable tbody').on( 'click', 'tr', function () {
-		        if ( $(this).hasClass('selected') ) {
-		            $(this).removeClass('selected');
-		        }
-		        else {
-		        	oTable.$('tr.selected').removeClass('selected');
-		            $(this).addClass('selected');
-		        }
-		    } );
+
 		}
 	};
 	
@@ -627,7 +754,9 @@ var CM = (function($) {
                     	.useInteractiveGuideline(true)
                     	.transitionDuration(350);     
                 } else if (cm.currentVisualization == cm.visualizationTypes.BAR) {
-                    chart = nv.models.multiBarChart();
+                    chart = nv.models.multiBarChart()
+                    	.transitionDuration(350)
+                    	.showControls(false);
                 }
                 
                 chart.margin({left : 100})
@@ -734,20 +863,27 @@ var CM = (function($) {
 		}else if(metricType == "numeric"){
 			formattedValue = value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 		}else if(metricType == "rank") {
-			var firstDigit = value % 10;
 			
+			value = Math.floor(value); // Make sure we get a whole number
+			
+			var firstDigit = value % 10;
+		
 			var suffix = "th";
-			switch(firstDigit)
+			
+			if (value <= 10 || value >= 14) // 11th, 12th, 13th...
 			{
-				case 1:
-					suffix = "st";
-					break;
-				case 2:
-					suffix = "nd";
-					break;
-				case 3:
-					suffix = "rd";
-					break;
+				switch(firstDigit)
+				{
+					case 1:
+						suffix = "st";
+						break;
+					case 2:
+						suffix = "nd";
+						break;
+					case 3:
+						suffix = "rd";
+						break;
+				}
 			}
 			
 			formattedValue = value.toFixed(0) + suffix;

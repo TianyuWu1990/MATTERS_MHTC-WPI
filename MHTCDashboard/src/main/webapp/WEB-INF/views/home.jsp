@@ -86,7 +86,7 @@
 							<div class="input-group">
 								<strong>Comments</strong><br />
 								<div class='input-group date' id='run-date-picker'>
-									<textarea class="form-control" name="comments" style="width: 530px; height: 180px;"/></textarea>
+									<textarea class="form-control" name="comments" style="width: 515px; height: 180px;"/></textarea>
 								</div>
 							</div>
 							
@@ -135,23 +135,19 @@
 										<form id="loginForm" method="post" class="signin" action="${pageContext.request.contextPath}/login/">
 						                <fieldset class="textbox">
 						            	<label class="username">
-						                <span>Username or email</span>
+						                <span>Username/Email*</span>
 						                <input id="username" name="username" value="" type="text" autocomplete="on">
 						                </label>
 						                
 						                <label class="password">
-						                <span>Password</span>
+						                <span>Password*</span>
 						                <input id="password" name="password" value="" type="password">
 						                </label>
 						                </fieldset>
-						                
-						                <input style="margin-bottom: 5px;" class="submit button" type="submit" value="Login">
-						                <p align="center">
-						               		 <a style="color:white;" class="forgot" href="<c:url value="/user/forgot" />">Forgot your password?</a>
-						                </p>
-						                <p align="center">
-						                	<a style="color:white;" class="register" href="<c:url value="/user/register" />">Register</a>
-						                </p>
+						            
+						                <input style="margin-top: -5px; float:right;" class="btn" type="submit" value="Login">
+						               	<a class="register" style="display: block; margin-top: 10px;" href="<c:url value="/user/register" />">Register</a>
+						               	<a class="forgot" style="display: block; margin-top: 5px;" href="<c:url value="/user/forgot" />">Forgot your password?</a>
 						                </form>
 									</div>
 								</li>
@@ -270,7 +266,8 @@
 								</li>
 								<li>
 									<a class="selectPeerStates" id="${row.id}">
-										Select Peer States
+										<i class="fa fa-circle"></i>
+										Peer States
 									</a>
 								</li>
 								<li class="stateFilter">
@@ -307,7 +304,6 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<!-- Display none at first b/c metrics menu is open by default --> 
 							<a href="#" id="toggle-sidebar"> 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
@@ -316,29 +312,29 @@
 						<!--  Right side of the pagination header. -->
 						<ul class="nav nav-tabs" id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Table" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
 									<i class="fa fa-table fa-2x"></i>
 								</a>
 							</li>
 							<li class=" graph-tab " id="line-tab">
-								<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
+								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
 									<i class="fa fa-line-chart fa-2x"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a href="#bar" data-toggle="tab" title="Bar Chart" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
 									<i class="fa fa-bar-chart fa-2x"></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i class="fa fa-us-map"></i>
 								</a>
 							</li>
-							<li class="graph-tab" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Excel Data" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
+							<!--li class="graph-tab" id="table-tab" >
+								<a title="Export the data you've selected as an Excel file." onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 								<i class="fa fa-file-excel-o fa-2x"></i></a>
-							</li>
+							</li-->
 						</ul>
 					</div>
 					
@@ -384,6 +380,7 @@
 									<div class="box-content">
 										<table>
 											<tr>
+												<td id="optionalTableTitle"></td>
 												<td id="timelinetable"></td>
 											</tr>
 											<tr>
@@ -408,47 +405,42 @@
 											<div id="heatmap-inner-wrapper">
 												<div id="heatmap-actual"></div>
 												<div id="heatmap-controls">
-													<div id="heatmap-details">
-														<div id="heatmap-details-title">
-															Details
-														</div>
-														<div id="heatmap-details-details">
-															<div id="heatmap-generalDetails">
-																<div class="heatmap-detailTitle">Top Ranked:</div> 
-																<span id="heatmap-generalinfo-first"></span><br/>
-																
-																<div class="heatmap-detailTitle">Bottom Ranked:</div> 
-																<span id="heatmap-generalinfo-last"></span><br/>
-																
-																<div class="heatmap-detailTitle">MA Rank:</div>
-																<span id="heatmap-generalinfo-ma"></span>
-															</div>
-															
+						
+														
+															<!--
 															<div id="heatmap-specificDetails">
-																<div id="heatmap-specificDetails-instructions">
-																	Hover over a state for info.
-																</div>
-																<div id="heatmap-specificDetails-details" style="display:none;">
-																	<div class="heatmap-detailTitle">Name:</div>
-																	<span id="heatmap-specificDetails-name"></span><br/>
-																	
-																	<div class="heatmap-detailTitle">Rank:</div>
-																	<span id="heatmap-specificDetails-rank"></span><br/>
-																	
-																	<div class="heatmap-detailTitle">Value:</div>
-																	<span id="heatmap-specificDetails-value"></span><br/>
-																	
-																	<div id="heatmap-specificDetails-peer" style="font-style:italic;">Peer State</div>
+																
 																</div>																
-															</div>
-														</div>
-													</div>
+															</div>-->
 													<div id="heatmap-legend">
 														<div id="heatmap-legend-title">Legend</div>
+														<div id="heatmap-legend-details">
+															<div class="heatmap-detailTitle">Top Ranked:</div> 
+															<span id="heatmap-generalinfo-first"></span><br/>
+															
+															<div class="heatmap-detailTitle">Bottom Ranked:</div> 
+															<span id="heatmap-generalinfo-last"></span><br/>
+															
+															<div class="heatmap-detailTitle">MA Rank:</div>
+															<span id="heatmap-generalinfo-ma"></span><br/>
+															<span style="font-style:italic;">Hover over a state for info.</span>
+														</div>
 														<div id="heatmap-legend-legend">
 														
 														</div>
 													</div>
+												</div>
+												<div id="heatmap-tooltip" style="display: none;">
+													<div class="heatmap-detailTitle">Name:</div>
+													<span id="heatmap-specificDetails-name"></span><br/>
+													
+													<div class="heatmap-detailTitle">Rank:</div>
+													<span id="heatmap-specificDetails-rank"></span><br/>
+													
+													<div class="heatmap-detailTitle">Value:</div>
+													<span id="heatmap-specificDetails-value"></span><br/>
+													
+													<div id="heatmap-specificDetails-peer" style="font-style:italic;">Peer State</div>
 												</div>
 											</div>
 										</div>
