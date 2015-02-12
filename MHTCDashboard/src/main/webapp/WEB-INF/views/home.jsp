@@ -331,10 +331,10 @@
 									<i class="fa fa-us-map"></i>
 								</a>
 							</li>
-							<li class="graph-tab" id="table-tab" >
+							<!--li class="graph-tab" id="table-tab" >
 								<a title="Export the data you've selected as an Excel file." onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 								<i class="fa fa-file-excel-o fa-2x"></i></a>
-							</li>
+							</li-->
 						</ul>
 					</div>
 					
