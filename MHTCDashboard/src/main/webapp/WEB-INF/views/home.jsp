@@ -367,15 +367,14 @@
 													<div id="heatmap-legend">
 														<div id="heatmap-legend-title">Legend</div>
 														<div id="heatmap-legend-details">
-															<div class="heatmap-detailTitle">Top Ranked:</div> 
-															<span id="heatmap-generalinfo-first"></span><br/>
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Top Ranked</div> 
+															<span id="heatmap-generalinfo-first" class="heatmap-detailVal"></span><br/>
 															
-															<div class="heatmap-detailTitle">Bottom Ranked:</div> 
-															<span id="heatmap-generalinfo-last"></span><br/>
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Bottom Ranked</div> 
+															<span id="heatmap-generalinfo-last" class="heatmap-detailVal"></span><br/>
 															
-															<div class="heatmap-detailTitle">MA Rank:</div>
-															<span id="heatmap-generalinfo-ma"></span><br/>
-															<span style="font-style:italic;">Hover over a state for info.</span>
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">MA Rank</div>
+															<span id="heatmap-generalinfo-ma" class="heatmap-detailVal"></span>
 														</div>
 														<div id="heatmap-legend-legend">
 														
@@ -383,16 +382,15 @@
 													</div>
 												</div>
 												<div id="heatmap-tooltip" style="display: none;">
-													<div class="heatmap-detailTitle">Name:</div>
-													<span id="heatmap-specificDetails-name"></span><br/>
+													<span id="heatmap-specificDetails-name"></span>
 													
-													<div class="heatmap-detailTitle">Rank:</div>
-													<span id="heatmap-specificDetails-rank"></span><br/>
+													<div class="heatmap-detailTitle">Rank</div>
+													<span id="heatmap-specificDetails-rank" class="heatmap-detailVal"></span><br/>
 													
-													<div class="heatmap-detailTitle">Value:</div>
-													<span id="heatmap-specificDetails-value"></span><br/>
+													<div class="heatmap-detailTitle">Value</div>
+													<span id="heatmap-specificDetails-value" class="heatmap-detailVal"></span><br/>
 													
-													<div id="heatmap-specificDetails-peer" style="font-style:italic;">Peer State</div>
+													<div id="heatmap-specificDetails-peer" style="font-style:italic; padding-left: 10px; padding-top: 5px; color: #7b0020;">Peer State</div>
 												</div>
 											</div>
 										</div>

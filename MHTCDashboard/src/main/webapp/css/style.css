@@ -379,28 +379,51 @@ svg text {
 	top: 0px;
 	left: 0px;
 	
-	width: 130px;
+	width: 160px;
+		
+	background-color: #fff;	
+
 	
-	padding: 10px;
+	padding-bottom: 10px;
 	
-	background-color: #e0e0e0;
-	box-shadow: 0px 0px 5px black;
+	border-radius: 8px;	
+	border: 2px solid  rgba(158,158,158, 0.5);
 	
-	opacity: 0.9;
-	filter: alpha(opacity=0.9);
+	box-shadow: 0px 0px 2px rgba(158, 158, 158, 0.3);	
+}
+
+#heatmap-specificDetails-name
+{
+	color: #7b0020;
+	font-size: 15px;
+	padding: 7px;
+	text-align: center;
+	
+	border-bottom: 2px solid rgba(158, 158, 158, 0.3);
+	
+	display: block;
+}
+
+.heatmap-detailVal
+{
+	text-align: right;
 }
 
 #heatmap-controls {
 	position: absolute;
-	top: 0px;
+	top: -15px;
 	right: 0px;
 	
 	height: 360px;
 	max-height: 100%;
 	width: 180px;
 				
-	background-color: #e0e0e0;	
-	box-shadow: 0px 0px 3px black;
+	background-color: #fff;
+	
+	border-radius: 8px;	
+	border: 2px solid  rgba(158,158,158, 0.5);
+	
+	box-shadow: 0px 0px 2px rgba(158, 158, 158, 0.3);
 }
 
 #heatmap-legend {
@@ -413,10 +436,12 @@ svg text {
 }
 
 #heatmap-legend-title {
-	background-color: #7b0020;
-	color: white;
+	color: #7b0020;
 	font-size: 15px;
 	padding: 7px;
+	text-align: center;
+	
+	border-bottom: 2px solid rgba(158, 158, 158, 0.3);
 }
 
 #heatmap-legend-details {
@@ -427,6 +452,9 @@ svg text {
 .heatmap-detailTitle {
 	display: inline-block;
 	font-weight: 600;
+	
+	padding-left: 10px;
+	padding-top: 5px;
 }
 
 #heatmap-legend-legend {	
@@ -434,7 +462,7 @@ svg text {
 	padding-bottom: 10px;
 	
 	position: absolute;
-	top: 120px;
+	top: 100px;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
