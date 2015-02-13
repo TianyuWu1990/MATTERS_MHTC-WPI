@@ -510,7 +510,7 @@ var CM = (function($) {
 		        			var data = metricData.dataPoints;
 
 		        			row = "<th>"+ '<span id="info" title="' + metric.desc 
-							+ '"><i class="fa fa-info-circle metricInfo"></i><span>' + " " + metric.name + "</th>";
+							+ '"><span>' + " " + metric.name + "</th>";
 		        			
 		        			var yearIndex = 0;
 		        			for (var k = 0; k < data.length; k++)
@@ -551,15 +551,20 @@ var CM = (function($) {
 				
 				var fullMetric = Metrics.getMetricByID(selectedMetrics[0]);
 				
-				$("#optionalTableTitle").html('<span id="info" title="' + fullMetric.desc 
-						+ '"><i class="fa fa-info-circle metricInfo"></i><span>' + " " + fullMetric.name);
-				
-				$("#optionalTableTitle").show();
-				
 				// Query for appropriate data
 				var query = DQ.create().addState(selectedStates).addMetric(fullMetric.getName());
 				
 				query.execute(function(multiData) {
+					
+						
+						var metricFromQuery = multiData[0][0].metric;
+						
+						$("#optionalTableTitle").html('<span id="info" title="' + metricFromQuery.desc 
+								+ '"><span>' + " " + metricFromQuery.name);
+						
+						$("#optionalTableTitle").show();
+					
+					
 			        	var yearsForMetric = cm.getYearsMetricState(selectedStates, multiData); // Get the years that the metric exists for from the data
 			        	
 			        	if(yearsForMetric.length==0) { // If theres no data for the metric...
@@ -636,7 +641,7 @@ var CM = (function($) {
 							var metricName = multiData[0][r].metric.name;
 							
 							row = row + "<th>"+ '<span id="info" title="' + multiData[0][r].metric.desc 
-							+ '"><i class="fa fa-info-circle metricInfo"></i><span>' + " " + metricName + "</th>";
+							+ '"><span>' + " " + metricName + "</th>";
 						}
 						
 						row = "<thead>" + row +"</thead>"; 
