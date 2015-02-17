@@ -44,7 +44,7 @@
 						<li class="menu-item"><a href="/mhtc/logout/">Logout</a></li>
 					</sec:authorize>
 					<sec:authorize access="!isAuthenticated()">
-						<li class="menu-item"><a href="/mhtc/about">Login</a></li>
+						<li class="menu-item"><a href="/mhtc/login">Login</a></li>
 					</sec:authorize>
 				</ul>
 			</div>
