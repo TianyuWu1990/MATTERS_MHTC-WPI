@@ -7,8 +7,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
-<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -56,67 +54,7 @@
 	
 	</head>
 	<body onLoad="loadFunction()">
-		<div class="modal hide fade" id="feedbackModal" style="position: absolute;" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
-			<form action="feedback_post" method="POST" style="margin-bottom: 0px;">
-				<div class="modal-dialog modal-md" style="width:100%">
-					<div class="modal-content">
-						<div class="modal-header red">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="myModalLabel">Site Feedback</h4>
-						</div>
-						<div class="modal-body" style="padding: 15 15 15 15;">
-							<p>Please provide your suggestions about the MATTERS Site. Thank you!</p>
-							
-							<div class="input-group">
-								<strong>Your Name</strong><br /> 
-								<input style="height:30px; width: 250px;" type="text" name="name" class="form-control">
-							</div>
-							
-							<div class="input-group">
-								<strong>Your Affiliation</strong><br /> 
-								<input style="height:30px; width: 250px;" type="text" name="affiliation" class="form-control">
-							</div>
-							
-							<div class="input-group">
-								<strong>Your Email Address</strong><br /> 
-								<input style="height:30px; width: 250px;" type="text" name="email" class="form-control">
-							</div>	
-							
-							<div class="input-group">
-								<strong>Subject</strong><br /> 
-								<input style="height:30px; width: 250px;" type="text" name="subject" class="form-control">
-							</div>	
-							
-							<div class="input-group">
-								<strong>Comments</strong><br />
-								<div class='input-group date' id='run-date-picker'>
-									<textarea class="form-control" name="comments" style="width: 530px; height: 180px;"/></textarea>
-								</div>
-							</div>
-							
-							<div style="margin-bottom: 25px;" align="center">
-	                           <%
-					                ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb",
-					                                    "6LfXmgATAAAAAP_qkRZBcBBqnb8yRuUKMm9LJYSW", false);
-					                out.print(c.createRecaptchaHtml(null, null));
-					            %> 
-		                   </div>
-		                   
-		                   <p>We thank you for your time</p>
-		
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">
-								<i class="fa fa-times"></i> Close
-							</button>
-							<button type="submit" class="btn btn-danger">
-								<i class="fa fa-envelope"></i> Send
-							</button>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
+	
 	<jsp:include page="unifiedHeader.jsp"/>
 
 	<div id="preContentBar"></div>

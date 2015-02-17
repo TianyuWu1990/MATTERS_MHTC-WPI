@@ -314,6 +314,13 @@ public class HomeController {
 		
         return "register_page_submit";
     } 
+    
+    @RequestMapping(value = "/feedback", method = RequestMethod.GET)
+    public String feedbackPage(Locale locale, Model model)
+    {
+    	return "feedback";
+    }
+    
     /********** Feedback Page 
      * @throws SQLException **********/
     @RequestMapping(value = "/feedback_post", method = RequestMethod.POST)
