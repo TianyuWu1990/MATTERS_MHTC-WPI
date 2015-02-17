@@ -28,12 +28,6 @@ option {
 	height: 50px;
 }
 
-.menu {
-	position: fixed;
-	top: 0px;
-	right: 125px;
-}
-
 .menu > ul > li > a:hover
 {
 	text-decoration: none !important;
