@@ -35,19 +35,24 @@
 
 		   <div class="copy-block">
 		   <h1 class="int-title"></h1>
+		   <h2 class="int-sub-title">HOW TO USE MATTERS</h2>
 		   
-		   <h2 class="int-sub-title">ABOUT MATTERS</h2>
-		   
-		   <p>The Massachusetts High Technology Council developed the Massachusetts' Technology, Talent and Economic Reporting System (MATTERS)  
-		   to advance our mission to make Massachusetts the world's most attractive place in which to create and grow a high technology business.  
-		   MATTERS is designed to measure and evaluate Massachusetts' current competitive position, particularly among peer group technology states, 
-		   while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions that help attract and retain 
-		   business to the state.</p>   
-	<br></br>
-			<p>MATTERS consolidates a set of key cost, economic and talent metrics along with independent national rankings into a single source 
-			for use by all parties.  MATTERS has been developed by faculty and students of Worcester Polytechnic Institute in collaboration with 
-			a team of subject matter experts from Mass. High Tech Council members and partner organizations. </p>
- 
+		   <p>The MATTERS landing page overview map displays and highlights the 15 states that make up the MATTERS peer group states.  
+		   By selecting any individual state, users can view 8 pre-selected key metrics and link to an individual state profile.   
+		   MATTERS navigation capabilities also permit users to retrieve data on one or more metrics from one or more states and across 
+		   multiple years simultaneously.  Data can be displayed in a variety of visualizations including tables, line charts, bar 
+		   charts, and heatmaps. </p>  
+			<br></br>
+			<p>MATTERS is a data analytics tool designed to empower users to measure the health of the technology environment in Massachusetts 
+			(or any other state) and to allow easy and meaningful comparisons to any other state or group of states, with a particular focus 
+			on other "peer" states whose economies are similarly "tech-centric".   MATTERS permits users to explore and analyze data that was 
+			previously disaggregated and static.  We encourage users to "dive in" and explore the data and to utilize MATTERS as one of many 
+			tools that comprise their research and analysis and inform their decision making.</p>
+  
+
+		<p>MATTERS consolidates a set of key cost, economic and talent metrics along with independent national rankings into a single 
+		source for use by all parties.  MATTERS has been developed by faculty and students of Worcester Polytechnic Institute in 
+		collaboration with a team of subject matter experts from Mass. High Tech Council members and partner organizations. </p>
 
 		   </div> <!-- copy block -->
 <!-- ====================================== SIDEBAR START ============== -->    

@@ -36,18 +36,22 @@
 		   <div class="copy-block">
 		   <h1 class="int-title"></h1>
 		   
-		   <h2 class="int-sub-title">ABOUT MATTERS</h2>
-		   
-		   <p>The Massachusetts High Technology Council developed the Massachusetts' Technology, Talent and Economic Reporting System (MATTERS)  
-		   to advance our mission to make Massachusetts the world's most attractive place in which to create and grow a high technology business.  
-		   MATTERS is designed to measure and evaluate Massachusetts' current competitive position, particularly among peer group technology states, 
-		   while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions that help attract and retain 
-		   business to the state.</p>   
-	<br></br>
-			<p>MATTERS consolidates a set of key cost, economic and talent metrics along with independent national rankings into a single source 
-			for use by all parties.  MATTERS has been developed by faculty and students of Worcester Polytechnic Institute in collaboration with 
-			a team of subject matter experts from Mass. High Tech Council members and partner organizations. </p>
- 
+		   <h2 class="int-sub-title">METHODOLOGY AND SOURCES</h2>
+		  
+		   <p>MATTERS is not a primary data source, but instead is an aggregation of published data and analysis from several 
+		   sources including, federal and state governmental agencies, non-profit organizations and media outlets.  The source 
+		   for each metric or data point in MATTERS is listed below with links to the source or data where available.</p>
+		  <br></br>
+		   <p>[MATTERS METRIC CATALOG/SOURCE LIST/LINKS TO COME FROM MJG]</p>
+			<br></br>
+			<p>Please note that in any tax-related information, data or metrics are reflective of the tax policy that is 
+			generally applicable to the broadest set of taxpayers.  Please note that in many instances and jurisdictions, 
+			various and differing tax regimes may be applicable.  Similarly, tax-related information contained within MATTERS 
+			is not intended to be, tax advice. Neither MATTERS nor the Massachusetts High Technology Council is a tax advice 
+			expert offering tax advice.</p> 
+			<p>Neither MATTERS nor the Massachusetts High Technology Council makes any representations, warranties, or 
+			assurances as to the accuracy, currency or completeness of the content contain in MATTERS or any sites linked to 
+			this site.</p>
 
 		   </div> <!-- copy block -->
 <!-- ====================================== SIDEBAR START ============== -->    
