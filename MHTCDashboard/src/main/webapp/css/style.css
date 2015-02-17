@@ -48,6 +48,10 @@ table {
 	border-left: none !important;
 }
 
+.backButton:focus, .nextButton:focus {
+	outline: none;
+}
+
 /* Navigation Section
 =================================================================== */
 
