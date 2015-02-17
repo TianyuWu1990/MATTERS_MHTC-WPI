@@ -1,0 +1,124 @@
+/*============================================================= SUPER HEADER */
+.super-header {
+  height: 36px;
+}
+.super-header-inner {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.super-header-inner > div {
+  float: left;
+}
+.some-nav {
+  margin: 0 10px 0 0;
+  padding: 3px 6px;
+}
+.some-nav li {
+  float: left;
+}
+.some-nav a {
+  display: block;
+  width: 30px;
+  height: 30px;
+  background: url(../img/some-sprite.png) center top no-repeat;
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
+}
+.some-nav a:hover {
+  opacity: 0.8;
+}
+.some-nav a.fb {
+  background-position: center 7px;
+  width: 20px;
+}
+.some-nav a.tw {
+  background-position: center -41px;
+  width: 25px;
+}
+.some-nav a.gp {
+  background-position: center -94px;
+}
+.some-nav a.in {
+  background-position: center -143px;
+}
+.some-nav a.yt {
+  background-position: center -196px;
+}
+.some-nav a.pt {
+  background-position: center -243px;
+}
+.super-search {
+  position: relative;
+  height: 36px;
+  margin: 0 10px 0 0;
+  padding: 0 5px;
+}
+.super-search input[type="text"] {
+  width: 149px;
+  height: 31px;
+  padding: 0 31px 0 10px;
+  font: 12px 'Open Sans', sans-serif;
+  border: 0;
+  background: #fff;
+  vertical-align: middle;
+  line-height: 31px;
+  border: 1px solid #ddd;
+  border-top: 0;
+}
+.super-search input[type="text"]:focus {
+  border-color: #bbb;
+  color: #bbb;
+}
+.super-search input[type="submit"] {
+  display: block;
+  position: absolute;
+  right: 0px;
+  top: 1px;
+  width: 40px;
+  height: 31px;
+  border: 0;
+  background: none;
+  color: #bbb;
+}
+.super-search input[type="submit"]:hover {
+  opacity: 0.8;
+}
+.page-search {
+  padding: 0;
+  width: 240px;
+  background: none;
+}
+.page-search input[type="text"] {
+  width: 194px;
+  border: 1px solid #ddd;
+}
+.super-nav li {
+  float: left;
+}
+.super-nav a {
+  display: block;
+  padding: 9px 20px;
+  font: 700 13px/13px 'Open Sans', sans-serif;
+  background: #ddd;
+  color: #4b4b4b;
+  text-transform: uppercase;
+}
+
+
+
+/*=============================================================== GENERAL */
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+  .some-nav a {
+    background-image: url(../img/some-sprite-2x.png);
+  }
+  .mesh-credit a {
+    background-image: url(../img/meshy-2x.png);
+    background-repeat: no-repeat;
+  }
+}
+/*============================================================ TABLET LS */
+/*============================================================ TABLET PT */
+/*============================================================ MOBILE LS */
+/*============================================================ MOBILE PT */

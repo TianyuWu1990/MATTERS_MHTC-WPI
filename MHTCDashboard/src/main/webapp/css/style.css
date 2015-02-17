@@ -43,6 +43,11 @@ table {
 	margin: auto;
 }
 
+.sidebar {
+	padding-left: 0px !important;
+	border-left: none !important;
+}
+
 /* Navigation Section
 =================================================================== */
 

@@ -2,33 +2,95 @@
 <html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en-US" style="">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>MATTERS</title>
-<link rel="profile" href="http://gmpg.org/xfn/11">
-<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
-<link href="css/mesh-base.css" rel="stylesheet" type="text/css">
-<link href="css/mesh-main.css" rel="stylesheet" type="text/css">
-<link href="css/mesh-animate.css" rel="stylesheet" type="text/css">
-
+	<meta charset="UTF-8">
+	<meta name="description" content="Search matters Map">
+	<meta name="keywords" content="MHTC,Matters,Ranks,Maps,GIS,Maptitude">
+	<meta name="author" content="MHTC">
+	<meta name="application-name" content="Maptitude for the Web">
+	<meta name="company-name" content="MHTC">
+	<meta name="application-date" content="2015/2/12">
+	<meta name="application-version" content="2015.2.12">
+	<meta name="generator" content="Maptitude">
+	<meta name="apple-mobile-web-app-capable" content="yes"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>MATTERS</title>
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="stylesheet" href="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/css">
+	<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
+	<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
+	<link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
+	<link href="css/mesh/popup.css" rel="stylesheet" type="text/css">
+	<style>
+	        #matters_map_canvas {
+	          background-color: black;
+	          max-width: 847px;
+	          height: 560px;
+	        }
+			td.cell-name.string.name {
+				column-span: none; /* W3C */
+				-webkit-column-span: none; /* Safari & Chrome */
+				-moz-column-span: none; /* Firefox */
+				-ms-column-span: none; /* Internet Explorer */
+				-o-column-span: none; /* Opera */
+				display: none;
+			}
+			td.cell-value.string.name {
+				color: red;
+				text-align: center;
+				font-weight: bold;
+				column-span: all; /* W3C */
+				-webkit-column-span: all; /* Safari & Chrome */
+				-moz-column-span: all; /* Firefox */
+				-ms-column-span: all; /* Internet Explorer */
+				-o-column-span: all; /* Opera */
+			}
+			td.cell-name.peer {
+				display: none;
+			}
+			td.cell-value.peer {
+				display: none;
+			}
+	</style>
+	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/js"></script>
 </head>
 
 <body class="home" id="top">
 <div class="wrap">
 <div id="page" class="hfeed site">
 	
-<jsp:include page="unifiedHeader.jsp"/>
+	<jsp:include page="unifiedHeader.jsp"/>
 <div class="home-bucket-container home-bucket-container-lower">
 
 <!-- ==================================== MAP SECTION ========= -->
 
 <section class="map-sect">
-	<div class="container map-contianer">
+	<div class="container map-container" ng-app="map_application">
 		<h1>Headline Goes Here</h1>
-		<div class="map-area"></div>
-		<a class="map-btn db-btn" href="/mhtc/explore">View Searchable Database</a>
-		<a class="map-btn state" href="/mhtc/profile">View State Profiles</a>
+		<div id="matters_map_canvas" class="map-area" ng-controller="map_canvas_controller as leaflet_map">
+		</div>	
+		<input type="hidden" ng-controller="map_tile_controller as map_tiles" id="map_tile" value="Tiles" storage="inline">
+		<input type="hidden" ng-controller="map_data_controller as map_data"  id="map_data" value="{'Features':'Visible_Features','Search':'Visible_Features'}" storage="inline">
+		<div id="html_static_templates" style="display: none;" ng-non-bindable>
+			<script id="popup_content" type="text/template">
+				<div class="popop-window">
+				  <table style="border-style: none !important;" class="table table-bordered table-hover table-condensed popup-table">
+					<tbody>
+					  {{#cells}}
+					  <tr>
+						<td class="cell-name string {{class}}" colspan="2">{{name}}</td>
+						<td class="cell-value {{class}}">{{format}}</td>
+					  </tr>
+					  {{/cells}}
+					</tbody>
+				  </table>
+				  <a class="view-more" href="profile?name={{cells.0.format}}">LEARN MORE</a>
+				</div>
+			</script>
+		</div>
+		<a class="map-btn db-btn" href="explore">Explore Database</a>
+		<a class="map-btn state" href="profile">View State Profiles</a>
 	</div>
 </section>
 
@@ -87,6 +149,7 @@
 					<img src="img/textron.jpg" alt="header-sponsors" width="" height="" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
+			 
 			<div class="logo-wrap">
 				<div class="logo-contain">
 					<img src="img/kronos.jpg" alt="header-sponsors" width="" height="" />
@@ -107,6 +170,11 @@
 					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
+			 <div class="logo-wrap">
+				<div class="logo-contain">
+					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="50" height="50" />
+				 </div> <!-- .logo-contain -->
+			 </div> <!-- .logo-wrap -->
 	</div>
 </div>
 
@@ -121,14 +189,16 @@
 </div><!-- #page -->
 
 
-<!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
+
+
+<script type="text/javascript" src="js/mesh/data/tiles/tiles.js" ></script>
+<script type="text/javascript" src="js/mesh/data/features.js" ></script>
+<script type="text/javascript" src="js/mesh/data/search.js" ></script>  
 <script src="js/mesh/modernizr.min.js"></script>
 <script src="js/mesh/scripts.js" type="text/javascript"></script>
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
-<script src="js/mesh/jquery.svgdom.min.js" type="text/javascript"></script>
-<script src="js/mesh/jquery.svg.min.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
 
 

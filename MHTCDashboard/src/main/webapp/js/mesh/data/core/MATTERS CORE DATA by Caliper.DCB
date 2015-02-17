@@ -1,0 +1,17 @@
+
+85
+"State",C,1,22,0,22,0,,"","",,"Blank",
+"Peer State Group",C,23,3,0,3,0,,"","",,"Blank",
+"Milken Science and Tech Index",I,26,4,0,11,0,,"","",,"Blank",
+"Tax Foundation Business Tax Index",I,30,4,0,11,0,,"","",,"Blank",
+"CNBC Top States for Business",I,34,4,0,11,0,,"","",,"Blank",
+"Percent bachelors degree holders",R,38,8,0,15,4,,"","",,"Blank",
+"Bachelors degree holders rank",I,46,4,0,11,0,,"","",,"Blank",
+"Key tech demand hiring difficulty",I,50,4,0,11,0,,"","",,"Blank",
+"Key tech demand hiring rank",I,54,4,0,11,0,,"","",,"Blank",
+"Tax burden per capita",I,58,4,0,11,0,,"","",,"Blank",
+"Tax burden per capita rank",I,62,4,0,11,0,,"","",,"Blank",
+"Percent tech employment",R,66,8,0,15,4,,"","",,"Blank",
+"Tech employment rank",I,74,4,0,11,0,,"","",,"Blank",
+"Unempl insurance",I,78,4,0,11,0,,"","",,"Blank",
+"Unempl insurance rank",I,82,4,0,11,0,,"","",,"Blank",

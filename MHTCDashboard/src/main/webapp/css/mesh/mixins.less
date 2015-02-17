@@ -1,0 +1,48 @@
+.hidetext() {
+  font-size: 0;
+  line-height: 0;
+  color: transparent;
+}
+
+.box-shadow(@rules) {
+  -webkit-box-shadow: @rules;
+  -moz-box-shadow: @rules;
+  -ms-box-shadow: @rules;
+  -o-box-shadow: @rules;
+  box-shadow: @rules;
+}
+
+.transform(@rules) {
+  -webkit-transform: @rules;  
+  -moz-transform: @rules;  
+  -ms-transform: @rules;  
+  -o-transform: @rules;   
+  transform: @rules;
+}
+
+.transition(@rules) {
+  -webkit-transition: @rules;  
+  -moz-transition: @rules;  
+  -ms-transition: @rules;  
+  -o-transition: @rules;   
+  transition: @rules;
+}
+
+.clearfix() {
+	zoom: 1;
+	
+	&:before,&:after {
+	  content: "";
+	  display: table;
+  }
+
+  &:after {
+  	clear: both;
+  }
+}
+
+.antialias() {
+  -webkit-transform: rotate(360deg);
+  -moz-transform: scale(1.01);
+  transform: rotate(360deg), scale(1.01);
+}

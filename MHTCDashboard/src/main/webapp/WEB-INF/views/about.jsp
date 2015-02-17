@@ -3,14 +3,22 @@
 
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="Search matters Map">
+<meta name="keywords" content="Maps,GIS,Maptitude">
+<meta name="author" content="MHTC">
+<meta name="application-name" content="Maptitude for the Web">
+<meta name="company-name" content="MHTC">
+<meta name="application-date" content="2015/2/12">
+<meta name="application-version" content="2015.2.12">
+<meta name="generator" content="Maptitude">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>MATTERS</title>
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
-<link href="css/mesh-base.css" rel="stylesheet" type="text/css">
-<link href="css/mesh-main.css" rel="stylesheet" type="text/css">
-<link href="css/mesh-animate.css" rel="stylesheet" type="text/css">
+<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
+<link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -69,7 +77,7 @@ Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo
 
 
 <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="js/mesh/modernizr.min.js"></script>
 <script src="js/mesh/scripts.js" type="text/javascript"></script>
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
@@ -77,7 +85,6 @@ Maecenas sed diam eget risus varius blandit sit amet non magna. Praesent commodo
 <script src="js/mesh/jquery.svgdom.min.js" type="text/javascript"></script>
 <script src="js/mesh/jquery.svg.min.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
-
 
 </body>
 </html>

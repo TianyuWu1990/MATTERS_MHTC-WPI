@@ -24,8 +24,8 @@
 			rel='stylesheet' type='text/css'>
 			
 		<!-- Custom CSS -->
-		<link href="css/mesh-base.css" rel="stylesheet">
-		<link href="css/mesh-main.css" rel="stylesheet">
+		<link href="css/mesh/base.css" rel="stylesheet">
+		<link href="css/mesh/main.css" rel="stylesheet">
 		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
