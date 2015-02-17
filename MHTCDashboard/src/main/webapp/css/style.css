@@ -727,7 +727,7 @@ i.fa.fa-info-circle {
 }
 
 #heatmap-tab > a > i {
-    background: transparent url(../img/Matters_map.jpg) 0 0 no-repeat;
+    background: rgba(0,0,0,0) url(../img/Matters_map.jpg) 0 0 no-repeat;
     width: 34px;
     height: 25px;
     
@@ -738,7 +738,7 @@ i.fa.fa-info-circle {
 }
 
 #heatmap-tab > a:hover > i {
-    background: url(../img/Matters_map.jpg) no-repeat scroll 0 0 #b41432;
+    background: url(../img/Matters_map.jpg) no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -749,7 +749,7 @@ i.fa.fa-info-circle {
 }
 
 #heatmap-tab.active > a > i {
-    background: url("../img/Matters_map.jpg") no-repeat scroll 0 0 #b41432;
+    background: url("../img/Matters_map.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -760,7 +760,7 @@ i.fa.fa-info-circle {
 }
 
 #bar-tab > a > i {
-    background: url("../img/Matters_bars.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("../img/Matters_bars.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -771,7 +771,7 @@ i.fa.fa-info-circle {
 }
 
 #bar-tab > a:hover > i {
-    background: url("../img/Matters_bars.jpg") no-repeat scroll 0 0 #b41432;
+    background: url("../img/Matters_bars.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -782,7 +782,7 @@ i.fa.fa-info-circle {
 }
 
 #bar-tab.active > a > i {
-    background: url("../img/Matters_bars.jpg") no-repeat scroll 0 0 #b41432;
+    background: url("../img/Matters_bars.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -793,7 +793,7 @@ i.fa.fa-info-circle {
 }
 
 #line-tab > a > i {
-    background: url("../img/Matters_timeline.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("../img/Matters_timeline.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -804,7 +804,7 @@ i.fa.fa-info-circle {
 }
 
 #line-tab > a:hover > i {
-    background: url("../img/Matters_timeline.jpg") no-repeat scroll 0 0 #b41432;
+    background: url("../img/Matters_timeline.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -815,7 +815,7 @@ i.fa.fa-info-circle {
 }
 
 #line-tab.active > a > i {
-    background: url("../img/Matters_timeline.jpg") no-repeat scroll 0 0 #b41432;
+    background: url("../img/Matters_timeline.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -826,7 +826,7 @@ i.fa.fa-info-circle {
 }
 
 #table-tab > a > i {
-    background: url("../img/Matters_table.jpg") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background: url("../img/Matters_table.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -837,7 +837,7 @@ i.fa.fa-info-circle {
 }
 
 #table-tab > a:hover > i {
-    background: url("../img/Matters_table.jpg") no-repeat scroll 0 0 #b41432;
+    background: url("../img/Matters_table.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
@@ -848,7 +848,7 @@ i.fa.fa-info-circle {
 }
 
 #table-tab.active > a > i {
-    background: url("../img/Matters_table.jpg") no-repeat scroll 0 0 #b41432;
+    background: url("../img/Matters_table.jpg") no-repeat scroll 0 0 rgba(0,0,0,0);
     width: 34px;
     height: 25px;
     
