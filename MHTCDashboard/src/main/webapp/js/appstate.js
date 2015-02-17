@@ -22,6 +22,8 @@ var AS = (function($) {
 				EXCEL : 4
 		}
 		
+		this.currentVisualizationType = this.visualizations.TABLE;
+		
 		this.currentind = 0;
 		this.stateAbbr = "MA";
 		this.selected = [ 'MA' ];
@@ -48,7 +50,7 @@ var AS = (function($) {
 				"No states or metrics selected!<br/>You must select at least one state and one metric to explore the visualization." // 3: No state & no metric (0011)
 		];
 
-		this.errorCode = this.errorCodes.NO_ERROR;
+		this.errorCode = this.errorCodes.NO_METRIC_SELECTED;
 	}
 
 	/**
@@ -59,6 +61,9 @@ var AS = (function($) {
 		$(function() {
 			$("[rel='tooltip']").tooltip();
 		});
+		
+		
+		this.refreshErrorView(); // Display errors immediately if there are any
 	};
 	
 	/**
@@ -337,7 +342,10 @@ var AS = (function($) {
 	AppState.prototype.visualizationDeployer = function(visualizationType) {		
 		cm.resetYear();
 		
-		switch(visualizationType)
+		this.currentVisualizationType = visualizationType;
+		this.refreshErrorView(); // Make sure we are displaying the correct error if there is one
+		
+		switch(this.currentVisualizationType)
 		{
 			case this.visualizations.TABLE:				
 				this.hideGraphTitle();
@@ -351,7 +359,7 @@ var AS = (function($) {
 				this.showGraphTitle();
 				cm.displayBarGraph();				
 				break;
-			case this.visualizations.HEATMAP:
+			case this.visualizations.HEATMAP:	
 				this.showGraphTitle();
 				cm.displayHeatMap();
 				break;
@@ -361,7 +369,6 @@ var AS = (function($) {
 			default:
 				return; // Do nothing if we don't get a match
 		}
-		
 	};
 
 	/**
@@ -435,15 +442,35 @@ var AS = (function($) {
 	/**
 	 * Refreshes the error view to reflect the current error code.
 	 */
-	AppState.prototype.refreshErrorView = function() {
+	AppState.prototype.refreshErrorView = function(visualizationType) {
 		$("#errorMsg").empty();
 
-		if (this.inError()) {
-			$("#vizView").hide();
-			$("#errorView").show();
+		if (this.inError()) 
+		{
+			var errorCodeToUse = this.errorCode;
+			
+			// Special case for heatmap:
+			// Can still display visualization if the only error is no state.
+			if (this.currentVisualizationType == this.visualizations.HEATMAP)
+			{
+				errorCodeToUse = errorCodeToUse & (~this.errorCodes.NO_STATE_SELECTED);
+			}
+			
+			if (errorCodeToUse !== this.errorCodes.NO_ERROR)
+			{
+				$("#vizView").hide();
+				$("#errorView").show();
 
-			$("#errorMsg").html(this.errorMsgs[this.errorCode]);
-		} else {
+				$("#errorMsg").html(this.errorMsgs[errorCodeToUse]);
+			}
+			else
+			{
+				$("#errorView").hide();
+				$("#vizView").show();
+			}
+		} 
+		else 
+		{
 			$("#errorView").hide();
 			$("#vizView").show();
 		}

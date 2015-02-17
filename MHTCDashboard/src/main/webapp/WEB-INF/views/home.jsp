@@ -24,8 +24,13 @@
 			rel='stylesheet' type='text/css'>
 			
 		<!-- Custom CSS -->
+		<link href="css/mesh-base.css" rel="stylesheet">
+		<link href="css/mesh-main.css" rel="stylesheet">
+		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
+		
+		
 		
 		<!-- Library JS -->
 		<script src="js/d3.v3.min.js"></script>
@@ -47,8 +52,7 @@
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
 		
-		<title>MATTERS: Massachusetts' Technology, Talent and Economy
-			Reporting System</title>
+		<title>MATTERS</title>
 	
 	</head>
 	<body onLoad="loadFunction()">
@@ -113,63 +117,11 @@
 				</div>
 			</form>
 		</div>
-		<div class="navbar">
-			<div class="navbar-inner">
-					<div class="container-fluid">
-						<img class="nav pull-left" src="css/img/MHTC_Logo.jpg" alt="Mass High Technology Council" >
-						
-						<ul class="nav pull-right" id="main-menu">
-							<li id="explore"><a href="#">Explore</a></li>
-							<li id="about"><a>About</a></li>
-							<li id="feedback" onclick="$('#feedbackModal').modal('show');"><a href="#feedback">Feedback</a></li>
-							<sec:authorize access="hasRole('ADMIN')">
-	                            	<li id="admin"><a href="admin">Admin Panel</a></li>
-	                        </sec:authorize>
-	                        
-	                        <sec:authorize access="!isAuthenticated()">
-								<li class="dropdown">
-									<a class="dropdown-toggle" id="dLabel" data-toggle="dropdown" data-target="#" href="">
-										<i class="fa fa-user"></i>&nbsp;Login <span class="caret"></span>
-									</a>
-									<div class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="padding: 0px;">
-										<form id="loginForm" method="post" class="signin" action="${pageContext.request.contextPath}/login/">
-						                <fieldset class="textbox">
-						            	<label class="username">
-						                <span>Username/Email*</span>
-						                <input id="username" name="username" value="" type="text" autocomplete="on">
-						                </label>
-						                
-						                <label class="password">
-						                <span>Password*</span>
-						                <input id="password" name="password" value="" type="password">
-						                </label>
-						                </fieldset>
-						            
-						                <input style="margin-top: -5px; float:right;" class="btn" type="submit" value="Login">
-						               	<a class="register" style="display: block; margin-top: 10px;" href="<c:url value="/user/register" />">Register</a>
-						               	<a class="forgot" style="display: block; margin-top: 5px;" href="<c:url value="/user/forgot" />">Forgot your password?</a>
-						                </form>
-									</div>
-								</li>
-							</sec:authorize>
-							
-	                        <sec:authorize access="isAuthenticated()">
-								<li id="logout"><a href="logout/">Logout</a></li>
-							</sec:authorize>
-						</ul>
-						<!-- /.navbar-collapse -->
-					</div>
-					<!-- /.container-fluid -->
-	
-				<div style="background:#7b0020; margin:0px; padding-top: 20px; padding-bottom: 10px;">
-					<p align="center" style="font-size:22px;font-weight:400;"> 
-						MATTERS: Massachusetts Technology, Talent, and Economic Reporting System
-					</p>
-				</div>
-			</div>
-		</div>
-	
-		<div class="container-fluid-full">
+	<jsp:include page="unifiedHeader.jsp"/>
+
+	<div id="preContentBar"></div>
+
+	<div class="container-fluid-full" style="z-index: 1;">
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
@@ -310,28 +262,28 @@
 						</div>
 					
 						<!--  Right side of the pagination header. -->
-						<ul class="nav nav-tabs" id="viz-tabs">					
+						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
 								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
-									<i class="fa fa-table fa-2x"></i>
+									<i></i>
 								</a>
 							</li>
 							<li class=" graph-tab " id="line-tab">
 								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
-									<i class="fa fa-line-chart fa-2x"></i>
+									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
 								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
-									<i class="fa fa-bar-chart fa-2x"></i>
+									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
 								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
-									<i class="fa fa-us-map"></i>
+									<i></i>
 								</a>
 							</li>
-							<li class="graph-tab" id="table-tab" >
+							<li class="graph-tab" style="cursor: pointer;">
 								<a title="Export the data you've selected as an Excel file." onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 								<i class="fa fa-file-excel-o fa-2x"></i></a>
 							</li>
@@ -415,15 +367,14 @@
 													<div id="heatmap-legend">
 														<div id="heatmap-legend-title">Legend</div>
 														<div id="heatmap-legend-details">
-															<div class="heatmap-detailTitle">Top Ranked:</div> 
-															<span id="heatmap-generalinfo-first"></span><br/>
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Top Ranked</div> 
+															<span id="heatmap-generalinfo-first" class="heatmap-detailVal"></span><br/>
 															
-															<div class="heatmap-detailTitle">Bottom Ranked:</div> 
-															<span id="heatmap-generalinfo-last"></span><br/>
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Bottom Ranked</div> 
+															<span id="heatmap-generalinfo-last" class="heatmap-detailVal"></span><br/>
 															
-															<div class="heatmap-detailTitle">MA Rank:</div>
-															<span id="heatmap-generalinfo-ma"></span><br/>
-															<span style="font-style:italic;">Hover over a state for info.</span>
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">MA Rank</div>
+															<span id="heatmap-generalinfo-ma" class="heatmap-detailVal"></span>
 														</div>
 														<div id="heatmap-legend-legend">
 														
@@ -431,16 +382,15 @@
 													</div>
 												</div>
 												<div id="heatmap-tooltip" style="display: none;">
-													<div class="heatmap-detailTitle">Name:</div>
-													<span id="heatmap-specificDetails-name"></span><br/>
+													<span id="heatmap-specificDetails-name"></span>
 													
-													<div class="heatmap-detailTitle">Rank:</div>
-													<span id="heatmap-specificDetails-rank"></span><br/>
+													<div class="heatmap-detailTitle">Rank</div>
+													<span id="heatmap-specificDetails-rank" class="heatmap-detailVal"></span><br/>
 													
-													<div class="heatmap-detailTitle">Value:</div>
-													<span id="heatmap-specificDetails-value"></span><br/>
+													<div class="heatmap-detailTitle">Value</div>
+													<span id="heatmap-specificDetails-value" class="heatmap-detailVal"></span><br/>
 													
-													<div id="heatmap-specificDetails-peer" style="font-style:italic;">Peer State</div>
+													<div id="heatmap-specificDetails-peer" style="font-style:italic; padding-left: 10px; padding-top: 5px; color: #7b0020;">Peer State</div>
 												</div>
 											</div>
 										</div>
@@ -462,13 +412,18 @@
 				</div>		
 		</div>
 		<!-- end: Content -->
-		
-		<footer>
-				<div>
-				&copy; 2014 Worcester Polytechnic Institute. All rights reserved.
-						Sponsored by Mass High Technology Council
-				</div>	
-		</footer>
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		<div class="site-info container">
+			<p class="copy">
+				2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
+				Sponsored by Mass High Technology Council
+			</p>
+
+		</div>
+		<!-- .site-info -->
+	</footer>
+	<!-- #colophon -->
 
 	<%
 		/*<div class="modal fade in" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
