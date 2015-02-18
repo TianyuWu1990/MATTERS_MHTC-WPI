@@ -67,7 +67,10 @@
 
 <section class="map-sect">
 	<div class="container map-container" ng-app="map_application">
-		<h1>Headline Goes Here</h1>
+		<h1><p>Learn what MATTERS in your state.</p></h1>
+			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
+				<p>Click on the "Explore Database" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
+				</h2>
 		<div id="matters_map_canvas" class="map-area" ng-controller="map_canvas_controller as leaflet_map">
 		</div>	
 		<input type="hidden" ng-controller="map_tile_controller as map_tiles" id="map_tile" value="Tiles" storage="inline">
@@ -157,23 +160,18 @@
 
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/textron.jpg" alt="header-sponsors" width="" height="" />
+					<img src="img/WPI_Inst_Prim_FulClr_RGB.eps" alt="header-sponsors" width="" height="" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/kronos.jpg" alt="header-sponsors" width="" height="" />
+					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/babson.jpg" alt="header-sponsors" width="" height="" />
-				 </div> <!-- .logo-contain -->
-			 </div> <!-- .logo-wrap -->
-			<div class="logo-wrap">
-				<div class="logo-contain">
-					<img src="img/aspentech.jpg" alt="header-sponsors" width="" height="" />
+					<img src="img/NEBHE_Banner.eps" alt="header-sponsors" width="" height="" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
