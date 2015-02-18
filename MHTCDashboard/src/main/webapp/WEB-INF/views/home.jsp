@@ -283,10 +283,6 @@
 									<i></i>
 								</a>
 							</li>
-							<li class="graph-tab" style="cursor: pointer;">
-								<a title="Export the data you've selected as an Excel file." onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
-								<i class="fa fa-file-excel-o fa-2x"></i></a>
-							</li>
 						</ul>
 					</div>
 					
@@ -339,6 +335,13 @@
 												<td id="mbodyMultipleQuery"></td>
 											</tr>
 										</table>
+										
+										<div>
+											<button id="excelDownloadBtn" style="display:none;" class="btn btn-success" type="button" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
+												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
+												Download table as Excel spreadsheet
+											</button>
+										</div>
 									</div>
 								</div>
 								

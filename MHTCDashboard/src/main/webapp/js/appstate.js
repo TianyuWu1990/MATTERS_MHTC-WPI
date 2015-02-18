@@ -473,6 +473,7 @@ var AS = (function($) {
 		{
 			$("#errorView").hide();
 			$("#vizView").show();
+			$("#excelDownloadBtn").show();
 		}
 	};
 

@@ -358,6 +358,19 @@ table {
 	margin-right: auto !important;
 }
 
+.box-content > div {	
+	width: 80%;
+	
+	margin-top: 20px !important;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+.box-content .fa {	
+	color: white !important;
+	font-size: 14px !important;
+}
+
 svg text {
 	font-size: 14px;
 }
@@ -584,7 +597,6 @@ button:hover, button:focus
   
   background-color: #b41432;
   border-color: #8d9091;
-  font-weight:bold;
 }
 
 button.active {
