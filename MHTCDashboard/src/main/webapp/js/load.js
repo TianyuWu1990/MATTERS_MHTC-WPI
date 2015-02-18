@@ -146,8 +146,6 @@ loadFunction = function() {
     	}    	
 	});
     
-    // Open national rankings by default...
-    openMetricList($("#nationalProfileList"));
     
     /**************************************************
      * End Sidebar Metric Menus logic
