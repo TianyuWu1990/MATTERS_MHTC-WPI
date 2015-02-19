@@ -62,7 +62,7 @@
 					<div class="modal-content">
 						<div class="modal-header red">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="myModalLabel">Site Feedback</h4>
+							<h4 class="modal-title">Site Feedback</h4>
 						</div>
 						<div class="modal-body" style="padding: 15 15 15 15;">
 							<p>Please provide your suggestions about the MATTERS Site. Thank you!</p>
@@ -107,7 +107,7 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default" data-dismiss="modal">
-								<i class="fa fa-times"></i> Close
+								<i class="fa fa-times" style="color:black !important;"></i> Close
 							</button>
 							<button type="submit" class="btn btn-danger">
 								<i class="fa fa-envelope"></i> Send

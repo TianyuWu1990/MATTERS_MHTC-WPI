@@ -366,7 +366,7 @@ table {
 	margin-right: auto !important;
 }
 
-.box-content .fa {	
+#feedbackModal .fa, .box-content .fa {	
 	color: white !important;
 	font-size: 14px !important;
 }
