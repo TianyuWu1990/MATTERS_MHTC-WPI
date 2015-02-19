@@ -34,17 +34,35 @@ stopHeatMapAnimation=function() {
 };
 
 function isCompatibleBrowser() 
-{
-	
-	
+{	
+	if (typeof isLtIE9 !== 'undefined')
+	{
+		return false;
+	}
+
 	return true;
 }
 
 function displayBrowserVersionMsg()
 {
+	$("#mainContentDiv").hide();
+	
+	$("#globalErrorDiv").attr("style", "display: block;");
 }
 
 $(document).ready(function() {
+		
+	// Init menu
+	$(".menu-close").prependTo(".menu > ul");
+	   
+	$(".menu-toggle").click(function(){
+		$(".menu").slideDown();
+	});
+
+	$(".menu-close").click(function(){
+		$(".menu").slideUp();
+	});
+	
 	
 	if (isCompatibleBrowser())
 	{
@@ -67,20 +85,7 @@ loadFunction = function() {
 	// Perform resize functions on resize.
 	$(window).on('resize', function() {
 		cm.refreshSizing();
-	});
-	
-	// Init menu
-	$(".menu-close").prependTo(".menu > ul");
-	   
-	$(".menu-toggle").click(function(){
-		$(".menu").slideDown();
-	});
-
-	$(".menu-close").click(function(){
-		$(".menu").slideUp();
-	});
-
-	
+	});	
 	
     // Initializes button that toggles the sidebar
 		
