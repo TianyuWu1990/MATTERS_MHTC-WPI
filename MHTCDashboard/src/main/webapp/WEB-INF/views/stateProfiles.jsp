@@ -15,12 +15,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<title>MATTERS</title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/css">
 	<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 	<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/main.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
+	<link href="css/stateProfiles.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/libjs"></script>
 	<script type="text/javascript" src="js/mesh/caliper/profile-app.js"></script>
 </head>
@@ -42,7 +44,72 @@
                        "Unempl insurance rank"
        -->
 		<div class="container" ng-controller="profile_controller as state" initial="Massachusetts">
-			<h1 class="state-profile-title">{{state.properties.Name}} State Profile</h1>
+		
+			<div class="state-profile-title">
+				<div id="stateChooserWrapper">
+					<div id="stateChooserTitle">
+					{{state.properties.Name}} <i class="fa fa-caret-down"></i> 
+					</div>
+					
+					<div id="stateChooser" style="display: none;">
+						<ul>
+							<li><a class="stateChoice">Alabama</a></li>
+							<li><a class="stateChoice">Alaska</a></li>
+							<li><a class="stateChoice">Arizona</a></li>
+							<li><a class="stateChoice">Arkansas</a></li>
+							<li><a class="stateChoice">California</a></li>
+							<li><a class="stateChoice">Colorado</a></li>
+							<li><a class="stateChoice">Connecticut</a></li>
+							<li><a class="stateChoice">Delaware</a></li>
+							<li><a class="stateChoice">Florida</a></li>
+							<li><a class="stateChoice">Georgia</a></li>
+							<li><a class="stateChoice">Hawaii</a></li>
+							<li><a class="stateChoice">Idaho</a></li>
+							<li><a class="stateChoice">Illinois</a></li>
+							<li><a class="stateChoice">Indiana</a></li>
+							<li><a class="stateChoice">Iowa</a></li>
+							<li><a class="stateChoice">Kansas</a></li>
+							<li><a class="stateChoice">Kentucky</a></li>
+							<li><a class="stateChoice">Louisiana</a></li>
+							<li><a class="stateChoice">Maine</a></li>
+							<li><a class="stateChoice">Maryland</a></li>
+							<li><a class="stateChoice">Massachusetts</a></li>
+							<li><a class="stateChoice">Michigan</a></li>
+							<li><a class="stateChoice">Minnesota</a></li>
+							<li><a class="stateChoice">Mississippi</a></li>
+							<li><a class="stateChoice">Missouri</a></li>
+							<li><a class="stateChoice">Montana</a></li>
+							<li><a class="stateChoice">Nebraska</a></li>
+							<li><a class="stateChoice">Nevada</a></li>
+							<li><a class="stateChoice">New Hampshire</a></li>
+							<li><a class="stateChoice">New Jersey</a></li>
+							<li><a class="stateChoice">New Mexico</a></li>
+							<li><a class="stateChoice">New York</a></li>
+							<li><a class="stateChoice">North Carolina</a></li>
+							<li><a class="stateChoice">North Dakota</a></li>
+							<li><a class="stateChoice">Ohio</a></li>
+							<li><a class="stateChoice">Oklahoma</a></li>
+							<li><a class="stateChoice">Oregon</a></li>
+							<li><a class="stateChoice">Pennsylvania</a></li>
+							<li><a class="stateChoice">Rhode Island</a></li>
+							<li><a class="stateChoice">South Carolina</a></li>
+							<li><a class="stateChoice">South Dakota</a></li>
+							<li><a class="stateChoice">Tennessee</a></li>
+							<li><a class="stateChoice">Texas</a></li>
+							<li><a class="stateChoice">Utah</a></li>
+							<li><a class="stateChoice">Vermont</a></li>
+							<li><a class="stateChoice">Virginia</a></li>
+							<li><a class="stateChoice">Washington</a></li>
+							<li><a class="stateChoice">West Virginia</a></li>
+							<li><a class="stateChoice">Wisconsin</a></li>
+							<li><a class="stateChoice">Wyoming</a></li>
+						</ul>
+					</div>
+				</div> 
+				
+				State Profile 
+			</div>
+			
 			<div class="index key">
 				<div class="state-strength"></div><span class="index-span">Strength</span>
 				<div class="state-weakness"></div><span class="index-span">Weakness</span>
@@ -154,5 +221,6 @@
 <script src="js/mesh/jquery.svg.min.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/mesh/data/state-profiles.js"></script>
+<script type="text/javascript" src="js/stateChooser.stateProfiles.js"></script>
 </body>
 </html>

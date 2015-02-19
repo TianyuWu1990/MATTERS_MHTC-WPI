@@ -119,7 +119,7 @@
 				System (MATTERS)  to advance our mission to make Massachusetts the world's most attractive place in which to create 
 				and grow a high technology business.  MATTERS is designed to measure and evaluate Massachusetts' current competitive 
 				position, particularly among peer group technology states, while providing policy makers and advocates with dynamic, 
-				searchable data to inform public policy decisions that help attract and retain business to the state.</p>
+				searchable data to inform public policy decisions that help attract and retain business to the state.<br/><br/><br/></p>
 				<a class="view-more" href="/mhtc/about">LEARN MORE</a>
 
 			</div>
@@ -130,7 +130,8 @@
 
 				<p>MATTERS is not a primary data source, but instead is an aggregation of published data and analysis from several sources 
 				including, federal and state governmental agencies, non-profit organizations and media outlets.  The source for each metric 
-				or data point in MATTERS is listed below with links to the source or data where available. </p>
+				or data point in MATTERS is listed below with links to the source or data where available.				
+				</p>
 				<a class="view-more" href="/mhtc/methodology">LEARN MORE</a>
 
 			</div>
@@ -143,7 +144,7 @@
 				By selecting any individual state, users can view 8 pre-selected key metrics and link to an individual state profile.   
 				MATTERS navigation capabilities also permit users to retrieve data on one or more metrics from one or more states and across 
 				multiple years simultaneously.  Data can be displayed in a variety of visualizations including tables, line charts, bar 
-				charts, and heatmaps.     
+				charts, and heatmaps.     <br/><br/><br/>
 				</p>
 				<a class="view-more" href="/mhtc/howto">LEARN MORE</a>
 
