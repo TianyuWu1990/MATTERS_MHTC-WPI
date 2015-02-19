@@ -38,7 +38,8 @@
 		   <h2 class="int-sub-title">HOW TO USE MATTERS</h2>
 		   
 		   <p>The MATTERS landing page overview map displays and highlights the 15 states that make up the MATTERS peer group states.  
-		   By selecting any individual state, users can view 8 pre-selected key metrics and link to an individual state profile.   
+		   By selecting any individual state, users can view 8 pre-selected key metrics and link to an individual state profile. The 15 MATTERS Peer States include the 10 "Leading Technology  States" from the Mass. Technology Collaborative's 
+		   annual "Innovation Index" plus the top 5 states in Milken Institute's "State Tech and Science Index", excluding any duplicate states  
 		   MATTERS navigation capabilities also permit users to retrieve data on one or more metrics from one or more states and across 
 		   multiple years simultaneously.  Data can be displayed in a variety of visualizations including tables, line charts, bar 
 		   charts, and heatmaps. </p>  
@@ -48,7 +49,7 @@
 			on other "peer" states whose economies are similarly "tech-centric".   MATTERS permits users to explore and analyze data that was 
 			previously disaggregated and static.  We encourage users to "dive in" and explore the data and to utilize MATTERS as one of many 
 			tools that comprise their research and analysis and inform their decision making.</p>
-  
+  			<br></br>
 
 		<p>MATTERS consolidates a set of key cost, economic and talent metrics along with independent national rankings into a single 
 		source for use by all parties.  MATTERS has been developed by faculty and students of Worcester Polytechnic Institute in 
