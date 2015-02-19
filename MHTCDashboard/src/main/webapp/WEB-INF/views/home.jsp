@@ -53,7 +53,7 @@
 		<title>MATTERS</title>
 	
 	</head>
-	<body onLoad="loadFunction()">
+	<body>
 	
 	<jsp:include page="unifiedHeader.jsp"/>
 
