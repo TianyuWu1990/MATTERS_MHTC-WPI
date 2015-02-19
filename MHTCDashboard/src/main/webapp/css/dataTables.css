@@ -17,7 +17,7 @@ table.dataTable {
    */
 }
 table.dataTable tbody tr:nth-child(even) {
-   background-color: #e0e0e0;
+   background-color: #EEEEEE;
 }
 table.dataTable thead th,
 table.dataTable tfoot th {
