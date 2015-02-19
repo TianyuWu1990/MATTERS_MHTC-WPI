@@ -599,7 +599,7 @@ var CM = (function($) {
 			                    	else
 			                    	{
 			                    		var currDataYear = multiData[i][0].dataPoints[actualIndex].year;
-			                    		console.log(currDataYear + " , " + yearsForMetric[j]);
+
 			                    		if (currDataYear !== yearsForMetric[j])
 			                    		{
 			                    			indexModifier++;
