@@ -16,14 +16,14 @@
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
+<link href="css/dataTables.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/main.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
-<link href="css/dataTables.css" rel="stylesheet" type="text/css">
+
  <!-- DataTables CSS -->
 <link href="css/plugins/dataTables.bootstrap.css" rel="stylesheet" type="text/css">
 <link href="css/plugins/dataTables.responsive.css" rel="stylesheet" type="text/css">
-<link href="css/dataTables.css" rel="stylesheet" type="text/css">
 
 <script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
 
@@ -54,7 +54,7 @@
 		   for each metric or data point in MATTERS is listed below with links to the data where available.</p>
 		  <br></br>
 							<div>
-								<table id="sourceTable">
+								<table id="sourceTable" class='table '>
 									<thead>
 										<tr>
 											<th>Category</th>
@@ -279,6 +279,7 @@
 											<td>Annual</td>
 										<tr>
 										<tr>
+											<td>Cost</td>
 											<td>UI Premium Per Employee</td>
 											<td><p>Computed from two sources.</p>
 												<p>
