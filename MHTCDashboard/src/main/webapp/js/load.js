@@ -32,10 +32,33 @@ stopHeatMapAnimation=function() {
 	  	clearInterval(global_timer);
 	global_timer = null;
 };
-// new loadfunction to be called from body-onload
+
+function isCompatibleBrowser() 
+{
+	
+	
+	return true;
+}
+
+function displayBrowserVersionMsg()
+{
+}
+
+$(document).ready(function() {
+	
+	if (isCompatibleBrowser())
+	{
+		loadFunction();
+	}
+	else
+	{
+		displayBrowserVersionMsg();
+	}
+});
 
 
 loadFunction = function() {	
+	
 	cm = CM.create();
 	as = AS.create();
 	
