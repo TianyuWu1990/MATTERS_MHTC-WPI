@@ -363,29 +363,6 @@ loadFunction = function() {
 	/******************************************
      * End metric selection logic
      ******************************************/
-
-
-	$('.dropdown-toggle').dropdown();
-	$('.dropdown-menu form input, .dropdown-menu label').click(function(e) {
-        e.stopPropagation();
-    });
-	
-	$('#loginform').click(function () {
-		console.log("login button clicked");
-        if ($('#signin-dropdown').is(":visible")) {
-            $('#signin-dropdown').hide()
-			
-        } else {
-            $('#signin-dropdown').show()
-        }
-		return false;
-    });
-	$('#signin-dropdown').click(function(e) {
-        e.stopPropagation();
-    });
-    $(document).click(function() {
-        $('#signin-dropdown').hide();
-    });
 };
 
 /**
