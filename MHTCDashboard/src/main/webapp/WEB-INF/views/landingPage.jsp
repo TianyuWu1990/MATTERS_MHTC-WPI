@@ -92,7 +92,7 @@
 				</div>
 			</script>
 		</div>
-		<a class="map-btn db-btn" href="explore">Explore Database</a>
+		<a class="map-btn db-btn" href="explore">Explore the Data</a>
 		<a class="map-btn state" href="profile">View State Profiles</a>
 	</div>
 </section>
@@ -116,10 +116,10 @@
 			<div class="bucket-content">
 
 				<p>The Massachusetts High Technology Council developed the Massachusetts' Technology, Talent and Economic Reporting 
-				System (MATTERS)  to advance our mission to make Massachusetts the world's most attractive place in which to create 
+				System to advance our mission to make Massachusetts the world's most attractive place in which to create 
 				and grow a high technology business.  MATTERS is designed to measure and evaluate Massachusetts' current competitive 
-				position, particularly among peer group technology states, while providing policy makers and advocates with dynamic, 
-				searchable data to inform public policy decisions that help attract and retain business to the state.<br/><br/><br/></p>
+				position, while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions 
+				that help attract and retain business to the state.<br/><br/></p>
 				<a class="view-more" href="/mhtc/about">LEARN MORE</a>
 
 			</div>
@@ -129,8 +129,8 @@
 			<div class="bucket-content">
 
 				<p>MATTERS is not a primary data source, but instead is an aggregation of published data and analysis from several sources 
-				including, federal and state governmental agencies, non-profit organizations and media outlets.  The source for each metric 
-				or data point in MATTERS is listed below with links to the source or data where available.				
+				including federal and state governmental agencies, non-profit organizations and media outlets.  Click "learn more" to access 
+				a listing of the sources for each metric or data point in MATTERS with links to the source where available.				
 				</p>
 				<a class="view-more" href="/mhtc/methodology">LEARN MORE</a>
 
@@ -140,12 +140,12 @@
 			<h1 class="bucket-title">How to Use <span class="dt-only">MATTERS</span></h1>
 			<div class="bucket-content">
 
-				<p>The MATTERS landing page overview map displays and highlights the 15 states that make up the MATTERS peer group states.  
-				By selecting any individual state, users can view 8 pre-selected key metrics and link to an individual state profile.   
-				MATTERS navigation capabilities also permit users to retrieve data on one or more metrics from one or more states and across 
-				multiple years simultaneously.  Data can be displayed in a variety of visualizations including tables, line charts, bar 
-				charts, and heatmaps.     <br/><br/><br/>
-				</p>
+				<p>The MATTERS overview map highlights the 15 states that make up the MATTERS peer group technology states. By selecting any individual state, 
+		   users can view 8 pre-selected key metrics and link to an individual state profile. The data explorer permits users to customize their 
+		   experience and retrieve data on one or more metrics from one or more states and across multiple years simultaneously. Data can be 
+		   displayed in a variety of visualizations including tables, line charts, bar charts, and heatmaps. 
+		   	<br/><br/></p>
+			
 				<a class="view-more" href="/mhtc/howto">LEARN MORE</a>
 
 			</div>	
