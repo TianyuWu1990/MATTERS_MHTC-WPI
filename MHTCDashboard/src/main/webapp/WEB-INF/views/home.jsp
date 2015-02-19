@@ -8,6 +8,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
+
 <html lang="en">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -50,6 +51,12 @@
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
 		
+		<!--[if lt IE 9]
+		<script type="text/javascript">
+			var isLtIE9 = true;
+		</script>
+		<![endif]-->
+		
 		<title>MATTERS</title>
 	
 	</head>
@@ -59,7 +66,22 @@
 
 	<div id="preContentBar"></div>
 
-	<div class="container-fluid-full" style="z-index: 1;">
+	<div id="globalErrorDiv" style="display:none;">
+		<div id="globalErrorMsgWrapper">
+			<i class="fa fa-exclamation-triangle fa-2x"></i>
+			<span id="globalErrorMsg">
+			Sorry! Your browser is not currently supported by MATTERS. 
+			
+			<br/><br/>
+			
+			Please upgrade your browser or switch to a supported browser, 
+			such as <a href="http://www.google.com/chrome/">Chrome</a> 
+			or <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>.
+			</span>
+		</div>
+	</div>
+
+	<div class="container-fluid-full" style="z-index: 1;" id="mainContentDiv">
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
@@ -399,7 +421,7 @@
 		 <div class="modal-backdrop fade in"></div>
 		 */
 	%>
-		<script src="js/load.js"></script>
+		<script src="js/load.js"></script>	
 	</body>
 </html>
 
