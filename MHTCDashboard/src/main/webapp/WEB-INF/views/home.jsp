@@ -171,9 +171,9 @@
 						</div>
 						<div class="sidebar-content single-section">
 							<ul id="stateSelection">
-								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
+								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 									<a style="text-align:right;">
-										Deselect All
+										Select All
 									</a>
 								</li>
 								<li>
@@ -188,17 +188,9 @@
 								<c:forEach items="${jv_all_states}" var="stat">
 									<c:forEach items="${stat.row}" var="row">
 										<li class="stateSelectionOptionWrapper" id="${row.id}">
-											
-													<c:choose>
-									        			<c:when test="${row.id == (21)}">
-									        			<a class="stateSelectionOption selected" id="${row.id}">
-									        			</c:when>
-									        			<c:otherwise>
-									        			<a class="stateSelectionOption" id="${row.id}">
-									        			</c:otherwise>
-									        		</c:choose>			
-									        		<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
-													${row.name} (${row.abbr})
+									       <a class="stateSelectionOption" id="${row.id}"> 			
+									        	<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+												${row.name} (${row.abbr})
 									        </a>
 										</li>
 									</c:forEach>
@@ -247,7 +239,7 @@
 					</div>
 					
 					<div id="viewWrapper">
-						<div id="vizView">
+						<div id="vizView" style="display: none;">
 	
 							<!--  Start Back/Forward Buttons -->
 							<div id="metricCycleButtons" style="display:none;">
@@ -356,7 +348,14 @@
 						</div>
 						
 						<!-- Error Reporting -->
-						<div id="errorView" style="display:none;">
+						<div id="errorView">
+							<div id="startupMsg">
+								<i class="fa fa-question fa-2x"></i>
+								<div id="startupMsgAct">
+								Use the menus at the left to select the data you wish to view by choosing specific metrics and states.<br/><br/>
+					 			Use the buttons in the red bar above to select the manner in which you want the data displayed.
+								</div>
+							</div>
 							
 							<div id="errorMsgWrapper">
 								<i class="fa fa-exclamation-triangle fa-2x"></i>
