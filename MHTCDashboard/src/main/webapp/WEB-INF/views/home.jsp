@@ -350,10 +350,14 @@
 						<!-- Error Reporting -->
 						<div id="errorView">
 							<div id="startupMsg">
-								<i class="fa fa-question fa-2x"></i>
-								<div id="startupMsgAct">
-								Use the menus at the left to select the data you wish to view by choosing specific metrics and states.<br/><br/>
-					 			Use the buttons in the red bar above to select the manner in which you want the data displayed.
+								<!--<i class="fa fa-question fa-2x"></i>-->
+								<div id="startupMsgAct"><b>
+								Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
+								
+								To start, please select metrics form the menu to the left and one or more states.<br/><br/><br/>
+					 			<div>
+					 			Use the buttons in the red bar above to view your selection in different ways.
+					 			</div>
 								</div>
 							</div>
 							
