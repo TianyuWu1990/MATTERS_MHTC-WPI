@@ -246,7 +246,7 @@ ___________________________________
 /*
     -moz-transform: translate3d(0, 100%, 0);
     -ms-transform: translate3d(0, 100%, 0);
-   -webkit-transform: translate3d(0, 100%, 0);
+    -webkit-transform: translate3d(0, 100%, 0);
             transform: translate3d(0, 100%, 0);
 */
 
@@ -388,8 +388,14 @@ ___________________________________
 }
 
 .year{
-	width: 150%;
+	width: 110%;
 }
+
+.ranking-header .source{
+	margin-left: 15px !important;
+}
+
+
 
 .survey, .source{
 	width: 200%;
@@ -440,15 +446,15 @@ ___________________________________
 }
 
 .state-strength{
-	background-color: #2f4e24;
+/* 	background-color: #2f4e24; */
 }
 
 .state-weakness{
-	background-color: #880e25;
+/* 	background-color: #880e25; */
 }
 
 .state-medium{
-	background-color: #FFFFE0;
+/* 	background-color: #FFFFE0; */
 }
 
 h2{
@@ -728,6 +734,41 @@ h2{
 
 	
 }
+
+/* =========================== PRINTABLE PAGES.  ========================= */
+
+@media print{
+.main-content-wrap, .site-main{
+	border: none;
+}
+	
+.container{
+	width: 900px;
+}
+	
+.menu-toggle, .site-header{
+	display: none;
+}
+	
+.state-profile-title{
+	padding-top: 15px;
+}
+	
+.site-footer{
+	position: fixed !important;
+	bottom: 0px !important;
+}
+	
+.state-strength, .state-weakness, .state-medium {
+	-webkit-print-color-adjust: exact;
+}
+}
+
+
+
+
+
+
 
 
 
