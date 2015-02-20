@@ -175,7 +175,7 @@
 					</div>
 					<div class="index row">
 						<div class="rank">{{state.properties["Unempl insurance rank"]}}</div>
-						<div class="data">${{state.properties["Unempl insurance"]}}</div>
+						<div class="data">{{state.properties["Unempl insurance"]}}</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Unempl insurance"]) }}'></div></div>
 						<div class="year">2013</div>
 						<div class="survey">Unemployment Insurance Average Premium per Employee</div>
@@ -183,7 +183,7 @@
 					</div>
 					<div class="index row">
 						<div class="rank">{{state.properties["Tax burden per capita rank"]}}</div>
-						<div class="data">${{state.properties["Tax burden per capita"]}}</div>
+						<div class="data">{{state.properties["Tax burden per capita"]}}</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tax burden per capita rank"]) }}'></div></div>
 						<div class="year">2011</div>
 						<div class="survey">State and Local Tax Burden per capita</div>

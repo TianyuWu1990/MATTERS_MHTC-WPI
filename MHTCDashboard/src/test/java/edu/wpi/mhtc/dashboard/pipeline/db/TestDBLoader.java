@@ -31,7 +31,7 @@ public class TestDBLoader {
 		assertEquals("10", map.get("amusement license"));
 		assertEquals("60", map.get("total taxes"));
 		
-		map = DBLoader.getMetricInfo("2");
+//		map = DBLoader.getMetricInfo("2");
 //		assertEquals("7", map.get("Total Employment"));
 	}
 

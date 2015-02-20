@@ -714,7 +714,8 @@ var CM = (function($) {
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable(
 						{
-							"iDisplayLength": 20,
+							"iDisplayLength": 15,
+							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
 							"bSort": enableSort
 						});
 				dt = oTable;
@@ -725,6 +726,7 @@ var CM = (function($) {
 				var oTable = $('#myTable').dataTable(
 						{
 							"iDisplayLength": 20,
+							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
 							"bSort": enableSort
 						});
 				dt = oTable;

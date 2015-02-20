@@ -67,7 +67,10 @@
 
 <section class="map-sect">
 	<div class="container map-container" ng-app="map_application">
-		<h1>Headline Goes Here</h1>
+		<h1><p>Learn what MATTERS in your state.</p></h1>
+			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
+				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
+				</h2>
 		<div id="matters_map_canvas" class="map-area" ng-controller="map_canvas_controller as leaflet_map">
 		</div>	
 		<input type="hidden" ng-controller="map_tile_controller as map_tiles" id="map_tile" value="Tiles" storage="inline">
@@ -89,7 +92,7 @@
 				</div>
 			</script>
 		</div>
-		<a class="map-btn db-btn" href="explore">Explore Database</a>
+		<a class="map-btn db-btn" href="explore">Explore the Data</a>
 		<a class="map-btn state" href="profile">View State Profiles</a>
 	</div>
 </section>
@@ -112,11 +115,11 @@
 			<h1 class="bucket-title">About</h1>
 			<div class="bucket-content">
 
-				<p>The Massachusetts High Technology Council developed the Massachusetts' Technology, Talent and Economic Reporting 
-				System (MATTERS)  to advance our mission to make Massachusetts the world's most attractive place in which to create 
+				<p>The Massachusetts High Technology Council developed the Massachusetts Technology, Talent and Economic Reporting 
+				System to advance our mission to make Massachusetts the world's most attractive place in which to create 
 				and grow a high technology business.  MATTERS is designed to measure and evaluate Massachusetts' current competitive 
-				position, particularly among peer group technology states, while providing policy makers and advocates with dynamic, 
-				searchable data to inform public policy decisions that help attract and retain business to the state.<br/><br/><br/></p>
+				position, while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions 
+				that help attract and retain business to the state.<br/><br/></p>
 				<a class="view-more" href="/mhtc/about">LEARN MORE</a>
 
 			</div>
@@ -126,8 +129,8 @@
 			<div class="bucket-content">
 
 				<p>MATTERS is not a primary data source, but instead is an aggregation of published data and analysis from several sources 
-				including, federal and state governmental agencies, non-profit organizations and media outlets.  The source for each metric 
-				or data point in MATTERS is listed below with links to the source or data where available.				
+				including federal and state governmental agencies, non-profit organizations and media outlets.  Click "learn more" to access 
+				a listing of the sources for each metric or data point in MATTERS with links to the source where available.				
 				</p>
 				<a class="view-more" href="/mhtc/methodology">LEARN MORE</a>
 
@@ -137,12 +140,12 @@
 			<h1 class="bucket-title">How to Use <span class="dt-only">MATTERS</span></h1>
 			<div class="bucket-content">
 
-				<p>The MATTERS landing page overview map displays and highlights the 15 states that make up the MATTERS peer group states.  
-				By selecting any individual state, users can view 8 pre-selected key metrics and link to an individual state profile.   
-				MATTERS navigation capabilities also permit users to retrieve data on one or more metrics from one or more states and across 
-				multiple years simultaneously.  Data can be displayed in a variety of visualizations including tables, line charts, bar 
-				charts, and heatmaps.     <br/><br/><br/>
-				</p>
+				<p>The MATTERS overview map highlights the 15 states that make up the MATTERS peer group technology states. By selecting any individual state, 
+		   users can view 8 pre-selected key metrics and link to an individual state profile. The data explorer permits users to customize their 
+		   experience and retrieve data on one or more metrics from one or more states and across multiple years simultaneously. Data can be 
+		   displayed in a variety of visualizations including tables, line charts, bar charts, and heatmaps. 
+		   	<br/><br/></p>
+			
 				<a class="view-more" href="/mhtc/howto">LEARN MORE</a>
 
 			</div>	
@@ -158,33 +161,44 @@
 
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/textron.jpg" alt="header-sponsors" width="" height="" />
-				 </div> <!-- .logo-contain -->
-			 </div> <!-- .logo-wrap -->
-			 
-			<div class="logo-wrap">
-				<div class="logo-contain">
-					<img src="img/kronos.jpg" alt="header-sponsors" width="" height="" />
+				<a href = "http://www.wpi.edu/">
+					<img src="img/WPI_Inst_Prim_FulClr_RGB.png" alt="header-sponsors" width="" height="50"/>
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/babson.jpg" alt="header-sponsors" width="" height="" />
+				<a href = "http://www.mitre.org/">
+					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="50" />
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/aspentech.jpg" alt="header-sponsors" width="" height="" />
-				 </div> <!-- .logo-contain -->
-			 </div> <!-- .logo-wrap -->
-			<div class="logo-wrap">
-				<div class="logo-contain">
-					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="" />
+				<a href = "http://www.nebhe.org/">
+					<img src="img/NEBHE_Banner.png" alt="header-sponsors" width="" height="50" />
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 <div class="logo-wrap">
 				<div class="logo-contain">
+				<a href = "http://monstergovernmentsolutions.com/">
+					<img src="img/MGS_wm_MGS_purp_rgb_stacked.png" alt="header-sponsors" width="" height="50" />
+					</a>
+				 </div> <!-- .logo-contain -->
+			 </div> <!-- .logo-wrap -->
+			<div class="logo-wrap">
+				<div class="logo-contain">
+				<a href = "http://meshagency.com/">
+					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="50" />
+					</a>
+				 </div> <!-- .logo-contain -->
+			 </div> <!-- .logo-wrap -->
+			 <div class="logo-wrap">
+				<div class="logo-contain">
+				<a href = "http://www.caliper.com/">
 					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="50" height="50" />
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 	</div>
