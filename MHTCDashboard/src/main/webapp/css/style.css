@@ -37,6 +37,16 @@ table {
 	margin: auto;
 }
 
+table table.dataTable thead th.sorting:after,
+table table.dataTable thead th.sorting_asc:after,
+table table.dataTable thead th.sorting_desc:after {
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    margin-right: 5px;
+    color: #808080;
+}
+
 .sidebar {
 	padding-left: 0px !important;
 	border-left: none !important;

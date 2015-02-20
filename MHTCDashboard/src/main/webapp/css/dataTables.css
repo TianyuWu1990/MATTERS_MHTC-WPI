@@ -32,8 +32,8 @@ table.dataTable thead th.sorting:after,
 table.dataTable thead th.sorting_asc:after,
 table.dataTable thead th.sorting_desc:after {
     position: absolute;
-    top: 8px;
-    right: 6px;
+    top: 6px;
+    left: 3px;
     display: block;
     font-family: FontAwesome;
 }
