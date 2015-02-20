@@ -328,7 +328,7 @@
 			<p>Please note that in any tax-related information, data or metrics are reflective of the tax policy that is 
 			generally applicable to the broadest set of taxpayers.  Please note that in many instances and jurisdictions, 
 			various and differing tax regimes may be applicable.  Similarly, tax-related information contained within MATTERS 
-			is not intended to be, tax advice. Neither MATTERS nor the Massachusetts High Technology Council is a tax advice 
+			is not intended to be tax advice. Neither MATTERS nor the Massachusetts High Technology Council is a tax advice 
 			expert offering tax advice.</p> 
 			<br></br>
 			<p>Neither MATTERS nor the Massachusetts High Technology Council makes any representations, warranties, or 
