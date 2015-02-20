@@ -69,7 +69,7 @@
 	<div class="container map-container" ng-app="map_application">
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
-				<p>Click on the "Explore Database" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
+				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
 				</h2>
 		<div id="matters_map_canvas" class="map-area" ng-controller="map_canvas_controller as leaflet_map">
 		</div>	
@@ -115,7 +115,7 @@
 			<h1 class="bucket-title">About</h1>
 			<div class="bucket-content">
 
-				<p>The Massachusetts High Technology Council developed the Massachusetts' Technology, Talent and Economic Reporting 
+				<p>The Massachusetts High Technology Council developed the Massachusetts Technology, Talent and Economic Reporting 
 				System to advance our mission to make Massachusetts the world's most attractive place in which to create 
 				and grow a high technology business.  MATTERS is designed to measure and evaluate Massachusetts' current competitive 
 				position, while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions 
@@ -161,23 +161,23 @@
 
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/WPI_Inst_Prim_FulClr_RGB.eps" alt="header-sponsors" width="" height="" />
+					<img src="img/WPI_Inst_Prim_FulClr_RGB.png" alt="header-sponsors" width="" height="50" mimeType="application/postscript"/>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="" />
+					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="50" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/NEBHE_Banner.eps" alt="header-sponsors" width="" height="" />
+					<img src="img/NEBHE_Banner.png" alt="header-sponsors" width="" height="50" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="" />
+					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="50" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 <div class="logo-wrap">
