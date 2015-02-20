@@ -175,6 +175,11 @@
 					<img src="img/NEBHE_Banner.png" alt="header-sponsors" width="" height="50" />
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
+			 <div class="logo-wrap">
+				<div class="logo-contain">
+					<img src="img/MGS_wm_MGS_purp_rgb_stacked.png" alt="header-sponsors" width="" height="50" />
+				 </div> <!-- .logo-contain -->
+			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
 					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="50" />
