@@ -1,26 +1,22 @@
-package edu.wpi.mhtc.dashboard.pipeline.parser;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import edu.wpi.mhtc.dashboard.pipeline.data.Category;
-import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
-import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedDataSource;
-
-public class TestUnifiedParser {
-	
-	
-	//need to update ids for test to pass
-	
-	
-	
+//package edu.wpi.mhtc.dashboard.pipeline.parser;
+//
+//import static org.junit.Assert.assertEquals;
+//
+//import java.io.File;
+//import java.io.IOException;
+//
+//import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+//import org.junit.After;
+//import org.junit.Before;
+//import org.junit.Test;
+//
+//import edu.wpi.mhtc.dashboard.pipeline.data.Category;
+//import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
+//import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedDataSource;
+//
+//public class TestUnifiedParser {
+//	
 //	//category Id = 14
 //		//parent Id = 29
 //		//metric = "Top States for Business: Friendliness"
@@ -110,5 +106,5 @@ public class TestUnifiedParser {
 //			assertEquals(50, parser.getLines().size());
 ////			TODO: What about those "bad row" messages??
 //		}
-
-}
+//
+//}
