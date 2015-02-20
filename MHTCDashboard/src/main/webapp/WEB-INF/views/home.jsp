@@ -356,25 +356,24 @@
 						</div>
 						
 						<!-- Error Reporting -->
-						<div id="errorView">
-							<div id="startupMsg">
-								<!--<i class="fa fa-question fa-2x"></i>-->
-								<div id="startupMsgAct"><b>
-								Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
-								
-								To start, please select metrics form the menu to the left and one or more states.<br/><br/><br/>
-					 			<div>
-					 			Use the buttons in the red bar above to view your selection in different ways.
-					 			</div>
-								</div>
-							</div>
-							
+						<div id="errorView" style="display: none;">				
 							<div id="errorMsgWrapper">
 								<i class="fa fa-exclamation-triangle fa-2x"></i>
 								<span id="errorMsg"></span>
 							</div>
 						</div>
 						<!-- End Error Reporting -->	
+						
+						<div id="startupMsg">
+							<div id="startupMsgAct"><b>
+							Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
+							
+							To start, please select metrics and states from the menu to the left.<br/><br/><br/>
+				 			<div>
+				 			Use the buttons in the red bar above to view your selection in different ways.
+				 			</div>
+							</div>
+						</div>
 					</div>
 				</div>		
 		</div>

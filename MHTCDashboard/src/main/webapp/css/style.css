@@ -398,6 +398,8 @@ svg text {
 }
 
 #heatmap-wrapper {
+	
+	margin-top: 0px !important;
 	width: 100%;
 	height: 100%;
 	overflow: visible;
@@ -451,7 +453,7 @@ svg text {
 	
 	height: 360px;
 	max-height: 100%;
-	width: 180px;
+	width: 205px;
 				
 	background-color: #fff;
 	
@@ -620,28 +622,20 @@ svg text {
 }
 
 #startupMsg {
-	text-align: center;
+	padding-top: 60px;
+	padding-left: 60px;
+	
+	text-align: left;
 	font-size: 20px !important;
 	
 	display: block;
 }
 
-#startupMsg > i {
-	font-size: 2em !important;
-	padding-right: 20px;
-	display: inline-block;
-	vertical-align: top;
-}
-
-#startupMsgAct {
-	padding-left: 60px;
-	
-	float: left;
+#startupMsgAct {	
 	width: 400px;
-	line-height: 23px;
-	display: inline-block;
 	
-	text-align: left;
+	line-height: 23px;
+	display: inline-block;	
 }
 
 /* Buttons

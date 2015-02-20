@@ -52,6 +52,8 @@ var AS = (function($) {
 		];
 
 		this.errorCode = this.errorCodes.NO_METRIC_OR_STATE_SELECTED;
+		
+		this.startupMsgVisible = true;
 	}
 
 	/**
@@ -61,9 +63,7 @@ var AS = (function($) {
 		// Initializes all tooltips on the page.
 		$(function() {
 			$("[rel='tooltip']").tooltip();
-		});		
-		
-		this.refreshErrorView();
+		});				
 	};
 	
 	/**
@@ -130,6 +130,9 @@ var AS = (function($) {
 	AppState.prototype.SelectUnselectMultipleMetric = function(metric_id_in,
 			option_in) {
 				
+		$("#startupMsg").hide();
+		this.startupMsgVisible = false;
+		
 		sel = $("#MultipleMetricTitle");
 		sel.empty();
 		
@@ -305,6 +308,9 @@ var AS = (function($) {
 	 */
 	AppState.prototype.setStatesSelected = function(states, opt) {
 		
+		$("#startupMsg").hide();
+		this.startupMsgVisible = false;
+		
 		if (states == null || states == undefined) {
 			this.selected = [];
 		} 
@@ -446,6 +452,9 @@ var AS = (function($) {
 		
 		$("#errorMsg").empty();
 
+		if (this.startupMsgVisible)
+			return;
+		
 		if (this.inError()) 
 		{
 			var errorCodeToUse = this.errorCode;
