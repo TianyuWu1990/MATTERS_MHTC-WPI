@@ -29,7 +29,7 @@ public class AppInitializer implements WebApplicationInitializer {
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}*/
+		}
 		
 		try {
 			JobScheduler.createScheduler();
@@ -37,7 +37,7 @@ public class AppInitializer implements WebApplicationInitializer {
 			System.out.println("Scheduler started");
 		} catch (Exception e) {
 			System.out.println("Error starting the job scheduler.");
-		}
+		}*/
 		
 
 	}

@@ -23,7 +23,8 @@
   			</h1>
   		</div>
   
-  		<div class="head-sponsors"><img src="img/header-sponsors.jpg" alt="header-sponsors" width="" height="" /></div>
+  		<div class="head-sponsors"><a href="http://www.mhtc.org/"><img src="img/header-mhtc.png" alt="header-sponsors" width="" height="" /></a>
+  									<a href="http://www.wpi.edu/"><img src="img/header-wpi.png" alt="header-sponsors" width="" height="" /></a></div>
   
   		<nav id="site-navigation" class="main-navigation" role="navigation">
   			<h1 class="menu-toggle">Menu</h1>
@@ -34,7 +35,9 @@
 					<li class="menu-item"><a href="/mhtc/explore">Explore</a></li>
 					<li class="menu-item"><a href="/mhtc/profile">States</a></li>
 					<li class="menu-item"><a href="/mhtc/about">About</a></li>
+
 					<li class="menu-item"><a href="/mhtc/feedback">Feedback</a></li>
+
 					
 					<sec:authorize access="hasRole('ADMIN')">
 				    	<li class="menu-item"><a href="/mhtc/admin">Admin Panel</a></li>

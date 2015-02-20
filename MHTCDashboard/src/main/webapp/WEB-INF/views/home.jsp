@@ -8,6 +8,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
+
 <html lang="en">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -50,16 +51,38 @@
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
 		
+		<!--[if lt IE 9]
+		<script type="text/javascript">
+			var isLtIE9 = true;
+		</script>
+		<![endif]-->
+		
 		<title>MATTERS</title>
 	
 	</head>
-	<body onLoad="loadFunction()">
+
+	<body>
 	
 	<jsp:include page="unifiedHeader.jsp"/>
 
 	<div id="preContentBar"></div>
 
-	<div class="container-fluid-full" style="z-index: 1;">
+	<div id="globalErrorDiv" style="display:none;">
+		<div id="globalErrorMsgWrapper">
+			<i class="fa fa-exclamation-triangle fa-2x"></i>
+			<span id="globalErrorMsg">
+			Sorry! Your browser is not currently supported by MATTERS. 
+			
+			<br/><br/>
+			
+			Please upgrade your browser or switch to a supported browser, 
+			such as <a href="http://www.google.com/chrome/">Chrome</a> 
+			or <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>.
+			</span>
+		</div>
+	</div>
+
+	<div class="container-fluid-full" style="z-index: 1;" id="mainContentDiv">
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
@@ -149,9 +172,9 @@
 						</div>
 						<div class="sidebar-content single-section">
 							<ul id="stateSelection">
-								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
+								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 									<a style="text-align:right;">
-										Deselect All
+										Select All
 									</a>
 								</li>
 								<li>
@@ -166,17 +189,9 @@
 								<c:forEach items="${jv_all_states}" var="stat">
 									<c:forEach items="${stat.row}" var="row">
 										<li class="stateSelectionOptionWrapper" id="${row.id}">
-											
-													<c:choose>
-									        			<c:when test="${row.id == (21)}">
-									        			<a class="stateSelectionOption selected" id="${row.id}">
-									        			</c:when>
-									        			<c:otherwise>
-									        			<a class="stateSelectionOption" id="${row.id}">
-									        			</c:otherwise>
-									        		</c:choose>			
-									        		<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
-													${row.name} (${row.abbr})
+									       <a class="stateSelectionOption" id="${row.id}"> 			
+									        	<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+												${row.name} (${row.abbr})
 									        </a>
 										</li>
 									</c:forEach>
@@ -225,7 +240,7 @@
 					</div>
 					
 					<div id="viewWrapper">
-						<div id="vizView">
+						<div id="vizView" style="display: none;">
 	
 							<!--  Start Back/Forward Buttons -->
 							<div id="metricCycleButtons" style="display:none;">
@@ -273,6 +288,13 @@
 												<td id="mbodyMultipleQuery"></td>
 											</tr>
 										</table>
+										
+										<div>
+											<button id="excelDownloadBtn" style="display:none;" class="btn btn-success" type="button" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
+												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
+												Download table as Excel spreadsheet
+											</button>
+										</div>
 									</div>
 								</div>
 								
@@ -334,7 +356,18 @@
 						</div>
 						
 						<!-- Error Reporting -->
-						<div id="errorView" style="display:none;">
+						<div id="errorView">
+							<div id="startupMsg">
+								<!--<i class="fa fa-question fa-2x"></i>-->
+								<div id="startupMsgAct"><b>
+								Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
+								
+								To start, please select metrics form the menu to the left and one or more states.<br/><br/><br/>
+					 			<div>
+					 			Use the buttons in the red bar above to view your selection in different ways.
+					 			</div>
+								</div>
+							</div>
 							
 							<div id="errorMsgWrapper">
 								<i class="fa fa-exclamation-triangle fa-2x"></i>
@@ -399,7 +432,7 @@
 		 <div class="modal-backdrop fade in"></div>
 		 */
 	%>
-		<script src="js/load.js"></script>
+		<script src="js/load.js"></script>	
 	</body>
 </html>
 

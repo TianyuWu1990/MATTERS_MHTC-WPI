@@ -20,7 +20,7 @@ public class TestDBSaver {
 		line.setState("Alabama");
 		line.setYear("2013");							//need new year or will violate key constraints
 		Metric m = new Metric("severance tax", 51);
-		m.setValue(99999.0f);
+		m.setValue(99999.0);
 		line.addMetric(m);
 		
 		

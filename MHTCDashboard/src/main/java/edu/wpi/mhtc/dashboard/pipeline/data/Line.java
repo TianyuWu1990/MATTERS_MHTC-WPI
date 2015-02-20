@@ -14,7 +14,7 @@ public class Line {
 	int stateID;
 	int metricID;
 	int year;
-	Float value;	
+	Double value;	
 
 	public Line(){
 	}
@@ -39,7 +39,7 @@ public class Line {
 	public void addMetric(Metric metric){
 		if(metric.isValid()){
 			metricID = metric.getID();
-			value = new Float(metric.getValue());	
+			value = metric.getValue();	
 		}
 	}
 
@@ -57,7 +57,7 @@ public class Line {
 		return metricID;
 	}
 	
-	public Float getMetricValue(){
+	public Double getMetricValue(){
 		return value;
 	}
 	/**
