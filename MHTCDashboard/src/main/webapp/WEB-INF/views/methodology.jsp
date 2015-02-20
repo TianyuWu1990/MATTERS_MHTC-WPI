@@ -244,7 +244,7 @@
 											<td>Tech Economy</td>
 											<td>Total Employment</td>
 											<td><a
-												href="http://www.nsf.gov/nsb/sei/edTool/data/workforce-02.html">
+												href="http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=55">
 													National Science Foundation and Bureau of Labor Statistics,
 													Occupational Employment Statistics Survey </a></td>
 											<td>2003, 2008, 2012</td>
@@ -254,7 +254,7 @@
 											<td>Tech Economy</td>
 											<td>Total Tech Employment</td>
 											<td><a
-												href="http://www.nsf.gov/nsb/sei/edTool/data/workforce-02">
+												href="http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=55">
 													National Science Foundation and Bureau of Labor Statistics,
 													Occupational Employment Statistics Survey </a></td>
 											<td>2003, 2008, 2012</td>
@@ -264,7 +264,7 @@
 											<td>Tech Economy</td>
 											<td>Tech Employment as % of Total Employment</td>
 											<td><a
-												href="http://www.nsf.gov/nsb/sei/edTool/data/workforce-02">
+												href="http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=55">
 													National Science Foundation and Bureau of Labor Statistics,
 													Occupational Employment Statistics Survey </a></td>
 											<td>2003, 2008, 2012</td>

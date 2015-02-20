@@ -1,3 +1,4 @@
+$.fn.dataTableExt.sErrMode = 'throw';
 
 $(document).ready(function() {
     $('#sourceTable').dataTable( {
