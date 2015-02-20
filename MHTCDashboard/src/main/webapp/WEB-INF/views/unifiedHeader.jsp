@@ -34,7 +34,9 @@
 					<li class="menu-item"><a href="/mhtc/explore">Explore</a></li>
 					<li class="menu-item"><a href="/mhtc/profile">States</a></li>
 					<li class="menu-item"><a href="/mhtc/about">About</a></li>
-					<li class="menu-item"><a href="#" onclick="$('#feedbackModal').modal();">Feedback</a></li>
+
+					<li class="menu-item"><a href="/mhtc/feedback">Feedback</a></li>
+
 					
 					<sec:authorize access="hasRole('ADMIN')">
 				    	<li class="menu-item"><a href="/mhtc/admin">Admin Panel</a></li>
@@ -44,7 +46,7 @@
 						<li class="menu-item"><a href="/mhtc/logout/">Logout</a></li>
 					</sec:authorize>
 					<sec:authorize access="!isAuthenticated()">
-						<li class="menu-item"><a href="/mhtc/about">Login</a></li>
+						<li class="menu-item"><a href="/mhtc/login">Login</a></li>
 					</sec:authorize>
 				</ul>
 			</div>

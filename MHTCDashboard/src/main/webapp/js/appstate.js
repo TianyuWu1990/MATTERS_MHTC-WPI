@@ -41,6 +41,7 @@ var AS = (function($) {
 			NO_ERROR : 0, // 0000
 			NO_METRIC_SELECTED : 1, // 0001
 			NO_STATE_SELECTED : 2, // 0010
+			NO_METRIC_OR_STATE_SELECTED : 3, // 0011
 		};
 
 		this.errorMsgs = [
@@ -50,7 +51,7 @@ var AS = (function($) {
 				"No states or metrics selected!<br/>You must select at least one state and one metric to explore the visualization." // 3: No state & no metric (0011)
 		];
 
-		this.errorCode = this.errorCodes.NO_METRIC_SELECTED;
+		this.errorCode = this.errorCodes.NO_METRIC_OR_STATE_SELECTED;
 	}
 
 	/**
@@ -60,10 +61,9 @@ var AS = (function($) {
 		// Initializes all tooltips on the page.
 		$(function() {
 			$("[rel='tooltip']").tooltip();
-		});
+		});		
 		
-		
-		this.refreshErrorView(); // Display errors immediately if there are any
+		this.refreshErrorView();
 	};
 	
 	/**
@@ -129,7 +129,7 @@ var AS = (function($) {
 	 */
 	AppState.prototype.SelectUnselectMultipleMetric = function(metric_id_in,
 			option_in) {
-		
+				
 		sel = $("#MultipleMetricTitle");
 		sel.empty();
 		
@@ -304,7 +304,7 @@ var AS = (function($) {
 	 * @param opt If this is == 0, selects peer states instead.
 	 */
 	AppState.prototype.setStatesSelected = function(states, opt) {
-
+		
 		if (states == null || states == undefined) {
 			this.selected = [];
 		} 
@@ -443,6 +443,7 @@ var AS = (function($) {
 	 * Refreshes the error view to reflect the current error code.
 	 */
 	AppState.prototype.refreshErrorView = function(visualizationType) {
+		
 		$("#errorMsg").empty();
 
 		if (this.inError()) 
@@ -484,7 +485,7 @@ var AS = (function($) {
 	AppState.prototype.inError = function() {
 		return this.errorCode != this.errorCodes.NO_ERROR;
 	};
-
+	
 	var publicInterface = {};
 
 	/*

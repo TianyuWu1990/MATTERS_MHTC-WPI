@@ -566,6 +566,7 @@ var CM = (function($) {
 					
 					
 			        	var yearsForMetric = cm.getYearsMetricState(selectedStates, multiData); // Get the years that the metric exists for from the data
+			        	yearsForMetric.sort(function(a,b) {return a - b;} ); 
 			        	
 			        	if(yearsForMetric.length==0) { // If theres no data for the metric...
 			        		 table.append("<tr><td>No data available for your current selection.</td></tr>");
@@ -585,18 +586,32 @@ var CM = (function($) {
 			                {
 			                    row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
 
+			                    var indexModifier = 0;
+			                    
 			                    for (var j = 0; j < yearsForMetric.length; j++)
 			                    {
-			                    	if(multiData[i][0].dataPoints.length==0)
+			                    	var actualIndex = j - indexModifier;
+			                    	
+			                    	if (multiData[i][0].dataPoints.length <= actualIndex)
 			                    	{
-			                    		row = row +"<td> N/A </td>"; 
+			                    		row = row + "<td> N/A </td>";
 			                    	}
 			                    	else
 			                    	{
-			                    		// Format the data based on type.
-			                    		var formattedData = cm.getFormattedMetricValue(multiData[i][0].metric.type, 
-			                    				multiData[i][0].dataPoints[j].value);
-			                    		row = row + "<td>" + formattedData + "</td>";
+			                    		var currDataYear = multiData[i][0].dataPoints[actualIndex].year;
+
+			                    		if (currDataYear !== yearsForMetric[j])
+			                    		{
+			                    			indexModifier++;
+			                    			row = row + "<td> N/A </td>";
+			                    		}
+			                    		else
+			                    		{
+			                    			// Format the data based on type.
+				                    		var formattedData = cm.getFormattedMetricValue(multiData[i][0].metric.type, 
+				                    				multiData[i][0].dataPoints[actualIndex].value);
+				                    		row = row + "<td>" + formattedData + "</td>";
+			                    		}
 			                    	}
 			                    }
 			                    row = "<tr>" +row +"</tr>";
@@ -699,7 +714,8 @@ var CM = (function($) {
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable(
 						{
-							"iDisplayLength": 20,
+							"iDisplayLength": 15,
+							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
 							"bSort": enableSort
 						});
 				dt = oTable;
@@ -710,6 +726,7 @@ var CM = (function($) {
 				var oTable = $('#myTable').dataTable(
 						{
 							"iDisplayLength": 20,
+							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
 							"bSort": enableSort
 						});
 				dt = oTable;

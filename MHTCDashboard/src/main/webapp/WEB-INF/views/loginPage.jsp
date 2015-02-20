@@ -1,87 +1,86 @@
 <%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html>
-<html lang="en">
+<html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en-US" style="">
+
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="../../favicon.ico">
-
-<title>Authentication</title>
-
-<!-- Bootstrap core CSS -->
-<link href="../adminPanel/css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-body {
-	padding-top: 40px;
-	padding-bottom: 40px;
-	background-color: #eee;
-}
-
-.form-signin {
-	max-width: 330px;
-	padding: 15px;
-	margin: 0 auto;
-}
-
-.form-signin .form-signin-heading, .form-signin .checkbox {
-	margin-bottom: 10px;
-}
-
-.form-signin .checkbox {
-	font-weight: normal;
-}
-
-.form-signin .form-control {
-	position: relative;
-	height: auto;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	padding: 10px;
-	font-size: 16px;
-}
-
-.form-signin .form-control:focus {
-	z-index: 2;
-}
-
-.form-signin input[type="email"] {
-	margin-bottom: -1px;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-	margin-bottom: 10px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-}
-</style>
+<meta charset="UTF-8">
+<meta name="description" content="Search matters Map">
+<meta name="keywords" content="Maps,GIS,Maptitude">
+<meta name="author" content="MHTC">
+<meta name="application-name" content="Maptitude for the Web">
+<meta name="company-name" content="MHTC">
+<meta name="application-date" content="2015/2/12">
+<meta name="application-version" content="2015.2.12">
+<meta name="generator" content="Maptitude">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>MATTERS</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
+<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
+<link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
-	<div class="container">
-		<c:if test="${'' eq param.error}">
-			<div style="color: red">
-				Authentication failed!<br /> Reason :
-				${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
-			</div>
-		</c:if>
-		<form class="form-signin" action="${pageContext.request.contextPath}/login/" method="post">
-			<h2 class="form-signin-heading">Please sign in</h2>
-			<label for="inputUsername" class="sr-only">Username</label> 
-			<input name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus> 
-			<label for="inputPassword" class="sr-only">Password</label> <br/>
-			<input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-		</form>
+<body class="home" id="top">
+<div class="wrap">
+<div id="page" class="hfeed site">
+	<jsp:include page="unifiedHeader.jsp"/>
+<div class="content-area">
+    <main class="site-main" role="main">
+      
+      <div class="main-content-wrap">
+       <div class="container interior-container">
 
-	</div>
-	<!-- /container -->
+
+		   <div class="copy-block">
+		   <h1 class="int-title">Login</h1>
+		   <h2 class="int-sub-title">Enter your username and password below.</h2>
+		   <c:if test="${'' eq param.error}">
+				<div style="color: red">
+					Authentication failed!<br /> Reason :
+					${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+				</div>
+			</c:if>
+			<form class="form-signin" action="${pageContext.request.contextPath}/login" method="post">
+				<label>Username</label><br/>
+				<input name="username" id="inputUsername" placeholder="Username" required autofocus> 
+				<br/><br/>
+				<label>Password</label> <br/>
+				<input name="password" type="password" id="inputPassword" placeholder="Password" required>
+				<br/><br/>
+				<button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+			</form>
+		   </div> <!-- copy block -->
+
+
+
+
+		</div><!-- container -->
+    
+    
+      </div><!-- main-content-wrap -->
+    </main><!-- #main -->
+</div><!-- #primary -->
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		<div class="site-info container">
+		  <p class="copy">2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
+		  Sponsored by Mass High Technology Council</p>
+
+		</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+
+<!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="js/mesh/modernizr.min.js"></script>
+<script src="js/mesh/scripts.js" type="text/javascript"></script>
+<script src="js/mesh/persistent.js" type="text/javascript"></script>
+<script src="js/mesh/responsive.js" type="text/javascript"></script>
+<script src="js/mesh/jquery.svgdom.min.js" type="text/javascript"></script>
+<script src="js/mesh/jquery.svg.min.js" type="text/javascript"></script>
+<script src="js/mesh/viewport.min.js" type="text/javascript"></script>
+
 </body>
 </html>
-

@@ -7,9 +7,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
-<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
 <!DOCTYPE html>
+
 <html lang="en">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -24,8 +23,8 @@
 			rel='stylesheet' type='text/css'>
 			
 		<!-- Custom CSS -->
-		<link href="css/mesh-base.css" rel="stylesheet">
-		<link href="css/mesh-main.css" rel="stylesheet">
+		<link href="css/mesh/base.css" rel="stylesheet">
+		<link href="css/mesh/main.css" rel="stylesheet">
 		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
@@ -52,76 +51,38 @@
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
 		
+		<!--[if lt IE 9]
+		<script type="text/javascript">
+			var isLtIE9 = true;
+		</script>
+		<![endif]-->
+		
 		<title>MATTERS</title>
 	
 	</head>
-	<body onLoad="loadFunction()">
-		<div class="modal hide fade" id="feedbackModal" style="position: absolute;" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
-			<form action="feedback_post" method="POST" style="margin-bottom: 0px;">
-				<div class="modal-dialog modal-md" style="width:100%">
-					<div class="modal-content">
-						<div class="modal-header red">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title">Site Feedback</h4>
-						</div>
-						<div class="modal-body" style="padding: 15 15 15 15;">
-							<p>Please provide your suggestions about the MATTERS Site. Thank you!</p>
-							
-							<div class="input-group">
-								<strong>Your Name</strong><br /> 
-								<input style="height:30px; width: 250px;" type="text" name="name" class="form-control">
-							</div>
-							
-							<div class="input-group">
-								<strong>Your Affiliation</strong><br /> 
-								<input style="height:30px; width: 250px;" type="text" name="affiliation" class="form-control">
-							</div>
-							
-							<div class="input-group">
-								<strong>Your Email Address</strong><br /> 
-								<input style="height:30px; width: 250px;" type="text" name="email" class="form-control">
-							</div>	
-							
-							<div class="input-group">
-								<strong>Subject</strong><br /> 
-								<input style="height:30px; width: 250px;" type="text" name="subject" class="form-control">
-							</div>	
-							
-							<div class="input-group">
-								<strong>Comments</strong><br />
-								<div class='input-group date' id='run-date-picker'>
-									<textarea class="form-control" name="comments" style="width: 515px; height: 180px;"/></textarea>
-								</div>
-							</div>
-							
-							<div style="margin-bottom: 25px;" align="center">
-	                           <%
-					                ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb",
-					                                    "6LfXmgATAAAAAP_qkRZBcBBqnb8yRuUKMm9LJYSW", false);
-					                out.print(c.createRecaptchaHtml(null, null));
-					            %> 
-		                   </div>
-		                   
-		                   <p>We thank you for your time</p>
-		
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">
-								<i class="fa fa-times" style="color:black !important;"></i> Close
-							</button>
-							<button type="submit" class="btn btn-danger">
-								<i class="fa fa-envelope"></i> Send
-							</button>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
+
+	<body>
+	
 	<jsp:include page="unifiedHeader.jsp"/>
 
 	<div id="preContentBar"></div>
 
-	<div class="container-fluid-full" style="z-index: 1;">
+	<div id="globalErrorDiv" style="display:none;">
+		<div id="globalErrorMsgWrapper">
+			<i class="fa fa-exclamation-triangle fa-2x"></i>
+			<span id="globalErrorMsg">
+			Sorry! Your browser is not currently supported by MATTERS. 
+			
+			<br/><br/>
+			
+			Please upgrade your browser or switch to a supported browser, 
+			such as <a href="http://www.google.com/chrome/">Chrome</a> 
+			or <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>.
+			</span>
+		</div>
+	</div>
+
+	<div class="container-fluid-full" style="z-index: 1;" id="mainContentDiv">
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
@@ -211,9 +172,9 @@
 						</div>
 						<div class="sidebar-content single-section">
 							<ul id="stateSelection">
-								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
+								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 									<a style="text-align:right;">
-										Deselect All
+										Select All
 									</a>
 								</li>
 								<li>
@@ -228,17 +189,9 @@
 								<c:forEach items="${jv_all_states}" var="stat">
 									<c:forEach items="${stat.row}" var="row">
 										<li class="stateSelectionOptionWrapper" id="${row.id}">
-											
-													<c:choose>
-									        			<c:when test="${row.id == (21)}">
-									        			<a class="stateSelectionOption selected" id="${row.id}">
-									        			</c:when>
-									        			<c:otherwise>
-									        			<a class="stateSelectionOption" id="${row.id}">
-									        			</c:otherwise>
-									        		</c:choose>			
-									        		<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
-													${row.name} (${row.abbr})
+									       <a class="stateSelectionOption" id="${row.id}"> 			
+									        	<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+												${row.name} (${row.abbr})
 									        </a>
 										</li>
 									</c:forEach>
@@ -287,7 +240,7 @@
 					</div>
 					
 					<div id="viewWrapper">
-						<div id="vizView">
+						<div id="vizView" style="display: none;">
 	
 							<!--  Start Back/Forward Buttons -->
 							<div id="metricCycleButtons" style="display:none;">
@@ -403,7 +356,18 @@
 						</div>
 						
 						<!-- Error Reporting -->
-						<div id="errorView" style="display:none;">
+						<div id="errorView">
+							<div id="startupMsg">
+								<!--<i class="fa fa-question fa-2x"></i>-->
+								<div id="startupMsgAct"><b>
+								Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
+								
+								To start, please select metrics form the menu to the left and one or more states.<br/><br/><br/>
+					 			<div>
+					 			Use the buttons in the red bar above to view your selection in different ways.
+					 			</div>
+								</div>
+							</div>
 							
 							<div id="errorMsgWrapper">
 								<i class="fa fa-exclamation-triangle fa-2x"></i>
@@ -468,7 +432,7 @@
 		 <div class="modal-backdrop fade in"></div>
 		 */
 	%>
-		<script src="js/load.js"></script>
+		<script src="js/load.js"></script>	
 	</body>
 </html>
 

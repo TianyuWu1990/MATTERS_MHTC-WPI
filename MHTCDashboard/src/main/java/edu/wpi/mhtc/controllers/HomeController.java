@@ -117,6 +117,32 @@ public class HomeController {
 	}
 	
 	/**
+	 * Returns the about page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/methodology", method = RequestMethod.GET)
+	public String methodology(Locale locale, Model model)
+	{
+	    return "methodology";
+	}
+	
+	/**
+	 * Returns the about page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/howto", method = RequestMethod.GET)
+	public String howto(Locale locale, Model model)
+	{
+	    return "howto";
+	}
+	
+	/**
 	 * Simply selects the home view to render by returning its name.
 	 * @throws ParseException 
 	 * @throws IOException 
@@ -314,6 +340,13 @@ public class HomeController {
 		
         return "register_page_submit";
     } 
+    
+    @RequestMapping(value = "/feedback", method = RequestMethod.GET)
+    public String feedbackPage(Locale locale, Model model)
+    {
+    	return "feedback";
+    }
+    
     /********** Feedback Page 
      * @throws SQLException **********/
     @RequestMapping(value = "/feedback_post", method = RequestMethod.POST)

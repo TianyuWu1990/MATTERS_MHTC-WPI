@@ -32,20 +32,26 @@ stopHeatMapAnimation=function() {
 	  	clearInterval(global_timer);
 	global_timer = null;
 };
-// new loadfunction to be called from body-onload
 
+function isCompatibleBrowser() 
+{	
+	if (typeof isLtIE9 !== 'undefined')
+	{
+		return false;
+	}
 
-loadFunction = function() {	
-	cm = CM.create();
-	as = AS.create();
+	return true;
+}
+
+function displayBrowserVersionMsg()
+{
+	$("#mainContentDiv").hide();
 	
-	as.loadFunction();
-	
-	// Perform resize functions on resize.
-	$(window).on('resize', function() {
-		cm.refreshSizing();
-	});
-	
+	$("#globalErrorDiv").attr("style", "display: block;");
+}
+
+$(document).ready(function() {
+		
 	// Init menu
 	$(".menu-close").prependTo(".menu > ul");
 	   
@@ -56,8 +62,30 @@ loadFunction = function() {
 	$(".menu-close").click(function(){
 		$(".menu").slideUp();
 	});
-
 	
+	
+	if (isCompatibleBrowser())
+	{
+		loadFunction();
+	}
+	else
+	{
+		displayBrowserVersionMsg();
+	}
+});
+
+
+loadFunction = function() {	
+	
+	cm = CM.create();
+	as = AS.create();
+	
+	as.loadFunction();
+	
+	// Perform resize functions on resize.
+	$(window).on('resize', function() {
+		cm.refreshSizing();
+	});	
 	
     // Initializes button that toggles the sidebar
 		
@@ -146,8 +174,6 @@ loadFunction = function() {
     	}    	
 	});
     
-    // Open national rankings by default...
-    openMetricList($("#nationalProfileList"));
     
     /**************************************************
      * End Sidebar Metric Menus logic
@@ -337,29 +363,6 @@ loadFunction = function() {
 	/******************************************
      * End metric selection logic
      ******************************************/
-
-
-	$('.dropdown-toggle').dropdown();
-	$('.dropdown-menu form input, .dropdown-menu label').click(function(e) {
-        e.stopPropagation();
-    });
-	
-	$('#loginform').click(function () {
-		console.log("login button clicked");
-        if ($('#signin-dropdown').is(":visible")) {
-            $('#signin-dropdown').hide()
-			
-        } else {
-            $('#signin-dropdown').show()
-        }
-		return false;
-    });
-	$('#signin-dropdown').click(function(e) {
-        e.stopPropagation();
-    });
-    $(document).click(function() {
-        $('#signin-dropdown').hide();
-    });
 };
 
 /**
