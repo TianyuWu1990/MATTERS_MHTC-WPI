@@ -289,12 +289,12 @@
 											</tr>
 										</table>
 										
-										<div>
+										<!-- <div>
 											<button id="excelDownloadBtn" style="display:none;" class="btn btn-success" type="button" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
 												Download table as Excel spreadsheet
 											</button>
-										</div>
+										</div>-->
 									</div>
 								</div>
 								
