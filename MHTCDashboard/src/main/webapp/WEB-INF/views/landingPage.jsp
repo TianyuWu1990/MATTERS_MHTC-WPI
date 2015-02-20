@@ -161,33 +161,44 @@
 
 			<div class="logo-wrap">
 				<div class="logo-contain">
-					<img src="img/WPI_Inst_Prim_FulClr_RGB.png" alt="header-sponsors" width="" height="50" mimeType="application/postscript"/>
+				<a href = "http://www.wpi.edu/">
+					<img src="img/WPI_Inst_Prim_FulClr_RGB.png" alt="header-sponsors" width="" height="50"/>
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
-			 
 			<div class="logo-wrap">
 				<div class="logo-contain">
+				<a href = "http://www.mitre.org/">
 					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="50" />
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
+				<a href = "http://www.nebhe.org/">
 					<img src="img/NEBHE_Banner.png" alt="header-sponsors" width="" height="50" />
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 <div class="logo-wrap">
 				<div class="logo-contain">
+				<a href = "http://monstergovernmentsolutions.com/">
 					<img src="img/MGS_wm_MGS_purp_rgb_stacked.png" alt="header-sponsors" width="" height="50" />
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
+				<a href = "http://meshagency.com/">
 					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="50" />
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 <div class="logo-wrap">
 				<div class="logo-contain">
+				<a href = "http://www.caliper.com/">
 					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="50" height="50" />
+					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 	</div>
