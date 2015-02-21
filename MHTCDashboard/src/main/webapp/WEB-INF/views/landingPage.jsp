@@ -22,6 +22,7 @@
 	<link href="css/mesh/main.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/popup.css" rel="stylesheet" type="text/css">
+	<link href="css/mesh/ie9compatibility.css" rel="stylesheet" type="text/css">
 	<style>
 	        #matters_map_canvas {
 	          background-color: black;
@@ -162,35 +163,35 @@
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.wpi.edu/">
-					<img src="img/WPI_Inst_Prim_FulClr_RGB.png" alt="header-sponsors" width="" height="50"/>
+					<img src="img/WPI_Inst_Prim_FulClr_RGB.png" alt="header-sponsors" height="50"/>
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.mitre.org/">
-					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="50" />
+					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.nebhe.org/">
-					<img src="img/NEBHE_Banner.png" alt="header-sponsors" width="" height="50" />
+					<img src="img/NEBHE_Banner.png" alt="header-sponsors" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://monstergovernmentsolutions.com/">
-					<img src="img/MGS_wm_MGS_purp_rgb_stacked.png" alt="header-sponsors" width="" height="50" />
+					<img src="img/MGS_wm_MGS_purp_rgb_stacked.png" alt="header-sponsors" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://meshagency.com/">
-					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="50" />
+					<img src="img/mesh.jpg" alt="header-sponsors" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
