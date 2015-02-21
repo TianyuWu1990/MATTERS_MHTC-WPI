@@ -118,7 +118,7 @@ table table.dataTable thead th.sorting_desc:after {
 
 .stateFilter > input
 {	
-	width: 165px;
+	width: 90%;
 	height: 20px;
 	margin-left: auto;
 	margin-right: auto;
@@ -402,6 +402,10 @@ svg text {
 	margin-right: auto;	
 }
 
+#heatmap-actual {
+	margin-left: 175px;
+}
+
 #heatmap-tooltip {
 	position: absolute;
 	top: 0px;
@@ -437,15 +441,7 @@ svg text {
 	text-align: right;
 }
 
-#heatmap-controls {
-	position: absolute;
-	top: -15px;
-	right: 0px;
-	
-	height: 360px;
-	max-height: 100%;
-	width: 205px;
-				
+.heatmap-infobox {
 	background-color: #fff;
 	
 	border-radius: 8px;	
@@ -454,7 +450,7 @@ svg text {
 	box-shadow: 0px 0px 2px rgba(158, 158, 158, 0.3);
 }
 
-#heatmap-legend {
+#heatmap-infobox-inner {
 	position: absolute;
 	
 	top: 0px;
@@ -463,7 +459,7 @@ svg text {
 	left: 0px;
 }
 
-#heatmap-legend-title {
+.heatmap-infobox-title {
 	color: #7b0020;
 	font-size: 15px;
 	padding: 7px;
@@ -472,9 +468,34 @@ svg text {
 	border-bottom: 2px solid rgba(158, 158, 158, 0.3);
 }
 
-#heatmap-legend-details {
+.heatmap-infobox-content {	
+	padding-top: 10px;	
+	padding-bottom: 10px;
+	
+	position: absolute;
+	top: 35px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+#heatmap-details {
+	position: absolute;
+	top: -15px;
+	left: 0px;
+	
+	height: 100px;
+	max-height: 100%;
+	width: 150px;
+}
+
+#heatmap-details > .heatmap-infobox-inner > .heatmap-infobox-content
+{
 	padding: 5px;
-	font-size: 13px;	
+	overflow: hidden;
 }
 
 .heatmap-detailTitle {
@@ -485,18 +506,14 @@ svg text {
 	padding-top: 5px;
 }
 
-#heatmap-legend-legend {	
-	padding-top: 10px;	
-	padding-bottom: 10px;
-	
+#heatmap-controls {
 	position: absolute;
-	top: 100px;
-	bottom: 0px;
-	left: 0px;
+	top: -15px;
 	right: 0px;
 	
-	overflow-y: scroll;
-	overflow-x: hidden;
+	height: 360px;
+	max-height: 100%;
+	width: 205px;
 }
 
 .heatmap-legend-bucket {
@@ -554,9 +571,11 @@ svg text {
 }
 
 #errorMsgWrapper {
-	margin-top: 70px;
 	text-align: center;
 	font-size: 20px !important;
+	
+	padding-left: 10px; 
+	padding-right: 10px;
 	
 	display: block;
 }
@@ -565,13 +584,11 @@ svg text {
 	font-size: 2em !important;
 	padding-right: 20px;
 	display: inline-block;
-	vertical-align: top;
+	vertical-align: top;	
 }
 
 #errorMsgWrapper > span {
-	padding-right: 20px;
-	
-	width: 450px;
+	margin-top: 10px;
 	line-height: 23px;
 	display: inline-block;
 	

@@ -356,7 +356,7 @@ var CM = (function($) {
 						$("#heatmap-specificDetails-peer").hide();
 					}
 					
-					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 20;
+					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 200;
 					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top - 80;
 					
 					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
@@ -423,7 +423,7 @@ var CM = (function($) {
 	}
 	
 	Chart.prototype.refreshHeatMapSizing = function() {
-		var containerHeight = $("#viewWrapper").height() - 130; // 130 is room for year and metric controls at top
+		var containerHeight = $("#viewWrapper").height() - 150; // 130 is room for year and metric controls at top
 		var containerWidth = $("#viewWrapper").width();
 		
 		var height = containerHeight;
@@ -433,16 +433,11 @@ var CM = (function($) {
 		}		
 		
 		var width = height / .6;
-		
-		if (width > (containerWidth) && (containerWidth) > 334)
-		{
-			width = containerWidth;
-		}
 				
 		$("#heatmap-actual").height(height);
 		$("#heatmap-actual").width(width);		
 		
-		$("#heatmap-inner-wrapper").width(width + 180);
+		$("#heatmap-inner-wrapper").width(width + 205 + 150 + 40);
 	};
 	
 	/**
