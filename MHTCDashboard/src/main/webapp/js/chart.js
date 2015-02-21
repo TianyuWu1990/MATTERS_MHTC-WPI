@@ -763,92 +763,99 @@ var CM = (function($) {
 	    query.execute(function(multiData) {
             nv.addGraph(function() {
               
+                var data = [];
+                
+                // Get collection of all data
+                for (var i = 0; i < multiData.length; i++)
+                {
+                	if (multiData[i].length == 0)
+                		continue;
+                	
+                	data[i] = {
+                			key : multiData[i][0].state.abbr,
+                			color : cm.array_colors[i % cm.array_colors.length]
+                	};
+                	
+                	data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
+                		var yearForPoint = d["year"];
+                		
+                		return { "x" : yearForPoint, "y" : (d["value"].toFixed(2)) * 1 };
+                	});
+                }
+                            	
+                // Build the chart for the data.
             	var chart;
     
-                if (cm.currentVisualization == cm.visualizationTypes.LINE) {
+                if (cm.currentVisualization == cm.visualizationTypes.LINE) 
+                {
                     chart = nv.models.lineChart()
+                    	.transitionDuration(350)
                     	.useInteractiveGuideline(true)
-                    	.transitionDuration(350);     
-                } else if (cm.currentVisualization == cm.visualizationTypes.BAR) {
+                    	.margin({ left : 150, right : 50 });     
+                } 
+                else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
+                {
                     chart = nv.models.multiBarChart()
                     	.transitionDuration(350)
-                    	.showControls(false);
+                    	.showControls(false)
+                    	.margin({ left : 150, right : 50 });
+                    
+                    // Calculate new min y for the bar charts
+                    var minY = d3.min(data, function(d) { 
+                    	return d3.min(d["values"], function(e) {
+                    		return e["y"];
+                    	});
+                    });
+                    	
+                    var maxY = d3.max(data, function(d) { 
+                    	return d3.max(d["values"], function(e) {
+                    		return e["y"];
+                    	});
+                    });
+                    	
+                    var range = maxY - minY;
+                    
+                    var newRange = range + (range / 10);
+                    var newMin = maxY - newRange;
+                    newMin = (newMin.toFixed(2)) * 1;
+                    
+                    if (newMin < 0)
+                    	newMin = 0;
+                    
+                    chart.forceY(newMin);
                 }
-                
-                chart.margin({left : 100})
-                	.x(function(d) {return d[0]})
-                	.y(function(d) {return d[1]}) // adjusting, 100% is 1.00, not 100 as it is in the data
-                	.color(d3.scale.category10().range())
+                                
+                chart.xAxis.axisLabel("Year").tickFormat(d3.format('.0f'));
 
-                var k = 0; var sentinel = 0;
-                while((k<multiData.length) && (sentinel==0)){
-                	var xtickvalues = multiData[k][0].dataPoints.map(function(d) {
-	                    return d["year"];
-	                });
-                	if(xtickvalues.length>0)
-                		sentinel=1;
-                	k++;
-                }
-                
-                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
-
-                var type_var=Metrics.getMetricByID(as.currentind).getType();
-                if (type_var == "integer") {
+                var type_var = Metrics.getMetricByID(as.currentind).getType();
+                if (type_var == "integer") 
+                {
 			        chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
-	            } else if (type_var == "rank") {
+	            } 
+                else if (type_var == "rank") 
+                {
 	                chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
-	            } else if (type_var == "percentage") {
+	            } 
+                else if (type_var == "percentage") 
+                {
 	                chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
-	            } else if (type_var == "numeric") {
+	            } 
+                else if (type_var == "numeric") 
+                {
 	                chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
-	            } else if (type_var == "currency") {
+	            } 
+                else if (type_var == "currency") 
+                {
 	            	chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
 	            }
                 
-                var data = new Array();
-                if(multiData[0][0].metric.binName!="National"){ //Attemnpting to fix the inverted line and bar graphs
-                												//For national ranking. Unsuccesful so far
-                	for (var i = 0; i < multiData.length; i++) {
-                		
-                			data[i] = {
-	                				key : multiData[i][0].state.abbr,
-	                				color: cm.array_colors[i%cm.array_colors.length]
-	                		};
-	                		data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-	                			return [ d["year"], d["value"] ];
-	                		});
-                	}
-                }else{
-                	var limit_array=multiData.length-1;
-                	for (var i = limit_array; i>=0  ; i--) {
-                			data[i] = {
-                				key : multiData[i][0].state.abbr,
-                				color: cm.array_colors[i%cm.array_colors.length]
-                			};
-                			data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-                			return [ d["year"], d["value"] ];
-                			});
-                	}
-                }
-                if(data[0].values.length==0){
-                	var counter=0;
-                	var sentinel=0;
-                	var temp;
-                	while((counter<data.length)&&(sentinel==0)){
-                		if(data[counter].values.length>0){
-                			temp=data[0];
-                			data[0]=data[counter];
-                			data[counter]=temp;
-                			sentinel=1;
-                		}
-                		counter++;
-                	}
-	                
-                }
                 
-                if (cm.currentVisualization == cm.visualizationTypes.LINE) {
+                if (cm.currentVisualization == cm.visualizationTypes.LINE) 
+                {
                 	d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
-                }else if (cm.currentVisualization == cm.visualizationTypes.BAR) {
+                }
+                else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
+                {
                 	d3.select('#mbodyBar svg').datum(data).transition().duration(500).call(chart);
                 }
                 

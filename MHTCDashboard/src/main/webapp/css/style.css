@@ -379,6 +379,10 @@ table table.dataTable thead th.sorting_desc:after {
 	margin-right: auto !important;
 }
 
+#mbody, #mbodyBar {
+	width: 100% !important;
+}
+
 #feedbackModal .fa, .box-content .fa {	
 	color: white !important;
 	font-size: 14px !important;
