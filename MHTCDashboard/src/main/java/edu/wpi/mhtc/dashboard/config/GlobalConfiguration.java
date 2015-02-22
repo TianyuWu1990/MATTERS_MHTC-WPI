@@ -24,8 +24,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryDAO;
-import edu.wpi.mhtc.dashboard.pipeline.dao.DAO;
-import edu.wpi.mhtc.dashboard.pipeline.data.Category;
+import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryDAOImpl;
+import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryService;
+import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAO;
+import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAOImpl;
+import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAO;
+import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAOImpl;
+import edu.wpi.mhtc.dashboard.pipeline.dao.UserDAO;
+import edu.wpi.mhtc.dashboard.pipeline.dao.UserDAOImpl;
+import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 
 /**
  * Provides configuration that is global to all profiles for the web dashboard.
@@ -110,8 +117,28 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	}
 	
 	@Bean
-	public DAO<Category> getCategoryDAO() {
-		return new CategoryDAO();
+	public CategoryDAO getCategoryDAO() {
+		return new CategoryDAOImpl();
 	}
-
+	
+	@Bean CategoryService getCategoryService() {
+		return new CategoryService();
+	}
+	
+	@Bean MetricDAO getMetricDAO() {
+		return new MetricDAOImpl();
+	}
+	
+	@Bean StatisticDAO getStatDAO() {
+		return new StatisticDAOImpl();
+	}
+	
+	@Bean UserDAO getUserDAO() {
+		return new UserDAOImpl();
+	}
+	
+	@Bean UserService getUserService() {
+		return new UserService();
+	}
+	
 }

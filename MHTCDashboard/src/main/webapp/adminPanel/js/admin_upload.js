@@ -17,9 +17,9 @@ $(function() {
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
-				for (key in data) {
-					options.append($("<option />").val(data[key]).text(key));
-				}
+				data.forEach(function(arrayItem) {
+					options.append($("<option />").val(arrayItem.id).text(arrayItem.name));
+				})
 			}
 	
 		});

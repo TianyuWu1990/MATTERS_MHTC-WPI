@@ -11,28 +11,34 @@ import java.sql.SQLException;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 
-public class Admin {
+public class User {
+	
 	private int id;
 	private String username;
 	private String password;
+	private String passwordHash;
 	private String firstName;
 	private String lastName;
 	private String email;
+	private boolean isAdmin;
 	
-	public Admin(String username) {
+	public User() {}
+	
+	public User(String username) {
 		this.username = username;
 	}
 	
-	public Admin(String username,String password, String email,String firstName,String lastName) {
+	public User(String username,String password, String email,String firstName,String lastName, boolean isAdmin) {
 		this.id = 0;
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.isAdmin = isAdmin;
 	}
 	
-	public Admin(int id, String username,String password,String firstName,String lastName,String email) {
+	public User(int id, String username,String password,String firstName,String lastName,String email) {
 		this.id = 0;
 		this.username = username;
 		this.password = password;
@@ -147,4 +153,81 @@ public class Admin {
 	public String getEmail() {
 		return email;
 	}
+	
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	/**
+	 * @return the isAdmin
+	 */
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	/**
+	 * @param isAdmin the isAdmin to set
+	 */
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+	
+	/**
+	 * Checks to see if this is a new user that doesn't exist 
+	 * Given by an ID = 0 (then it hasn't been pulled from the database)
+	 * @return
+	 */
+	public boolean isNewUser() {
+		return (this.id == 0);
+	}	
+	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * @param passwordHashed the passwordHashed to set
+	 */
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 }

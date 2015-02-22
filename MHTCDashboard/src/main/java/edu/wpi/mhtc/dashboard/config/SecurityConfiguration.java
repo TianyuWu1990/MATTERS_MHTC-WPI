@@ -4,6 +4,8 @@
  */
 package edu.wpi.mhtc.dashboard.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -15,13 +17,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
+	@Autowired DataSource dataSource;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		//auth.inMemoryAuthentication().withUser("wpi").password("mhtc").roles("ADMIN");
-		DevelopmentConfiguration cfg = new DevelopmentConfiguration();
 		
-		auth.jdbcAuthentication().dataSource(cfg.dataSource())
+		auth.jdbcAuthentication().dataSource(dataSource)
 		.usersByUsernameQuery(
 			"select \"UserName\" as username, \"PasswordHash\" as password, 'true' as enabled from mhtc_sch.users where \"UserName\"=?")
 		.authoritiesByUsernameQuery(

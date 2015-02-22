@@ -38,7 +38,9 @@ public class Category {
 		metrics = getMetrics(id);
 	}
 	
-	public Category() {}
+	public Category() {
+		this.id = 0;
+	}
 
 	/**
 	 * Return the ID of the category
