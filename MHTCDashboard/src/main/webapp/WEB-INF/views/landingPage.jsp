@@ -197,14 +197,14 @@
 			 <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.caliper.com/">
-					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="50" height="25" />
+					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="30" height="30" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://meshagency.com/">
-					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="25" />
+					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="30" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
