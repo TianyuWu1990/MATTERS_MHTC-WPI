@@ -311,18 +311,11 @@
 										<div id="heatmap-wrapper">
 											<div id="heatmap-timeline"></div>
 											<div id="heatmap-inner-wrapper">
-												<div id="heatmap-actual"></div>
-												<div id="heatmap-controls">
-						
-														
-															<!--
-															<div id="heatmap-specificDetails">
-																
-																</div>																
-															</div>-->
-													<div id="heatmap-legend">
-														<div id="heatmap-legend-title">Legend</div>
-														<div id="heatmap-legend-details">
+											
+												<div id="heatmap-details" class="heatmap-infobox">
+													<div class="heatmap-infobox-inner">
+														<div class="heatmap-infobox-title">Details</div>
+														<div class="heatmap-infobox-content" style="overflow: hidden;">
 															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Top Ranked</div> 
 															<span id="heatmap-generalinfo-first" class="heatmap-detailVal"></span><br/>
 															
@@ -332,7 +325,15 @@
 															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">MA Rank</div>
 															<span id="heatmap-generalinfo-ma" class="heatmap-detailVal"></span>
 														</div>
-														<div id="heatmap-legend-legend">
+													</div>
+												</div>
+												
+												<div id="heatmap-actual"></div>
+												
+												<div id="heatmap-controls" class="heatmap-infobox">
+													<div class="heatmap-infobox-inner">
+														<div class="heatmap-infobox-title">Legend</div>
+														<div id="heatmap-legend-legend" class="heatmap-infobox-content">
 														
 														</div>
 													</div>
