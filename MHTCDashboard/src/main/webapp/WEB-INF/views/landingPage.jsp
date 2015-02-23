@@ -158,7 +158,13 @@
 	<div class="container partner-container">
 		<h2>Program Partners</h2>
 
-
+			<div class="logo-wrap">
+				<div class="logo-contain">
+				<a href = "www.emdmillipore.com/">
+					<img src="img/EMD_Blue_RGB.jpg" alt="header-sponsors" width="50" height="50" />
+					</a>
+				 </div> <!-- .logo-contain -->
+			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.wpi.edu/">
@@ -166,14 +172,7 @@
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
-			<div class="logo-wrap">
-				<div class="logo-contain">
-				<a href = "http://www.mitre.org/">
-					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="50" />
-					</a>
-				 </div> <!-- .logo-contain -->
-			 </div> <!-- .logo-wrap -->
-			<div class="logo-wrap">
+			 <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.nebhe.org/">
 					<img src="img/NEBHE_Banner.png" alt="header-sponsors" width="" height="50" />
@@ -189,15 +188,22 @@
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
-				<a href = "http://meshagency.com/">
-					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="50" />
+				<a href = "http://www.mitre.org/">
+					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.caliper.com/">
-					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="50" height="50" />
+					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="50" height="25" />
+					</a>
+				 </div> <!-- .logo-contain -->
+			 </div> <!-- .logo-wrap -->
+			<div class="logo-wrap">
+				<div class="logo-contain">
+				<a href = "http://meshagency.com/">
+					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="25" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->

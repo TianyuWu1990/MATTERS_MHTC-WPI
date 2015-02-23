@@ -29,10 +29,11 @@ table.dataTable thead th.sorting:before,
 table.dataTable thead th.sorting_asc:before,
 table.dataTable thead th.sorting_desc:before {
     position: absolute;
-    top: 6px;
-    left: 3px;
+    top: 4px;
+    left: 0px;
     display: block;
     font-family: FontAwesome;
+    color: #808080;
 }
 
 table.dataTable thead th.sorting:before {

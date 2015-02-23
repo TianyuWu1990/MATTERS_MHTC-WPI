@@ -4,9 +4,6 @@
  */
 package edu.wpi.mhtc.model.Data;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
 
 public class Metric
 {
