@@ -1,9 +1,8 @@
 $.fn.dataTableExt.sErrMode = 'throw';
 
 $(document).ready(function() {
-    $('#sourceTable').dataTable( {
+    $('#sourceTable').DataTable( {
         "paging":   false,
-        "ordering": false,
         "info":     false
     } );
 } );
