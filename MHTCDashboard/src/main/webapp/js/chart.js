@@ -711,7 +711,9 @@ var CM = (function($) {
 						{
 							"iDisplayLength": 15,
 							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
-							"bSort": enableSort
+							"bSort": enableSort,
+							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
+						
 						});
 				dt = oTable;
 			}
@@ -722,7 +724,9 @@ var CM = (function($) {
 						{
 							"iDisplayLength": 20,
 							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
-							"bSort": enableSort
+							"bSort": enableSort,
+							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
+							
 						});
 				dt = oTable;
 			}
@@ -909,7 +913,7 @@ var CM = (function($) {
 				}
 			}
 			
-			formattedValue = value.toFixed(0) + suffix;
+			formattedValue = value.toFixed(0);
 		}else if(metricType=="integer"){
 			formattedValue = value.toFixed(0);
 		}else{
