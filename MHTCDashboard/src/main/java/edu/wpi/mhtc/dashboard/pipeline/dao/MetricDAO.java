@@ -1,6 +1,7 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Interface for Data Access Object
@@ -29,6 +30,11 @@ public interface MetricDAO {
 	public void delete(int ID);
 	
 	/**
+	 * Get all metrics in the database
+	 */
+	public List<Metric> getAll();
+	
+	/**
 	 * Get all metrics for a single category
 	 * @param categoryID
 	 * @return
@@ -41,4 +47,10 @@ public interface MetricDAO {
 	 * @return
 	 */
 	public List<Metric> getMetricsForCategories(Integer[] categoryIDs);
+
+	/**
+	 * Returns the various datatypes for a metric
+	 * @return
+	 */
+	public Set<String> getMetricDataTypes();
 }

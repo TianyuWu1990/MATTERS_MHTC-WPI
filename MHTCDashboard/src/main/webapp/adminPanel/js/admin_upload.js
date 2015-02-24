@@ -62,11 +62,9 @@ $(function() {
 		$.getJSON('admin/metrics', {"categoryid":value}, function(data) {
 			var divContents = "The possible metrics for category \""+text+"\" are:\n<ul>";
 
-			for (var key in data) {
-				if (data.hasOwnProperty(key)) {
-					divContents = divContents + "<li>" + key + "</li>";
-				}
-			}
+			data.forEach(function(arrayItem) {
+				divContents = divContents + "<li>" + arrayItem.name + "</li>";
+			});
 			
 			divContents = divContents + "</ul>";
 						

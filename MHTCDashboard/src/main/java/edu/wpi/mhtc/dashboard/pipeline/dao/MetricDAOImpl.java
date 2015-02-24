@@ -1,13 +1,17 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -119,6 +123,62 @@ public class MetricDAOImpl implements MetricDAO {
 	}
 	
 	/**
+	 * Retrieve all metrics in the database
+	 */
+	@Override
+	public List<Metric> getAll() {		
+		String sql = "SELECT m.\"Name\" AS \"metricName\", m.\"DisplayName\", m.\"Source\", m.\"URL\", m.\"Visible\", "
+				+ "m.\"IsCalculated\", m.\"DataType\", cxm.\"metricId\", cxm.\"categoryId\", c.\"Name\" AS \"categoryName\" "
+				+ "FROM mhtc_sch.metrics m "
+    			+ "INNER JOIN mhtc_sch.categoriesxmetrics cxm ON m.\"Id\" = cxm.\"metricId\" "
+    			+ "INNER JOIN mhtc_sch.categories c ON cxm.\"categoryId\" = c.\"Id\"";
+		
+		List<Metric> metrics = jdbcTemplate.query(sql, new RowMapper<Metric>() {
+
+			@Override
+			public Metric mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Metric metric = new Metric();
+				
+				metric.setId(rs.getInt("metricId"));
+				metric.setName(rs.getString("metricName"));
+				metric.setVisible(rs.getBoolean("Visible"));
+				metric.setCalculated(rs.getBoolean("IsCalculated"));
+				metric.setDataType(rs.getString("DataType"));
+				metric.setDisplayName(rs.getString("DisplayName"));
+				metric.setURL(rs.getString("URL"));
+				metric.setSource(rs.getString("Source"));
+				metric.setCategoryId(rs.getInt("categoryId"));
+				metric.setCategoryName(rs.getString("categoryName"));
+				
+				return metric;
+			}
+			
+		});
+		
+		return metrics;
+	}
+	
+	/**
+	 * Gets metric DataType column information
+	 */
+	@Override
+	public Set<String> getMetricDataTypes() {
+		String sql = "SELECT \"DataType\" FROM mhtc_sch.metrics";
+
+		List<String> dataTypes = jdbcTemplate.query(sql, new RowMapper<String>() {
+
+			@Override
+			public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return rs.getString("DataType");
+			}
+			
+		});
+		
+		return new HashSet<>(dataTypes);
+	}
+
+	
+	/**
 	 * Predefined RowMapper for Metric
 	 * @author Alex Fortier
 	 *
@@ -137,7 +197,6 @@ public class MetricDAOImpl implements MetricDAO {
 			m.setDisplayName(rs.getString("DisplayName"));
 			m.setURL(rs.getString("URL"));
 			m.setSource(rs.getString("Source"));
-			m.setTrendType(rs.getString("TrendType"));
 			
 			return m;
 		}

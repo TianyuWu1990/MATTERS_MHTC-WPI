@@ -33,7 +33,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,7 +46,9 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryService;
+import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAO;
+import edu.wpi.mhtc.dashboard.pipeline.dao.MetricService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAO;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
@@ -62,7 +63,6 @@ import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
 import edu.wpi.mhtc.helpers.Logger;
-import edu.wpi.mhtc.model.Data.Metric;
 
 @Controller
 public class AdminController {
@@ -71,7 +71,7 @@ public class AdminController {
     
     @Autowired private ServletContext servletContext;
     @Autowired private CategoryService categoryService;
-    @Autowired private MetricDAO metricDAO;
+    @Autowired private MetricService metricService;
     @Autowired private StatisticDAO statDAO;
     @Autowired private UserService userService;
     
@@ -122,10 +122,8 @@ public class AdminController {
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Locale locale, Model model) throws Exception {
-        Map<String, String> categories = DBLoader.getCategoryInfo();
         String title = "MATTERS: Administration Center";
         
-        model.addAttribute("categories", categories);
         model.addAttribute("title", title);
         
         return "admin_tool";
@@ -136,19 +134,7 @@ public class AdminController {
     	
         return "admin_help";
     }
-    
-    @RequestMapping(value = "/category_old", method = RequestMethod.GET)
-    public @ResponseBody Map<String, String> category_old() throws SQLException {
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	return categories;
-    }
-    
-    @RequestMapping(value = "/category_new", method = RequestMethod.GET)
-    public @ResponseBody List<Category> category_new() throws SQLException {
-    	List<Category> categories = categoryService.getAll();
-    	return categories;
-    }
-    
+        
     /*********************** DB EXPLORER ********************************/
     @RequestMapping(value = "/admin_dbexplorer", method = RequestMethod.GET)
     public String admin_db(Locale locale, Model model) throws Exception {
@@ -165,8 +151,7 @@ public class AdminController {
     @RequestMapping(value = "/admin/getSubCategories", method = RequestMethod.GET)
     public @ResponseBody List<Category> getSubCategories(@RequestParam("categoryid") String categoryid) throws Exception {
     	
-    	List<Category> subCategories = categoryService.getChilrden(Integer.parseInt(categoryid));
-    	return subCategories;
+    	return categoryService.getChilrden(Integer.parseInt(categoryid));
     }
     
     @RequestMapping(value = "/admin_dbexplorer/getDataByMetric", method = RequestMethod.GET)
@@ -175,13 +160,10 @@ public class AdminController {
     	List<ArrayList<String>> metricData = DBLoader.getDataByMetric(categoryid);
     	return metricData;
     }
-    
-    @RequestMapping(value ="/admin_dbexplorer/getDetailedMetrics", method = RequestMethod.GET)
-    public @ResponseBody List<ArrayList<String>> getDetailedMetrics() throws SQLException {
-    	
-    	List<ArrayList<String>> metricData = DBLoader.getDetailedMetrics();
-    	
-		return metricData;
+        
+    @RequestMapping(value ="/admin_dbexplorer/getAllMetrics", method = RequestMethod.GET)
+    public @ResponseBody List<Metric> getDetailedMetrics() throws SQLException {
+    	return metricService.getAll();
     }
     
     /*********************** UPLOAD ********************************/
@@ -189,7 +171,7 @@ public class AdminController {
     public String admin_upload(Locale locale, Model model) throws Exception {
       
     	List<Category> categories = categoryService.getAll();
-    	Set<String> dataTypes = DBLoader.getMetricDataTypes();
+    	Set<String> dataTypes = metricService.getMetricDataTypes();
     	String title = "MATTERS: Manual Upload";
     	
     	model.addAttribute("datatypes", dataTypes);
@@ -228,7 +210,7 @@ public class AdminController {
     	}
 
     	boolean isCalc = Boolean.parseBoolean(isCalculated);
-    	DBSaver.insertNewMetric(metricName, metricDesc, isCalc, categoryID, datatype);
+    	metricService.save(metricName, metricDesc, isCalc, categoryID, datatype);
 
     	String referer = request.getHeader("Referer");
     	
@@ -239,10 +221,9 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/metrics", method = RequestMethod.GET)
-    public @ResponseBody Map<String, String> getMetrics(@RequestParam("categoryid") String categoryid) throws Exception {
+    public @ResponseBody List<Metric> getMetrics(@RequestParam("categoryid") String categoryid) throws Exception {
     	
-    	Map<String, String> metricData = DBLoader.getMetricInfo(categoryid);
-    	return metricData;
+    	return metricService.getMetricsForCategory(Integer.parseInt(categoryid));
     }    
     
     /*********************** PIPELINE ********************************/
@@ -250,7 +231,7 @@ public class AdminController {
     public String admin_pipeline(Locale locale, Model model) throws Exception {
     	
     	List<Category> categories = categoryService.getAll();
-    	Set<String> dataTypes = DBLoader.getMetricDataTypes();
+    	Set<String> dataTypes = metricService.getMetricDataTypes();
 
     	String title = "MATTERS: Pipeline Manager";
     	

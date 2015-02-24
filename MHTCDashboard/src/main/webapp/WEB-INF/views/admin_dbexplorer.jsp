@@ -110,11 +110,12 @@
 										<table class="table table-striped table-bordered table-hover" id="metricTable">
 											<thead>
 												<tr>
-													<th>Category Name</th>
 													<th>Metric Name</th>
-													<th>Display Name</th>
+													<th>Display Name</th>													
+													<th>Category Name</th>
 													<th>Source</th>
 													<th>URL</th>
+													<th>Visible?</th>
 												</tr>
 											</thead>
 											<tbody>

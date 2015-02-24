@@ -60,9 +60,17 @@ $(function() {
 	
 	$('#metricTable').DataTable({
 		"ajax": {
-			"url": "admin_dbexplorer/getDetailedMetrics",
+			"url": "admin_dbexplorer/getAllMetrics",
 			"dataSrc": ""
-		}
+		},
+		"columns": [
+			       {"data" : "name"},
+		           {"data" : "displayName"},
+		           {"data" : "categoryName"},
+		           {"data" : "source"},
+		           {"data" : "url"},
+		           {"data" : "visible"}
+		           ]
 	});
 	
 	// Controls tab functionality

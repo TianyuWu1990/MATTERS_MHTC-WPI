@@ -9,14 +9,13 @@ public class Metric {
 	private int id;
 	private String name;
 	private int categoryId;
+	private String categoryName;
 	private boolean isVisible;
 	private boolean isCalculated;
 	private String dataType;
 	private String displayName;
 	private String URL;
 	private String source;
-	private int displayOrder;
-	private String trendType;
 	
 	/**
 	 * @return the id
@@ -129,34 +128,6 @@ public class Metric {
 	public void setSource(String source) {
 		this.source = source;
 	}
-	
-	/**
-	 * @return the displayOrder
-	 */
-	public int getDisplayOrder() {
-		return displayOrder;
-	}
-	
-	/**
-	 * @param displayOrder the displayOrder to set
-	 */
-	public void setDisplayOrder(int displayOrder) {
-		this.displayOrder = displayOrder;
-	}
-	
-	/**
-	 * @return the trendType
-	 */
-	public String getTrendType() {
-		return trendType;
-	}
-	
-	/**
-	 * @param trendType the trendType to set
-	 */
-	public void setTrendType(String trendType) {
-		this.trendType = trendType;
-	}
 
 	/**
 	 * @return the categoryId
@@ -170,6 +141,20 @@ public class Metric {
 	 */
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	/**
+	 * @return the categoryName
+	 */
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	/**
+	 * @param categoryName the categoryName to set
+	 */
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 	
 }
