@@ -769,6 +769,8 @@ var CM = (function($) {
               
                 var data = [];
                 
+                var years = [];
+                
                 // Get collection of all data
                 for (var i = 0; i < multiData.length; i++)
                 {
@@ -783,9 +785,14 @@ var CM = (function($) {
                 	data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
                 		var yearForPoint = d["year"];
                 		
+                		if (years.indexOf(yearForPoint) == -1)
+                			years.push(yearForPoint);
+                		
                 		return { "x" : yearForPoint, "y" : (d["value"].toFixed(2)) * 1 };
                 	});
                 }
+                
+                years.sort(function(a,b) { return a - b; });
                             	
                 // Build the chart for the data.
             	var chart;
@@ -829,7 +836,7 @@ var CM = (function($) {
                     chart.forceY(newMin);
                 }
                                 
-                chart.xAxis.axisLabel("Year").tickFormat(d3.format('.0f'));
+                chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
 
                 var type_var = Metrics.getMetricByID(as.currentind).getType();
                 if (type_var == "integer") 
