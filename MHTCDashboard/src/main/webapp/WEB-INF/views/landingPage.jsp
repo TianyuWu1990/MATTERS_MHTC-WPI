@@ -161,7 +161,7 @@
 
 			<div class="logo-wrap">
 				<div class="logo-contain">
-				<a href = "www.emdmillipore.com/">
+				<a href = "http://www.emdmillipore.com/">
 					<img src="img/EMD_Blue_RGB.jpg" alt="header-sponsors" width="50" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
