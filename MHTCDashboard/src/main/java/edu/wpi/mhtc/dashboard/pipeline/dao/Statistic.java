@@ -3,6 +3,21 @@ package edu.wpi.mhtc.dashboard.pipeline.dao;
 public class Statistic {
 
 	int stateID;
+	String stateName;
+	/**
+	 * @return the stateName
+	 */
+	public String getStateName() {
+		return stateName;
+	}
+
+	/**
+	 * @param stateName the stateName to set
+	 */
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
 	int metricID;
 	int year;
 	double value;

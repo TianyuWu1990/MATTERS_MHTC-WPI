@@ -35,6 +35,7 @@ public class StatisticDAOImpl implements StatisticDAO {
 					throws SQLException {
 				Statistic stat = new Statistic();
 				
+				stat.setStateName(rs.getString("StateName"));
 				stat.setStateID(rs.getInt("StateId"));
 				stat.setValue(rs.getDouble("Value"));
 				stat.setYear(rs.getInt("Year"));
@@ -138,6 +139,12 @@ public class StatisticDAOImpl implements StatisticDAO {
 		}
 		
 		return stats;
+	}
+
+	@Override
+	public List<Statistic> getStatsByCategory(int categoryID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
