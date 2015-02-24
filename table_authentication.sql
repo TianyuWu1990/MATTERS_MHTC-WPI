@@ -77,7 +77,7 @@ END
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION mhtc_sch.insertuser(text, text, text, text, text, text)
+ALTER FUNCTION mhtc_sch.insertuser(text, text, text, text, text)
   OWNER TO postgres;
 
 -- Function: mhtc_sch.insertadmin(text, text, text, text, text)
@@ -100,7 +100,7 @@ END
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION mhtc_sch.insertuser(text, text, text, text, text, text)
+ALTER FUNCTION mhtc_sch.insertadmin(text, text, text, text, text)
   OWNER TO postgres;
     
 -- Function: mhtc_sch.getuser(text)
