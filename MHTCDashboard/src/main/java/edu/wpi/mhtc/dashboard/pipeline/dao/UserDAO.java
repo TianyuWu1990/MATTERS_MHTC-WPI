@@ -27,7 +27,26 @@ public interface UserDAO {
 	 * @param user
 	 */
 	public void updatePassword(User user);
-
+	
+	/**
+	 * Sets a token for a user to reset their password
+	 * @param token
+	 */
+	public void updateToken(String email, String token);
+	
+	/**
+	 * Confirm token exists in database for user to reset password
+	 * @param token
+	 * @return
+	 */
+	public User confirmToken(String token);
+	
+	/**
+	 * Update password when non-admin user resets their password on their own
+	 * @param token
+	 */
+	public boolean updateUserPassword(String password, String token);
+	
 	/**
 	 * Get a User from the database based on username
 	 * @param username

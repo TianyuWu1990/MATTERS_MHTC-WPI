@@ -1,12 +1,15 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -86,6 +89,48 @@ public class UserDAOImpl implements UserDAO {
 		params.put("username", username);
 		
 		return (User) call.execute(params);
+	}
+	
+	@Override
+	public void updateToken(String email, String token) {
+		String sql = "UPDATE mhtc_sch.users SET \"Token\" = MD5(?) WHERE \"Email\" = ?";
+
+		jdbcTemplate.update(sql, token, email);
+	}
+	
+	@Override
+	public User confirmToken(String token) {
+    	String sql = "SELECT * FROM mhtc_sch.users WHERE \"Token\" = ?";
+    	
+    	Object[] args = {token};
+    	
+    	return jdbcTemplate.query(sql, args, new ResultSetExtractor<User>() {
+
+			@Override
+			public User extractData(ResultSet rs) throws SQLException, DataAccessException {
+				if (rs.next()) {
+					User u = new User();
+					u.setId(rs.getInt("Id"));
+					u.setUsername(rs.getString("UserName"));
+					u.setEmail(rs.getString("Email"));
+					u.setFirstName(rs.getString("FirstName"));
+					u.setLastName(rs.getString("LastName"));
+					return u;
+				}
+				
+				return null;
+			}
+    		
+    	});
+	}
+	
+	@Override
+	public boolean updateUserPassword(String password, String token) {
+		String sql = "UPDATE mhtc_sch.users SET \"PasswordHash\" = MD5(?), \"Token\" = '' WHERE \"Token\" = ?";
+
+		jdbcTemplate.update(sql, password, token);
+		
+		return true;
 	}
 	
 	/**

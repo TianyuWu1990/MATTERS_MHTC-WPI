@@ -4,23 +4,20 @@
  */
 package edu.wpi.mhtc.controllers;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -33,30 +30,30 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.steadystate.css.parser.ParseException;
+
+import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.helpers.Mailer;
 import edu.wpi.mhtc.model.Data.DataSeries;
+import edu.wpi.mhtc.model.admin.User;
 import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.service.StateService;
 import edu.wpi.mhtc.service.StatsService;
-import edu.wpi.mhtc.service.UserService;
-import net.tanesha.recaptcha.ReCaptchaImpl;
-import net.tanesha.recaptcha.ReCaptchaResponse;
 
 /**
  * Handles requests for the application home page.
@@ -65,16 +62,18 @@ import net.tanesha.recaptcha.ReCaptchaResponse;
 public class HomeController {
 	private StatsService statsService;
 	private StateService stateService;
+	private UserService userService;
 	static Connection conn = DBConnector.getInstance().getConn();
 	
 	@Autowired
     ReCaptchaImpl reCaptcha;
 	
 	@Autowired
-	public HomeController(StatsService statsService, StateService stateService)
+	public HomeController(StatsService statsService, StateService stateService, UserService userService)
 	{
 		this.statsService = statsService;
 		this.stateService = stateService;
+		this.userService = userService;
 	}
 	
 	
@@ -152,7 +151,6 @@ public class HomeController {
     /*************************** User services ***********************************/
     @RequestMapping(value = "/user/forgot", method = RequestMethod.GET)
     public String request_reset(Locale locale, Model model) throws Exception {
-        
         return "forgot_password_form";
     }
     
@@ -165,38 +163,20 @@ public class HomeController {
     	String remoteAddress = servletRequest.getRemoteAddr();
         ReCaptchaResponse reCaptchaResponse = this.reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
  
-        if(reCaptchaResponse.isValid()){
-	    	// First, randomize the token
-	    	Random rand = new Random();
-	    	int randomNum = rand.nextInt(100) + 1;
-	    	String unencryptedTokenString = email + randomNum;
-	    	
-	    	// SQL Query execution
-			String sql = "UPDATE mhtc_sch.users SET \"Token\" = MD5(?) WHERE \"Email\" = ?";
-			PreparedStatement pstatement = conn.prepareStatement(sql);
-			pstatement.setString(1, unencryptedTokenString); // set parameter 1 (FIRST_NAME)
-			pstatement.setString(2, email);
-			pstatement.execute();
-			
-			if (pstatement.getUpdateCount() == 1) {
-				model.addAttribute("completed", true);
-				
-				// Send the email for that user
-		    	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
-		    
-		       	Mailer mm = (Mailer) context.getBean("mailMail");
-		           mm.sendResetPasswordMail(email, unencryptedTokenString);
-		    
+        if (reCaptchaResponse.isValid()){
+        	
+			if (userService.setToken(email)) {
+				model.addAttribute("completed", true);		    
 			} else {
 				model.addAttribute("completed", false);
 			}
-			
-			pstatement.close();	
-	    	
+    	
 	        return "forgot_password_form_submit";
         } else {
+        	
         	model.addAttribute("completed", false);
         	model.addAttribute("invalid_captcha", true);
+        	
         	return "forgot_password_form_submit";
         }
     }  
@@ -204,18 +184,13 @@ public class HomeController {
     @RequestMapping(value = "/user/reset", method = RequestMethod.GET)
     public String reset_password_form(Locale locale, Model model, @RequestParam("token") String token) throws Exception {
     	if (!token.equals("")) {
-	    	// Query the token string in the database
-	    	String sql = "SELECT * FROM mhtc_sch.users WHERE \"Token\" = ?";
-			PreparedStatement pstatement = conn.prepareStatement(sql);
-			pstatement.setString(1, token);
-			ResultSet rs = pstatement.executeQuery();
+	    	User u = userService.confirmToken(token);
 			
-			if (!rs.next()) {
+			if (u == null) {
 				model.addAttribute("error", true);
 			} else {
 				model.addAttribute("error", false);
-				model.addAttribute("email", rs.getString("Email"));
-				model.addAttribute("token", token);
+				model.addAttribute("email", u.getEmail());
 			}
     	} else {
     		model.addAttribute("error", true);
@@ -230,14 +205,8 @@ public class HomeController {
     	if (token.equals("")) {
     		model.addAttribute("error", true);
     	} else {
-        	/* Reset password and clear the token*/
-    		String sql = "UPDATE mhtc_sch.users SET \"PasswordHash\" = MD5(?), \"Token\" = '' WHERE \"Token\" = ?";
-    		PreparedStatement pstatement = conn.prepareStatement(sql);
-    		pstatement.setString(1, password); // set parameter 1 (FIRST_NAME)
-    		pstatement.setString(2, token);
-    		pstatement.execute();
-    		
-    		if (pstatement.getUpdateCount() == 1) {
+
+    		if (userService.resetUserPassword(password, token)) {
     			model.addAttribute("error", false);
     		} else {
     			model.addAttribute("error", true);
@@ -253,29 +222,15 @@ public class HomeController {
     }    
     
     @RequestMapping(value = "/user/register/submit", method = RequestMethod.POST)
-    public String register_submit(Locale locale, Model model, @RequestParam("UserName") String username, @RequestParam("Email") String email, @RequestParam("Password") String password, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) throws SQLException {
-    	// First, create an entry in the user table.
-		try {
-			String sql = "INSERT INTO mhtc_sch.users VALUES (nextval('mhtc_sch.user_id_seq'), ?, ?, ?, ?, md5(?), '', true, 2);";
-	    	sql += " INSERT INTO mhtc_sch.user_roles VALUES(?, 'USER');";
-			PreparedStatement pstatement = conn.prepareStatement(sql);
+    public String register_submit(Locale locale, Model model, @RequestParam("UserName") String username, @RequestParam("Email") String email, 
+    		@RequestParam("Password") String password, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) throws SQLException {
+    	
+    	userService.createUser(username, password, firstName, lastName, email, false);
 			
-			pstatement.setString(1, username); // set parameter 1 (FIRST_NAME)
-			pstatement.setString(2, email);
-			pstatement.setString(3, firstName);
-			pstatement.setString(4, lastName);
-			pstatement.setString(5, password); // set parameter 1 (FIRST_NAME)
-			pstatement.setString(6, username);
-			
-			pstatement.execute();
-			
-			model.addAttribute("error", false);
-		} catch (SQLException e) {
-			model.addAttribute("error", true);
-		}
-		
+		model.addAttribute("error", false);
         return "register_page_submit";
     } 
+    
     /********** Feedback Page 
      * @throws SQLException **********/
     @RequestMapping(value = "/feedback_post", method = RequestMethod.POST)
@@ -293,12 +248,15 @@ public class HomeController {
         	// Retrieve necessary information
     	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        	// Get user who submitted
+        	User u = userService.get(auth.getName());
+        	
         	// Send the email
-        	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
-		    
-	       	Mailer mm = (Mailer) context.getBean("mailMail");
-	        mm.sendFeedbackEmail(UserService.getEmailByUser(auth.getName()), subject, comments);
-	        
+        	try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml")) {
+        		Mailer mm = (Mailer) context.getBean("mailMail");
+    	        mm.sendFeedbackEmail(u.getEmail(), subject, comments);
+        	} 			    
+	        	        
         	// Load the notification
         	model.addAttribute("completed", true);
         	model.addAttribute("invalid_captcha", false);

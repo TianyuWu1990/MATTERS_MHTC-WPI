@@ -1,8 +1,16 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.sql.PreparedStatement;
+import java.util.Random;
+
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import edu.wpi.mhtc.helpers.MD5;
+import edu.wpi.mhtc.helpers.Mailer;
 import edu.wpi.mhtc.model.admin.User;
 
 public class UserService {
@@ -65,4 +73,29 @@ public class UserService {
 		return "";
 	}
 	
+	public boolean setToken(String email) throws MessagingException {
+    	// First, randomize the token
+    	Random rand = new Random();
+    	int randomNum = rand.nextInt(100) + 1;
+    	String unencryptedTokenString = email + randomNum;
+    	
+    	dao.updateToken(email, unencryptedTokenString);
+		
+    	// Send reset password email to user
+    	try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml")) {
+    		Mailer mm = (Mailer) context.getBean("mailMail");
+            mm.sendResetPasswordMail(email, unencryptedTokenString);
+    	} 			    
+    	
+    	return true;
+	}
+	
+	public User confirmToken(String token) {
+		return dao.confirmToken(token);
+	}
+	
+	public boolean resetUserPassword(String password, String token) {
+		return dao.updateUserPassword(password, token);
+	}
+		
 }

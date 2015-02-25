@@ -53,7 +53,6 @@ import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
