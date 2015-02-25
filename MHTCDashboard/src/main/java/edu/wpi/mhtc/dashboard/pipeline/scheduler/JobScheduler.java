@@ -34,7 +34,7 @@ public class JobScheduler {
 	 * @throws Exception 
 	 *****************/
 	public static void schedule(Schedule sched) throws Exception {
-		if (sched.isCronJob()) {
+		if (sched.isSched_cron()) {
 			JobScheduler.createTalendJob(cronTrigger(sched.getSched_date()), sched);
 		} else {
 			JobScheduler.createTalendJob(specificDateTimeTrigger(sched.getSched_date()), sched);

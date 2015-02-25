@@ -29,6 +29,12 @@ import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAO;
 import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAOImpl;
 import edu.wpi.mhtc.dashboard.pipeline.dao.MetricService;
+import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineDAO;
+import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineDAOImpl;
+import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineService;
+import edu.wpi.mhtc.dashboard.pipeline.dao.ScheduleDAO;
+import edu.wpi.mhtc.dashboard.pipeline.dao.ScheduleDAOImpl;
+import edu.wpi.mhtc.dashboard.pipeline.dao.ScheduleService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAO;
 import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAOImpl;
 import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticService;
@@ -149,6 +155,22 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Bean UserService getUserService() {
 		return new UserService();
+	}
+	
+	@Bean ScheduleDAO getScheduleDAO() {
+		return new ScheduleDAOImpl();
+	}
+	
+	@Bean ScheduleService getScheduleService() {
+		return new ScheduleService();
+	}
+	
+	@Bean PipelineDAO getPipelineDAO() {
+		return new PipelineDAOImpl();
+	}
+	
+	@Bean PipelineService getPipelineService() {
+		return new PipelineService();
 	}
 	
 }

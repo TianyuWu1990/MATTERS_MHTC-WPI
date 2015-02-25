@@ -48,16 +48,7 @@ public class Schedule {
 		this.sched_cron = sched_cron;
 		this.sched_date = sched_date;	
 	}
-	
-	public boolean insertToDB() {
-		try {
-			return DBSaver.insertNewSchedule(job_name, sched_name, sched_job, sched_description, sched_date, sched_cron);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
+		
 	// Getters
 	public String getSched_name() {
 		return sched_name;
@@ -125,7 +116,17 @@ public class Schedule {
 		return job_name;
 	}
 	
-	public boolean isCronJob() {
+	/**
+	 * @return the sched_cron
+	 */
+	public boolean isSched_cron() {
 		return sched_cron;
+	}
+
+	/**
+	 * @param sched_cron the sched_cron to set
+	 */
+	public void setSched_cron(boolean sched_cron) {
+		this.sched_cron = sched_cron;
 	}
 }

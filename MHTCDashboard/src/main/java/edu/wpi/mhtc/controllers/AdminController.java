@@ -12,11 +12,9 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -47,13 +45,15 @@ import org.springframework.web.servlet.view.RedirectView;
 import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.dao.MetricService;
+import edu.wpi.mhtc.dashboard.pipeline.dao.Pipeline;
+import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineService;
+import edu.wpi.mhtc.dashboard.pipeline.dao.ScheduleService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
@@ -69,10 +69,13 @@ public class AdminController {
     private DateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
     
     @Autowired private ServletContext servletContext;
+    
     @Autowired private CategoryService categoryService;
     @Autowired private MetricService metricService;
     @Autowired private StatisticService statService;
     @Autowired private UserService userService;
+    @Autowired private ScheduleService schedService;
+    @Autowired private PipelineService pipelineService;
     
     public AdminController() {}
 
@@ -305,7 +308,7 @@ public class AdminController {
 		String user = principal.getName();
 		
     	// Now let's add the entry to the database if nothing has failed yet    	
-    	DBSaver.insertPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename(), user);
+    	pipelineService.save(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename(), user);
     	
     	redir.addFlashAttribute("pipeline_add_success", true);
     	redir.addFlashAttribute("pipelineName", pipelineName);
@@ -317,39 +320,12 @@ public class AdminController {
      * Returns a JSON array of every pipeline jobs.
      * Used for Scheduler and Table Pipeline Listing
      */
-    @RequestMapping(value = "/admin_pipeline/getPipelineData", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>> admin_get_pipeline_data(Locale locale, Model model) throws Exception {
-		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
-		Connection conn = DBConnector.getInstance().getConn();
-		
-		String sql = "SELECT * FROM mhtc_sch.pipelines";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-		ResultSet rs = pstatement.executeQuery();
-		
-		while (rs.next()) {
-			HashMap<String,String> row = new HashMap<String,String>();
-			String pipelineName = rs.getString("pipelinename");
-			String pipelineDesc = rs.getString("pipelinedesc");	
-			String filename = rs.getString("filename");
-			String user = rs.getString("uploadedby");
-			
-			// Need to convert Date to String
-			Date dateAdded = rs.getTimestamp("dateadded");
-			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-			String date = df.format(dateAdded);
-			
-			row.put("pipelinename",pipelineName);
-			row.put("pipelinedesc", pipelineDesc);
-			row.put("filename", filename);
-			row.put("dateadded", date);
-			row.put("user", user);
-			
-			data.add(row);
-		}
-		
-		return data;
+    @RequestMapping(value = "/admin_pipeline/getPipelineData")
+    public @ResponseBody List<Pipeline> admin_get_pipeline_data(Locale locale, Model model) throws Exception 
+    {
+		return pipelineService.getAll();
     }
-    
+        
     /**
      * Deletes pipeline from database with that name
      * TODO Does not wipe data from server
@@ -362,24 +338,18 @@ public class AdminController {
     @RequestMapping(value = "/admin_pipeline/delete", method = RequestMethod.POST, params = {"pipelineName"})
     public @ResponseBody boolean admin_pipeline_delete(Locale locale, Model model, @RequestParam("pipelineName") String pipelineName) throws SQLException
     {
-		Connection conn = DBConnector.getInstance().getConn();
-
-		String sql = "DELETE FROM mhtc_sch.pipelines WHERE pipelinename = ?";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pipelineService.delete(pipelineName);
 		
-		pstatement.setString(1, pipelineName);
-		
-		// Will return false since there is no result, but just want to make sure it executed properly
-		return !pstatement.execute();
-		
+		return true;
     }
     
     /********************** SCHEDULER *******************************/
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
-    public String admin_scheduler(Locale locale, Model model) throws Exception {
+    public String admin_scheduler(Locale locale, Model model) throws Exception 
+    {
       
     	String title = "MATTERS: Scheduler";
-    	List<Schedule> schedList = DBLoader.getSchedules();
+    	List<Schedule> schedList = schedService.getAll();
     	
         model.addAttribute("title", title);
 		model.addAttribute("schedList", schedList);
@@ -389,10 +359,11 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_scheduler_add", method=RequestMethod.POST, params = {"sched_job", "sched_name", "sched_description", "sched_date", "sched_cron"})
-    public String admin_scheduler_add(Locale locale, Model model, @RequestParam("sched_job") String sched_job, @RequestParam("sched_name") String sched_name, @RequestParam("sched_date") String sched_date, @RequestParam("sched_description") String sched_description, @RequestParam("sched_cron") boolean sched_cron) throws Exception {
-		Schedule newSched = new Schedule(sched_name, sched_job, sched_description, sched_date, sched_cron);
-		newSched.insertToDB();
-		List<Schedule> schedList = DBLoader.getSchedules();
+    public String admin_scheduler_add(Locale locale, Model model, @RequestParam("sched_job") String sched_job, @RequestParam("sched_name") String sched_name, 
+    		@RequestParam("sched_date") String sched_date, @RequestParam("sched_description") String sched_description, @RequestParam("sched_cron") boolean sched_cron) throws Exception 
+    {
+		schedService.save(sched_name, sched_job, sched_description, sched_date, sched_cron);
+		List<Schedule> schedList = schedService.getAll();
 		
     	String title = "MATTERS: Scheduler";
 		
@@ -404,25 +375,21 @@ public class AdminController {
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		
 		// Schedule the job
-		JobScheduler.schedule(newSched);
+		JobScheduler.schedule(new Schedule(sched_name, sched_job, sched_description, sched_date, sched_cron));
 		
 		return "admin_scheduler";
     }
     
     @RequestMapping(value = "/admin_scheduler_stop", method=RequestMethod.GET, params = {"job_name"})
     public String admin_scheduler_stop(Locale locale, Model model, @RequestParam("job_name") String job_name) throws Exception {
-		String sql = "DELETE FROM mhtc_sch.schedules WHERE job_name = ?";
-		Connection conn = DBConnector.getInstance().getConn();
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-
-		pstatement.setString(1, job_name);
-		boolean success_stop = pstatement.execute();   
-		
+    	// Delete from DB
+    	schedService.delete(job_name);
+    	
 		// Actually stop the job
 		JobScheduler.deleteJob(job_name);
 		
 		// Get the jobs
-		List<Schedule> schedList = DBLoader.getSchedules();
+		List<Schedule> schedList = schedService.getAll();
 		
     	String title = "MATTERS: Scheduler";
 		
