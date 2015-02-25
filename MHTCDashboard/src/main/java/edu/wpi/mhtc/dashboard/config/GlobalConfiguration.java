@@ -31,6 +31,7 @@ import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAOImpl;
 import edu.wpi.mhtc.dashboard.pipeline.dao.MetricService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAO;
 import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAOImpl;
+import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserDAO;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserDAOImpl;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
@@ -136,6 +137,10 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Bean StatisticDAO getStatDAO() {
 		return new StatisticDAOImpl();
+	}
+	
+	@Bean StatisticService getStatService() {
+		return new StatisticService();
 	}
 	
 	@Bean UserDAO getUserDAO() {

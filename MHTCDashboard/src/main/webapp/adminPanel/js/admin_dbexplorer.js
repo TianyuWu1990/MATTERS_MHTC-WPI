@@ -45,9 +45,15 @@ $(function() {
 		
 		$('#categoryTable').DataTable({
 			"ajax": {
-				"url": "admin_dbexplorer/getDataByMetric?categoryid="+value,
+				"url": "admin_dbexplorer/getDataByCategory?categoryid="+value,
 				"dataSrc": ""
-			}
+			},
+			"columns": [
+			            {"data" : "stateName"},
+			            {"data" : "metricName"},
+			            {"data" : "value"},
+			            {"data" : "year"}
+			            ]
 		});
 		
 		$('#dbrows').show();

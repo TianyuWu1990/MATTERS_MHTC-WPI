@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class StatisticService {
 	
-	@Autowired StatisticDAO dao;
+	@Autowired private StatisticDAO dao;
 	
 	/**
 	 * Get all statistics by metric

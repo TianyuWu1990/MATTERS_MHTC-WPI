@@ -13,7 +13,7 @@ import edu.wpi.mhtc.dashboard.pipeline.data.Category;
  */
 public class CategoryService {
 	
-	@Autowired CategoryDAO dao;
+	@Autowired private CategoryDAO dao;
 	
 	/**
 	 * Save a newly-created category

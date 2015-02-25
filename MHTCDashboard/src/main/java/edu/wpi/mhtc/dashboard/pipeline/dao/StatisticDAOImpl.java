@@ -14,6 +14,11 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
+/**
+ * Implementation of DAO for Statistics/Data
+ * @author Alex Fortier
+ *
+ */
 public class StatisticDAOImpl implements StatisticDAO {
 	
 	@Autowired
@@ -141,10 +146,38 @@ public class StatisticDAOImpl implements StatisticDAO {
 		return stats;
 	}
 
+	/**
+	 * Return a list of statistics given a cateogry (does not look for subcategories!)
+	 */
 	@Override
 	public List<Statistic> getStatsByCategory(int categoryID) {
-		// TODO Auto-generated method stub
-		return null;
+		PSqlStringMappedJdbcCall<Statistic> call =
+				new PSqlStringMappedJdbcCall<Statistic>(jdbcTemplate)
+				.withSchemaName("mhtc_sch")
+				.withProcedureName("getdatabycategory");
+		
+		call.addDeclaredRowMapper(new PSqlRowMapper<Statistic>() {
+
+			@Override
+			public Statistic mapRow(SqlRowSet rs, int rowNum)
+					throws SQLException {
+				Statistic stat = new Statistic();
+				
+				stat.setMetricName(rs.getString("MetricName"));
+				stat.setStateName(rs.getString("StateName"));
+				stat.setValue(rs.getDouble("Value"));
+				stat.setYear(rs.getInt("Year"));
+				
+				return stat;
+			}
+			
+		});
+		
+		call.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("categoryid", categoryID);
+
+		return call.execute(params);
 	}
 
 }

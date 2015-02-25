@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class MetricService {
 	
-	@Autowired MetricDAO dao;
+	@Autowired private MetricDAO dao;
 	
 	/**
 	 * Insert a metric into the database

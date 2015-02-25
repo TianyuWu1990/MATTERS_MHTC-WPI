@@ -4,21 +4,8 @@ public class Statistic {
 
 	int stateID;
 	String stateName;
-	/**
-	 * @return the stateName
-	 */
-	public String getStateName() {
-		return stateName;
-	}
-
-	/**
-	 * @param stateName the stateName to set
-	 */
-	public void setStateName(String stateName) {
-		this.stateName = stateName;
-	}
-
 	int metricID;
+	String metricName;
 	int year;
 	double value;
 	
@@ -80,4 +67,32 @@ public class Statistic {
 		this.value = value;
 	}
 	
+	/**
+	 * @return the stateName
+	 */
+	public String getStateName() {
+		return stateName;
+	}
+
+	/**
+	 * @param stateName the stateName to set
+	 */
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	/**
+	 * @return the metricName
+	 */
+	public String getMetricName() {
+		return metricName;
+	}
+
+	/**
+	 * @param metricName the metricName to set
+	 */
+	public void setMetricName(String metricName) {
+		this.metricName = metricName;
+	}
+
 }

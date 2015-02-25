@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -47,9 +46,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
-import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAO;
 import edu.wpi.mhtc.dashboard.pipeline.dao.MetricService;
-import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAO;
+import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
+import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
@@ -72,7 +71,7 @@ public class AdminController {
     @Autowired private ServletContext servletContext;
     @Autowired private CategoryService categoryService;
     @Autowired private MetricService metricService;
-    @Autowired private StatisticDAO statDAO;
+    @Autowired private StatisticService statService;
     @Autowired private UserService userService;
     
     public AdminController() {}
@@ -150,15 +149,12 @@ public class AdminController {
     
     @RequestMapping(value = "/admin/getSubCategories", method = RequestMethod.GET)
     public @ResponseBody List<Category> getSubCategories(@RequestParam("categoryid") String categoryid) throws Exception {
-    	
     	return categoryService.getChilrden(Integer.parseInt(categoryid));
     }
     
-    @RequestMapping(value = "/admin_dbexplorer/getDataByMetric", method = RequestMethod.GET)
-    public @ResponseBody List<ArrayList<String>> getDataByMetric(@RequestParam("categoryid") String categoryid) throws Exception {
-    	
-    	List<ArrayList<String>> metricData = DBLoader.getDataByMetric(categoryid);
-    	return metricData;
+    @RequestMapping(value = "/admin_dbexplorer/getDataByCategory", method = RequestMethod.GET)
+    public @ResponseBody List<Statistic> getDataByCategory(@RequestParam("categoryid") String categoryid) throws Exception {
+    	return statService.getStatsByCategory(Integer.parseInt(categoryid));
     }
         
     @RequestMapping(value ="/admin_dbexplorer/getAllMetrics", method = RequestMethod.GET)

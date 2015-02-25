@@ -33,3 +33,32 @@ $BODY$
   ROWS 1000;
 ALTER FUNCTION mhtc_sch.getmetricsbyparent(integer[])
   OWNER TO postgres;
+
+-- Function: mhtc_sch.getdatabycategory(integer)
+
+-- DROP FUNCTION mhtc_sch.getdatabycategory(integer);
+
+CREATE OR REPLACE FUNCTION mhtc_sch.getdatabycategory(IN categoryid integer)
+  RETURNS TABLE("MetricName" character varying, "StateName" character varying, "Year" integer, "Value" double precision) AS
+$BODY$
+BEGIN
+
+    RETURN QUERY
+    SELECT m."Name" MetricName,
+            st."Name" StateName,
+            s."Year",
+            s."Value"
+    FROM mhtc_sch.statistics s
+    INNER JOIN mhtc_sch.states st ON s."StateId" = st."Id"
+    INNER JOIN mhtc_sch.categoriesxmetrics cxm ON cxm."metricId" = s."MetricId"
+    INNER JOIN mhtc_sch.metrics m ON m."Id" = s."MetricId"
+    WHERE cxm."categoryId" = categoryid;
+END;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION mhtc_sch.getdatabycategory(integer)
+  OWNER TO postgres;
+
+
