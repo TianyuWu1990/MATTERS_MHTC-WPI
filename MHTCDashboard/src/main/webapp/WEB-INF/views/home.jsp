@@ -7,11 +7,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
-<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
-<html>
+<!DOCTYPE html>
+
+<html lang="en">
 	<head>
-		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		
 		<!-- Library CSS -->
 		<link href="css/nv.d3.css" rel="stylesheet">
@@ -23,8 +23,13 @@
 			rel='stylesheet' type='text/css'>
 			
 		<!-- Custom CSS -->
+		<link href="css/mesh/base.css" rel="stylesheet">
+		<link href="css/mesh/main.css" rel="stylesheet">
+		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
+		
+		
 		
 		<!-- Library JS -->
 		<script src="js/d3.v3.min.js"></script>
@@ -34,7 +39,6 @@
 		<script src="js/raphael.js"></script> <!-- Dependency for raphael.js -->
 		<script src="js/jquery.usmap.js"></script>
 		
-		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
 		
@@ -47,225 +51,113 @@
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
 		
-		<title>MATTERS: Massachusetts' Technology, Talent and Economy
-			Reporting System</title>
+		<!--[if lt IE 9]
+		<script type="text/javascript">
+			var isLtIE9 = true;
+		</script>
+		<![endif]-->
+		
+		<title>MATTERS</title>
 	
 	</head>
-	<body onLoad="loadFunction()">
-		<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
-			<form action="feedback_post" method="POST" style="margin-bottom: 0px;">
-				<div class="modal-dialog modal-md" style="width:100%">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="myModalLabel">Site Feedback</h4>
-						</div>
-						<div class="modal-body" style="padding: 15 15 15 15;">
-							<div class="input-group">
-								<strong>Your accountname</strong><br /> 
-								${username}
-							</div>
-							
-							<div class="input-group">
-								<strong>Subject</strong><br /> 
-								<input style="height:30px" type="text" name="subject" class="form-control">
-							</div>
+
+	<body>
 	
-							<div class="input-group">
-								<strong>Comments</strong><br />
-								<div class='input-group date' id='run-date-picker'>
-									<textarea class="form-control" name="comments" style="width: 530px; height: 180px;"/></textarea>
-								</div>
-							</div>
-							
-							<div style="margin-bottom: 25px;" align="center">
-	                           <%
-					                ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb",
-					                                    "6LfXmgATAAAAAP_qkRZBcBBqnb8yRuUKMm9LJYSW", false);
-					                out.print(c.createRecaptchaHtml(null, null));
-					            %> 
-		                   </div>
-		
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">
-								<i class="fa fa-times"></i> Close
-							</button>
-							<button type="submit" class="btn btn-primary">
-								<i class="fa fa-envelope"></i> Send
-							</button>
-						</div>
-					</div>
-				</div>
-			</form>
+	<jsp:include page="unifiedHeader.jsp"/>
+
+	<div id="preContentBar"></div>
+
+	<div id="globalErrorDiv" style="display:none;">
+		<div id="globalErrorMsgWrapper">
+			<i class="fa fa-exclamation-triangle fa-2x"></i>
+			<span id="globalErrorMsg">
+			Sorry! Your browser is not currently supported by MATTERS. 
+			
+			<br/><br/>
+			
+			Please upgrade your browser or switch to a supported browser, 
+			such as <a href="http://www.google.com/chrome/">Chrome</a> 
+			or <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>.
+			</span>
 		</div>
-		<div class="navbar">
-			<div class="navbar-inner">
-					<div class="container-fluid">
-						<img class="nav pull-left" src="css/img/MHTC_Logo.jpg" alt="Mass High Technology Council" >
-						
-						<ul class="nav pull-right" id="main-menu">
-							<li id="explore"><a href="#">Explore</a></li>
-							<li id="about"><a>About</a></li>
-							<sec:authorize access="hasRole('ADMIN')">
-	                            	<li id="admin"><a href="admin">Admin Panel</a></li>
-	                        </sec:authorize>
-	                        
-	                        <sec:authorize access="!isAuthenticated()">
-								<li class="dropdown">
-									<a class="dropdown-toggle" id="dLabel" data-toggle="dropdown" data-target="#" href="">
-										<i class="fa fa-user"></i>&nbsp;Login <span class="caret"></span>
-									</a>
-									<div class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="padding: 0px;">
-										<form id="loginForm" method="post" class="signin" action="${pageContext.request.contextPath}/login/">
-						                <fieldset class="textbox">
-						            	<label class="username">
-						                <span>Username or email</span>
-						                <input id="username" name="username" value="" type="text" autocomplete="on">
-						                </label>
-						                
-						                <label class="password">
-						                <span>Password</span>
-						                <input id="password" name="password" value="" type="password">
-						                </label>
-						                </fieldset>
-						                
-						                <input class="submit button" type="submit" value="Login">
-						                <p align="center">
-						               		 <a class="forgot" href="<c:url value="/user/forgot" />">Forgot your password</a>
-						                </p>
-						                <p align="center">
-						                	<a class="register" href="<c:url value="/user/register" />">Register</a>
-						                </p>
-						                </form>
-									</div>
-								</li>
-							</sec:authorize>
-							
-	                        <sec:authorize access="isAuthenticated()">
-	                        	<li id="feedback" onclick="$('#feedbackModal').modal('show');"><a href="#feedback">Feedback</a></li>
-								<li id="logout"><a href="logout/">Logout</a></li>
-							</sec:authorize>
-						</ul>
-						<!-- /.navbar-collapse -->
-					</div>
-					<!-- /.container-fluid -->
-	
-				<div style="background:#7b0020; margin:0px; padding-top: 20px; padding-bottom: 10px;">
-					<p align="center" style="font-size:22px;font-weight:400;"> 
-						MATTERS: Massachusetts Technology, Talent, and Economic Reporting System
-					</p>
-				</div>
-			</div>
-		</div>
-	
-		<div class="container-fluid-full">
+	</div>
+
+	<div class="container-fluid-full" style="z-index: 1;" id="mainContentDiv">
 				<!-- start: left sidebar -->
-				<div id="sidebar-left" class="sidebar">
-					<div class="column">
+				<div id="sidebar-left" class="sidebar open">
+					<div class="column" id="metricSelectionCol">
 						<div class="title">
 							<span>Select Metrics</span>
 						</div>
-						<div class="sidebar-nav">
-							<ul class="nav nav-tabs nav-stacked main-menu">
+						<div class="sidebar-content accordion-menu" id="metricListWrapper">
+							<ul>
 								<li>
-									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> State Profile</span> 
+									<a class="metricHeader" href="#">
+										National Ranking 
 									</a>
-									<ul id="stateMetric" class="listcontent">
-										<li class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox" checked style="display:none"><a style="text-align:right;">Deselect All</a>
-										</li>
-										<c:forEach items="${jv_stats_profile}" var="stat1">
-											<li>
-												<a class="submenu" id="${stat1.metric.id}"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat1.metric.id}" checked> 
-														${stat1.metric.name}
-													</span>
-												</a>
-											</li>
-										</c:forEach>
-									</ul>
-								</li>
-								<li>
-									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> National Ranking</span> 
-									</a>
-									<ul id="nationalProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none" data-toggle="tooltip" title="Click to select/unselect all">
+									<ul id="nationalProfileList" class="metricList">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_national}" var="stat2">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat2.metric.id}" disabled="disabled"> 
-														${stat2.metric.name} 
-													</span>
+												<a class="metricOption" id="${stat2.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat2.metric.name} 
 												</a>
 											</li>
 										</c:forEach>
 									</ul>
 								</li>
 								<li>
-									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> Talent Metrics</span> 
+									<a class="metricHeader" href="#">
+										Talent Metrics 
 									</a>
-									<ul id="talentProfileList" >
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none"><a style="text-align:right;">Select All</a>
+									<ul id="talentProfileList" class="metricList">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_talent}" var="stat3">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat3.metric.id}" disabled="disabled"> 
-														${stat3.metric.name}
-													</span>
+												<a class="metricOption" id="${stat3.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat3.metric.name}
 												</a>
 											</li>
 										</c:forEach>
 									</ul>
 								</li>
 								<li>
-									<a class="dropmenu" href="#">
-										<span class="hidden-tablet"> Cost Metrics</span> 
+									<a class="metricHeader" href="#">
+										Cost Metrics
 									</a>
-									<ul id= "costProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none">
+									<ul id= "costProfileList" class="metricList">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_cost}" var="stat4">
 											<li>
-												<a class="submenu">
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat4.metric.id}" disabled="disabled"> 
-														${stat4.metric.name}
-													</span>
+												<a class="metricOption" id="${stat4.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat4.metric.name}
 												</a>
 											</li>
 										</c:forEach>
 									</ul>
 								</li>
 								<li>
-									<a class="dropmenu" href="#">
-										<span class="hidden-tablet">Economy Metrics </span> 
+									<a class="metricHeader" href="#">
+										Economy Metrics
 									</a>
-									<ul id="economyProfileList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all">
-											<input type="checkbox"  style="display:none">
+									<ul id="economyProfileList" class="metricList">
+										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_economy}" var="stat5">
 											<li>
-												<a class="submenu"> 
-													<span class="hidden-tablet">
-														<input type="checkbox" id="check${stat5.metric.id}" disabled="disabled"> 
-														${stat5.metric.name}
-													</span>
+												<a class="metricOption" id="${stat5.metric.id}"> 
+													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+													${stat5.metric.name}
 												</a>
 											</li>
 										</c:forEach>
@@ -274,57 +166,36 @@
 							</ul>
 						</div>
 					</div>
-					<div class="column">
+					<div class="column" id="stateSelectionCol">
 						<div class="title">
 							<span>Select States</span>
-							<a id="close-sidebar-left" href="#">
-								<i class="fa fa-times fa-2x"></i>
-							</a> 
 						</div>
-						<div class="sidebar-nav">
-							<ul class="nav nav-tabs nav-stacked main-menu">
-								<li>
-									<ul id="stateSelection" class="listcontent" >
-										<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="deselect">
-											<a style="text-align:right;">
-												Deselect All
-											</a>
-										</li>
-										<li>
-											<a class="selectPeerStates" id="${row.id}">
-												<span class="hidden-tablet">
-													<input type="radio" class="checkPeerStates"> Select Peer States
-												</span>
-											</a>
-										</li>
-										<li class="stateFilter">
-											<input type="text" placeholder="Filter states...">
-										</li>
-										<c:forEach items="${jv_all_states}" var="stat">
-											<c:forEach items="${stat.row}" var="row">
-												<li class="stateSelectionOptionWrapper" id="${row.id}">
-													
-															<c:choose>
-											        			<c:when test="${row.id == (21)}">
-											        			<a class="stateSelectionOption selected" id="${row.id}">
-																	<span class="hidden-tablet">
-											        					<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}" checked> 
-											        			</c:when>
-											        			<c:otherwise>
-											        			<a class="stateSelectionOption" id="${row.id}">
-																	<span class="hidden-tablet">
-											        					<input type="checkbox" class="checkState" id="checkState${row.id}" value="${row.id}"> 
-											        				
-											        			</c:otherwise>
-											        		</c:choose>			
-															${row.name} (${row.abbr})
-														</span>
-											        </a>
-												</li>
-											</c:forEach>
-										</c:forEach>	
-									</ul>
+						<div class="sidebar-content single-section">
+							<ul id="stateSelection">
+								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+									<a style="text-align:right;">
+										Select All
+									</a>
 								</li>
+								<li>
+									<a class="selectPeerStates" id="${row.id}">
+										<i class="fa fa-circle"></i>
+										Peer States
+									</a>
+								</li>
+								<li class="stateFilter">
+									<input type="text" placeholder="Filter states...">
+								</li>
+								<c:forEach items="${jv_all_states}" var="stat">
+									<c:forEach items="${stat.row}" var="row">
+										<li class="stateSelectionOptionWrapper" id="${row.id}">
+									       <a class="stateSelectionOption" id="${row.id}"> 			
+									        	<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
+												${row.name} (${row.abbr})
+									        </a>
+										</li>
+									</c:forEach>
+								</c:forEach>	
 							</ul>
 						</div>
 					</div>	
@@ -338,145 +209,188 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<!-- Display none at first b/c metrics menu is open by default --> 
-							<a href="#" id="open-sidebar-left" style="opacity:0; filter: alpha(opacity=0);"> 
-								<i class="fa fa-bars fa-2x"></i>
+							<a href="#" id="toggle-sidebar"> 
+								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
 					
 						<!--  Right side of the pagination header. -->
-						<ul class="nav nav-tabs" id="viz-tabs">					
+						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Table" onclick="as.showMultipleMetricsStatesYears(-1); as.hideGraphTitle();">
-									<i class="fa fa-table fa-2x"></i>
+								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+									<i></i>
 								</a>
 							</li>
 							<li class=" graph-tab " id="line-tab">
-								<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.graphDeployer(0,'line'); as.showGraphTitle();">
-									<i class="fa fa-line-chart fa-2x"></i>
+								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
+									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a href="#bar" data-toggle="tab" title="Bar Chart" onclick="as.graphDeployer(0,'bar'); as.showGraphTitle();"> 
-									<i class="fa fa-bar-chart fa-2x"></i>
+								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Heatmap" onclick="as.showHeatMapGraphReloaded(0,'#mbodyHeatMap',-1); as.showGraphTitle();">
-									<i class="fa fa-picture-o fa-2x"></i>
+								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+									<i></i>
 								</a>
-							</li>
-							<li class="graph-tab" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Excel Data" onclick="as.exportExcelData()">
-								<i class="fa fa-file-excel-o fa-2x"></i></a>
 							</li>
 						</ul>
 					</div>
 					
-
-					<!--  Start Back/Forward Buttons -->
-					<div id="metricCycleButtons" style="display:none;">
-						<table>
-							<tr>
-								<td>
-									<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
-										<i class="fa fa-chevron-left"></i>
-									</button>
-								</td>
-								<td>
-									<div id="MultipleMetricTitle" >
-										Choose a metric from the left menu
+					<div id="viewWrapper">
+						<div id="vizView" style="display: none;">
+	
+							<!--  Start Back/Forward Buttons -->
+							<div id="metricCycleButtons" style="display:none;">
+								<table>
+									<tr>
+										<td>
+											<button class="backButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the previous metric." >
+												<i class="fa fa-chevron-left"></i>
+											</button>
+										</td>
+										<td>
+											<div id="MultipleMetricTitle" >
+												Choose a metric from the left menu
+											</div>
+										</td>
+										<td>
+											<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
+												<i class="fa fa-chevron-right"></i>
+											</button>
+										</td>	
+									</tr>
+								</table>
+							</div>
+							<!--  End Back/Forward Buttons -->	
+							
+							<div class="tab-content">
+								<!-- Line Graph -->
+								<div class="tab-pane fade" id="line">
+									<div class="box-content">
+										<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
+											<svg style="height: 90%;"></svg>
+										</div>
 									</div>
-								</td>
-								<td>
-									<button  class="nextButton" disabled="disabled" style="display:none;" data-toggle="tooltip" title="Display the next metric.">
-										<i class="fa fa-chevron-right"></i>
-									</button>
-								</td>	
-							</tr>
-						</table>
-					</div>
-					
-					<!--  End Back/Forward Buttons -->	
-					<div class="tab-content">
-						<!-- Line Graph -->
-						<div class="tab-pane fade" id="line">
-							<div class="box-content">
-								<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
-									<svg style="height: 90%;"></svg>
+								</div>
+								
+								<!-- Table -->
+								<div class="tab-pane active" id="table">
+									<div class="box-content">
+										<table>
+											<tr>
+												<td id="optionalTableTitle"></td>
+												<td id="timelinetable"></td>
+											</tr>
+											<tr>
+												<td id="mbodyMultipleQuery"></td>
+											</tr>
+										</table>
+										
+										<!-- <div>
+											<button id="excelDownloadBtn" style="display:none;" class="btn btn-success" type="button" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
+												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
+												Download table as Excel spreadsheet
+											</button>
+										</div>-->
+									</div>
+								</div>
+								
+								<!-- Bar Chart -->
+								<div class="tab-pane fade" id="bar">
+									<div class="box-content">
+										<div id="mbodyBar" style="margin-top:20px;"></div>
+									</div>
+								</div>
+								
+								<!-- Heatmap -->		
+								<div class="tab-pane fade" id="heatmaptab">
+									<div class="box-content">			
+										<div id="heatmap-wrapper">
+											<div id="heatmap-timeline"></div>
+											<div id="heatmap-inner-wrapper">
+											
+												<div id="heatmap-details" class="heatmap-infobox">
+													<div class="heatmap-infobox-inner">
+														<div class="heatmap-infobox-title">Details</div>
+														<div class="heatmap-infobox-content" style="overflow: hidden;">
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Top Ranked</div> 
+															<span id="heatmap-generalinfo-first" class="heatmap-detailVal"></span><br/>
+															
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Bottom Ranked</div> 
+															<span id="heatmap-generalinfo-last" class="heatmap-detailVal"></span><br/>
+															
+															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">MA Rank</div>
+															<span id="heatmap-generalinfo-ma" class="heatmap-detailVal"></span>
+														</div>
+													</div>
+												</div>
+												
+												<div id="heatmap-actual"></div>
+												
+												<div id="heatmap-controls" class="heatmap-infobox">
+													<div class="heatmap-infobox-inner">
+														<div class="heatmap-infobox-title">Legend</div>
+														<div id="heatmap-legend-legend" class="heatmap-infobox-content">
+														
+														</div>
+													</div>
+												</div>
+												<div id="heatmap-tooltip" style="display: none;">
+													<span id="heatmap-specificDetails-name"></span>
+													
+													<div class="heatmap-detailTitle">Rank</div>
+													<span id="heatmap-specificDetails-rank" class="heatmap-detailVal"></span><br/>
+													
+													<div class="heatmap-detailTitle">Value</div>
+													<span id="heatmap-specificDetails-value" class="heatmap-detailVal"></span><br/>
+													
+													<div id="heatmap-specificDetails-peer" style="font-style:italic; padding-left: 10px; padding-top: 5px; color: #7b0020;">Peer State</div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 						
-						<!-- Table -->
-						<div class="tab-pane active" id="table">
-							<div class="box-content">
-								<table>
-									<tr>
-										<td id="timelinetable"></td>
-									</tr>
-									<tr>
-										<td class="modal-body" id="mbodyMultipleQuery"></td>
-									</tr>
-								</table>
+						<!-- Error Reporting -->
+						<div id="errorView" style="display: none;">				
+							<div id="errorMsgWrapper">
+								<i class="fa fa-exclamation-triangle fa-2x"></i>
+								<span id="errorMsg"></span>
 							</div>
 						</div>
+						<!-- End Error Reporting -->	
 						
-						<!-- Bar Chart -->
-						<div class="tab-pane fade" id="bar">
-							<div class="box-content">
-								<div id="mbodyBar" style="margin-right:100px; style="margin-top:20px;"></div>
-							</div>
-						</div>
-						
-						<!-- Heatmap -->		
-						<div class="tab-pane fade" id="heatmaptab">
-							<div class="box-content">			
-								<table style="width: 100%;">
-									<tr>
-										<td align="left" nowrap="true">
-											<table align="center">
-												<tr>
-													<td nowrap="true"><h4 id="modal-title">Timeline:&nbsp;&nbsp;</h4></td>
-													<td nowrap="true"><div id="timeline"></div></td>
-													<td style="padding-left: 40px">
-														<button type="button" id="playbuttonanimation">Play</button>
-														<button type="button" id="stopbuttonanimation" disabled="true">Stop</button>
-													</td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-								</table>
-								<div class="row">
-		    						<div class="span10" >
-		    							<div id ="mbodyHeatMap" style=""></div>
-		    						</div>
-		    						<div class="span2" id="verticalheatmapmeter"></div>
-		    					</div>
-		    							
+						<div id="startupMsg">
+							<div id="startupMsgAct"><b>
+							Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
+							
+							To start, please select metrics and states from the menu to the left.<br/><br/><br/>
+				 			<div>
+				 			Use the buttons in the red bar above to view your selection in different ways.
+				 			</div>
 							</div>
 						</div>
 					</div>
-					<!-- Error Reporting -->
-					<div id="errorView" style="display:none;">
-						
-						<div id="errorMsgWrapper">
-							<i class="fa fa-exclamation-triangle fa-2x"></i>
-							<span id="errorMsg"></span>
-						</div>
-					</div>
-					<!-- End Error Reporting -->	
 				</div>		
 		</div>
 		<!-- end: Content -->
-		
-		<footer>
-				<div>
-				&copy; 2014 Worcester Polytechnic Institute. All rights reserved.
-						Sponsored by Mass High Technology Council
-				</div>	
-		</footer>
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		<div class="site-info container">
+			<p class="copy">
+				2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
+				Sponsored by Mass High Technology Council
+			</p>
+
+		</div>
+		<!-- .site-info -->
+	</footer>
+	<!-- #colophon -->
 
 	<%
 		/*<div class="modal fade in" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -518,7 +432,7 @@
 		 <div class="modal-backdrop fade in"></div>
 		 */
 	%>
-		<script src="js/load.js"></script>
+		<script src="js/load.js"></script>	
 	</body>
 </html>
 

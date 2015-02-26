@@ -4,9 +4,6 @@
  */
 package edu.wpi.mhtc.model.Data;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
 
 public class Metric
 {
@@ -20,9 +17,9 @@ public class Metric
 	
     private final String type;
     private final String trendType;
-    private final boolean tabbed;
+    private final String desc;
 	
-	public Metric(int id, String name, int binId, String binName, String type, String trendType, String urlFrom, String sourceName, boolean tabbed)
+	public Metric(int id, String name, int binId, String binName, String type, String trendType, String urlFrom, String sourceName, String desc)
 	{
 	    this.id = id;
 		this.name = name;
@@ -30,14 +27,18 @@ public class Metric
 		this.sourceName = sourceName;
 		this.binName = binName;
 		this.binId = binId;
-		this.tabbed = tabbed;
 		this.type = type;
 		this.trendType = trendType;
+		this.desc = desc+"\n Source: "+urlFrom;
 		
 	}
 	
 	public String getName() {
 		return name;
+	}
+	
+	public String getDesc(){
+		return desc;
 	}
 
 	public String getUrlFrom() {
@@ -56,16 +57,6 @@ public class Metric
 	    return id;
 	}
 	
-	public boolean getTabbed() {
-	    return tabbed;
-	}
-	
-	public String getTabString() {
-	    if (tabbed)
-	        return "tabbed_metric";
-	    else
-	        return "";
-	}
     public String getType() {
         return type;
     }

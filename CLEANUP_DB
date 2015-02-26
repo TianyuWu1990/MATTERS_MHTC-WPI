@@ -1,0 +1,165 @@
+--hide unwanted metrics
+
+--Test Metric
+update mhtc_sch.metrics set "Visible" = false where "Id" = 99;
+
+--student performance math - Standard error
+update mhtc_sch.metrics set "Visible" = false where "Id" = 108;
+update mhtc_sch.metrics set "Visible" = false where "Id" = 109;
+update mhtc_sch.metrics set "Visible" = false where "Id" = 110;
+update mhtc_sch.metrics set "Visible" = false where "Id" = 111;
+
+--High Tech Employment Rank
+update mhtc_sch.metrics set "Visible" = false where "Id" = 87;
+
+--degrees in workforce rank
+update mhtc_sch.metrics set "Visible" = false where "Id" = 90;
+
+-- State Tax Cost on Business: Mature Firm Tax Cost
+update mhtc_sch.metrics set "Visible" = false where "Id" = 84;
+
+-- Cost of Doing Business
+update mhtc_sch.metrics set "Visible" = false where "Id" = 86;
+
+--other doctoral degrees
+update mhtc_sch.metrics set "Visible" = false where "Id"= 67;
+update mhtc_sch.metrics set "Visible" = false where "Id"= 66;
+
+--show bachelor's degree in workforce metric under talent
+
+update mhtc_sch.metrics set "Visible" = true where "Id" = 89;
+update mhtc_sch.categories set "ParentId" = 20 where "Id" = 28;
+
+
+----------------------assign parentId TALENT----------------------------------
+
+--student performance
+update mhtc_sch.categories set "ParentId" = 20 where "Id" = 49;
+
+--STEM Degrees
+update mhtc_sch.categories set "ParentId" = 20 where "Id" = 50;
+
+
+
+
+--------------------assign parentId RANKING-----------------------------------
+
+--State Business tax climate
+--set all to same subcategory 24 = State Business Tax Climate
+
+insert into mhtc_sch.categoriesxmetrics values (24, 91);
+insert into mhtc_sch.categoriesxmetrics values (24, 92);
+insert into mhtc_sch.categoriesxmetrics values (24, 93);
+insert into mhtc_sch.categoriesxmetrics values (24, 94);
+insert into mhtc_sch.categoriesxmetrics values (24, 95);
+--set parent category 
+update mhtc_sch.categories set "ParentId" = 21 where "Id" = 24;
+
+
+
+--top states for business
+--make all same subcategory 23 = Top States for Business
+
+insert into mhtc_sch.categoriesxmetrics values (23, 25);
+insert into mhtc_sch.categoriesxmetrics values (23, 27);
+insert into mhtc_sch.categoriesxmetrics values (23, 28);
+insert into mhtc_sch.categoriesxmetrics values (23, 29);
+insert into mhtc_sch.categoriesxmetrics values (23, 30);
+insert into mhtc_sch.categoriesxmetrics values (23, 31);
+insert into mhtc_sch.categoriesxmetrics values (23, 32);
+insert into mhtc_sch.categoriesxmetrics values (23, 33);
+insert into mhtc_sch.categoriesxmetrics values (23, 34);
+
+--set parent category
+update mhtc_sch.categories set "ParentId" = 21 where "Id" = 23;
+
+
+
+--technology and science index 
+--all are in same subcategory 22 = State Technology and Science Index
+update mhtc_sch.categories set "ParentId" = 21 where "Id" = 22;
+
+
+
+--old rankings (no longer used) set parent category
+--catId 25 = "State Tax Cost on Business"
+--catId 26 = "Cost of Doing Business"
+
+
+update mhtc_sch.categories set "ParentId" = 21 where "Id" = 25;
+update mhtc_sch.categories set "ParentId" = 21 where "Id" = 26;
+
+
+
+-----------------------assign parentId COST-------------------------------------
+
+--Tax Burden per Capita
+update mhtc_sch.categories set "ParentId" = 37 where "Id" = 30;
+
+--Personal Income Tax Burden
+update mhtc_sch.categories set "ParentId" = 37 where "Id" = 31;
+
+
+
+
+-----------------------assign parentId economy----------------------------------
+
+--Total Employment
+update mhtc_sch.categories set "ParentId" = 29 where "Id" = 2;
+
+--High Tech Employment
+update mhtc_sch.categories set "ParentId" = 29 where "Id" = 5;
+
+
+
+--------------------delete duplicate categories-------------------------
+
+--dup electric
+delete from mhtc_sch.categories where "Id" = 46;
+
+--remove old categories for Top States for Business
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 11;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 12;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 13;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 14;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 15;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 16;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 17;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 18;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 19;
+
+delete from mhtc_sch.categories where "Id" = 11;
+delete from mhtc_sch.categories where "Id" = 12;
+delete from mhtc_sch.categories where "Id" = 13;
+delete from mhtc_sch.categories where "Id" = 14;
+delete from mhtc_sch.categories where "Id" = 15;
+delete from mhtc_sch.categories where "Id" = 16;
+delete from mhtc_sch.categories where "Id" = 17;
+delete from mhtc_sch.categories where "Id" = 18;
+delete from mhtc_sch.categories where "Id" = 19;
+
+
+--remove old categories for State Business Tax Climate
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 32;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 33;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 34;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 35;
+delete from mhtc_sch.categoriesxmetrics where "categoryId" = 36;
+
+delete from mhtc_sch.categories where "Id" = 32;
+delete from mhtc_sch.categories where "Id" = 33;
+delete from mhtc_sch.categories where "Id" = 34;
+delete from mhtc_sch.categories where "Id" = 35;
+delete from mhtc_sch.categories where "Id" = 36;
+
+
+---------------------------------fix names with ampersand --------------------------------
+
+--update mhtc_sch.metrics set "Name" = 'Risk Capital and Entrepreneurial Infrastructure' where "Id" = 79;
+
+--update mhtc_sch.metrics set "Name" = 'Technology and Science Work Force' where "Id" = 80;
+
+--update mhtc_sch.metrics set "Name" = 'Top States for Business: Technology and Innovation' where "Id" = 34;
+
+--update mhtc_sch.metrics set "Name" = 'Technology Concentration and Dynamism' where "Id" = 81; 
+

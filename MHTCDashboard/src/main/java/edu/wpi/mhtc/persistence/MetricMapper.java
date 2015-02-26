@@ -75,7 +75,7 @@ public class MetricMapper
 			try {
 				dbMetric = this.getMetricByID(Integer.parseInt(metric));
 			}
-			catch (NumberFormatException e) {}
+			catch (NumberFormatException e) {/*not a number*/}
 		
 		return dbMetric;
 	}

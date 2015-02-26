@@ -149,7 +149,14 @@ public class UnifiedParser implements IParser {
 							switch (cell.getCellType()) {
 
 							case Cell.CELL_TYPE_NUMERIC:
-								value = String.valueOf(cell.getNumericCellValue());
+								Double val = cell.getNumericCellValue();
+								if(val < 1 && val >0){
+									value = String.valueOf(val);
+								}
+								else{
+									//use long to parse values that possibly use exponential notation
+									value = String.valueOf(val.longValue());
+								}
 								break;
 
 							case Cell.CELL_TYPE_STRING:
@@ -173,7 +180,7 @@ public class UnifiedParser implements IParser {
 										System.out.println("bad data "+value+", line skipped");
 										break;
 									}
-									metric.setValue(Float.parseFloat(cleanedValue));
+									metric.setValue(Double.parseDouble(cleanedValue));
 									line.addMetric(metric);
 									if(line.isValid())
 										lines.add(line);

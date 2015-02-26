@@ -1,0 +1,783 @@
+body{
+/* 	overflow-x: hidden; */
+}
+
+h1, h2{
+	line-height: 120%;
+}
+
+a:hover{
+	text-decoration: none !important;
+	opacity: .7;
+}
+
+/*============================================================= SUPER HEADER */
+
+.site-header {
+}
+.super-header {
+  height: 45px;
+}
+.super-header-inner {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 2px;
+}
+.super-header-inner > div {
+  float: left;
+}
+.some-nav {
+	margin-top: 14px;
+}
+/* =========================== STANDARD VARIABLE IMPLEMENTATIONS  ========================= */
+/* >>>>>>>>>>>>>>>>>>>>> FONT >>>>>>>>>>>>>>>>>>> */
+@font-face {
+  font-family: Gotham;
+    src: url('./Gotham-Light.otf') format('opentype');
+    font-weight: 200;
+ }
+ @font-face {
+  font-family: Gotham;
+    src: url('./Gotham-Book.otf') format('opentype');
+    font-weight: 300;
+ } 
+  @font-face {
+  font-family: Gotham;
+    src: url('./Gotham-Bold.otf') format('opentype');
+    font-weight: bold;
+ }
+ 
+/* ========================== NAVIGATION ==================== */ 
+
+.head-sponsors{
+	position: absolute;
+	right: 137px;
+	top: 32px;
+}
+
+.menu{
+	display: none;
+	position: absolute;
+	top: -45px;
+	cursor: pointer;
+
+}
+
+.menu-close{
+	height: 20px;
+	width: 100%;
+	background-image: url(../img/x-out.png);
+	background-repeat: no-repeat;
+	background-position: 135px center;
+}
+
+.menu-toggle{
+	width: 65px;
+	height: 65px;
+	border-radius: 4px;
+	background-image: url(../img/menu-toggle.jpg);
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 2px solid #9c9c9c;
+	font-size: 0px;
+	position: absolute;
+	right: 25px;
+	top: -25px;
+	cursor: pointer;
+}
+ 
+/* ========================= CONTAINER ==================== */
+.container{
+	width: 1140px;
+	margin: 0 auto;
+	position: relative;
+	padding: 0 25px;
+}
+
+section{
+	width: 100%;
+}
+
+ 
+/* ============================== MAP-SECTION ======================= */
+
+/*
+______STATE COLOR FILL LEGEND______
+
+DARK RED ---> #510417
+PINK ----> #982945
+___________________________________
+*/
+
+
+.map-sect{
+	background-color: #050404;
+/* 	height: 560px; */
+	border-top: solid 8px #413e3d;
+	position: relative;
+}
+
+.map-container h1{
+	font-size: 30px;
+	width: 100%;
+	text-align: center;
+	color: white;
+	margin: 30px 0;
+}
+
+.map-container h2{
+	font-size: 16px;
+	width: 100%;
+	text-align: center;
+	color: white;
+	opacity: 0.5;
+}
+
+.map-area{
+	width: 100%;
+	max-width: 847px;
+	height: 560px;
+	margin: 0 auto;
+}
+
+.map-btn{
+	color: white;
+	font-size: 15px;
+	padding: 15px 15px 15px 45px;
+	border: 2px solid white;
+	border-radius: 3px;
+	position: absolute;
+	bottom: 20px;
+	background-size: 25px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	-webkit-transition: all .2s ease-in-out;
+	-moz-transition: all .2s ease-in-out;
+	-ms-transition: all .2s ease-in-out;
+	-o-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+
+	
+}
+
+
+.map-btn:hover{
+	border: 2px solid rgba(225,225,225,.5);
+	-webkit-transition: all .2s ease-in-out;
+	-moz-transition: all .2s ease-in-out;
+	-ms-transition: all .2s ease-in-out;
+	-o-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+	color: white;
+	
+	
+}
+
+.db-btn{
+	left: 25px;
+	background-image: url(../img/db-btn.png);
+	
+}
+
+.state{
+	right: 25px;
+	background-image: url(../img/state-btn.png);
+
+}
+
+
+
+
+/* ============================== QUOTE SECTION ======================= */
+
+.quote-container{
+	width: 870px;
+	padding: 40px 0;
+	
+}
+
+.quote-container p{
+	text-align: center;
+}
+
+.quote-container p:first-child{
+	font-size: 16px;
+	
+}
+
+.quote-credit{
+	font-size: 15px;
+	color: #680017 ;
+	padding-top:10px;
+	font-style: italic;
+}
+
+
+/* ============================== BUCKET SECTION ======================= */
+
+.bucket-sect{
+	background-color: #680017;
+	padding: 25px 0;
+	overflow: hidden;
+}
+
+.show{
+	opacity: 1 !important;
+/*
+    -webkit-transform: none;
+            transform: none;
+*/
+
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	transition: all .5s ease;
+}
+
+
+.bucket{
+/*
+	width: 31%;
+	float: left;
+*/
+	-webkit-transition: all .5s ease;
+	-moz-transition: all .5s ease;
+	-ms-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	transition: all .5s ease;
+	background-image: url(../img/right-bucket-border.png);
+	background-repeat: no-repeat;
+	background-position: top right;
+	opacity: 0;
+/*
+    -moz-transform: translate3d(0, 100%, 0);
+    -ms-transform: translate3d(0, 100%, 0);
+    -webkit-transform: translate3d(0, 100%, 0);
+            transform: translate3d(0, 100%, 0);
+*/
+
+}
+
+.bucket-contianer{
+ display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
+.bucket-center{
+	margin: 0 25px;
+}
+
+.bucket-title{
+	color: white;
+	padding: 20px 30px;
+	font-size: 25px;
+	background-image: url(../img/left-bucket-border.png);
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+
+.bucket-content{
+	padding: 30px 30px 25px 30px;
+	background-color: white;
+	border-radius: 0px 0px 3px 3px;
+
+}
+
+
+.bucket-content p{
+	font-size: 14px;
+	line-height: 1.3em;
+	padding-bottom: 15px;
+	border-bottom: 1px solid #d7d7d7;
+	
+}
+
+.view-more{
+	text-transform: uppercase;
+	color: #e8002d;
+	margin-top: 15px;
+	display: block;
+	font-size: 15px;
+	
+}
+
+.view-more:hover{
+	color: #e8002d;
+}
+
+/* ============================== PARTNERS SECTION ======================= */
+
+.partner-container{
+	padding: 50px 0;
+}
+
+.partner-container h2{
+	font-size: 30px;
+	width: 100%;
+	text-align: center;
+	padding-bottom: 30px;
+	
+}
+
+.partner-container{
+	text-align: center; 
+}
+
+.logo-wrap{
+	display: inline-block;
+	width: 19%;	
+}
+
+.logo-contain{
+	padding: 15px;
+	height: 75px;
+	width: 194px;
+	display: table-cell;
+	position: relative;
+	vertical-align: middle;
+	text-align: center;
+}
+
+
+
+/* ============================== FOOTER SECTION ======================= */
+.site-footer{
+	padding: 18px 0;
+	background-color: black;
+/*
+	position: absolute;
+	bottom: 0px;
+*/
+}
+
+.site-footer p{
+	color: white;
+	font-size: 14px;
+}
+
+
+/* ================================ STATE PROFILES ====================== */
+
+.site-main{
+	border-top: 10px solid #393938;
+	
+}
+
+.main-content-wrap{
+	border-top: 50px solid #080606;
+}
+
+.state-profile-title{
+	padding: 55px 0 50px 0px;
+	text-align: center;
+	font-family: 'Muli', sans-serif;
+	font-size: 30px;
+	color: #680017;
+/* 	font-weight: bold; */
+}
+
+
+.index{
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+
+}
+
+.rank, .data, .status{
+	width: 100%;
+}
+
+.year{
+	width: 110%;
+}
+
+.ranking-header .source{
+	margin-left: 15px !important;
+}
+
+
+
+.survey, .source{
+	width: 200%;
+}
+
+.index div{
+	text-align: center;
+	margin: 5px 0;
+	
+}
+
+.survey, .source{
+	text-align: left !important;
+}
+
+.status{
+	width: auto;
+	margin: 0 auto;
+}
+
+.status div{
+	margin-left: 15px;
+}
+
+.key{
+	margin-bottom: 30px;
+}
+
+.key div{
+	margin-right: 10px;
+	
+}
+
+.key span{
+	font-size: 15px;
+	color: #e8002d;
+	margin-right: 20px;
+	line-height: 28px;
+}
+
+.state-strength, .state-weakness, .state-medium {
+	width: 15px;
+	height: 15px;
+}
+
+.rank{
+	width: 22%;
+}
+
+.state-strength{
+/* 	background-color: #2f4e24; */
+}
+
+.state-weakness{
+/* 	background-color: #880e25; */
+}
+
+.state-medium{
+/* 	background-color: #FFFFE0; */
+}
+
+h2{
+	font-size: 25px;
+	font-weight: bold;
+	color: #010101;
+}
+
+.state-ranking{
+	border: none;
+	height: 1px;
+	background-color: #d7d7d7;
+	margin: 15px 0;
+}
+
+.ranking-header > div{
+	color: #e8002d;
+	font-size: 15px;
+	
+}
+
+.note{
+	padding-top: 0px;
+	padding-bottom: 20px;
+	font-size: 12px !important;
+}
+
+.main-content-wrap{
+	min-height: 800px;
+}
+
+
+/* ========================================= INTERIOR ======================= */
+
+.interior-container{
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	margin-top: 50px !important;
+	
+}
+
+.copy-block{
+	width: 800px;
+	padding-right: 30px;
+
+}
+
+.copy-block h1{
+	margin-bottom: 35px;
+	color: #680017;
+	font-size: 30px;
+
+}
+
+.copy-block h2{
+	margin-bottom: 25px;
+	font-size: 25px;
+	font-weight: normal;
+}
+
+/* =================== SIDEBAR ============ */
+
+.sidebar{
+	width: 345px;
+	border-left: 1px solid #d7d7d7;
+	padding-left: 30px;
+}
+
+.side-heading{
+	margin-bottom: 15px;
+	font-size: 20px;
+}
+
+.side-bucket{
+	margin-bottom: 30px;
+}
+
+
+/*
+==========================================================================
+============================= START MEDIA QUERIES ========================
+==========================================================================
+*/
+
+
+@media only screen and (max-width: 1140px){
+
+/* ========================= CONTAINER ==================== */
+.container{
+	width: 92%;
+	margin: 0 auto;
+	padding-left: 0px;
+	padding-right: 0px;
+}	
+
+.site-branding{
+	padding-left: 25px;
+}
+
+/* ============================== MAP-SECTION ======================= */
+.map-area{
+	width: 100%;
+}
+
+
+
+/* ============================== BUCKET SECTION ======================= */
+
+.dt-only{
+	display: none;
+}
+
+
+/* ================================= PARTNER SECTION ==================== */
+
+.logo-wrap{
+	width: auto;
+}
+
+}
+
+@media only screen and (max-width: 690px){
+/* ======================== HEADER ================================= */
+.menu-toggle{
+	top: -55px;
+}
+
+.menu{
+	top: -92px;
+}
+
+.head-sponsors{
+	right: auto;
+	position: relative;
+	top: 46px;
+}
+
+.head-sponsors img{
+	width: 204px;
+}
+
+.header-inner{
+	height: 140px;
+}
+
+/* ============================== BUCKET SECTION ======================= */
+
+.bucket-contianer{
+	display: block;
+}
+
+.bucket-center{
+	margin: 30px 0;
+}
+
+/* =============================== STATES ============================== */
+
+.survey{
+	margin-right: 15px !important;
+}
+
+.rank{
+	width: 38%;
+}
+
+.year{
+	width: 100%;
+}
+
+.status{
+	width: 50%;
+}
+
+
+/* ================================ INTERIOR ============================== */
+
+.interior-container{
+	display: block;
+}
+
+.sidebar{
+	margin-top: 50px;
+	padding-left: 0px;
+	width: 100%;
+	border: none;
+
+}
+
+.copy-block{
+	width: 100%;
+	padding-right: 0px;
+}
+
+.side-bucket{
+	margin-bottom: 30px;
+	width: 50%;
+	float: left;
+	box-sizing: border-box;
+}
+
+.side-bucket:nth-child(odd){
+	padding-right: 10px;
+}
+
+.side-bucket:nth-child(even){
+	padding-left: 10px;
+}
+	
+}
+
+@media only screen and (max-width: 560px){
+
+
+/* ============================== MAP-SECTION ======================= */
+
+.map-sect{
+	height: auto;
+}
+
+.map-area{
+	height: 370px;
+	background-position: center 25px;
+}
+
+.map-btn{
+	position: relative;
+	left: auto;
+	right: auto;
+	display: block;
+
+}
+
+.state{
+	margin-top: 20px;
+}
+
+}
+
+@media only screen and (max-width: 450px){
+
+/* ============================== MAP-SECTION ======================= */
+
+.map-area{
+	height: 300px;
+	background-position: center 25px;
+}
+
+/* =============================== STATES ============================== */
+.rank, .data, .status, .year{
+	width: 100%;
+}
+
+/*
+.state-profile-title{
+	max-width: 250px;
+	margin: 0 auto;
+}
+*/
+
+/* ============================= INTERIOR ================================ */
+
+
+.side-bucket{
+	width: 100%;
+}
+
+.side-bucket:nth-child(odd){
+	padding-right: 0px;
+}
+
+.side-bucket:nth-child(even){
+	padding-left: 0px;
+}
+
+	
+}
+
+/* =========================== PRINTABLE PAGES.  ========================= */
+
+@media print{
+.main-content-wrap, .site-main{
+	border: none;
+}
+	
+.container{
+	width: 900px;
+}
+	
+.menu-toggle, .site-header{
+	display: none;
+}
+	
+.state-profile-title{
+	padding-top: 15px;
+}
+	
+.site-footer{
+	position: fixed !important;
+	bottom: 0px !important;
+}
+	
+.state-strength, .state-weakness, .state-medium {
+	-webkit-print-color-adjust: exact;
+}
+}
+
+
+
+
+
+
+
+
+
+

@@ -47,7 +47,7 @@ public class Mailer {
 		 
 		message.setFrom(fromAddress);
 		message.setTo(toAddress);
-		message.setSubject("[Feedback] " + subject);
+		message.setSubject(subject);
 		message.setText(comments);
 		mailSender.send(message);		
 	}
