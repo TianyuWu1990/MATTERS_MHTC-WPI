@@ -72,7 +72,7 @@
 											<td>State Tech and Science Index</td>
 											<td><a
 												href="http://statetechandscience.org/stateTech.html">
-													Milken Instiute Science and Technology Index</a></td>
+													Milken Institute Science and Technology Index</a></td>
 											<td>2004, 2008, 2010, 2012, 2014</td>
 											<td>Bi-annual</td>
 										<tr>
