@@ -198,7 +198,7 @@
 			 <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.caliper.com/">
-					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="40" height="40" />
+					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="35" height="35" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
