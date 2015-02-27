@@ -15,17 +15,7 @@ import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
 
 public class DataPipeline {
 	
-	public static void download(String targeturl, String filename, String catId) throws Exception{
-		URLDownload down = new URLDownload();
-		
-		// Download the file
-		down.HTTPDownload(targeturl, filename);
-		
-		// Import the file into the database.
-		run(new File(filename), catId);
-	}
-
-	public static void run(File file, String catID) throws Exception {
+	public static void run(File file, String catID, boolean overwrite) throws Exception {
 		
 		Category category = new Category(Integer.parseInt(catID));
 
@@ -38,7 +28,7 @@ public class DataPipeline {
 			System.out.println(l.getStateID()+" "+ l.getMetricValue()+ " " + l.getYear());
 		}
 		
-		TransactionManager.insertData(parser.getLines());
+		TransactionManager.insertData(parser.getLines(), overwrite);
 	}
 	
 }

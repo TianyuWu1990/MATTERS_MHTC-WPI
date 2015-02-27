@@ -4,6 +4,7 @@
  */
 package edu.wpi.mhtc.dashboard.pipeline.db;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -62,7 +63,6 @@ public class DBLoader {
 	 * key is the metric name, value is the metric ID
 	 */
 	/**
-	 * Will change Category ID string to int
 	 * @param catID
 	 * @returnA Map of metrics associated with this category in the database.
 	 * The key is the metric name, value is the metric ID
@@ -213,6 +213,48 @@ public class DBLoader {
 		
 		return table;
 	}
+	
+	/**
+	 * Retrieves all metrics under parent categories
+	 * @param parent one or more parent categories
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ResultSet getMetricsByParent(Integer... parentIds) throws SQLException 
+	{
+		HashMap<String, String> table = new HashMap<String, String>();
+		
+		Connection conn = DBConnector.getInstance().getConn();
+		
+		String sql = "select * from mhtc_sch.getmetricsbyparent(?);";
+		PreparedStatement pstatement = conn.prepareStatement(sql);
+//		StringBuffer sb = new StringBuffer("\'{");
+//		for(int i : parentIds){
+//			sb.append(i);
+//			sb.append(",");
+//		}
+//		sb.append("}\'::int[]");
+//		pstatement.setString(1, sb.toString());
+		
+		Array ids = conn.createArrayOf("integer", parentIds);
+		
+		
+		pstatement.setArray(1, ids);
+		return pstatement.executeQuery();
+//		ResultSet rs = pstatement.executeQuery();
+//		Array names = rs.getArray("Name");
+//		
+//		return names;
+//		while (rs.next()) 
+//		{
+//			String categoryID = rs.getString("Id").toLowerCase();
+//			String categoryName = rs.getString("Name");
+//			table.put(categoryName, categoryID);
+//		}
+//		
+//		return table;
+	}
+	
 
 	public static List<Schedule> getSchedules() throws SQLException, ParseException {
 		List<Schedule> schedLlist = new ArrayList<Schedule>();

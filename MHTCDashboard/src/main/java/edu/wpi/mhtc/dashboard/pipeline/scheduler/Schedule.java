@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -82,13 +83,16 @@ public class Schedule {
 		String filename = "";
 		while (rs.next()) {
 			filename = rs.getString("path");
+			
 		}
-		return filename.substring(filename.lastIndexOf("\\")+1,filename.lastIndexOf('.')-4);		
+		File file = new File(filename);
+		filename = file.getName();
+		return filename.substring(0,filename.lastIndexOf('.')-4);		
 	}
 	
 	public String getSched_datePassed() throws ParseException, SQLException {
 		Date today = new Date();
-		DateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss", Locale.ENGLISH);
+		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
 		Date runDate = format.parse(sched_date);
 		
 		if (today.after(runDate)) {
@@ -96,7 +100,7 @@ public class Schedule {
 			String sql = "SELECT * FROM mhtc_sch.logs WHERE message = 'Pipeline has finished' AND job = ?";
 			
 			PreparedStatement pstatement = conn.prepareStatement(sql);
-			pstatement.setString(1, this.sched_job);
+			pstatement.setString(1, this.getTalendJob());
 			ResultSet rs = pstatement.executeQuery();
 			
 			// Loop through the record

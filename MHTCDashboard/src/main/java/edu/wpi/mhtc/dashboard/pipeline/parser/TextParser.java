@@ -149,7 +149,7 @@ public class TextParser implements IParser {
 					System.out.println("Could not parse line: " + record.getRecordNumber());
 					System.out.println(record.toString());
 				}
-				m.setValue(Float.parseFloat(value)); 
+				m.setValue(Double.parseDouble(value)); 
 				
 				line.addMetric(m);
 				lines.add(line);

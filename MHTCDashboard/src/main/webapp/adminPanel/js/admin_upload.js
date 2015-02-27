@@ -74,7 +74,28 @@ $(function() {
 		});
 		
 
-	})
+	});
+	
+	$("input[name='overwrite']").click(function() {
+		
+		var thisCheck = $(this);
+		
+		if (thisCheck.is(":checked")) {
+			bootbox.dialog({
+				message: "You've selected to <b>overwrite</b> the data that already exists in the database for each metric, year and state tuple with" +
+						" the data in the manually uploaded file you selected.<br /><br /> If you are unsure if you want to do this, please confirm via the <b>" +
+						"Database Explorer</b>.",
+				title: "<i class='fa fa-exclamation-triangle fa-fw'></i> Hold on a second! Are you sure you want to do that?",
+				buttons: {
+					main: {
+						label: "OK",
+						classname: "btn-primary"
+					}
+				}
+			});
+		}
+		
+	});
 	
 	$('#uploadData').click(function() {
 		var $fileInput = $('input[type="file"]');

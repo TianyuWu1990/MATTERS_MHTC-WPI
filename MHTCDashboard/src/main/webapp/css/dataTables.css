@@ -7,7 +7,8 @@ table.dataTable {
   clear: both;
   border-collapse: separate;
   border-spacing: 0;
-  border:2px solid #ffd9d9;
+  border:2px solid #EEEEEE;
+  color: #000000
   /*
    * Header and footer styles
    */
@@ -16,13 +17,42 @@ table.dataTable {
    */
 }
 table.dataTable tbody tr:nth-child(even) {
-   background-color: #ffd9d9;
 }
 table.dataTable thead th,
 table.dataTable tfoot th {
   font-weight: bold;
+   position: relative;
 }
 
+
+table.dataTable thead th.sorting:before,
+table.dataTable thead th.sorting_asc:before,
+table.dataTable thead th.sorting_desc:before {
+    position: absolute;
+    top: 4px;
+    left: 0px;
+    display: block;
+    font-family: FontAwesome;
+    color: #808080;
+}
+
+table.dataTable thead th.sorting:before {
+    content: "\f0dc";
+}
+table.dataTable thead th.sorting_asc:before {
+    content: "\f0de";
+}
+table.dataTable thead th.sorting_desc:before {
+    content: "\f0dd";
+}
+
+
+table.dataTable thead .sorting_asc,
+table.dataTable thead .sorting_desc,
+table.dataTable thead .sorting {
+  cursor: pointer;
+  *cursor: hand;
+}
 table.dataTable thead th,
 table.dataTable thead td {
  padding: 6px 10px;
@@ -37,37 +67,11 @@ table.dataTable tfoot td {
   padding: 6px 10px;
   /*border-top: 1px solid #111111;*/
 }
-table.dataTable thead .sorting_asc,
-table.dataTable thead .sorting_desc,
-table.dataTable thead .sorting {
-  cursor: pointer;
-  *cursor: hand;
-}
-table.dataTable thead .sorting {
-  background: url("../images/sort_both.png") no-repeat center right;
-  background-color:#ffd9d9;
-}
-table.dataTable thead .sorting_asc {
-  background: url("../images/sort_asc.png") no-repeat center right;
-  background-color:#ffd9d9;
-}
-table.dataTable thead .sorting_desc {
-  background: url("../images/sort_desc.png") no-repeat center right;
-  background-color:#ffd9d9;
-}
-table.dataTable thead .sorting_asc_disabled {
-  background: url("../images/sort_asc_disabled.png") no-repeat center right;
-  background-color:#ffd9d9;
-}
-table.dataTable thead .sorting_desc_disabled {
-  background: url("../images/sort_desc_disabled.png") no-repeat center right;
-  background-color:#ffd9d9;
-}
 table.dataTable tbody tr {
   background-color: white;
 }
 table.dataTable tbody tr.selected {
-  background-color: #b0bed9;
+  background-color: #a7a9aa;
 }
 table.dataTable tbody th,
 table.dataTable tbody td {

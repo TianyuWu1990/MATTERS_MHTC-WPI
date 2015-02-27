@@ -409,7 +409,10 @@ public class AdminController {
 		newSched.insertToDB();
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
+    	String title = "MATTERS: Scheduler";
+		
 		// TODO: Error message/ Success message
+        model.addAttribute("title", title);
 		model.addAttribute("success_add", true);
 		model.addAttribute("sched_name", sched_name);
 		model.addAttribute("schedList", schedList);
@@ -436,7 +439,10 @@ public class AdminController {
 		// Get the jobs
 		List<Schedule> schedList = DBLoader.getSchedules();
 		
+    	String title = "MATTERS: Scheduler";
+		
 		// TODO: Error message/ Success message
+        model.addAttribute("title", title);
 		model.addAttribute("success_stop", true);
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		model.addAttribute("schedList", schedList);
@@ -546,8 +552,13 @@ public class AdminController {
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
     public String uploadAddFile(RedirectAttributes redir, @RequestParam("file") MultipartFile dataFile, @RequestParam("category") String subCategoryID, 
-    		@RequestParam("parentcategory") String parentCategoryID) throws Exception 
+    		@RequestParam("parentcategory") String parentCategoryID, @RequestParam(value = "overwrite", required=false) boolean overwrite) throws Exception 
     {
+    	String fileName = dataFile.getOriginalFilename();
+    	String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
+    	
+    	String newFileName = tokens[0] + "_" + fileDateFormat.format(new Date()) + "." + tokens[1];
+    	
     	// In this function, the "parentcategory" parameter is the actual string name of the category
     	// whereas the "category" parameter is the ID of the subcategory
     	
@@ -561,7 +572,7 @@ public class AdminController {
     	String childDir = subCategory.toLowerCase().replaceAll(" ", "_");
     	
     	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
-    	String dataFileLocation = dir.toString() + "/" + dataFile.getOriginalFilename();
+    	String dataFileLocation = dir.toString() + "/" + newFileName;
     	
     	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
     	
@@ -574,7 +585,7 @@ public class AdminController {
     	dataFile.transferTo(localFile);
     	
         // Now that the file is saved, time to run it
-        DataPipeline.run(localFile, subCategoryID);
+        DataPipeline.run(localFile, subCategoryID, overwrite);
         
         // Once completed, need to add entry to database for record keeping
         // TODO Need to somehow get the metric from the spreadsheet for DB record
@@ -582,7 +593,7 @@ public class AdminController {
         
         redir.addFlashAttribute("upload_file_success", true);
         redir.addFlashAttribute("filename", dataFile.getOriginalFilename());
-        
+         
         return "redirect:/admin_upload";
         
     }
@@ -612,6 +623,8 @@ public class AdminController {
     	
     	mav.addObject("title", title);
     	mav.addObject("exception", e);
+    	
+    	e.printStackTrace();
     	
     	return mav;
     }
@@ -644,6 +657,7 @@ public class AdminController {
 	    	mav.addObject("title", title);
 	    	mav.addObject("sqlException", ex);
 	    	
+	    	ex.printStackTrace();
     	}
 
 		return mav;
@@ -662,6 +676,8 @@ public class AdminController {
     	
     	mav.addObject("title", title);
     	mav.addObject("mhtcEx", ex);
+    	
+    	ex.printStackTrace();
     	
     	return mav;
     }
