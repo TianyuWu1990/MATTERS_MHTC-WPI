@@ -14,7 +14,7 @@ public class Mailer {
 	private JavaMailSender mailSender;
 //	TODO:change to SMTP server
 	private String fromAddress = "no-reply@mhtc.wpi.edu";
-	private String toAddress = "feedback@mhtc.wpi.edu";
+	private String toAddress = "matters.mhtc@gmail.com";
 	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
@@ -34,7 +34,7 @@ public class Mailer {
 		String token = MD5.getMD5(unencryptedTokenString);
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "utf-8");
-		String htmlMsg = "<h3>Hello!</h3> Here is the link to reset your password: <br> http://localhost:8080/mhtc/user/reset?token=" + token ;
+		String htmlMsg = "<h3>Hello!</h3> Here is the link to reset your password: <br> http://mhtc.cs.wpi.edu:8080/mhtc/user/reset?token=" + token ;
 		mimeMessage.setContent(htmlMsg, "text/html");
 		helper.setTo(email);
 		helper.setSubject("MHTC - Password Reset Detail");
