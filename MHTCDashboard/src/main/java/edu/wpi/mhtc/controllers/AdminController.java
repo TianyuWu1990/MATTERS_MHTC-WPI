@@ -58,6 +58,7 @@ import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
+import edu.wpi.mhtc.dashboard.pipeline.scheduler.TalendJob;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
 import edu.wpi.mhtc.helpers.Logger;
@@ -340,6 +341,15 @@ public class AdminController {
 		pipelineService.delete(pipelineName);
 		
 		return true;
+    }
+    
+    @RequestMapping(value = "/admin/execute", method = RequestMethod.POST, params = {"pipelineName"})
+    public @ResponseBody String admin_pipleline_run(Locale locale, Model model, @RequestParam("pipelineName") String pipelineName) throws IOException {
+    	Pipeline p = pipelineService.get(pipelineName);
+    	
+    	TalendJob.runPipeline(p.getPipelineName(), p.getPipelineDesc(), p.getPath(), p.getFilename());
+    	
+    	return "Pipeline successfully ran!";
     }
     
     /********************** SCHEDULER *******************************/

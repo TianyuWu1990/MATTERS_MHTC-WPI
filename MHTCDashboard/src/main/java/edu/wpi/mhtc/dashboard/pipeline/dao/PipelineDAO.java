@@ -9,4 +9,6 @@ public interface PipelineDAO {
 	public void delete(String pipelineName);
 	
 	public List<Pipeline> getAll();
+
+	public Pipeline get(String pipelineName);
 }

@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 
 public class PipelineDAOImpl implements PipelineDAO {
@@ -48,6 +50,28 @@ public class PipelineDAOImpl implements PipelineDAO {
 		});
 		
 		return pipelines;
+	}
+
+	@Override
+	public Pipeline get(String pipelineName) {
+		String sql = "SELECT * FROM mhtc_sch.pipelines WHERE pipelinename = ?";
+		
+		Object[] args = {pipelineName};
+		
+		return jdbcTemplate.query(sql, args, new ResultSetExtractor<Pipeline>() {
+
+			@Override
+			public Pipeline extractData(ResultSet rs) throws SQLException, DataAccessException {
+				if (rs.next()) {
+					return new Pipeline(rs.getString("pipelinename"), rs.getString("pipelinedesc"), 
+							rs.getString("path"), rs.getString("filename"), rs.getString("dateadded"), rs.getString("uploadedby"));
+					
+				}
+				
+				return null;
+			}
+			
+		});
 	}
 
 }

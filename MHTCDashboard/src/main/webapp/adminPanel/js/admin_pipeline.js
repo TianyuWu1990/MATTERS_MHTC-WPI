@@ -145,11 +145,29 @@ $(function() {
 			            	"sClass": "center",
 			            	"bSortable": false,
 			            	"sDefaultContent": "<button type='button' class='btn btn-link btn-sm delete'><i class='fa fa-times fa-2x'></i></button>"
+			            },
+			            { "data": null,
+			            	"sClass": "center",
+			            	"bSortable": false,
+			            	"sDefaultContent": "<button type='button' class='btn btn-success run'>Run</button>"
 			            }
 		]
 	});
 	
 	$('#pipelines').show();
+	
+	$('#pipelineTbl tbody').on("click", "button.run", function() {
+		var $row = $(this).closest("tr");
+		
+		// Get the pipeline name of the one user wants to delete/edit
+		var pipelineName = $row.find('td:first').html();
+
+		
+		$.post("admin/execute", {pipelineName:pipelineName}, function(data) {
+			$("#deletePipelineSuccess").after('<div class="alert alert-success" role="alert">'+data+'</div>');
+		});
+		
+	});
 	
 	$('#pipelineTbl tbody').on("click", "button.delete", function() {
 		var $row = $(this).closest("tr");

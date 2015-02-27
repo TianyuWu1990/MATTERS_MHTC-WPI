@@ -42,4 +42,8 @@ public class PipelineService {
 	public List<Pipeline> getAll() {
 		return dao.getAll();
 	}
+
+	public Pipeline get(String pipelineName) {
+		return dao.get(pipelineName);
+	}
 }

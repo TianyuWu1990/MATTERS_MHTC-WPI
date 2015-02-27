@@ -147,6 +147,7 @@
 											<th>Date Added</th>
 											<th>Uploaded by</th>
 											<th>Delete</th>
+											<th>Execute</th>
 										</tr>
 									</thead>
 									<tbody>
