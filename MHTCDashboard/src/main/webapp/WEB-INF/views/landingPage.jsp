@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en-US" style="">
 
@@ -121,7 +122,7 @@
 				and grow a high technology business.  MATTERS is designed to measure and evaluate Massachusetts' current competitive 
 				position, while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions 
 				that help attract and retain business to the state.<br/><br/></p>
-				<a class="view-more" href="/mhtc/about">LEARN MORE</a>
+				<a class="view-more" href="<c:url value="/about"/>">LEARN MORE</a>
 
 			</div>
 		</div>
@@ -133,7 +134,7 @@
 				including federal and state governmental agencies, non-profit organizations and media outlets.  Click "learn more" to access 
 				a listing of the sources for each metric or data point in MATTERS with links to the source where available.				
 				</p>
-				<a class="view-more" href="/mhtc/methodology">LEARN MORE</a>
+				<a class="view-more" href="<c:url value="/methodology"/>">LEARN MORE</a>
 
 			</div>
 		</div>
@@ -147,7 +148,7 @@
 		   displayed in a variety of visualizations including tables, line charts, bar charts, and heatmaps. 
 		   	<br/><br/></p>
 			
-				<a class="view-more" href="/mhtc/howto">LEARN MORE</a>
+				<a class="view-more" href="<c:url value="/howto"/>">LEARN MORE</a>
 
 			</div>	
 		</div>
@@ -197,7 +198,7 @@
 			 <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.caliper.com/">
-					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="30" height="30" />
+					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="40" height="40" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
