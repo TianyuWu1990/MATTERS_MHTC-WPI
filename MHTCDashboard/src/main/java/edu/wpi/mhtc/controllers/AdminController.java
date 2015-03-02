@@ -10,8 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -71,12 +69,12 @@ public class AdminController {
     @Autowired private ServletContext servletContext;
     
     @Autowired private CategoryService categoryService;
-    @Autowired private MetricService metricService;
     @Autowired private StatisticService statService;
     @Autowired private UserService userService;
     @Autowired private ScheduleService schedService;
     @Autowired private PipelineService pipelineService;
-    
+    @Autowired private MetricService metricService;
+        
     public AdminController() {}
 
     /********** Admin manager page **********/
@@ -185,6 +183,10 @@ public class AdminController {
     		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, 
     		@RequestParam("source") String source, @RequestParam("url") String url) throws SQLException 
     {
+    	if (parentid.isEmpty()) {
+    		parentid = "-1";
+    	}
+    	
     	categoryService.save(categoryName, Integer.parseInt(parentid), source, url);
     	String referer = request.getHeader("Referer");
     	
@@ -209,6 +211,7 @@ public class AdminController {
     	}
 
     	boolean isCalc = Boolean.parseBoolean(isCalculated);
+    	
     	metricService.save(metricName, metricDesc, isCalc, categoryID, datatype);
 
     	String referer = request.getHeader("Referer");

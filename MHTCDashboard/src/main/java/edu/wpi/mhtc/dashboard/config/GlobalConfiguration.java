@@ -26,9 +26,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryDAO;
 import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryDAOImpl;
 import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryService;
-import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAO;
-import edu.wpi.mhtc.dashboard.pipeline.dao.MetricDAOImpl;
-import edu.wpi.mhtc.dashboard.pipeline.dao.MetricService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineDAO;
 import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineDAOImpl;
 import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineService;
@@ -132,15 +129,7 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	@Bean CategoryService getCategoryService() {
 		return new CategoryService();
 	}
-	
-	@Bean MetricDAO getMetricDAO() {
-		return new MetricDAOImpl();
-	}
-	
-	@Bean MetricService getMetricService() {
-		return new MetricService();
-	}
-	
+		
 	@Bean StatisticDAO getStatDAO() {
 		return new StatisticDAOImpl();
 	}

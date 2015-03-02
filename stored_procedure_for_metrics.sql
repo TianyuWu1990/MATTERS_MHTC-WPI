@@ -61,4 +61,35 @@ $BODY$
 ALTER FUNCTION mhtc_sch.getdatabycategory(integer)
   OWNER TO postgres;
 
+-- Function: mhtc_sch.insertmetric(character varying, boolean, integer, character varying)
 
+-- DROP FUNCTION mhtc_sch.insertmetric(character varying, boolean, integer, character varying);
+
+CREATE OR REPLACE FUNCTION mhtc_sch.insertmetric(metricname character varying, iscalculated boolean, categoryid integer, datatype character varying)
+  RETURNS integer AS
+$BODY$
+declare 
+  maxId int;
+  num_rows int;
+ begin
+	select max("Id") + 1 from mhtc_sch.metrics into maxId;
+
+	if maxId is null then
+	  maxId = 1;
+	  end if;
+
+	insert into mhtc_sch.metrics ("Id","Name","IsCalculated", "DataType")
+	values (maxId, metricname, iscalculated, datatype);
+
+	insert into mhtc_sch.categoriesxmetrics
+	values (categoryid, maxId);
+
+	GET DIAGNOSTICS num_rows = ROW_COUNT;
+
+	return num_rows;
+ end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION mhtc_sch.insertmetric(character varying, boolean, integer, character varying)
+  OWNER TO postgres;

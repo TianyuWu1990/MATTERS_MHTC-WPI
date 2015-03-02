@@ -14,16 +14,21 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Repository;
 
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
+@Repository
 public class MetricDAOImpl implements MetricDAO {
 
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	public MetricDAOImpl() {}
+    @Autowired
+    public MetricDAOImpl(JdbcTemplate template) {
+        this.jdbcTemplate = template;
+
+    }
 	
 	@Override
 	public void save(Metric object) {
@@ -38,6 +43,7 @@ public class MetricDAOImpl implements MetricDAO {
         call.addDeclaredParameter(new SqlParameter("datatype", Types.VARCHAR));
         
         Map<String, Object> params = new HashMap<String, Object>();
+        
         params.put("metricname", object.getName());
         params.put("iscalculated", object.isCalculated());
         params.put("categoryid", object.getCategoryId());

@@ -266,12 +266,7 @@ public class MetricServiceJdbc implements MetricService {
                 "mhtc_sch").withProcedureName("insertmetric");
 
         call.addDeclaredParameter(new SqlParameter("metricname", Types.VARCHAR));
-        call.addDeclaredParameter(new SqlParameter("iscaclucated", Types.BOOLEAN)); // TODO
-                                                                                    // update
-                                                                                    // misnamed
-                                                                                    // variable
-                                                                                    // on
-                                                                                    // db
+        call.addDeclaredParameter(new SqlParameter("iscalculated", Types.BOOLEAN));
         call.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
         call.addDeclaredParameter(new SqlParameter("datatype", Types.VARCHAR));
 
