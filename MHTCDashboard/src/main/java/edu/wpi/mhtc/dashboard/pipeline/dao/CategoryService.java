@@ -3,6 +3,7 @@ package edu.wpi.mhtc.dashboard.pipeline.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 
@@ -11,6 +12,7 @@ import edu.wpi.mhtc.dashboard.pipeline.data.Category;
  * @author Alex Fortier
  *
  */
+@Service
 public class CategoryService {
 	
 	@Autowired private CategoryDAO dao;

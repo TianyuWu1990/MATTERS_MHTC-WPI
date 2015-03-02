@@ -23,22 +23,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryDAO;
-import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryDAOImpl;
-import edu.wpi.mhtc.dashboard.pipeline.dao.CategoryService;
-import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineDAO;
-import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineDAOImpl;
-import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineService;
-import edu.wpi.mhtc.dashboard.pipeline.dao.ScheduleDAO;
-import edu.wpi.mhtc.dashboard.pipeline.dao.ScheduleDAOImpl;
-import edu.wpi.mhtc.dashboard.pipeline.dao.ScheduleService;
-import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAO;
-import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticDAOImpl;
-import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticService;
-import edu.wpi.mhtc.dashboard.pipeline.dao.UserDAO;
-import edu.wpi.mhtc.dashboard.pipeline.dao.UserDAOImpl;
-import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
-
 /**
  * Provides configuration that is global to all profiles for the web dashboard.
  * This configuration class is the entry configuration class that is specified
@@ -119,47 +103,6 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 		rc.setPublicKey("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb");
 		
 		return rc;
-	}
-	
-	@Bean
-	public CategoryDAO getCategoryDAO() {
-		return new CategoryDAOImpl();
-	}
-	
-	@Bean CategoryService getCategoryService() {
-		return new CategoryService();
-	}
-		
-	@Bean StatisticDAO getStatDAO() {
-		return new StatisticDAOImpl();
-	}
-	
-	@Bean StatisticService getStatService() {
-		return new StatisticService();
-	}
-	
-	@Bean UserDAO getUserDAO() {
-		return new UserDAOImpl();
-	}
-	
-	@Bean UserService getUserService() {
-		return new UserService();
-	}
-	
-	@Bean ScheduleDAO getScheduleDAO() {
-		return new ScheduleDAOImpl();
-	}
-	
-	@Bean ScheduleService getScheduleService() {
-		return new ScheduleService();
-	}
-	
-	@Bean PipelineDAO getPipelineDAO() {
-		return new PipelineDAOImpl();
-	}
-	
-	@Bean PipelineService getPipelineService() {
-		return new PipelineService();
 	}
 	
 }

@@ -68,16 +68,27 @@ public class AdminController {
     
     @Autowired private ServletContext servletContext;
     
-    @Autowired private CategoryService categoryService;
-    @Autowired private StatisticService statService;
-    @Autowired private UserService userService;
-    @Autowired private ScheduleService schedService;
-    @Autowired private PipelineService pipelineService;
-    @Autowired private MetricService metricService;
+    private CategoryService categoryService;
+    private StatisticService statService;
+    private UserService userService;
+    private ScheduleService schedService;
+    private PipelineService pipelineService;
+    private MetricService metricService;
         
-    public AdminController() {}
+    @Autowired
+    public AdminController(CategoryService categoryService,
+			StatisticService statService, UserService userService,
+			ScheduleService schedService, PipelineService pipelineService,
+			MetricService metricService) {
+		this.categoryService = categoryService;
+		this.statService = statService;
+		this.userService = userService;
+		this.schedService = schedService;
+		this.pipelineService = pipelineService;
+		this.metricService = metricService;
+	}
 
-    /********** Admin manager page **********/
+	/********** Admin manager page **********/
     @RequestMapping(value = "admin_manager", method = RequestMethod.GET)
     public String admin_manager(Model model) {
     	

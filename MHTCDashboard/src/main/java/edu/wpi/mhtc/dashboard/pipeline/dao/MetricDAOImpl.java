@@ -22,13 +22,9 @@ import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 @Repository
 public class MetricDAOImpl implements MetricDAO {
 
-	private JdbcTemplate jdbcTemplate;
+    @Autowired private JdbcTemplate jdbcTemplate;
 	
-    @Autowired
-    public MetricDAOImpl(JdbcTemplate template) {
-        this.jdbcTemplate = template;
-
-    }
+    public MetricDAOImpl() {}
 	
 	@Override
 	public void save(Metric object) {

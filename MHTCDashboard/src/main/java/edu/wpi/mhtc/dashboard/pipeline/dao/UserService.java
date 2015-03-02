@@ -1,18 +1,18 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
-import java.sql.PreparedStatement;
 import java.util.Random;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.helpers.MD5;
 import edu.wpi.mhtc.helpers.Mailer;
 import edu.wpi.mhtc.model.admin.User;
 
+@Service
 public class UserService {
 
 	@Autowired

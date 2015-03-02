@@ -1,15 +1,16 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
-import java.nio.file.Path;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Service for getting pipeline information
  * @author Alex Fortier
  *
  */
+@Service
 public class PipelineService {
 	
 	@Autowired private PipelineDAO dao;

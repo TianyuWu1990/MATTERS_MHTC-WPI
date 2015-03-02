@@ -1,6 +1,5 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
-import java.nio.file.Paths;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -10,7 +9,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class PipelineDAOImpl implements PipelineDAO {
 	
 	@Autowired private JdbcTemplate jdbcTemplate;

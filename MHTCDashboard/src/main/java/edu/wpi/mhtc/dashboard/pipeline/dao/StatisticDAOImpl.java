@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Repository;
 
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
@@ -19,10 +20,10 @@ import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
  * @author Alex Fortier
  *
  */
+@Repository
 public class StatisticDAOImpl implements StatisticDAO {
 	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	@Autowired private JdbcTemplate jdbcTemplate;
 	
 	public StatisticDAOImpl() {}
 

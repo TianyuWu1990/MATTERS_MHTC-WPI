@@ -7,9 +7,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 
+@Repository
 public class ScheduleDAOImpl implements ScheduleDAO {
 	
 	@Autowired private JdbcTemplate jdbcTemplate;

@@ -3,9 +3,11 @@ package edu.wpi.mhtc.dashboard.pipeline.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 
+@Service
 public class ScheduleService {
 
 	@Autowired private ScheduleDAO dao;

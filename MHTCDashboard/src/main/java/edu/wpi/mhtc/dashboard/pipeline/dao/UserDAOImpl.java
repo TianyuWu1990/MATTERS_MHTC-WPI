@@ -12,16 +12,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Repository;
 
 import edu.wpi.mhtc.model.admin.User;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
+@Repository
 public class UserDAOImpl implements UserDAO {
 
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	
+	@Autowired private JdbcTemplate jdbcTemplate;
+
 	public UserDAOImpl() {}
 
 	@Override
