@@ -123,19 +123,22 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 		
 		Object[] args = {sched_job};
 		
-		String filename = jdbcTemplate.query(sql, args, new ResultSetExtractor<String>() {
+		String path = jdbcTemplate.query(sql, args, new ResultSetExtractor<String>() {
 
 			@Override
 			public String extractData(ResultSet rs) throws SQLException, DataAccessException {
 				if (rs.next()) {
-					return rs.getString("filename");
+					return rs.getString("path");
 				}
 				return null;
 			}
 			
 		});
 		
-		return FilenameUtils.removeExtension(filename);
+		File file = new File(path);
+		String filename = file.getName();
+		return filename.substring(0,filename.lastIndexOf('.')-4);		
+
 	}
 
 
