@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.text.ParseException;
 import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
@@ -19,6 +20,10 @@ public interface ScheduleDAO {
 	
 	public Schedule get(String sched_name);
 	
-	public List<Schedule> getAll();
+	public String getSchedStatus(String sched_date) throws ParseException;
+	
+	public List<Schedule> getAll() throws ParseException;
+	
+	public String getTalendJob(String sched_job);
 	
 }

@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,9 @@ public class ScheduleService {
 	/**
 	 * Get all schedules in the database
 	 * @return
+	 * @throws ParseException 
 	 */
-	public List<Schedule> getAll() {
+	public List<Schedule> getAll() throws ParseException {
 		return dao.getAll();
 	}
 	

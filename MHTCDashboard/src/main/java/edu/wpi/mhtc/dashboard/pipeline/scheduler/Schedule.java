@@ -28,6 +28,8 @@ public class Schedule {
 	private String sched_description;
 	private String sched_date;
 	private String job_name;
+	private String status;
+	private String filename;
 	private boolean sched_cron;
 	static Connection conn = DBConnector.getInstance().getConn();
 	
@@ -67,49 +69,11 @@ public class Schedule {
 	}
 	
 	public String getTalendJob() throws SQLException {
-		String sql = "SELECT * FROM mhtc_sch.pipelines WHERE pipelinename = ?";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-		pstatement.setString(1, this.sched_job);
-		ResultSet rs = pstatement.executeQuery();
-		String filename = "";
-		while (rs.next()) {
-			filename = rs.getString("path");
-			
-		}
-		File file = new File(filename);
-		filename = file.getName();
-		return filename.substring(0,filename.lastIndexOf('.')-4);		
+		return filename;
 	}
 	
-	public String getSched_datePassed() throws ParseException, SQLException {
-		Date today = new Date();
-		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
-		Date runDate = format.parse(sched_date);
-		
-		if (today.after(runDate)) {
-			// Now, check the Logger to see the current status
-			String sql = "SELECT * FROM mhtc_sch.logs WHERE message = 'Pipeline has finished' AND job = ?";
-			
-			PreparedStatement pstatement = conn.prepareStatement(sql);
-			pstatement.setString(1, this.getTalendJob());
-			ResultSet rs = pstatement.executeQuery();
-			
-			// Loop through the record
-			while (rs.next()) {
-				String moment = rs.getString("moment");
-				DateFormat finishDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-				Date finishDate = finishDateFormat.parse(moment);
-				long timediff = finishDate.getTime() - runDate.getTime();
-				
-				if (timediff <= 604800) { // Check if the difference between finish date and execution date is less than 1 week 
-					return "Completed"; 
-				}
-			}
-			
-			return "Running..."; 
-		} else {
-			return "Scheduled to run at " + sched_date;
-		}		
+	public String getStatus() {
+		return status;
 	}
 
 	public String getJob_name() {
@@ -129,4 +93,28 @@ public class Schedule {
 	public void setSched_cron(boolean sched_cron) {
 		this.sched_cron = sched_cron;
 	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the filename
+	 */
+	public String getFilename() {
+		return filename;
+	}
+
+	/**
+	 * @param filename the filename to set
+	 */
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	
+	
 }

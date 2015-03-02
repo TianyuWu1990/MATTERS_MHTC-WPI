@@ -51,7 +51,6 @@ import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
 import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
@@ -512,9 +511,8 @@ public class AdminController {
         // Now that the file is saved, time to run it
         DataPipeline.run(localFile, subCategoryID, overwrite);
         
-        // Once completed, need to add entry to database for record keeping
+        // TODO Once completed, need to add entry to database for record keeping
         // TODO Need to somehow get the metric from the spreadsheet for DB record
-        DBSaver.insertManualUpload(parentCategory.getName(), subCategory.getName(), "metric", dataFile.getOriginalFilename(), dir.toString());
         
         redir.addFlashAttribute("upload_file_success", true);
         redir.addFlashAttribute("filename", dataFile.getOriginalFilename());

@@ -1,11 +1,21 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.io.File;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -44,9 +54,46 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String getSchedStatus(String sched_date) throws ParseException {
+		Date today = new Date();
+		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
+		Date runDate = format.parse(sched_date);
+		
+		if (today.after(runDate)) {
+			// Now, check the Logger to see the current status
+			String sql = "SELECT * FROM mhtc_sch.logs WHERE message = 'Pipeline has finished' AND job = ?";
+			
+			Object[] args = {sched_date};
+			
+			List<String> moments = jdbcTemplate.query(sql, args, new RowMapper<String>() {
+
+				@Override
+				public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+					return rs.getString("moment");
+				}
+				
+			});
+			
+			for (String moment : moments) {
+				DateFormat finishDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+				Date finishDate = finishDateFormat.parse(moment);
+				long timediff = finishDate.getTime() - runDate.getTime();
+					
+				if (timediff <= 604800) { // Check if the difference between finish date and execution date is less than 1 week 
+					return "Completed"; 
+				}
+			}
+			
+			return "Running..."; 
+		} else {
+			return "Scheduled to run at " + sched_date;
+		}	
+	}
 
 	@Override
-	public List<Schedule> getAll() {
+	public List<Schedule> getAll() throws ParseException {
 		String sql = "SELECT * FROM mhtc_sch.schedules";
 		
 		List<Schedule> schedules = jdbcTemplate.query(sql, new RowMapper<Schedule>() {
@@ -59,7 +106,37 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 			
 		});
 		
+		for (Schedule s: schedules) {
+			String status = getSchedStatus(s.getSched_date());
+			s.setStatus(status);
+
+			String filename = getTalendJob(s.getSched_job());
+			s.setFilename(filename);
+		}
+		
 		return schedules;
 	}
+	
+	@Override
+	public String getTalendJob(String sched_job) {
+		String sql = "SELECT * FROM mhtc_sch.pipelines WHERE pipelinename = ?";
+		
+		Object[] args = {sched_job};
+		
+		String filename = jdbcTemplate.query(sql, args, new ResultSetExtractor<String>() {
+
+			@Override
+			public String extractData(ResultSet rs) throws SQLException, DataAccessException {
+				if (rs.next()) {
+					return rs.getString("filename");
+				}
+				return null;
+			}
+			
+		});
+		
+		return FilenameUtils.removeExtension(filename);
+	}
+
 
 }
