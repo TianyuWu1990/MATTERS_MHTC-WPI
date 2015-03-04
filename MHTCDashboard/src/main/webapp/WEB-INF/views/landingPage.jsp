@@ -191,21 +191,21 @@
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.mitre.org/">
-					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="50" />
+					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.caliper.com/">
-					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="35" height="35" />
+					<img src="img/caliper-mapping-software.png" alt="header-sponsors" height="30" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://meshagency.com/">
-					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="30" />
+					<img src="img/mesh.jpg" alt="header-sponsors"  height="30" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
