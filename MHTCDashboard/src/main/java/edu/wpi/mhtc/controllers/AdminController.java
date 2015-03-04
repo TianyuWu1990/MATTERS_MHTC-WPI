@@ -60,7 +60,6 @@ import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.TalendJob;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
-import edu.wpi.mhtc.helpers.Logger;
 
 @Controller
 public class AdminController {
@@ -364,7 +363,7 @@ public class AdminController {
     public @ResponseBody String admin_pipleline_run(Locale locale, Model model, @RequestParam("pipelineName") String pipelineName) throws IOException {
     	Pipeline p = pipelineService.get(pipelineName);
     	
-    	TalendJob.runPipeline(p.getPipelineName(), p.getPipelineDesc(), p.getPath(), p.getFilename());
+    	TalendJob.runPipeline(p.getPipelineName(), p.getPath());
     	
     	return "Pipeline successfully ran!";
     }

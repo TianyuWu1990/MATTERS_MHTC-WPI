@@ -44,7 +44,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.steadystate.css.parser.ParseException;
 
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.helpers.Mailer;
 import edu.wpi.mhtc.model.Data.DataSeries;
 import edu.wpi.mhtc.model.admin.User;
@@ -62,7 +61,6 @@ public class HomeController {
 	private StatsService statsService;
 	private StateService stateService;
 	private UserService userService;
-	static Connection conn = DBConnector.getInstance().getConn();
 	
 	@Autowired
     ReCaptchaImpl reCaptcha;

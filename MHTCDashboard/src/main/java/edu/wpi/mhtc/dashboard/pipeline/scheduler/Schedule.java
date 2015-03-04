@@ -4,22 +4,9 @@
  */
 package edu.wpi.mhtc.dashboard.pipeline.scheduler;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.io.File;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
 import edu.wpi.mhtc.helpers.MD5;
-
 
 // TODO: Abstract this class into multiple type of Schedule: TalendSchedule, NormalSchedule
 public class Schedule {
@@ -31,7 +18,6 @@ public class Schedule {
 	private String status;
 	private String filename;
 	private boolean sched_cron;
-	static Connection conn = DBConnector.getInstance().getConn();
 	
 	public Schedule(String sched_name, String sched_job, String sched_description, String sched_date, boolean sched_cron) {
 		this.sched_name = sched_name;
