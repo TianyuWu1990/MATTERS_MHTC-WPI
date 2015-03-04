@@ -48,6 +48,8 @@ import edu.wpi.mhtc.dashboard.pipeline.dao.PipelineService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.ScheduleService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.dao.StatisticService;
+import edu.wpi.mhtc.dashboard.pipeline.dao.TalendLog;
+import edu.wpi.mhtc.dashboard.pipeline.dao.TalendLogService;
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
@@ -73,18 +75,20 @@ public class AdminController {
     private ScheduleService schedService;
     private PipelineService pipelineService;
     private MetricService metricService;
+    private TalendLogService logService;
         
     @Autowired
     public AdminController(CategoryService categoryService,
 			StatisticService statService, UserService userService,
 			ScheduleService schedService, PipelineService pipelineService,
-			MetricService metricService) {
+			MetricService metricService, TalendLogService logService) {
 		this.categoryService = categoryService;
 		this.statService = statService;
 		this.userService = userService;
 		this.schedService = schedService;
 		this.pipelineService = pipelineService;
 		this.metricService = metricService;
+		this.logService = logService;
 	}
 
 	/********** Admin manager page **********/
@@ -461,16 +465,17 @@ public class AdminController {
     												@RequestParam("origin") String origin,
     												@RequestParam("code") int code) throws Exception {
     	// TODO: Add some security measures to prevent unauthorized users to access this RESTful service.
-    	Logger.jsonTalendLog(job, code, message, origin, moment, priority);
+    	logService.save(job, code, message, origin, moment, priority);
     	return "{\"success\" : true}";
     }    
     
-    @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
+    @SuppressWarnings("unchecked")
+	@RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
+    public @ResponseBody List<TalendLog> admin_get_logs(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
     	if (job.equals("")) {
-    		return Logger.retriveLogSummary();
+    		return logService.getSummary();
     	} else {
-    		return Logger.retrieveLogByJobName(job);
+    		return (List<TalendLog>) logService.get(job);
     	}
     }    
     

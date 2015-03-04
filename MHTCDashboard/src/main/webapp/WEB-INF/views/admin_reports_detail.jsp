@@ -4,9 +4,12 @@
  */
  %>
  
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="admin_header.jsp" %> 
 <%@ include file="admin_navigation_bar.jsp" %> 
+
+		<script src="adminPanel/js/admin_reports_details.js"></script>
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -54,34 +57,3 @@
         <!-- /#page-wrapper -->
 
 <%@ include file="admin_footer.jsp" %> 
-
-<script type="text/javascript">
-$(function() {
-	$('#reports-tbl').DataTable({
-		"processing": true,
-		"ajax": {
-			"url": "admin_get_logs?job=${job}",
-			"dataSrc": ""
-		},
-		"aoColumns": [
-		            { "mData": "id" },
-		            { "mData": "origin" },
-		            { "mData": "code" },
-		            { "mData": "moment" }, 
-		            { "mData": "message" },
-		            { "mData": "priority" },        
-		],
-		"createdRow": function ( row, data, index ) {
-			var $cell = $('td', row).eq(4);
-			var classToAdd = "";
-			switch (data.status) {
-				case "success": classToAdd = "alert-success"; break;
-				case "warning": classToAdd = "alert-warning"; break;
-				case "error": classToAdd = "alert-danger"; break;
-				default: classToAdd = ""; break;
-			}
-			$cell.addClass(classToAdd);
-        }
-	});
-});
-</script>
