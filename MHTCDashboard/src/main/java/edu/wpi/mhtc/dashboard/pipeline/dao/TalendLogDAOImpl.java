@@ -26,21 +26,17 @@ public class TalendLogDAOImpl implements TalendLogDAO {
 	}
 
 	@Override
-	public TalendLog get(String job) {
+	public List<TalendLog> get(String job) {
 		String sql = "SELECT * FROM mhtc_sch.logs WHERE job = ?";
 		
 		Object[] args = {job};
 		
-		return jdbcTemplate.query(sql, args, new ResultSetExtractor<TalendLog>() {
+		return jdbcTemplate.query(sql, args, new RowMapper<TalendLog>() {
 
 			@Override
-			public TalendLog extractData(ResultSet rs) throws SQLException, DataAccessException {
-				if (rs.next()) {
-					return new TalendLog(rs.getInt("id"), rs.getString("moment"), rs.getString("job"), 
-							rs.getString("message"), rs.getInt("code"), rs.getInt("priority"), rs.getString("origin"));
-				}
-				
-				return null;
+			public TalendLog mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return new TalendLog(rs.getInt("id"), rs.getString("moment"), rs.getString("job"), 
+						rs.getString("message"), rs.getInt("code"), rs.getInt("priority"), rs.getString("origin"));
 			}
 			
 		});

@@ -20,7 +20,7 @@ public interface TalendLogDAO {
 	 * @param job
 	 * @return
 	 */
-	public TalendLog get(String job);
+	public List<TalendLog> get(String job);
 	
 	/**
 	 * Get summary of all logs from the db

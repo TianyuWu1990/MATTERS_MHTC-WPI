@@ -469,13 +469,12 @@ public class AdminController {
     	return "{\"success\" : true}";
     }    
     
-    @SuppressWarnings("unchecked")
-	@RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
     public @ResponseBody List<TalendLog> admin_get_logs(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
     	if (job.equals("")) {
     		return logService.getSummary();
     	} else {
-    		return (List<TalendLog>) logService.get(job);
+    		return logService.get(job);
     	}
     }    
     

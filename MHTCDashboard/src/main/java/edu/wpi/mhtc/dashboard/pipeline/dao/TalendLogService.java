@@ -30,7 +30,7 @@ public class TalendLogService {
 	 * @param job
 	 * @return
 	 */
-	public TalendLog get(String job) {
+	public List<TalendLog> get(String job) {
 		return dao.get(job);
 	}
 	
