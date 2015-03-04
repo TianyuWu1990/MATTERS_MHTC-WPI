@@ -1,4 +1,5 @@
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <header class="site-header">
 	  
@@ -17,7 +18,7 @@
   	  </div>
   		<div class="site-branding">
   			<h1 class="site-title">
-  			  <a href="/mhtc/" rel="home" class="main-logo">
+  			  <a href="<c:url value="/"/>" rel="home" class="main-logo">
 
   			  </a>
   			</h1>
@@ -31,23 +32,23 @@
   			<div class="menu-close"></div>
 			<div class="menu" style="z-index: 9999;">
 				<ul>
-					<li class="menu-item"><a href="/mhtc">Home</a></li>
-					<li class="menu-item"><a href="/mhtc/explore">Explore</a></li>
-					<li class="menu-item"><a href="/mhtc/profile">States</a></li>
-					<li class="menu-item"><a href="/mhtc/about">About</a></li>
+					<li class="menu-item"><a href="<c:url value="/"/>">Home</a></li>
+					<li class="menu-item"><a href="<c:url value="/explore"/>">Explore</a></li>
+					<li class="menu-item"><a href="<c:url value="/profile"/>">States</a></li>
+					<li class="menu-item"><a href="<c:url value="/about"/>">About</a></li>
 
-					<li class="menu-item"><a href="/mhtc/feedback">Feedback</a></li>
+					<li class="menu-item"><a href="<c:url value="/feedback"/>">Feedback</a></li>
 
 					
 					<sec:authorize access="hasRole('ADMIN')">
-				    	<li class="menu-item"><a href="/mhtc/admin">Admin Panel</a></li>
+				    	<li class="menu-item"><a href="<c:url value="/admin"/>">Admin Panel</a></li>
 				   	</sec:authorize>
 					
 					<sec:authorize access="isAuthenticated()">
-						<li class="menu-item"><a href="/mhtc/logout/">Logout</a></li>
+						<li class="menu-item"><a href="<c:url value="/logout/"/>">Logout</a></li>
 					</sec:authorize>
 					<sec:authorize access="!isAuthenticated()">
-						<li class="menu-item"><a href="/mhtc/login">Login</a></li>
+						<li class="menu-item"><a href="<c:url value="/login"/>">Login</a></li>
 					</sec:authorize>
 				</ul>
 			</div>
