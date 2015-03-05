@@ -63,7 +63,7 @@ ALTER FUNCTION mhtc_sch.getdatabycategory(integer)
 
 -- Function: mhtc_sch.insertmetric(character varying, boolean, integer, character varying)
 
--- DROP FUNCTION mhtc_sch.insertmetric(character varying, boolean, integer, character varying);
+DROP FUNCTION mhtc_sch.insertmetric(character varying, boolean, integer, character varying);
 
 CREATE OR REPLACE FUNCTION mhtc_sch.insertmetric(metricname character varying, iscalculated boolean, categoryid integer, datatype character varying)
   RETURNS integer AS
