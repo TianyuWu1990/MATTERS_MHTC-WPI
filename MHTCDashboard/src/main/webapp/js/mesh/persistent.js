@@ -11,6 +11,7 @@ $(".menu-close").click(function(){
 });
 
 $('div.leaflet-top.leaflet-right').hide();
+$("div.leaflet-control-attribution").hide();
 
 
 $(window).scroll(function(){

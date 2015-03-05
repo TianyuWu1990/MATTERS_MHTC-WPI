@@ -370,10 +370,12 @@ public class HomeController {
 
         	// Send the email
         	ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml");
-        	String subjectText = "[" + affiliation + " - " + name + "] " + subject; 
+        	String subjectText = "Feedback: " + subject; 
+        	
+        	String bodyText = "affiliation: " + affiliation + " \nname: " + name + "\nemail: " + email + "\ncomments:\n\n" + comments;
 		    
 	       	Mailer mm = (Mailer) context.getBean("mailMail");
-	        mm.sendFeedbackEmail(email, subjectText, comments);
+	        mm.sendFeedbackEmail(subjectText, bodyText);
 	        
         	// Load the notification
         	model.addAttribute("completed", true);

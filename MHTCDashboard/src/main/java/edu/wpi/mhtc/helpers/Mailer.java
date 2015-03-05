@@ -14,7 +14,7 @@ public class Mailer {
 	private JavaMailSender mailSender;
 //	TODO:change to SMTP server
 	private String fromAddress = "no-reply@mhtc.wpi.edu";
-	private String toAddress = "matters.mhtc@gmail.com";
+	private String toAddress = "mhtcmatters@gmail.com";
 	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
@@ -42,7 +42,7 @@ public class Mailer {
 		mailSender.send(mimeMessage);		
 	}
 	
-	public void sendFeedbackEmail(String email, String subject, String comments) {
+	public void sendFeedbackEmail(String subject, String comments) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		 
 		message.setFrom(fromAddress);
