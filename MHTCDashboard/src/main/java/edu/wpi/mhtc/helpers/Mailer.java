@@ -14,7 +14,7 @@ public class Mailer {
 	private JavaMailSender mailSender;
 //	TODO:change to SMTP server
 	private String fromAddress = "no-reply@mhtc.wpi.edu";
-	private String toAddress = "mhtcmatters@gmail.com";
+	private String toAddress = "mattersmhtc@gmail.com";
 	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
