@@ -56,13 +56,13 @@ a:hover{
 	top: 32px;
 }
 
-.menu{
+/*.menu{
 	display: none;
 	position: absolute;
 	top: -45px;
 	cursor: pointer;
 
-}
+}*/
 
 .menu-close{
 	height: 20px;
@@ -88,13 +88,14 @@ a:hover{
 }
  
 /* ========================= CONTAINER ==================== */
+/******cxf changed*****/
 .container{
-	width: 1140px;
+	width: 70%;
 	margin: 0 auto;
 	position: relative;
-	padding: 0 25px;
+	padding: 0 0px;
 }
-
+/*-------------*/
 section{
 	width: 100%;
 }
@@ -320,7 +321,7 @@ ___________________________________
 	font-size: 30px;
 	width: 100%;
 	text-align: center;
-	padding-bottom: 30px;
+	padding-bottom: 10px;
 	
 }
 
@@ -543,208 +544,6 @@ h2{
 	margin-bottom: 30px;
 }
 
-
-/*
-==========================================================================
-============================= START MEDIA QUERIES ========================
-==========================================================================
-*/
-
-
-@media only screen and (max-width: 1140px){
-
-/* ========================= CONTAINER ==================== */
-.container{
-	width: 92%;
-	margin: 0 auto;
-	padding-left: 0px;
-	padding-right: 0px;
-}	
-
-.site-branding{
-	padding-left: 25px;
-}
-
-/* ============================== MAP-SECTION ======================= */
-.map-area{
-	width: 100%;
-}
-
-
-
-/* ============================== BUCKET SECTION ======================= */
-
-.dt-only{
-	display: none;
-}
-
-
-/* ================================= PARTNER SECTION ==================== */
-
-.logo-wrap{
-	width: auto;
-}
-
-}
-
-@media only screen and (max-width: 690px){
-/* ======================== HEADER ================================= */
-.menu-toggle{
-	top: -55px;
-}
-
-.menu{
-	top: -92px;
-}
-
-.head-sponsors{
-	right: auto;
-	position: relative;
-	top: 46px;
-}
-
-.head-sponsors img{
-	width: 204px;
-}
-
-.header-inner{
-	height: 140px;
-}
-
-/* ============================== BUCKET SECTION ======================= */
-
-.bucket-contianer{
-	display: block;
-}
-
-.bucket-center{
-	margin: 30px 0;
-}
-
-/* =============================== STATES ============================== */
-
-.survey{
-	margin-right: 15px !important;
-}
-
-.rank{
-	width: 38%;
-}
-
-.year{
-	width: 100%;
-}
-
-.status{
-	width: 50%;
-}
-
-
-/* ================================ INTERIOR ============================== */
-
-.interior-container{
-	display: block;
-}
-
-.sidebar{
-	margin-top: 50px;
-	padding-left: 0px;
-	width: 100%;
-	border: none;
-
-}
-
-.copy-block{
-	width: 100%;
-	padding-right: 0px;
-}
-
-.side-bucket{
-	margin-bottom: 30px;
-	width: 50%;
-	float: left;
-	box-sizing: border-box;
-}
-
-.side-bucket:nth-child(odd){
-	padding-right: 10px;
-}
-
-.side-bucket:nth-child(even){
-	padding-left: 10px;
-}
-	
-}
-
-@media only screen and (max-width: 560px){
-
-
-/* ============================== MAP-SECTION ======================= */
-
-.map-sect{
-	height: auto;
-}
-
-.map-area{
-	height: 370px;
-	background-position: center 25px;
-}
-
-.map-btn{
-	position: relative;
-	left: auto;
-	right: auto;
-	display: block;
-
-}
-
-.state{
-	margin-top: 20px;
-}
-
-}
-
-@media only screen and (max-width: 450px){
-
-/* ============================== MAP-SECTION ======================= */
-
-.map-area{
-	height: 300px;
-	background-position: center 25px;
-}
-
-/* =============================== STATES ============================== */
-.rank, .data, .status, .year{
-	width: 100%;
-}
-
-/*
-.state-profile-title{
-	max-width: 250px;
-	margin: 0 auto;
-}
-*/
-
-/* ============================= INTERIOR ================================ */
-
-
-.side-bucket{
-	width: 100%;
-}
-
-.side-bucket:nth-child(odd){
-	padding-right: 0px;
-}
-
-.side-bucket:nth-child(even){
-	padding-left: 0px;
-}
-
-	
-}
-
-/* =========================== PRINTABLE PAGES.  ========================= */
-
 @media print{
 .main-content-wrap, .site-main{
 	border: none;
@@ -773,11 +572,44 @@ h2{
 }
 
 
+/*-----------------cxf------------------------*/
 
+#menuToggle{
+	display:none;
+}
 
-
-
-
-
-
-
+#menuToggle:checked ~ .menu{
+	position:absolute;
+	top:0px;
+	
+	z-index:99;
+}
+.menu-icon{
+	
+	width: 65px;
+	height: 65px;
+	border-radius: 4px;
+	background-image: url(../img/menu-toggle.jpg);
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 2px solid #9c9c9c;
+	font-size: 0px;
+	position: absolute;
+	right: 250px;
+	top: -85px;
+	cursor: pointer;
+}
+.menu{
+	top: -400px;
+	right:250px;
+	width:100%;
+	height:auto;
+	position:absolute;
+	transition: all .3s ease-in-out;
+	-webkit-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-ms-transition: all .3s ease-in-out;
+	-o-transition: all .3s ease-in-out;
+	z-index: -1;
+}
+/*-----------------cxf------------------------*/

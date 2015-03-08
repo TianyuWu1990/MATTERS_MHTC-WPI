@@ -559,7 +559,7 @@ textarea{
   right: 0px;
   z-index: 100;
   height: auto;
-  background-color: rgba(104,0,23,.95);
+  background-color: rgba(104,0,23,0.95);
   padding: 15px 0;
   width: 165px;
   border-radius: 3px;	
@@ -572,6 +572,7 @@ textarea{
   font-size: 18px;
   color: white;
   font-family: 'Open Sans', sans-serif;
+  
 }
 .main-navigation .menu li > ul {
   background: #ddd;
@@ -582,6 +583,7 @@ textarea{
   /* second level */
   /* third level & lower */
 }
+/*cxf*/
 .main-navigation .menu > ul > li {
 }
 .main-navigation .menu > ul > li > a {
@@ -590,7 +592,7 @@ textarea{
 .main-navigation .menu > ul > li:hover ul,
 .main-navigation .menu > ul > li ul:hover {
   left: auto;
-  opacity: 1.0;
+  opacity: 0.8;
   display: block;
 
   }
@@ -834,10 +836,12 @@ textarea{
 
 
 /*=============================================================== TABLET PT */
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 690px) {
 
-/* ============================= INTERIOR CONTENT AREA ==============	 */
-/* ============================= WIDGET AREA ==============	 */
+.main-navigation{
+	width:100%;
+	
+}
 
 }/*=============================================================== TABLET PT */
 

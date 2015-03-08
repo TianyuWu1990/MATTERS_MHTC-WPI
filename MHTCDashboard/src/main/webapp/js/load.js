@@ -117,6 +117,97 @@ loadFunction = function() {
     	}
     	
     });
+    
+	jQuery("#metrics-trigger").click(function(){
+    	
+		$("#metricSelectionCol").attr("style", "width: 100%");
+		$("#stateSelectionCol").attr("style", "width: 0%");
+		
+    	if ($("#sidebar-left").hasClass("open") && !$("#metricSelectionCol").hasClass("open"))
+    	{    
+    		
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300);
+    		
+    		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#metricSelectionCol").addClass("open");
+    		$("#sidebar-left").addClass("open");
+    	}
+    	else if ($("#sidebar-left").hasClass("open")&& $("#metricSelectionCol").hasClass("open"))
+    	{	
+    		
+			$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300);
+    		
+    		$("#viewWrapper").animate({ left: 0}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#sidebar-left").removeClass("open");
+    
+    	}else if(!$("#sidebar-left").hasClass("open")&& !$("#metricSelectionCol").hasClass("open")){
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300);
+    		
+    		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#metricSelectionCol").addClass("open");
+    		$("#sidebar-left").addClass("open");
+    	}
+    	else if(!$("#sidebar-left").hasClass("open")&& $("#metricSelectionCol").hasClass("open")){
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300);
+    		
+    		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#metricSelectionCol").addClass("open");
+    		$("#sidebar-left").addClass("open");
+    	}
+    	
+    	$("#stateSelectionCol").removeClass("open");
+    	$("#metricSelectionCol").addClass("open");
+    	
+	});
+	
+	jQuery("#states-trigger").click(function(){
+		$("#metricSelectionCol").attr("style", "width: 0%");
+		$("#stateSelectionCol").attr("style", "width: 100%");
+		
+		if ($("#sidebar-left").hasClass("open") && !$("#stateSelectionCol").hasClass("open"))
+    	{    
+    		
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300);
+    		
+    		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#stateSelectionCol").addClass("open");
+    		$("#sidebar-left").addClass("open");
+    	}
+    	else if ($("#sidebar-left").hasClass("open")&& $("#stateSelectionCol").hasClass("open"))
+    	{	
+    		
+			$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300);
+    		
+    		$("#viewWrapper").animate({ left: 0}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#sidebar-left").removeClass("open");
+    
+    	}else if(!$("#sidebar-left").hasClass("open")&& !$("#stateSelectionCol").hasClass("open")){
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300);
+    		
+    		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#stateSelectionCol").addClass("open");
+    		$("#sidebar-left").addClass("open");
+    	}
+    	else if(!$("#sidebar-left").hasClass("open")&& $("#stateSelectionCol").hasClass("open")){
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300);
+    		
+    		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#stateSelectionCol").addClass("open");
+    		$("#sidebar-left").addClass("open");
+    	}
+		
+    	$("#stateSelectionCol").addClass("open");
+    	$("#metricSelectionCol").removeClass("open");
+	});
+
         
     /**************************************************
      * Start Sidebar Metric Menus logic

@@ -12,7 +12,7 @@
 <html lang="en">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Library CSS -->
 		<link href="css/nv.d3.css" rel="stylesheet">
 		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -25,6 +25,7 @@
 		<!-- Custom CSS -->
 		<link href="css/mesh/base.css" rel="stylesheet">
 		<link href="css/mesh/main.css" rel="stylesheet">
+		<link href="css/mesh/main-responsive.css" rel="stylesheet">
 		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
@@ -86,7 +87,7 @@
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
-						<div class="title">
+						<div class="title" >
 							<span>Select Metrics</span>
 						</div>
 						<div class="sidebar-content accordion-menu" id="metricListWrapper">
@@ -202,10 +203,20 @@
 				</div>
 			  	<!--  end: left sidebar -->
 		    
+		    	
+		    
+		    
+		    
 				<!-- start: Content -->
 			
 				<div id="content">
 					<div class="pagination pagination-right">
+						<div >
+							<label id="metrics-trigger" class="side-icon">Metrics</label>
+						</div>
+						<div >
+							<label id="states-trigger" class="side-icon">States</label>
+						</div>
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
@@ -213,8 +224,7 @@
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
-					
-						<!--  Right side of the pagination header. -->
+
 						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
 								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
@@ -237,6 +247,7 @@
 								</a>
 							</li>
 						</ul>
+						
 					</div>
 					
 					<div id="viewWrapper">
@@ -376,7 +387,47 @@
 							</div>
 						</div>
 					</div>
-				</div>		
+				
+				<!-- test 
+					<nav >	
+						<ul>
+							<li><a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+									HOME
+								</a></li>
+							<li><a href="#">ABOUT</a></li>
+							<li><a href="#">WORK</a></li>
+							<li><a href="#">INSPRIATION</a></li>
+							<li><a href="#">BLOG</a></li>
+							<li><a href="#">CONTACT</a></li>
+							<li class="graph-tab active" id="table-tab" >
+								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+									<i></i>
+								</a>
+							</li>
+							<li class=" graph-tab " id="line-tab">
+								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
+									<i></i>
+								</a>
+							</li>
+							<li class="graph-tab" id="bar-tab">
+								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+									<i></i>
+								</a>
+							</li>
+							<li class="graph-tab" id="heatmap-tab">
+								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+									<i></i>
+								</a>
+							</li>
+						</ul>
+					</nav>	
+					
+					-->	
+				</div>	
+			
+	
+
+
 		</div>
 		<!-- end: Content -->
 

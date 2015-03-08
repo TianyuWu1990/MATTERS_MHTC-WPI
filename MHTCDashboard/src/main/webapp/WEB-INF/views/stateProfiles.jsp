@@ -21,6 +21,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 	<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+	<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 	<link href="css/stateProfiles.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/libjs"></script>
@@ -43,7 +44,7 @@
                        "Tax burden per capita rank", "Percent tech employment", "Tech employment rank", "Unempl insurance",
                        "Unempl insurance rank"
        -->
-		<div class="container" ng-controller="profile_controller as state" initial="Massachusetts">
+		<div class="container" ng-controller="profile_controller as state" initial="Massachusetts" style="overflow-x:hidden;">
 		
 			<div class="state-profile-title">
 				<div id="stateChooserWrapper">
@@ -116,7 +117,9 @@
 			</div>
 			<h2>National Ranking and Data</h2>
 			<hr class="state-ranking">
-			<div class="index ranking-header">
+			<div style="width: 100%; overflow-x: scroll;">
+			
+			<div class="index ranking-header" style="min-width:500px;">
 				<div class="rank">Rank</div>
 				<div class="data">Data</div>
 				<div class="status">Status</div>
@@ -190,7 +193,7 @@
 						<div class="source">U.S. Census</div>
 					</div>
 			
-			
+			</div>
 			<hr class="state-ranking">
 			<p class="note">
 			Note: Status attributes top 10 ranking as a STRENGTH. bottom 25 ranking as a WEAKNESS

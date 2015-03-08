@@ -18,6 +18,7 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 <link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 
 </head>

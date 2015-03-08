@@ -22,6 +22,7 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 <link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 
 <style>
@@ -56,23 +57,23 @@
 			</c:if>
 			<form action="feedback_post" method="post">
 				<label style="color:black;">Name</label><br/>
-				<input name="name" id="name" type="text" style="width: 530px; height: 30px; margin-top: 5px;" autofocus> 
+				<input name="name" id="name" type="text" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" autofocus> 
 				<br/><br/>
 				
 				<label style="color:black;">Affiliation</label><br/>
-				<input name="affiliation" id="affiliation" style="width: 530px; height: 30px; margin-top: 5px;" type="text"> 
+				<input name="affiliation" id="affiliation" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text"> 
 				<br/><br/>
 				
 				<label style="color:black;">Email Address</label><br/>
-				<input name="email" id="email" style="width: 530px; height: 30px; margin-top: 5px;" type="text"> 
+				<input name="email" id="email" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text"> 
 				<br/><br/>
 				
 				<label style="color:black;">Subject</label><br/>
-				<input name="subject" id="subject" style="width: 530px; height: 30px; margin-top: 5px;" type="text"> 
+				<input name="subject" id="subject" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text"> 
 				<br/><br/>
 				
 				<label style="color:black;">Comments</label><br/>
-				<textarea name="comments" style="width: 530px; height: 180px; margin-top: 5px;"></textarea>
+				<textarea name="comments" style="width: 100%; max-width: 530px; height: 180px; margin-top: 5px;"></textarea>
 				<br/><br/>
 				
                    <%

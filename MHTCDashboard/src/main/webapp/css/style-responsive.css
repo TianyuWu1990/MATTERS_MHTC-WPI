@@ -1,41 +1,92 @@
-/* Higher than 1200 (desktop devices)
-====================================================================== */
-@media (min-width: 1200px) {
-
-}
-
-/* Higher than 960 (desktop devices)
-====================================================================== */
-@media only screen and (min-width: 980px) and (max-width: 1199px){
-	
-}
-
-/* Tablet Portrait (devices and browsers)
-====================================================================== */
-@media only screen and (min-width: 768px) and (max-width: 979px) {
-	
-}
-
-/* All Mobile Sizes (devices and browser)
-====================================================================== */
-@media only screen and (max-width: 767px) {
-	
-}
-
-/* Mobile Landscape Size to Tablet Portrait (devices and browsers)
-====================================================================== */
-@media only screen and (min-width: 480px) and (max-width: 767px) {
-	
-	body {
-		padding: 0px;
+@media only screen and (max-width:320px){
+	body{
+		width:320px;
+	}
+	.pagination{
+		width:320px;
 	}
 }
 
-/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers)
-=================================================================== */
-@media only screen and (max-width: 479px) {
+
+
+
+@media only screen and (max-width: 768px){
 	
-	body {
-		padding: 0px;
-	}
+	
+#preContentBar{
+	top:80px;
+	height:75px;
+	display:none;
+}
+
+.container-fluid-full{
+	border-top:5px solid #000;
+	top:80px;
+}
+
+.pagination-header-left{
+	display:none;
+}
+
+#viz-tabs{
+	
+	position:absolute;
+	right:0px;
+	top:0px;
+	height:100%;
+	float:right;
+}
+
+.pagination > ul > li > a{
+	height:36px;
+	padding:7px;
+}
+
+.pagination > ul > li > a > i{
+	padding:0px;
+}
+
+#metrics-trigger{
+	top:5px;
+	padding:10px 3px 10px 10px;
+	
+}
+
+#states-trigger{
+	padding:10px 3px;
+	top:5px;
+}
+
+.sidebar{
+	top:50px;
+	left:0px;
+	
+}
+
+.sidebar-content.accordion-menu{
+	top:0;
+}
+.sidebar-content.single-section{
+	top:0;
+}
+
+
+
+#vizView{
+	min-width:700px;
+	min-height:600px;
+}
+
+#sidebar-left{
+	margin-left:-500px;
+}
+
+#viewWrapper{
+	left:0px;
+}
+
+}
+
+@media only screen and (max-width: 1250px) and (min-width: 768px){
+
 }
