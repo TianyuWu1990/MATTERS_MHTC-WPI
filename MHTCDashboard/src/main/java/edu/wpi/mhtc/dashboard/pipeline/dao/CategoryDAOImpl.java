@@ -4,6 +4,7 @@
  */
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -11,7 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
@@ -92,20 +95,32 @@ public class CategoryDAOImpl implements CategoryDAO {
 	
 	@Override
 	public Category get(int ID) {
-		PSqlStringMappedJdbcCall<Category> categoryCall =
-				new PSqlStringMappedJdbcCall<Category>(jdbcTemplate)
-				.withSchemaName("mhtc_sch")
-				.withProcedureName("getCategoryById");
+		String sql = "SELECT * FROM mhtc_sch.categories WHERE \"Id\" = ?";
 		
-		categoryCall.addDeclaredRowMapper(new CategoryMapper());
+		Object[] args = {ID};
 		
-		categoryCall.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
-		
-		Map<String, Object> categoryParams = new HashMap<String, Object>();
-		
-		categoryParams.put("categoryid", ID);
-		
-		return (Category) categoryCall.execute(categoryParams);
+		return jdbcTemplate.query(sql, args, new ResultSetExtractor<Category>() {
+
+			@Override
+			public Category extractData(ResultSet rs) throws SQLException, DataAccessException {
+
+				if (rs.next()) {
+					Category cat = new Category();
+					
+					cat.setId(rs.getInt("Id"));
+					cat.setName(rs.getString("Name"));
+					cat.setParentId(rs.getInt("ParentId"));
+					cat.setSource(rs.getString("Source"));
+					cat.setURL(rs.getString("URL"));
+					cat.setVisible(rs.getBoolean("Visible"));
+					
+					return cat;
+				}
+				
+				return null;
+			}
+			
+		});
 		
 	}
 

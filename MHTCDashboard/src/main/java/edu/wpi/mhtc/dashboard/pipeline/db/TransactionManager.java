@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 /**
@@ -24,15 +25,15 @@ public class TransactionManager {
 	 * @param parser
 	 * @throws SQLException 
 	 */
-	public static void insertData(List<Line> data, boolean overwrite) throws SQLException {
+	public static void insertData(ArrayList<Statistic> arrayList, boolean overwrite) throws SQLException {
 		// Get the connection singleton
 		Connection conn = DBConnector.getInstance().getConn();
 		conn.setAutoCommit(false);
 
-		Iterator<Line> iter = data.iterator();
+		Iterator<Statistic> iter = arrayList.iterator();
 
 		while (iter.hasNext()) {
-			Line line = iter.next();
+			Statistic line = iter.next();
 			try {
 				if (overwrite) {
 					DBSaver.mergeLine(conn, line);

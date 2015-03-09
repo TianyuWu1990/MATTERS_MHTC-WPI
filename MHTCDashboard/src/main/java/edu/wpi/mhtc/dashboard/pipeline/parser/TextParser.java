@@ -18,7 +18,7 @@ import org.apache.commons.csv.CSVRecord;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.NumericCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.StateCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.YearCleaner;
-import edu.wpi.mhtc.dashboard.pipeline.data.Category;
+import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
@@ -28,7 +28,7 @@ import edu.wpi.mhtc.dashboard.pipeline.data.Metric;
 public class TextParser implements IParser {
 
 	public DataSource source;
-	private List<Line> lines;
+	private List<Statistic> lines;
 	private CSVParser parser;
 	private ArrayList<Metric> metrics;
 	private Integer stateColumnNum;
@@ -48,7 +48,7 @@ public class TextParser implements IParser {
 		
 		this.source = source;
 		parser = new CSVParser(new BufferedReader(new FileReader(source.getFile())), CSVFormat.DEFAULT);
-		this.lines = new ArrayList<Line>();
+		this.lines = new ArrayList<Statistic>();
 		
 	}
 	
@@ -92,7 +92,7 @@ public class TextParser implements IParser {
 	 * @throws UnifiedFormatException 
 	 */
 	@Override
-	public void validateMetrics(Category category) throws CategoryException, UnifiedFormatException{
+	public void getHeaderColumnNames() throws CategoryException, UnifiedFormatException{
 
 		columnNames = new HashMap<String, Integer>();
 		CSVRecord record = findHeader();
@@ -103,7 +103,7 @@ public class TextParser implements IParser {
 					columnNames.put(cellValue, i);
 				}
 				else{
-					category.getMetric(cellValue);	//make sure valid metric
+					source.getCategory().getMetric(cellValue);	//make sure valid metric
 					columnNames.put(cellValue, i);
 				}
 			}
@@ -117,7 +117,7 @@ public class TextParser implements IParser {
 	public boolean parseAll() throws CategoryException, UnifiedFormatException {
 		
 		
-		validateMetrics(source.getCategory());
+		getHeaderColumnNames();
 		
 		yearColumnNum = columnNames.remove("year");
 		stateColumnNum = columnNames.remove("state");
@@ -129,14 +129,14 @@ public class TextParser implements IParser {
 		for(CSVRecord record : parser){
 			
 			for(Metric m : metrics){
-				Line line = new Line();
+				Statistic line = new Statistic();
 				
 				String year = record.get(yearColumnNum);
-				line.setYear(yearCleaner.clean(year));
+				line.setYear(Integer.parseInt(yearCleaner.clean(year)));
 				
 				String state = record.get(stateColumnNum);
 				try {
-					line.setState(stateCleaner.clean(state));
+					line.setStateName(stateCleaner.clean(state));
 				} catch (Exception e) {
 					System.out.println("Could not parse line: " + record.getRecordNumber());
 					System.out.println(record.toString());
@@ -160,7 +160,7 @@ public class TextParser implements IParser {
 
 	
 	@Override
-	public Iterator<Line> iterator() {
+	public Iterator<Statistic> iterator() {
 		return lines.iterator();
 	} 
 

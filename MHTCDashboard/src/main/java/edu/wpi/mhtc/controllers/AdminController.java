@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -60,6 +59,8 @@ import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.TalendJob;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
+import edu.wpi.mhtc.model.state.State;
+import edu.wpi.mhtc.persistence.StateMapper;
 
 @Controller
 public class AdminController {
@@ -75,12 +76,14 @@ public class AdminController {
     private PipelineService pipelineService;
     private MetricService metricService;
     private TalendLogService logService;
+    private StateMapper stateMapper;
         
     @Autowired
     public AdminController(CategoryService categoryService,
 			StatisticService statService, UserService userService,
 			ScheduleService schedService, PipelineService pipelineService,
-			MetricService metricService, TalendLogService logService) {
+			MetricService metricService, TalendLogService logService,
+			StateMapper stateMapper) {
 		this.categoryService = categoryService;
 		this.statService = statService;
 		this.userService = userService;
@@ -88,6 +91,7 @@ public class AdminController {
 		this.pipelineService = pipelineService;
 		this.metricService = metricService;
 		this.logService = logService;
+		this.stateMapper = stateMapper;
 	}
 
 	/********** Admin manager page **********/
@@ -511,8 +515,13 @@ public class AdminController {
     	File localFile = new File(dataFileLocation);
     	dataFile.transferTo(localFile);
     	
+    	// Get a list of metrics for that category
+    	List<Metric> metrics = metricService.getMetricsForCategory(subCategory.getId());  
+    	
+    	List<State> states = stateMapper.getAllStates();
+    	
         // Now that the file is saved, time to run it
-        DataPipeline.run(localFile, subCategoryID, overwrite);
+        DataPipeline.run(localFile, subCategory, metrics, states, overwrite);
         
         // TODO Once completed, need to add entry to database for record keeping
         // TODO Need to somehow get the metric from the spreadsheet for DB record

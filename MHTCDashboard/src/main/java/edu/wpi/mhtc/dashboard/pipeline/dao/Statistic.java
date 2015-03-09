@@ -7,9 +7,17 @@ public class Statistic {
 	int metricID;
 	String metricName;
 	int year;
-	double value;
+	Double value;
 	
 	public Statistic() {}
+	
+	/**
+	 * Check whether a Statistic is valid to be added to DB
+	 * @return
+	 */
+	public boolean isValid(){
+		return (year != 0 && stateID != 0 && value != null);
+	}
 	
 	/**
 	 * @return the stateID

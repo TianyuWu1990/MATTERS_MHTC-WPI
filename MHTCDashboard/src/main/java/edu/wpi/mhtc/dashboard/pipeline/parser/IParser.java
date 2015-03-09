@@ -4,13 +4,12 @@
  */
 package edu.wpi.mhtc.dashboard.pipeline.parser;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.Category;
-import edu.wpi.mhtc.dashboard.pipeline.data.Line;
+import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 
-public interface IParser extends Iterable<Line> {
+public interface IParser extends Iterable<Statistic> {
 	
 	public boolean parseAll() throws Exception;
 
-	public void validateMetrics(Category category) throws Exception;
+	public void getHeaderColumnNames() throws Exception;
 }
 

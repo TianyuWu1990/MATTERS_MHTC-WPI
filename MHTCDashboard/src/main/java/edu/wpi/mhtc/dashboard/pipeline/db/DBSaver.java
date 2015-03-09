@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 
 public class DBSaver {
@@ -18,25 +19,25 @@ public class DBSaver {
 	 * Save line data into DB.
 	 */
 
-	public static void saveLine(Connection conn, Line line) throws SQLException {
+	public static void saveLine(Connection conn, Statistic line) throws SQLException {
 		String sql = "insert into mhtc_sch.statistics values(?, ?, ?, ?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
 		pstatement.setInt(2, line.getMetricID()); // set parameter 2 (ID)
 		pstatement.setInt(3, line.getYear());
-		pstatement.setFloat(4, line.getMetricValue());
+		pstatement.setDouble(4, line.getValue());
 		pstatement.execute();
 		pstatement.close();
 	}
 	
-	public static void mergeLine(Connection conn, Line line) throws SQLException {
+	public static void mergeLine(Connection conn, Statistic line) throws SQLException {
 		String sql = "SELECT mhtc_sch.merge_statistics(?, ?, ?, ?)";
 		PreparedStatement pstatement = conn.prepareStatement(sql);
 		
 		pstatement.setInt(1, line.getStateID()); // set parameter 1 (FIRST_NAME)
 		pstatement.setInt(2, line.getMetricID()); // set parameter 2 (ID)
 		pstatement.setInt(3, line.getYear());
-		pstatement.setFloat(4, line.getMetricValue());
+		pstatement.setDouble(4, line.getValue());
 		pstatement.execute();
 		pstatement.close();
 	}

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -20,31 +21,36 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.NumericCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.StateCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.YearCleaner;
-import edu.wpi.mhtc.dashboard.pipeline.data.Category;
+import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
+import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
+import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
-import edu.wpi.mhtc.dashboard.pipeline.data.Line;
-import edu.wpi.mhtc.dashboard.pipeline.data.Metric;
-import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedDataSource;
+import edu.wpi.mhtc.model.state.State;
+import edu.wpi.mhtc.persistence.StateMapper;
 
 public class UnifiedParser implements IParser {
+		
+	List<edu.wpi.mhtc.dashboard.pipeline.dao.Metric> metrics;
+	List<State> states;
 
 	HashMap<String, Integer> columnNames;	//holds column names from header in order
-	ArrayList<Line> lines;
+	ArrayList<Statistic> lines;
 	Workbook workbook;
 	Sheet sheet;			//files in unified format only have one sheet
-	Category category;
+	DataSource source;
 	int headerRow;			//files in unified format have a header with columns "year" and "state" and one or more metric names
 
 	/**
 	 * 
 	 * @param source
+	 * @param metrics 
 	 * @throws UnifiedFormatException if file does not conform to Unified Format.
 	 * @throws CategoryException if metrics defined in file are not associated with category in the database.
 	 * @throws IOException 
 	 * @throws InvalidFormatException 
 	 */
-	public UnifiedParser(UnifiedDataSource source) throws UnifiedFormatException, CategoryException, InvalidFormatException, IOException{
+	public UnifiedParser(DataSource source, List<Metric> metrics, List<State> states) throws UnifiedFormatException, CategoryException, InvalidFormatException, IOException{
 
 		if (source.getFileType() == FileType.xlsx) {
 			this.workbook = (XSSFWorkbook) WorkbookFactory.create(
@@ -61,12 +67,19 @@ public class UnifiedParser implements IParser {
 			throw new UnifiedFormatException("bad workbook");
 		}
 		
-		this.category = source.getCategory();		
+		this.source = source;
+		
 		this.sheet = workbook.getSheetAt(0);	//files in unified format only have one sheet
-
+		
+		this.metrics = metrics;
+		
 		this.headerRow = findHeader();						//find file header, make sure has year and state
-		validateMetrics(category);		//verify that the metric column names match the metrics for this source's category
-
+				
+		this.columnNames = new HashMap<String, Integer>();
+		getHeaderColumnNames();					// Get header column names, and validate if it is a metric
+		
+		this.states = states;
+		
 	}
 
 	
@@ -78,8 +91,8 @@ public class UnifiedParser implements IParser {
 		StateCleaner stateCleaner = new StateCleaner();
 		NumericCleaner numCleaner = new NumericCleaner();
 
-		lines = new ArrayList<Line>();	
-		Line line = null;
+		lines = new ArrayList<Statistic>();	
+		Statistic line = null;
 		int stateCol = columnNames.remove("state");
 		int yearCol = columnNames.remove("year");
 		for (Row row : sheet) {
@@ -87,6 +100,8 @@ public class UnifiedParser implements IParser {
 			if(row.getRowNum() > headerRow){	//skip extra info above header
 				int i = row.getRowNum();
 				if (!isRowEmpty(row)){		
+
+					line = new Statistic();
 
 					String state = null;
 					String year = null;
@@ -124,26 +139,20 @@ public class UnifiedParser implements IParser {
 						System.out.println("Bad Row "+row.getRowNum() );
 						break;
 					}
-
 					
+					State s = getState(state);
+					
+					line.setStateName(s.getName());
+					line.setStateID(s.getId());
+					line.setYear(Integer.parseInt(year));
+
 //					get metric fields
 					for (String name: columnNames.keySet()) {
-						line = new Line();
-						try{
-							line.setState(state);
-							line.setYear(year);
-						}
-						catch(Exception e){
-							System.out.println(e.getMessage());
-							break;
-						}
-
+						
 						Cell cell = row.getCell(columnNames.get(name));
 						if(cell != null){
 
-							Metric metric = category.getMetric(name);
-							metric.clearValue();
-
+							edu.wpi.mhtc.dashboard.pipeline.dao.Metric m = getMetric(name);
 							String value = null;
 
 							switch (cell.getCellType()) {
@@ -173,9 +182,11 @@ public class UnifiedParser implements IParser {
 										System.out.println("bad data "+value+", line skipped");
 										break;
 									}
-									metric.setValue(Float.parseFloat(cleanedValue));
-									line.addMetric(metric);
-									if(line.isValid())
+									
+									line.setMetricID(m.getId());
+									line.setValue(Double.parseDouble(cleanedValue));
+																		
+									if (line.isValid())
 										lines.add(line);
 								}
 								catch(Exception e){
@@ -196,12 +207,10 @@ public class UnifiedParser implements IParser {
 	
 //	Once source has been parsed, can iterate over the lines to be added to db
 	@Override
-	public Iterator<Line> iterator(){
+	public Iterator<Statistic> iterator() {
 		return lines.iterator();
 	}
 
-
-	
 	/**
 	 * 
 	 * @return the row number of the header
@@ -246,34 +255,73 @@ public class UnifiedParser implements IParser {
 		return true;
 	}
 
-
 	/**
 	 * @throws CategoryException if the metric header names do not match the metrics for this category
 	 */
 	@Override
-	public void validateMetrics(Category category) throws CategoryException {
-		
-		columnNames = new HashMap<String, Integer>();
-		
+	public void getHeaderColumnNames() throws CategoryException {
+				
 		for (Cell cell : sheet.getRow(headerRow)) {
 			if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
 				String cellValue = cell.getRichStringCellValue().getString().trim();
+				
 				if(cellValue.equalsIgnoreCase("year") || cellValue.equalsIgnoreCase("state")){
 					columnNames.put(cellValue.toLowerCase(), cell.getColumnIndex());
-				}
-				else{
-					category.getMetric(cellValue);	//make sure valid metric
+				} else {
+					validateHeaderName(cellValue);
 					columnNames.put(cellValue.toLowerCase(), cell.getColumnIndex());
 				}
+					
 			}
 		}
 	}
 	
+	private void validateHeaderName(String cellValue) throws CategoryException {
+		for (edu.wpi.mhtc.dashboard.pipeline.dao.Metric m : metrics) {
+			if (m.getName().equalsIgnoreCase(cellValue)) {
+				return;
+			}
+		}
+		
+		// Metric wasn't found in the DB, let user know
+		CategoryException c = new CategoryException("No metric in category \"" + cellValue + "\" matches metric \""+cellValue+"\".");
+		c.setSolution("The possible metrics for category \"" + cellValue + "\" are:<ul>");
+		
+		for (edu.wpi.mhtc.dashboard.pipeline.dao.Metric metric: metrics) {
+			c.setSolution("<li>" + metric.getName() + "</li>");
+		}
+		
+		c.setSolution("</ul>Please confirm that you are uploading the right metric to the right category.");
+				
+		throw c;
+		
+	}
+	
+	public edu.wpi.mhtc.dashboard.pipeline.dao.Metric getMetric(String name) {
+		for (edu.wpi.mhtc.dashboard.pipeline.dao.Metric m : metrics) {
+			if (m.getName().equalsIgnoreCase(name)) {
+				return m;
+			}
+		}
+		return null;
+	}
+	
+	public State getState(String stateName) {
+		for (State s : states) {
+			if (s.getName().equalsIgnoreCase(stateName)) {
+				return s;
+			}
+		}
+		
+		return null;
+	}
+
+
 	/**
 	 * Simple getter for lines, which contains all data tuples
 	 * @return
 	 */
-	public ArrayList<Line> getLines() {
+	public ArrayList<Statistic> getLines() {
 		return lines;
 	}
 
