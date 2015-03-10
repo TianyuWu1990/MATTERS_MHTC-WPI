@@ -74,6 +74,7 @@ $(document).ready(function() {
 	}
 });
 
+var mobileMode = false;
 
 loadFunction = function() {	
 	
@@ -84,7 +85,45 @@ loadFunction = function() {
 	
 	// Perform resize functions on resize.
 	$(window).on('resize', function() {
-		cm.refreshSizing();
+		cm.refreshSizing(this);
+		
+		if ($(window).width() > 830)
+		{
+			mobileMode = false;
+			var sidebarOpen = $("#sidebar-left").hasClass("open");
+					
+			var icon = $("#toggle-sidebar").find("i")[0];
+			
+			$("#metrics-trigger").removeClass("open");
+			$("#states-trigger").removeClass("open");
+			
+			$("#metricSelectionCol").attr("style", "width: 250px;");
+			$("#stateSelectionCol").attr("style", "width: 200px;");
+			
+			if (sidebarOpen)
+			{
+				$(icon).removeClass("fa-caret-right");
+				$(icon).addClass("fa-caret-left");
+			}
+			else
+			{
+				$(icon).removeClass("fa-caret-left");
+				$(icon).addClass("fa-caret-right");
+			}
+		}
+		else
+		{
+			if (mobileMode == false)
+			{
+				$("#sidebar-left").removeClass("open");
+				$("#stateSelectionCol").removeClass("open");
+				$("#metricSelectionCol").removeClass("open");
+				$("#sidebar-left").attr("style", "margin-left:" +  -$("#sidebar-left").width() + "px;");
+				$("#viewWrapper").attr("style", "left: 0px");
+				mobileMode = true;
+			}
+		}
+		
 	});	
 	
     // Initializes button that toggles the sidebar
@@ -118,7 +157,7 @@ loadFunction = function() {
     	
     });
     
-	jQuery("#metrics-trigger").click(function(){
+	$("#metrics-trigger").click(function(){
     	
 		$("#metricSelectionCol").attr("style", "width: 100%");
 		$("#stateSelectionCol").attr("style", "width: 0%");
@@ -130,16 +169,19 @@ loadFunction = function() {
     		
     		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
     		
+    		$("#metrics-trigger").addClass("open");
     		$("#metricSelectionCol").addClass("open");
     		$("#sidebar-left").addClass("open");
     	}
     	else if ($("#sidebar-left").hasClass("open")&& $("#metricSelectionCol").hasClass("open"))
     	{	
     		
-			$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300);
+			$("#sidebar-left").animate({ marginLeft: -450}, 300);
     		
     		$("#viewWrapper").animate({ left: 0}, 300, function() { $(window).trigger('resize'); });
     		
+    		$("#metrics-trigger").removeClass("open");
+    		$("#metricSelectionCol").removeClass("open");
     		$("#sidebar-left").removeClass("open");
     
     	}else if(!$("#sidebar-left").hasClass("open")&& !$("#metricSelectionCol").hasClass("open")){
@@ -147,6 +189,7 @@ loadFunction = function() {
     		
     		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
     		
+    		$("#metrics-trigger").addClass("open");
     		$("#metricSelectionCol").addClass("open");
     		$("#sidebar-left").addClass("open");
     	}
@@ -155,16 +198,16 @@ loadFunction = function() {
     		
     		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
     		
+    		$("#metrics-trigger").addClass("open");
     		$("#metricSelectionCol").addClass("open");
     		$("#sidebar-left").addClass("open");
     	}
     	
+    	$("#states-trigger").removeClass("open");
     	$("#stateSelectionCol").removeClass("open");
-    	$("#metricSelectionCol").addClass("open");
-    	
 	});
 	
-	jQuery("#states-trigger").click(function(){
+	$("#states-trigger").click(function(){
 		$("#metricSelectionCol").attr("style", "width: 0%");
 		$("#stateSelectionCol").attr("style", "width: 100%");
 		
@@ -175,16 +218,19 @@ loadFunction = function() {
     		
     		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
     		
+    		$("#states-trigger").addClass("open");
     		$("#stateSelectionCol").addClass("open");
     		$("#sidebar-left").addClass("open");
     	}
     	else if ($("#sidebar-left").hasClass("open")&& $("#stateSelectionCol").hasClass("open"))
     	{	
     		
-			$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300);
+			$("#sidebar-left").animate({ marginLeft: -450}, 300);
     		
     		$("#viewWrapper").animate({ left: 0}, 300, function() { $(window).trigger('resize'); });
     		
+    		$("#states-trigger").removeClass("open");
+    		$("#stateSelectionCol").removeClass("open");
     		$("#sidebar-left").removeClass("open");
     
     	}else if(!$("#sidebar-left").hasClass("open")&& !$("#stateSelectionCol").hasClass("open")){
@@ -192,6 +238,7 @@ loadFunction = function() {
     		
     		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
     		
+    		$("#states-trigger").addClass("open");
     		$("#stateSelectionCol").addClass("open");
     		$("#sidebar-left").addClass("open");
     	}
@@ -200,11 +247,12 @@ loadFunction = function() {
     		
     		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
     		
+    		$("#states-trigger").addClass("open");
     		$("#stateSelectionCol").addClass("open");
     		$("#sidebar-left").addClass("open");
     	}
 		
-    	$("#stateSelectionCol").addClass("open");
+		$("#metrics-trigger").removeClass("open");
     	$("#metricSelectionCol").removeClass("open");
 	});
 

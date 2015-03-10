@@ -56,14 +56,6 @@ a:hover{
 	top: 32px;
 }
 
-/*.menu{
-	display: none;
-	position: absolute;
-	top: -45px;
-	cursor: pointer;
-
-}*/
-
 .menu-close{
 	height: 20px;
 	width: 100%;
@@ -580,7 +572,7 @@ h2{
 
 #menuToggle:checked ~ .menu{
 	position:absolute;
-	top:0px;
+	top:-15px;
 	
 	z-index:99;
 }

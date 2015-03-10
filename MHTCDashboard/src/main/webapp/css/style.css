@@ -1,31 +1,24 @@
+body 
+{
+	height: 100%;
+	width: 100%;
+}
+
 /*
    Modifications to Mesh's Stylesheet to allow for our stuff to work
 */
 
 .site-footer {
-	position: absolute;
+	position: relative;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
-	
+	z-index: 999;
 	padding: 10px 0px !important;
 }
 
 option {
 	font-size: 10px !important;
-}
-
-#preContentBar {
-	background-color: #080606;
-	
-	border-top: 10px solid #393938;
-
-	position: absolute;
-	left: 0px;
-	right: 0px;
-	top: 105px;
-	
-	height: 50px;
 }
 
 .menu > ul > li > a:hover
@@ -156,7 +149,7 @@ table.dataTable tbody tr:nth-child(even) {
 /* Sidebar Styling */
 .sidebar 
 {
-	position: absolute;
+	position: relative;
 	
 	display: block;
 	float: left; 
@@ -164,7 +157,9 @@ table.dataTable tbody tr:nth-child(even) {
 	margin: 0px;
 	
 	width: auto;
-	height: 100%;
+	
+	top: 0px;
+	bottom: 0px;
 	
 	z-index: 999;
 	
@@ -346,11 +341,13 @@ table.dataTable tbody tr:nth-child(even) {
 
 .container-fluid-full
 {
-	position: absolute;	
+	position: relative;	
 	left: 0px;
 	right: 0px;
-	top: 165px;
-	bottom: 82px;	
+	
+	border-top:5px solid #000;
+
+	height: 100%;
 	
 	background: #fff;
 }
@@ -570,11 +567,11 @@ svg text {
 }
 
 #vizView {
-	position: absolute;
-	top: 0px;
+	position: relative;
 	left: 0px;
 	right: 0px;
-	bottom: 0px;	
+	
+	height: 100%;
 }
 
 #errorView {
@@ -1014,7 +1011,6 @@ i.fa.fa-info-circle {
 .pagination-header-left 
 {
 	float: left;
-	position:absolute;
 	display: inline-block;
 }
 
@@ -1251,9 +1247,6 @@ form.signin .textbox span {
 form.signin .textbox input { 
 	width: 150px;
 }
-/*-------------------------------------------------------------
-
-*/
 
 .side-icon{
 	
@@ -1263,86 +1256,3 @@ form.signin .textbox input {
 	padding:15px;
 	font-size:15px;
 }
-
-
-
-
-
-/*----------------------------------------------
-@media only screen and (max-width: 690px){
-	
-	
-#preContentBar{
-	top:80px;
-	height:75px;
-	display:none;
-}
-
-.container-fluid-full{
-	border-top:5px solid #000;
-	top:80px;
-}
-
-.pagination-header-left{
-	display:none;
-}
-
-#viz-tabs{
-	
-	position:absolute;
-	right:0px;
-	top:0px;
-	height:100%;
-	float:right;
-}
-
-.pagination > ul > li > a{
-	height:36px;
-	padding:7px;
-}
-
-.pagination > ul > li > a > i{
-	padding:0px;
-}
-
-#metrics-trigger{
-	top:5px;
-	padding:10px 3px 10px 10px;
-	
-}
-
-#states-trigger{
-	padding:10px 3px;
-	top:5px;
-}
-
-.sidebar{
-	top:50px;
-	left:0px;
-	
-}
-
-.sidebar-content.accordion-menu{
-	top:0;
-}
-.sidebar-content.single-section{
-	top:0;
-}
-
-
-
-#vizView{
-	min-width:700px;
-	min-height:600px;
-}
-
-#sidebar-left{
-	margin-left:-600px;
-}
-
-#viewWrapper{
-	left:0px;
-}
-	
-}
-*/

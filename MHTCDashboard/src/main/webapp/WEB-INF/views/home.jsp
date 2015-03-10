@@ -65,9 +65,7 @@
 	<body>
 	
 	<jsp:include page="unifiedHeader.jsp"/>
-
-	<div id="preContentBar"></div>
-
+	
 	<div id="globalErrorDiv" style="display:none;">
 		<div id="globalErrorMsgWrapper">
 			<i class="fa fa-exclamation-triangle fa-2x"></i>
@@ -203,19 +201,15 @@
 				</div>
 			  	<!--  end: left sidebar -->
 		    
-		    	
-		    
-		    
-		    
 				<!-- start: Content -->
 			
 				<div id="content">
 					<div class="pagination pagination-right">
-						<div >
-							<label id="metrics-trigger" class="side-icon">Metrics</label>
+						<div id="metrics-trigger-wrapper">
+							<label id="metrics-trigger" class="side-icon trigger-button">Metrics</label>
 						</div>
-						<div >
-							<label id="states-trigger" class="side-icon">States</label>
+						<div id="states-trigger-wrapper">
+							<label id="states-trigger" class="side-icon trigger-button">States</label>
 						</div>
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
@@ -387,47 +381,7 @@
 							</div>
 						</div>
 					</div>
-				
-				<!-- test 
-					<nav >	
-						<ul>
-							<li><a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
-									HOME
-								</a></li>
-							<li><a href="#">ABOUT</a></li>
-							<li><a href="#">WORK</a></li>
-							<li><a href="#">INSPRIATION</a></li>
-							<li><a href="#">BLOG</a></li>
-							<li><a href="#">CONTACT</a></li>
-							<li class="graph-tab active" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
-									<i></i>
-								</a>
-							</li>
-							<li class=" graph-tab " id="line-tab">
-								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
-									<i></i>
-								</a>
-							</li>
-							<li class="graph-tab" id="bar-tab">
-								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
-									<i></i>
-								</a>
-							</li>
-							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
-									<i></i>
-								</a>
-							</li>
-						</ul>
-					</nav>	
-					
-					-->	
 				</div>	
-			
-	
-
-
 		</div>
 		<!-- end: Content -->
 
@@ -442,47 +396,6 @@
 		<!-- .site-info -->
 	</footer>
 	<!-- #colophon -->
-
-	<%
-		/*<div class="modal fade in" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		 <div class="modal-dialog">
-		 <div class="modal-content" >
-		 <div class="modal-header">
-		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		 <h4 class="modal-title" id="myModalLabel">About The Massachusetts High Technology Council</h4>
-		 </div>
-		 <div class="modal-body" id="aboutBody">
-		 <p>
-		 As part of its mission to make Massachusetts the world&apos;s most attractive place in which to live and work, and
-		 in which to create, and grow high technology business, the <strong>Massachusetts High Technology Council</strong> has developed the
-		 <span class="bluetext">Massachusetts&apos; Technology, Talent and Economy Reporting Systems</span> or <span class="bluetext">MATTERS</span>. <span class="bluetext">MATTERS</span> is a tool designed to
-		 help measure and evaluate Massachusetts&apos; current competitive position among leading technology states while
-		 providing policy makers with the information critical to developing public policy that attracts and retains
-		 business to the state. <br /> <br /> <span class="bluetext">MATTERS</span> is an online system that consolidates a collection of independent
-		 national rankings along with a set of key cost, economic and talent metrics into a single source for use by all
-		 parties interested in building a successful future for Massachusetts&apos; technology-based business. Both private
-		 and public-sector decision makers will have the key information necessary to evaluate and understand
-		 Massachusetts&apos; current business position as it compares to peer states and international communities who are
-		 working aggressively to attract the same talent, apital and jobs that characterize our Bay State technology
-		 economy. Armed with <span class="bluetext">MATTERS</span>&apos; data, business, education and public-policy leaders will chart
-		 Massachusetts&apos; future collaboratively by aligning what needs to be improved or protected in order to create a
-		 prosperous, competitive business environment fundamental to building long-term economic stability and job growth
-		 within the state.
-		 </p>
-		 <p class="text-muted centered"><br />&copy;2014 Worcester Polytechnic Institute. All rights reserved.<br /> Sponsored by Mass High Technology
-		 Council
-		 </p>
-		 </div>
-		 <div class="modal-footer">
-		 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		 </div>
-		 </div>
-		 </div>
-		 </div>
-		 <div class="modal-backdrop fade in"></div>
-		 <div class="modal-backdrop fade in"></div>
-		 */
-	%>
 		<script src="js/load.js"></script>	
 	</body>
 </html>

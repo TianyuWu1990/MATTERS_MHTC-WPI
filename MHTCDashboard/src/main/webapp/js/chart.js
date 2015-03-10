@@ -357,7 +357,7 @@ var CM = (function($) {
 					}
 					
 					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 200;
-					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top - 80;
+					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top;
 					
 					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
 					
