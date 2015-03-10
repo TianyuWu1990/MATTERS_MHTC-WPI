@@ -4,14 +4,12 @@
  */
 package edu.wpi.mhtc.controllers;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -20,7 +18,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -33,19 +33,18 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
 import edu.wpi.mhtc.helpers.Mailer;
@@ -54,9 +53,6 @@ import edu.wpi.mhtc.model.state.PeerStates;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.service.StateService;
 import edu.wpi.mhtc.service.StatsService;
-import edu.wpi.mhtc.service.UserService;
-import net.tanesha.recaptcha.ReCaptchaImpl;
-import net.tanesha.recaptcha.ReCaptchaResponse;
 
 /**
  * Handles requests for the application home page.
@@ -160,15 +156,13 @@ public class HomeController {
 		
 		String maId = "21";
 		
-//		List<DataSeries> massProfile = statsService.getStateBinData(maId, 45);
 		List<DataSeries> massNational = statsService.getStateBinData(maId, 21);
 		List<DataSeries> massTalent = statsService.getStateBinData(maId, 20);
 		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
 		List<DataSeries> massEconomy = statsService.getStateBinData(maId, 29);
 		List<State> peers = stateService.getAllPeers();
 		List<State> allstates= stateService.getAllStates(); 
-		// TODO un-hardcode these bin ids
-//		model.addAttribute("jv_stats_profile",massProfile );
+		
 		model.addAttribute("jv_stats_national", massNational);
 		model.addAttribute("jv_stats_talent", massTalent);
 		model.addAttribute("jv_stats_cost", massCost);
@@ -189,7 +183,6 @@ public class HomeController {
         Logger logger = LoggerFactory.getLogger(this.getClass());
         logger.info("New state requested: " + state);
 
-       // String stateId = "" + stateService.getStateByAbbreviation(state).getId();
         String stateId=state;
         
         List<DataSeries> profile = statsService.getStateBinData(stateId, 45);

@@ -102,23 +102,11 @@ public class StatsServiceJDBC implements StatsService
 	/**
 	 * Retrieve all metrics for this state and bin, includes all child categories of the bin. 
 	 */
-	public List<DataSeries> getStateBinData(String state, Integer binId)
-	{
+	public List<DataSeries> getStateBinData(String state, Integer binId) {
 
 		State dbState = stateMapper.getStateFromString(state);
-		List<Metric> dbMetrics = new ArrayList<Metric>();
-		try {
-			for(String s : DBLoader.getSubCategories(binId.toString()).values()){
-				dbMetrics.addAll(metricsService.getMetricsInCategory(Integer.parseInt(s), binId));
-			}
-//	TODO: should be able to use getMetricsFromParents instead of for loop above, but hangs
-//			List<Metric> dbMetrics = metricsService.getMetricsFromParents(binId);
-			return getDataForState(dbState, dbMetrics);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-		
+		List<Metric> dbMetrics = metricsService.getMetricsFromParents(binId);
+		return getDataForState(dbState, dbMetrics);
 	}
 
 	private List<Metric> getListOfMetricsFromCommaSeparatedString(String metric)
