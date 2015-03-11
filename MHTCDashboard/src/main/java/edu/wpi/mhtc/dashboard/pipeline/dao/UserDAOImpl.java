@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User get(String username) {
+	public List<User> get(String username) {
 		PSqlStringMappedJdbcCall<User> call =
 				new PSqlStringMappedJdbcCall<User>(jdbcTemplate)
 				.withSchemaName("mhtc_sch")
@@ -89,7 +90,7 @@ public class UserDAOImpl implements UserDAO {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("username", username);
 		
-		return (User) call.execute(params);
+		return call.execute(params);
 	}
 	
 	@Override
@@ -148,7 +149,7 @@ public class UserDAOImpl implements UserDAO {
 			u.setId(rs.getInt("Id"));
 			u.setUsername(rs.getString("UserName"));
 			u.setEmail(rs.getString("Email"));
-			u.setPasswordHash(rs.getString("PasswordHashed"));
+			u.setPasswordHash(rs.getString("PasswordHash"));
 			u.setFirstName(rs.getString("FirstName"));
 			u.setLastName(rs.getString("LastName"));
 						

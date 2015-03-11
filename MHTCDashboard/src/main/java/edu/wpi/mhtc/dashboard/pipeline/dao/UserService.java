@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.util.List;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -24,7 +25,7 @@ public class UserService {
 	static final int NEW_PASSWORD_NOT_MATCHED = -2;
 	
 	public User get(String username) {
-		return dao.get(username);
+		return dao.get(username).get(0);
 	}
 	
 	public void createUser(String username, String password, String firstName, String lastName, String email, boolean isAdmin) {

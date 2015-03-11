@@ -1,5 +1,7 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.util.List;
+
 import edu.wpi.mhtc.model.admin.User;
 
 /**
@@ -52,6 +54,6 @@ public interface UserDAO {
 	 * @param username
 	 * @return
 	 */
-	public User get(String username);
+	public List<User> get(String username);
 	
 }
