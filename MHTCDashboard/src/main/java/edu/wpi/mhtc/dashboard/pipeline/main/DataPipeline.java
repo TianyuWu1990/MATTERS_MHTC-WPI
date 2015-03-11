@@ -12,7 +12,6 @@ import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedDataSource;
-import edu.wpi.mhtc.dashboard.pipeline.db.TransactionManager;
 import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedParser;
 import edu.wpi.mhtc.model.state.State;
 
