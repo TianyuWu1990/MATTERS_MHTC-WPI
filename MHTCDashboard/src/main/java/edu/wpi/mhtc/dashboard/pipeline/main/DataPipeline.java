@@ -17,18 +17,20 @@ import edu.wpi.mhtc.model.state.State;
 
 public class DataPipeline {
 	
-	public static ArrayList<Statistic> run(File file, Category category, List<Metric> metrics, List<State> states) throws Exception {
+	public static List<Statistic> run(File file, Category category, List<Metric> metrics, List<State> states) throws Exception {
 
 		UnifiedDataSource source = new UnifiedDataSource(file, category);
 	
 		UnifiedParser parser = new UnifiedParser(source, metrics, states);
 		parser.parseAll();
 		
-		for(Statistic l : parser.getLines()){
+		List<Statistic> lines = parser.getLines();
+		
+		for(Statistic l : lines){
 			System.out.println(l.getStateID()+" "+ l.getValue()+ " " + l.getYear());
 		}
 		
-		return parser.getLines();
+		return lines;
 	}
 	
 }
