@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  * Service to handle getting Stats from the database, as well
@@ -16,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class StatisticService {
 	
 	@Autowired private StatisticDAO dao;
+	@Autowired private PlatformTransactionManager transManager;
 	
 	/**
 	 * Get all statistics by metric
@@ -41,16 +45,26 @@ public class StatisticService {
 	 * @param stats
 	 * @param overwrite
 	 */
-	@Transactional
 	public void save(List<Statistic> stats, boolean overwrite) {
 		
+		TransactionDefinition def = new DefaultTransactionDefinition();
+		TransactionStatus status = transManager.getTransaction(def);
+		
+		
 		for (Statistic s : stats) {
-			if (overwrite) {
-				dao.merge(s);
-			} else {
-				dao.save(s);
+			try {
+				if (overwrite) {
+					dao.merge(s);
+				} else {
+					dao.save(s);
+				}
+			} catch (Exception e) {
+				transManager.rollback(status);
+				throw e;
 			}
 		}
+		
+		transManager.commit(status);
 	}
 		
 }

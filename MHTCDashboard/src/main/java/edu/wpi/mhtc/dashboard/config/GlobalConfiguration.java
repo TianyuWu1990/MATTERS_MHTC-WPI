@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -103,6 +105,12 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 		rc.setPublicKey("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb");
 		
 		return rc;
+	}
+	
+	@Bean
+	public PlatformTransactionManager ptm(DataSource dataSource) {
+		DataSourceTransactionManager ptm = new DataSourceTransactionManager(dataSource);
+		return ptm;
 	}
 	
 }
