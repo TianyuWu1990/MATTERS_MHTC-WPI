@@ -162,7 +162,14 @@ public class UnifiedParser implements IParser {
 							switch (cell.getCellType()) {
 
 							case Cell.CELL_TYPE_NUMERIC:
-								value = String.valueOf(cell.getNumericCellValue());
+								Double val = cell.getNumericCellValue();
+								if(val < 1 && val >0){
+									value = String.valueOf(val);
+								}
+								else{
+									//use long to parse values that possibly use exponential notation
+									value = String.valueOf(val.longValue());
+								}
 								break;
 
 							case Cell.CELL_TYPE_STRING:

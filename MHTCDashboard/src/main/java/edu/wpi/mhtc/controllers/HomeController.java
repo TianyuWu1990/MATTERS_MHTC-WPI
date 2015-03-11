@@ -7,6 +7,7 @@ package edu.wpi.mhtc.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,6 +30,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,8 +42,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
-
-import com.steadystate.css.parser.ParseException;
 
 import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
 import edu.wpi.mhtc.helpers.Mailer;
@@ -73,6 +73,70 @@ public class HomeController {
 		this.userService = userService;
 	}
 	
+	/**
+	 * Returns the site landing page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String landingPage(Locale locale, Model model)
+	{
+	    return "landingPage";
+	}
+	
+	/**
+	 * Returns the state profiles page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	public String stateProfiles(Locale locale, Model model)
+	{
+	    return "stateProfiles";
+	}
+	
+	/**
+	 * Returns the about page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/about", method = RequestMethod.GET)
+	public String about(Locale locale, Model model)
+	{
+	    return "about";
+	}
+	
+	/**
+	 * Returns the about page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/methodology", method = RequestMethod.GET)
+	public String methodology(Locale locale, Model model)
+	{
+	    return "methodology";
+	}
+	
+	/**
+	 * Returns the about page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/howto", method = RequestMethod.GET)
+	public String howto(Locale locale, Model model)
+	{
+	    return "howto";
+	}
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -82,7 +146,7 @@ public class HomeController {
 	 * @throws JsonMappingException 
 	 * @throws JsonGenerationException 
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/explore", method = RequestMethod.GET)
 	public String home(Locale locale, Model model)
 	{
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -93,15 +157,13 @@ public class HomeController {
 		
 		String maId = "21";
 		
-//		List<DataSeries> massProfile = statsService.getStateBinData(maId, 45);
 		List<DataSeries> massNational = statsService.getStateBinData(maId, 21);
 		List<DataSeries> massTalent = statsService.getStateBinData(maId, 20);
 		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
 		List<DataSeries> massEconomy = statsService.getStateBinData(maId, 29);
 		List<State> peers = stateService.getAllPeers();
 		List<State> allstates= stateService.getAllStates(); 
-		// TODO un-hardcode these bin ids
-//		model.addAttribute("jv_stats_profile",massProfile );
+		
 		model.addAttribute("jv_stats_national", massNational);
 		model.addAttribute("jv_stats_talent", massTalent);
 		model.addAttribute("jv_stats_cost", massCost);
@@ -122,7 +184,6 @@ public class HomeController {
         Logger logger = LoggerFactory.getLogger(this.getClass());
         logger.info("New state requested: " + state);
 
-       // String stateId = "" + stateService.getStateByAbbreviation(state).getId();
         String stateId=state;
         
         List<DataSeries> profile = statsService.getStateBinData(stateId, 45);
@@ -229,15 +290,25 @@ public class HomeController {
         return "register_page_submit";
     } 
     
+    @RequestMapping(value = "/feedback", method = RequestMethod.GET)
+    public String feedbackPage(Locale locale, Model model)
+    {
+    	return "feedback";
+    }
+    
     /********** Feedback Page 
      * @throws SQLException **********/
     @RequestMapping(value = "/feedback_post", method = RequestMethod.POST)
-    public String feedback_post(Locale locale, Model model, @RequestParam("subject") String subject, @RequestParam("comments") String comments, 
-															    		@RequestParam("recaptcha_challenge_field") String challangeField,
-																		@RequestParam("recaptcha_response_field") String responseField,
-																		ServletRequest servletRequest,
-															            SessionStatus sessionStatus) throws SQLException 
-    {
+    public String feedback_post(Locale locale, Model model, @RequestParam("name") String name,
+    														@RequestParam("affiliation") String affiliation,
+    														@RequestParam("email") String email,
+    														@RequestParam("subject") String subject,
+    														@RequestParam("comments") String comments, 
+												    		@RequestParam("recaptcha_challenge_field") String challangeField,
+															@RequestParam("recaptcha_response_field") String responseField,
+															ServletRequest servletRequest,
+														    SessionStatus sessionStatus) throws SQLException 
+{
     	
     	String remoteAddress = servletRequest.getRemoteAddr();
         ReCaptchaResponse reCaptchaResponse = this.reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
@@ -252,9 +323,13 @@ public class HomeController {
         	// Send the email
         	try (ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("Spring-Mail.xml")) {
         		Mailer mm = (Mailer) context.getBean("mailMail");
-    	        mm.sendFeedbackEmail(u.getEmail(), subject, comments);
+        		
+            	String subjectText = "Feedback: " + subject; 
+            	String bodyText = "affiliation: " + affiliation + " \nname: " + name + "\nemail: " + email + "\ncomments:\n\n" + comments;
+
+    	        mm.sendFeedbackEmail(subjectText, bodyText);
         	} 			    
-	        	        
+
         	// Load the notification
         	model.addAttribute("completed", true);
         	model.addAttribute("invalid_captcha", false);

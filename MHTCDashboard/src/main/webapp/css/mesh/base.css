@@ -1,0 +1,853 @@
+/*
+Theme Name: _mesh
+Theme URI: http://meshagency.com/
+Author: MESH Interactive Agency
+Author URI: http://meshagency.com/
+Description: Custom theme built for INSERT COMPANY NAME HERE by MESH Interactive
+Version: 1.0
+*/
+
+/**
+ * Styles that weren't deleted from _s
+ * Feel free to delete and use your own defaults
+ * Edit site-specific styles using the LESS files
+ * in the CSS directory
+ */
+
+
+
+/* ================================================================= RESET */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td, input {
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	vertical-align: baseline;
+	font-family: 'Muli', sans-serif;;
+}
+
+html {
+	font-size: 62.5%; /* Corrects text resizing oddly in IE6/7 when body font-size is set using em units http://clagnut.com/blog/348/#c790 */
+	overflow-y: scroll; /* Keeps page centered in all browsers regardless of content height */
+	-webkit-text-size-adjust: 100%; /* Prevents iOS text size adjust after orientation change, without disabling user zoom */
+	-ms-text-size-adjust:     100%; /* www.456bereastreet.com/archive/201012/controlling_text_size_in_safari_for_ios_without_disabling_user_zoom/ */
+	height: 100%;
+	width: 100%;
+}
+
+
+body {
+	width: 100%;
+	background: #fff;
+	
+}
+
+.page {
+	position: relative;
+	width: 100%;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+main,
+nav,
+section {
+	display: block;
+}
+ol, ul {
+	list-style: none;
+}
+table { /* tables still need 'cellspacing="0"' in the markup */
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	font-weight: 400;
+	text-align: left;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
+}
+a {
+  text-decoration: none;
+}
+a:hover,
+a:active { /* Improves readability when focused and also mouse hovered in all browsers people.opera.com/patrickl/experiments/keyboard/test */
+	outline: 0;
+}
+a img {
+	border: 0;
+}
+
+input{
+	border-radius: 0px !important;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+	font-family: sans-serif;
+	font-size: 16px;
+	font-size: 1.6rem;
+	line-height: 1.5;
+}
+h1, h2, h3, h4, h5, h6 {
+	clear: both;
+}
+p {
+/* 	margin-bottom: 1.5em; */
+}
+b, strong {
+	font-weight: bold;
+}
+dfn, cite, em, i {
+	font-style: italic;
+}
+blockquote {
+	margin: 0 1.5em;
+}
+address {
+	margin: 0 0 1.5em;
+}
+pre {
+	background: #eee;
+	font-size: 15px;
+	font-size: 1.5rem;
+	line-height: 1.6;
+	margin-bottom: 1.6em;
+	max-width: 100%;
+	overflow: auto;
+	padding: 1.6em;
+}
+code, kbd, tt, var {
+	font: 15px Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+}
+abbr, acronym {
+	border-bottom: 1px dotted #666;
+	cursor: help;
+}
+mark, ins {
+	background: #fff9c0;
+	text-decoration: none;
+}
+sup,
+sub {
+	font-size: 75%;
+	height: 0;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline;
+}
+sup {
+	bottom: 1ex;
+}
+sub {
+	top: .5ex;
+}
+small {
+	font-size: 75%;
+}
+big {
+	font-size: 125%;
+}
+
+
+/* =WordPress Core
+-------------------------------------------------------------- */
+.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+.aligncenter,
+div.aligncenter {
+    display: block;
+    margin: 5px auto 5px auto;
+}
+
+.alignright {
+    float:right;
+    margin: 5px 0 20px 20px;
+}
+
+.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+
+.aligncenter {
+    display: block;
+    margin: 5px auto 5px auto;
+}
+
+a img.alignright {
+    float: right;
+    margin: 5px 0 20px 20px;
+}
+
+a img.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+a img.alignleft {
+    float: left;
+    margin: 5px 20px 20px 0;
+}
+
+a img.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.wp-caption {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    max-width: 96%; /* Image does not overflow the content area */
+    padding: 5px 3px 10px;
+    text-align: center;
+}
+
+.wp-caption.alignnone {
+    margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignleft {
+    margin: 5px 20px 20px 0;
+}
+
+.wp-caption.alignright {
+    margin: 5px 0 20px 20px;
+}
+
+.wp-caption img {
+    border: 0 none;
+    height: auto;
+    margin: 0;
+    max-width: 98.5%;
+    padding: 0;
+    width: auto;
+}
+
+.wp-caption p.wp-caption-text {
+    font-size: 11px;
+    line-height: 17px;
+    margin: 0;
+    padding: 0 4px 5px;
+}
+/* -------------------------------------------------------------- */
+
+/*================================================================== SOCIAL MEDIA */
+.social_icons_interior_fb {
+    background-position: right 0;
+    background-repeat: no-repeat;
+    float: left;
+    height: 30px;
+    width: 30px;
+    
+    }
+
+.social_icons_interior_in {
+	background-repeat: no-repeat;
+	background-position: center -50px;
+    background-repeat: no-repeat;
+    float: left;
+    height: 30px;
+    width: 30px;
+}
+
+.social_icons_interior_tw {
+	background-repeat: no-repeat;
+	background-position: center -100px;
+	float: left;
+    height: 30px;
+    width: 30px;
+}
+
+.social_icons_interior_gp {
+	background-repeat: no-repeat;
+	background-position: center -150px;
+	height: 30px;
+	width: 30px;
+	float: left;
+	top: 0px;
+	left: 187px;
+}
+
+.some-nav {
+  margin: 0 10px 0 0;
+  padding: 3px 6px;
+}
+.some-nav li {
+  float: left;
+}
+.some-nav a {
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 0;
+  text-align: center;
+}
+.some-nav a:hover {
+  opacity: 0.8;
+}
+.some-nav a.fb {
+  background-position: center 7px;
+  width: 20px;
+}
+.some-nav a.tw {
+  background-position: center -41px;
+  width: 25px;
+}
+.some-nav a.gp {
+  background-position: center -94px;
+}
+.some-nav a.in {
+  background-position: center -143px;
+}
+.some-nav a.yt {
+  background-position: center -196px;
+}
+.some-nav a.pt {
+  background-position: center -243px;
+}
+
+
+
+/* ------------------- FONT AWESOME ------------------ */
+.fa{
+	color: black !important;
+	font-size: 20px !important;
+}
+
+
+/*================================================================== TRANSITION */
+* {
+  -webkit-transition: background-color .25s ease-out, color .25s ease-out, opacity .25s ease-out, border-color .25s ease-out;
+  -moz-transition: background-color .25s ease-out, color .25s ease-out, opacity .25s ease-out, border-color .25s ease-out;
+  -ms-transition: background-color .25s ease-out, color .25s ease-out, opacity .25s ease-out, border-color .25s ease-out;
+  -o-transition: background-color .25s ease-out, color .25s ease-out, opacity .25s ease-out, border-color .25s ease-out;
+  transition: background-color .25s ease-out, color .25s ease-out, opacity .25s ease-out, border-color .25s ease-out;
+}
+/*==================================================================== CLEARFIX */
+.cf:before,
+.cf:after {
+  content: "";
+  display: table;
+}
+.cf:after {
+  clear: both;
+}
+.cf {
+  zoom: 1;
+}
+
+/*================================================================== DEFAULT text elements */
+
+.main-content-wrap h1{
+}
+
+.main-content-wrap p{
+	font-size: 15px;
+	color: #555555;
+	font-weight: normal;
+	line-height: 20px;
+}
+
+
+.main-content-wrap a{
+	font-weight: 500;
+	line-height: 20px;
+
+	
+}
+
+/*================================================================== DEFAULT */
+
+body {
+  font: 14px/19px Helvetica, sans-serif;
+  color: #4b4b4b;
+  -webkit-font-smoothing: antialiased;
+}
+a {
+  color: #999;
+  text-decoration: none;
+}
+ul {
+  list-style: none;
+  margin: 0;
+}
+.container {
+  clear: both;
+  position: relative;
+  width: 1024px;
+  margin: 0 auto;
+}
+.hidden {
+  display: none;
+}
+/*==================================================================== FORMS */
+input[type="text"],
+input[type="submit"],
+textarea {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+input[type="submit"],
+input[type="radio"],
+input[type="checkbox"] {
+  cursor: pointer;
+  border: none;
+}
+
+input{
+	height: 40px;
+	border: 1px solid #cbcbcb;
+	padding-left: 10px !important;
+}
+
+.gform_wrapper .gform_footer{
+	padding: 0px !important;
+	margin: 0px !important;
+}
+
+textarea{
+	padding-left: 10px !important;
+	padding-top: 9px !important;
+}
+
+/*================================================================= POSITION */
+.wrap {
+  position: relative;
+}
+.site {
+  position: relative;
+}
+/*============================================================= SUPER HEADER */
+.super-header {
+  height: 72px;
+}
+.super-header-upper {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.super-header-lower {
+  position: absolute;
+  right: 0;
+  top: 50;
+}
+.super-header-inner > div {
+  float: left;
+}
+.super-search {
+  position: relative;
+  height: 36px;
+  margin: 0 10px 0 0;
+  padding: 0 5px;
+}
+.super-search input[type="text"] {
+  width: 149px;
+  height: 31px;
+  padding: 0 31px 0 10px;
+  font: 12px Helvetica, sans-serif;
+  border: 0;
+  background: #fff;
+  vertical-align: middle;
+  line-height: 31px;
+  border: 1px solid #ddd;
+  border-top: 0;
+}
+.super-search input[type="text"]:focus {
+  border-color: #bbb;
+  color: #bbb;
+}
+.super-search input[type="submit"] {
+  display: block;
+  position: absolute;
+  right: 0px;
+  top: 1px;
+  width: 40px;
+  height: 31px;
+  border: 0;
+  background: none;
+  color: #bbb;
+}
+.super-search input[type="submit"]:hover {
+  opacity: 0.8;
+}
+.page-search {
+  padding: 0;
+  width: 240px;
+  background: none;
+}
+.page-search input[type="text"] {
+  width: 194px;
+  border: 1px solid #ddd;
+}
+.super-nav li {
+  float: left;
+}
+.super-nav a {
+  display: block;
+  padding: 9px 20px;
+  font: normal 13px Helvetica, sans-serif;
+  background: #ddd;
+  color: #4b4b4b;
+  text-transform: uppercase;
+}
+/*=================================================================== HEADER */
+.site-header {
+  position: relative;
+  margin: 0 auto; 
+}
+.header-inner {
+  position: relative;
+  height: 105px;
+}
+.main-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  background-image: url(../img/MATTERS_Logo.jpg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 70px;
+  width: 213px;
+  margin-top: 18px;
+  color: transparent;
+  
+  
+  /* .hidetext(); */
+}
+/*================================================================== NAVIGATION */
+.menu-toggle {
+}
+.main-navigation {
+ 	color:black;
+  right: 0px;
+  position: absolute;
+  z-index: 100;
+  height: auto;
+  width: 165px;
+}
+
+.menu{
+  right: 0px;
+  z-index: 100;
+  height: auto;
+  background-color: rgba(104,0,23,.95);
+  padding: 15px 0;
+  width: 165px;
+  border-radius: 3px;	
+}
+
+.main-navigation a {
+  padding: 10px 0px;
+  text-align: center;
+  width: 100%;
+  font-size: 18px;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+.main-navigation .menu li > ul {
+  background: #ddd;
+}
+.main-navigation .menu > ul {
+  /* top level */
+  /* current section */
+  /* second level */
+  /* third level & lower */
+}
+.main-navigation .menu > ul > li {
+}
+.main-navigation .menu > ul > li > a {
+  display: block;
+}
+.main-navigation .menu > ul > li:hover ul,
+.main-navigation .menu > ul > li ul:hover {
+  left: auto;
+  opacity: 1.0;
+  display: block;
+
+  }
+
+.main-navigation .menu > ul > li > ul {
+  position: absolute;
+  left: -9999px;
+  z-index: 9999;
+  opacity: 0;
+  display: none;
+
+}
+.main-navigation .menu > ul > li > ul > li {
+  display: block;
+  position: relative;
+  white-space: nowrap;
+  
+}
+.main-navigation .menu > ul > li > ul a {
+  display: block;
+  width: auto;
+}
+.main-navigation .menu > ul > li > ul > li > ul {
+  display: none;
+
+
+}
+.main-navigation .menu > ul > li > ul > li:hover > ul {
+/*   display: block; */
+  top: 0;
+  width: auto;
+}
+.main-navigation .menu > ul > li > ul > li ul > li {
+/*   display: block; */
+}
+/*==================================================== INTERIOR POSITIONING */
+.site-content, .flexible-content {
+  clear: both;
+}
+
+/* ------------------------------ FAQ-PAGE --------------------------- */
+.faq-heading{
+	padding-bottom: 30px;
+	border-bottom: 1px solid #778c97;
+}
+
+.dropdown-post .post-subtitle{
+	padding: 25px 0px;
+	background-image: url(../img/faq-down.png);
+	background-size:17px auto ;
+	background-repeat: no-repeat;
+	background-position: 97% center;
+	-webkit-transition: all .2s ease-out;
+	-moz-transition: all .2s ease-out;
+	-ms-transition: all .2s ease-out;
+	-o-transition: all .2s ease-out;
+	transition: all .2s ease-out;
+
+}
+
+.slider{
+	display: none;
+}
+
+.dropdown-active{
+	background-image: url(../img/faq-up.png) !important;
+	-webkit-transition: all .2s ease-out;
+	-moz-transition: all .2s ease-out;
+	-ms-transition: all .2s ease-out;
+	-o-transition: all .2s ease-out;
+	transition: all .2s ease-out;
+
+
+}
+
+.dropdown-post{
+	border-bottom: 1px solid #778c97;
+}
+
+.slider-excerpt{
+	display: none;
+}
+
+
+.slider-content p:last-child{
+	padding-bottom: 20px;
+}
+
+
+/*======================================================= MODULES / WIDGETS */
+/*============================================================ PAGE CONTENT */
+.read-more {
+  display: inline-block;
+}
+.content-area {
+/*
+  width: 777px;
+  padding: 40px;
+
+*/
+}
+.entry-header {
+  margin-bottom: 10px;
+}
+.entry-title {
+  font: 24px 'Open Sans', sans-serif;
+}
+.page-header {
+  padding-bottom: 24px;
+}
+.page-title {
+  font: 24px 'Open Sans', sans-serif;
+  color: #bbb;
+}
+.entry-content {
+  clear: both;
+}
+.entry-content .wp-post-image {
+  display: block;
+  float: left;
+  width: 240px;
+  height: auto;
+  margin: 0 12px 12px 0;
+}
+.entry-content h2 {
+  margin-bottom: 5px;
+  font: 600 18px/24px 'Open Sans', sans-serif;
+  text-transform: uppercase;
+}
+.entry-content h3 {
+  margin-bottom: 3px;
+  font: 600 15px/20px 'Open Sans', sans-serif;
+}
+.entry-content p a,
+.entry-content li a {
+  color: #999;
+}
+.entry-content p a:hover,
+.entry-content li a:hover {
+  color: #b3b3b3;
+}
+.entry-content ul {
+  list-style: disc outside;
+  padding-left: 18px;
+  margin-bottom: 1.5em;
+}
+.entry-content table td {
+  padding: 3px 5px;
+  border-bottom: 1px dashed #ccc;
+  border-right: 1px dashed #ccc;
+}
+.single .entry-title {
+  font-size: 20px;
+  color: #999;
+}
+/*================================================================== POST LIST */
+.post-list article {
+  margin-bottom: 26px;
+  border-bottom: 1px solid #ddd;
+}
+.post-list .entry-header {
+  margin-bottom: 5px;
+}
+.post-list .entry-header time {
+  font-size: 11px;
+  color: #999;
+}
+.post-list .entry-title {
+  font: 600 18px/22px 'Open Sans', sans-serif;
+}
+.post-list .entry-content {
+  clear: both;
+}
+.pagination {
+  text-align: center;
+}
+.pagination li {
+  display: inline-block;
+}
+.pagination .page-numbers {
+  display: inline-block;
+  padding: 5px 7px;
+  color: #999;
+}
+.pagination .page-numbers.current {
+  color: #555;
+}
+.pagination .next,
+.pagination .prev {
+  position: relative;
+  top: 3px;
+  font: 300 30px/30px 'Open Sans', sans-serif;
+  color: #ccc;
+}
+/*===================================================================== HOME */
+/*================================================================== SIDEBAR */
+.widget-area {
+  float: left;
+  width: 280px;
+  margin-left: 20px;
+}
+/*=================================================================== SEARCH */
+.search .entry-header {
+  position: relative;
+}
+.search .post-type {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+  color: #aaa;
+}
+/*=================================================================== FOOTER */
+.site-footer {
+  clear: both;
+  font-size: 12px;
+}
+.site-footer p {
+  margin-bottom: 0;
+}
+.copy {
+  padding: 12px 0;
+}
+.mesh-credit {
+  display: inline-block;
+  padding-left: 34px;
+  font-size: 11px;
+  color: #4b4b4b;
+  background: url(../img/meshy.png) left center no-repeat;
+  background-size: 28px 17px;
+}
+/*=============================================================== TABLET LS */
+
+@media only screen and (max-width: 1024px) {
+	
+/* ============================= HEADER AREA==============	 */
+	
+	
+/* ============================= INTERIOR CONTENT AREA ==============	 */
+}/*=============================================================== TABLET LS */
+
+
+/*=============================================================== TABLET PT */
+@media only screen and (max-width: 768px) {
+
+/* ============================= INTERIOR CONTENT AREA ==============	 */
+/* ============================= WIDGET AREA ==============	 */
+
+}/*=============================================================== TABLET PT */
+
+/*=============================================================== MOBILE LS */
+@media only screen and (max-width: 560px) {
+	
+
+/* ============================= WIDGET AREA ==============	 */
+
+/*================================================================== RETINA */
+/*=============================================================== GENERAL */
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+}

@@ -21,6 +21,10 @@ update mhtc_sch.metrics set "Visible" = false where "Id" = 84;
 -- Cost of Doing Business
 update mhtc_sch.metrics set "Visible" = false where "Id" = 86;
 
+--other doctoral degrees
+update mhtc_sch.metrics set "Visible" = false where "Id"= 67;
+update mhtc_sch.metrics set "Visible" = false where "Id"= 66;
+
 --show bachelor's degree in workforce metric under talent
 
 update mhtc_sch.metrics set "Visible" = true where "Id" = 89;

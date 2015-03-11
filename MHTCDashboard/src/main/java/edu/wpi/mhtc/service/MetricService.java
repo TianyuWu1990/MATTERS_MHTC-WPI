@@ -4,7 +4,6 @@
  */
 package edu.wpi.mhtc.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import edu.wpi.mhtc.model.Data.Metric;
@@ -19,9 +18,6 @@ public interface MetricService{
 	public void storeMetric(int categoryId, String name, boolean isCalculated, String type);
 	public void updateCategory(int categoryId, String name, boolean visible, String source);
 	public void updateMetric(int metricId, String name, boolean visible, boolean isCalculated, String type);
-	
-	public List<Metric> getMetricsInCategory(int categoryId, int binId);
-	
 	public List<Metric> getAllMetrics();
 	public List<Metric> getMetricsFromParents(Integer... parentIds);
 }

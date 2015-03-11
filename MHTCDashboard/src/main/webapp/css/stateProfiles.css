@@ -1,0 +1,85 @@
+
+@media print {
+	#stateChooserTitle {
+		cursor: default !important;
+		border: none !important;
+		padding: 0px !important;
+		margin-right: 0px !important;
+	}
+	
+	#stateChooserTitle > i {
+		display: none !important;
+	}
+	
+	#stateChooserTitle:hover {
+		background-color: none !important;
+	}
+	
+	#stateChooser {
+		display: none !important;
+	}
+}
+
+.state-profile-title {
+	line-height: 120%;
+	font-size: 2em;
+}
+
+#stateChooserWrapper {
+	display: inline-block;
+}
+
+#stateChooserTitle {
+	cursor: pointer;
+	
+	border: 1px solid rgb(104, 0, 23);
+	
+	padding: 10px;
+	margin-right: 5px;	
+}
+
+#stateChooserTitle:hover {
+	background-color: rgb(240,240,240);
+}
+
+#stateChooser {
+	position: absolute;
+	
+	margin-top: 1px;
+	
+	width: 150px;
+	height: 300px;
+	max-height: 100% !important;
+	
+	overflow-y: scroll;
+	overflow-x: hidden;
+	
+	border: 1px solid rgb(104, 0, 23);		
+	
+	font-size: 14px !important;
+}
+
+#stateChooser > ul {
+	text-align: left;
+	list-style: none;
+}
+
+#stateChooser > ul > li {
+	background-color: white;
+	
+	border-bottom: 1px solid rgb(104, 0, 23);
+	
+	cursor: pointer;
+}
+
+#stateChooser > ul > li > a{
+	color: black;
+	
+	display: block;
+	
+	padding: 10px 7px;
+}
+
+#stateChooser > ul > li:hover {
+	background-color: rgb(240,240,240);
+}
