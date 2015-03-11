@@ -118,13 +118,23 @@ loadFunction = function() {
 				$("#sidebar-left").removeClass("open");
 				$("#stateSelectionCol").removeClass("open");
 				$("#metricSelectionCol").removeClass("open");
-				$("#sidebar-left").attr("style", "margin-left:" +  -$("#sidebar-left").width() + "px;");
+				$("#sidebar-left").attr("style", "margin-left:-450px;");
 				$("#viewWrapper").attr("style", "left: 0px");
 				mobileMode = true;
 			}
 		}
 		
 	});	
+	
+	if ($(window).width() < 830)
+	{
+		$("#sidebar-left").removeClass("open");
+		$("#stateSelectionCol").removeClass("open");
+		$("#metricSelectionCol").removeClass("open");
+		$("#sidebar-left").attr("style", "margin-left:-450px;");
+		$("#viewWrapper").attr("style", "left: 0px");
+		mobileMode = true;
+	}
 	
     // Initializes button that toggles the sidebar
 		

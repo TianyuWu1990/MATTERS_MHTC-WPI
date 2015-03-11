@@ -91,7 +91,7 @@
 						<div class="sidebar-content accordion-menu" id="metricListWrapper">
 							<ul>
 								<li>
-									<a class="metricHeader" href="#">
+									<a class="metricHeader">
 										National Ranking 
 									</a>
 									<ul id="nationalProfileList" class="metricList">
@@ -109,7 +109,7 @@
 									</ul>
 								</li>
 								<li>
-									<a class="metricHeader" href="#">
+									<a class="metricHeader">
 										Talent Metrics 
 									</a>
 									<ul id="talentProfileList" class="metricList">
@@ -127,7 +127,7 @@
 									</ul>
 								</li>
 								<li>
-									<a class="metricHeader" href="#">
+									<a class="metricHeader">
 										Cost Metrics
 									</a>
 									<ul id= "costProfileList" class="metricList">
@@ -145,7 +145,7 @@
 									</ul>
 								</li>
 								<li>
-									<a class="metricHeader" href="#">
+									<a class="metricHeader">
 										Economy Metrics
 									</a>
 									<ul id="economyProfileList" class="metricList">
@@ -214,7 +214,7 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<a href="#" id="toggle-sidebar"> 
+							<a id="toggle-sidebar"> 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
@@ -275,7 +275,7 @@
 								<!-- Line Graph -->
 								<div class="tab-pane fade" id="line">
 									<div class="box-content">
-										<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
+										<div id="mbody" style="margin-right: 5px;">
 											<svg style="height: 90%;"></svg>
 										</div>
 									</div>
@@ -306,7 +306,7 @@
 								<!-- Bar Chart -->
 								<div class="tab-pane fade" id="bar">
 									<div class="box-content">
-										<div id="mbodyBar" style="margin-top:20px;"></div>
+										<div id="mbodyBar"></div>
 									</div>
 								</div>
 								
@@ -317,8 +317,8 @@
 											<div id="heatmap-timeline"></div>
 											<div id="heatmap-inner-wrapper">
 											
-												<div id="heatmap-details" class="heatmap-infobox">
-													<div class="heatmap-infobox-inner">
+												<div id="heatmap-info" class="heatmap-infobox">
+													<div class="heatmap-infobox-inner" id="heatmap-details">
 														<div class="heatmap-infobox-title">Details</div>
 														<div class="heatmap-infobox-content" style="overflow: hidden;">
 															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Top Ranked</div> 
@@ -331,18 +331,17 @@
 															<span id="heatmap-generalinfo-ma" class="heatmap-detailVal"></span>
 														</div>
 													</div>
-												</div>
-												
-												<div id="heatmap-actual"></div>
-												
-												<div id="heatmap-controls" class="heatmap-infobox">
-													<div class="heatmap-infobox-inner">
+													<div class="heatmap-infobox-inner" id="heatmap-legend">
 														<div class="heatmap-infobox-title">Legend</div>
 														<div id="heatmap-legend-legend" class="heatmap-infobox-content">
 														
 														</div>
 													</div>
 												</div>
+												
+												<div id="heatmap-actual"></div>
+												
+												
 												<div id="heatmap-tooltip" style="display: none;">
 													<span id="heatmap-specificDetails-name"></span>
 													
