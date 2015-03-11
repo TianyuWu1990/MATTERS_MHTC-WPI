@@ -14,7 +14,6 @@ import java.util.List;
 public class Category {
 	
 	private int id;
-	private List<Metric> metrics;
 	private String name;
 	private int parentId;
 	private String source;
@@ -39,34 +38,6 @@ public class Category {
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * 
-	 * @param name
-	 * @return Metric
-	 * @throws Exception if the name does not match any metrics associated with this Category in the database
-	 */
-	public Metric getMetric(String name) throws CategoryException {
-		
-		for (Metric metric: metrics) {
-			if (name.equalsIgnoreCase(metric.getName())) {
-
-				return metric;
-			}
-		}
-		
-		// Metric wasn't found in the DB, let user know
-		CategoryException c = new CategoryException("No metric in category \"" + this.name + "\" matches metric \""+name+"\".");
-		c.setSolution("The possible metrics for category \"" + this.name + "\" are:<ul>");
-		
-		for (Metric metric: metrics) {
-			c.setSolution("<li>" + metric.getName() + "</li>");
-		}
-		
-		c.setSolution("</ul>Please confirm that you are uploading the right metric to the right category.");
-				
-		throw c;
 	}
 
 	public String getSource() {

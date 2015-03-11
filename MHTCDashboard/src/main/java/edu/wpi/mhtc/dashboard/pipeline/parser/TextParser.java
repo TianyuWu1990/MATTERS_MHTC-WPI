@@ -18,12 +18,12 @@ import org.apache.commons.csv.CSVRecord;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.NumericCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.StateCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.cleaner.YearCleaner;
+import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
-import edu.wpi.mhtc.dashboard.pipeline.data.Line;
-import edu.wpi.mhtc.dashboard.pipeline.data.Metric;
+import edu.wpi.mhtc.model.state.State;
 
 /**
  * TextParser takes in a properly formatted CSV file to
@@ -37,17 +37,18 @@ public class TextParser implements IParser {
 	public DataSource source;
 	private List<Statistic> lines;
 	private CSVParser parser;
-	private ArrayList<Metric> metrics;
 	private Integer stateColumnNum;
 	private Integer yearColumnNum;
 	private HashMap<String, Integer> columnNames;
 	private long headerRecordNumber;
+	List<Metric> metrics;
+	List<State> states;
 	/**
 	 * 
 	 * @param source
 	 * @throws Exception if the source is not a csv file
 	 */
-	public TextParser(DataSource source) throws Exception {
+	public TextParser(DataSource source, List<Metric> metrics, List<State> states) throws Exception {
 		
 		if (source.getFileType() != FileType.csv){
 			throw new Exception("Wrong file type for csv parser: "+source.getFileType());
@@ -56,6 +57,9 @@ public class TextParser implements IParser {
 		this.source = source;
 		parser = new CSVParser(new BufferedReader(new FileReader(source.getFile())), CSVFormat.DEFAULT);
 		this.lines = new ArrayList<Statistic>();
+		
+		this.metrics = metrics;
+		this.states = states;
 		
 	}
 	
@@ -110,7 +114,7 @@ public class TextParser implements IParser {
 					columnNames.put(cellValue, i);
 				}
 				else{
-					source.getCategory().getMetric(cellValue);	//make sure valid metric
+					validateHeaderName(cellValue);	//make sure valid metric
 					columnNames.put(cellValue, i);
 				}
 			}
@@ -118,11 +122,36 @@ public class TextParser implements IParser {
 
 	}
 	
+	/**
+	 * Confirms if the header for a metric column in the spreadsheet
+	 * matches one of the possible metric names for the given category
+	 * @param cellValue
+	 * @throws CategoryException if the metric header name(s) does not match the metrics for this category
+	 */
+	private void validateHeaderName(String cellValue) throws CategoryException {
+		for (Metric m : metrics) {
+			if (m.getName().equalsIgnoreCase(cellValue)) {
+				return;
+			}
+		}
+		
+		// Metric wasn't found in the DB, let user know
+		CategoryException c = new CategoryException("No metric in category \"" + cellValue + "\" matches metric \""+cellValue+"\".");
+		c.setSolution("The possible metrics for category \"" + cellValue + "\" are:<ul>");
+		
+		for (Metric metric: metrics) {
+			c.setSolution("<li>" + metric.getName() + "</li>");
+		}
+		
+		c.setSolution("</ul>Please confirm that you are uploading the right metric to the right category.");
+				
+		throw c;
+		
+	}
 
 	
 	@Override
 	public boolean parseAll() throws CategoryException, UnifiedFormatException {
-		
 		
 		getHeaderColumnNames();
 		
@@ -130,33 +159,42 @@ public class TextParser implements IParser {
 		stateColumnNum = columnNames.remove("state");
 		
 		NumericCleaner numCleaner = new NumericCleaner();
-		StateCleaner stateCleaner = new StateCleaner();
+		StateCleaner stateCleaner = new StateCleaner(states);
 		YearCleaner yearCleaner = new YearCleaner();
 		
 		for(CSVRecord record : parser){
 			
-			for(Metric m : metrics){
+			for(String name: columnNames.keySet()){
 				Statistic line = new Statistic();
 				
 				String year = record.get(yearColumnNum);
-				line.setYear(Integer.parseInt(yearCleaner.clean(year)));
+				year = yearCleaner.clean(year);
 				
 				String state = record.get(stateColumnNum);
 				try {
-					line.setStateName(stateCleaner.clean(state));
+					state = stateCleaner.clean(state);
 				} catch (Exception e) {
 					System.out.println("Could not parse line: " + record.getRecordNumber());
 					System.out.println(record.toString());
 				}
 				
-				String value = record.get(m.getName());
+				String value = record.get(name);
 				try {
 					value = numCleaner.clean(value);
 				} catch (Exception e) {
 					System.out.println("Could not parse line: " + record.getRecordNumber());
 					System.out.println(record.toString());
 				}
-				m.setValue(Double.parseDouble(value)); 
+				
+				Metric m = getMetric(name);
+				line.setMetricID(m.getId());
+				
+				State s = getState(state);
+				line.setStateName(s.getName());
+				line.setStateID(s.getId());
+
+				line.setYear(Integer.parseInt(year));
+				line.setValue(Double.parseDouble(value));
 				
 				lines.add(line);
 			}
@@ -168,6 +206,36 @@ public class TextParser implements IParser {
 	@Override
 	public Iterator<Statistic> iterator() {
 		return lines.iterator();
-	} 
+	}
+	
+	/**
+	 * Retrieve a metric from the list of metrics by name
+	 * @param name
+	 * @return 
+	 */
+	public Metric getMetric(String name) {
+		for (Metric m : metrics) {
+			if (m.getName().equalsIgnoreCase(name)) {
+				return m;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Retrieve a state from the list of states by name
+	 * @param stateName
+	 * @return
+	 */
+	public State getState(String stateName) {
+		for (State s : states) {
+			if (s.getName().equalsIgnoreCase(stateName)) {
+				return s;
+			}
+		}
+		
+		return null;
+	}
+
 
 }
