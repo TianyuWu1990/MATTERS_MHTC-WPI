@@ -57,8 +57,8 @@ import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.TalendJob;
-import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.util.FileFinder;
+import edu.wpi.mhtc.helpers.UnZip;
 import edu.wpi.mhtc.model.state.State;
 import edu.wpi.mhtc.persistence.StateMapper;
 
@@ -518,10 +518,14 @@ public class AdminController {
     	// Get a list of metrics for that category
     	List<Metric> metrics = metricService.getMetricsForCategory(subCategory.getId());  
     	
+    	// Get current state mappings
     	List<State> states = stateMapper.getAllStates();
     	
         // Now that the file is saved, time to run it
-        DataPipeline.run(localFile, subCategory, metrics, states, overwrite);
+        List<Statistic> lines = DataPipeline.run(localFile, subCategory, metrics, states);
+        
+        // Save the lines extracted from data pipeline
+        statService.save(lines, overwrite);
         
         // TODO Once completed, need to add entry to database for record keeping
         // TODO Need to somehow get the metric from the spreadsheet for DB record

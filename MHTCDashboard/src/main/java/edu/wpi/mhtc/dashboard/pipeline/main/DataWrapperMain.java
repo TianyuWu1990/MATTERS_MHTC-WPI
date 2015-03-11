@@ -15,8 +15,8 @@ import edu.wpi.mhtc.dashboard.pipeline.wrappers.DataGovDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.EIADownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.IPEDSDownload;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.URLDownload;
-import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
 import edu.wpi.mhtc.dashboard.pipeline.wrappers.WebTableWrapper;
+import edu.wpi.mhtc.helpers.UnZip;
 
 public class DataWrapperMain {
 

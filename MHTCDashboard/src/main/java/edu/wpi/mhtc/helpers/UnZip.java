@@ -5,7 +5,7 @@
  *  Copyright (C) 2013 Worcester Polytechnic Institute 
  *  All Rights Reserved.
  */
-package edu.wpi.mhtc.dashboard.pipeline.wrappers;
+package edu.wpi.mhtc.helpers;
 
 import java.io.File;
 import java.io.FileInputStream;

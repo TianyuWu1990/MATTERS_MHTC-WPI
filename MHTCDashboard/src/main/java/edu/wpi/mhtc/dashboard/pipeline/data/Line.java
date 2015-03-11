@@ -18,35 +18,14 @@ public class Line {
 
 	public Line(){
 	}
-	
-	/**
-	 * 
-	 * @param stateName 
-	 * @throws Exception if the stateName cannot be found in the database
-	 */
-	public void setState(String stateName) throws Exception{
-		int id = State.getStateID(stateName);
-		if(id == -1){	//this is not a valid state
-			throw new Exception("Bad state name "+ stateName);
-		}
-		stateID = id;
-	}
-	
+		
 	public void setYear(String year){
 		this.year = Integer.parseInt(year);
 	}
 	
-	public void addMetric(Metric metric){
-		if(metric.isValid()){
-			metricID = metric.getID();
-			value = new Float(metric.getValue());	
-		}
-	}
-
 	public int getYear() {
 		return year;
 	}
-	
 	
 	public int getStateID() {
 		return stateID;

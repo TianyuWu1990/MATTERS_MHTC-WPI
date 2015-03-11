@@ -4,7 +4,6 @@
  */
 package edu.wpi.mhtc.service;
 
-import java.sql.Array;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -98,7 +97,7 @@ public class MetricServiceJdbc implements MetricService {
      * @throws SQLException
      */
     @Override
-    public List<Metric> getMetricsFromParents(final Integer... parentIds) throws SQLException {
+    public List<Metric> getMetricsFromParents(final Integer... parentIds) {
     	
         PSqlStringMappedJdbcCall<Metric> metricCall = new PSqlStringMappedJdbcCall<Metric>(template)
                 .withSchemaName("mhtc_sch").withProcedureName("getmetricsbyparent");
@@ -132,10 +131,9 @@ public class MetricServiceJdbc implements MetricService {
         });
 
         metricCall.addDeclaredParameter(new SqlParameter("parentids", Types.ARRAY));
-        Array ids = template.getDataSource().getConnection().createArrayOf("integer", parentIds);
 
         Map<String, Object> metricParams = new HashMap<String, Object>();
-        metricParams.put("parentids", ids);
+        metricParams.put("parentids", parentIds);
 
         return metricCall.execute(metricParams);
 
@@ -304,13 +302,6 @@ public class MetricServiceJdbc implements MetricService {
 
     @Override
     public List<Metric> getAllMetrics() {
-
-        List<Metric> metrics = null;
-    	try {
-			metrics = getMetricsFromParents(TALENT,COST,RANK,ECONOMY);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    	return metrics;
+		return getMetricsFromParents(TALENT,COST,RANK,ECONOMY);
     }
 }

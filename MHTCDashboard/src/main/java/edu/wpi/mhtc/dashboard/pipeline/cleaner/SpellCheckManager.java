@@ -13,8 +13,6 @@ import java.util.List;
 import com.swabunga.spell.engine.SpellDictionaryHashMap;
 import com.swabunga.spell.event.SpellChecker;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.State;
-
 public class SpellCheckManager {
 	protected static SpellDictionaryHashMap dictionary = null;
 	protected static SpellChecker spellChecker = null;

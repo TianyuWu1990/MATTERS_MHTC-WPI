@@ -23,5 +23,5 @@ public interface MetricService{
 	public List<Metric> getMetricsInCategory(int categoryId, int binId);
 	
 	public List<Metric> getAllMetrics();
-	public List<Metric> getMetricsFromParents(Integer... parentIds) throws SQLException;
+	public List<Metric> getMetricsFromParents(Integer... parentIds);
 }

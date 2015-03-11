@@ -18,7 +18,7 @@ import edu.wpi.mhtc.dashboard.pipeline.data.Line;
  * @author Alex Fortier
  *
  */
-public class TransactionManager {
+public class TransactionManager {	
 
 	/**
 	 * Uploads Line data to database

@@ -5,6 +5,7 @@
 package edu.wpi.mhtc.dashboard.pipeline.main;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
@@ -17,7 +18,7 @@ import edu.wpi.mhtc.model.state.State;
 
 public class DataPipeline {
 	
-	public static void run(File file, Category category, List<Metric> metrics, List<State> states, boolean overwrite) throws Exception {
+	public static ArrayList<Statistic> run(File file, Category category, List<Metric> metrics, List<State> states) throws Exception {
 
 		UnifiedDataSource source = new UnifiedDataSource(file, category);
 	
@@ -28,7 +29,7 @@ public class DataPipeline {
 			System.out.println(l.getStateID()+" "+ l.getValue()+ " " + l.getYear());
 		}
 		
-		TransactionManager.insertData(parser.getLines(), overwrite);
+		return parser.getLines();
 	}
 	
 }

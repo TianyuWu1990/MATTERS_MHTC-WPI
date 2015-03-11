@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.swabunga.spell.engine.Word;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.State;
+import edu.wpi.mhtc.model.state.State;
 
 /**
  * 
@@ -17,6 +17,11 @@ import edu.wpi.mhtc.dashboard.pipeline.data.State;
  *
  */
 public class StateCleaner implements ICleaner {
+	private List<State> states;
+	
+	public StateCleaner(List<State> states) {
+		this.states = states;
+	}
 	
 	@Override
 	public String clean(String val) throws Exception {
@@ -58,12 +63,11 @@ public class StateCleaner implements ICleaner {
 	 * check if the string is in the stateList, if so return true, if not return false
 	 */
 	public boolean isStateName(String val) throws Exception {
-		List<State> stateList = State.getList();
-		for (State state : stateList) {
-			if (val.equalsIgnoreCase(state.getFullName())) {
+		for (State state : states) {
+			if (val.equalsIgnoreCase(state.getName())) {
 				return true;
 			}
-			if (val.equalsIgnoreCase(state.getInitial())) {
+			if (val.equalsIgnoreCase(state.getAbbr())) {
 				return true;
 			}
 		}
@@ -75,13 +79,12 @@ public class StateCleaner implements ICleaner {
 	 * not return string
 	 */
 	public String getFullName(String val) throws Exception {
-		List<State> stateList = State.getList();
-		for (State state : stateList) {
-			if (val.equalsIgnoreCase(state.getFullName())) {
-				return state.getFullName();
+		for (State state : states) {
+			if (val.equalsIgnoreCase(state.getName())) {
+				return state.getName();
 			}
-			if (val.equalsIgnoreCase(state.getInitial())) {
-				return state.getFullName();
+			if (val.equalsIgnoreCase(state.getAbbr())) {
+				return state.getAbbr();
 			}
 		}
 		return val;
@@ -94,14 +97,14 @@ public class StateCleaner implements ICleaner {
 	public String getFullNameBySubstring(String val) throws Exception {
 		val = splitStateString(val); // split state string by commas
 		String[] stateArray = val.split("\\,"); // put split substrings into stateArray
-		List<State> stateList =State.getList();
+
 		for (int i = 0; i < stateArray.length; i++) {
-			for (State state : stateList) {
-				if (stateArray[i].contains(state.getFullName())) {
-					return state.getFullName();
+			for (State state : states) {
+				if (stateArray[i].contains(state.getName())) {
+					return state.getName();
 				}
-				if (stateArray[i].equalsIgnoreCase(state.getInitial())) {
-					return state.getFullName();
+				if (stateArray[i].equalsIgnoreCase(state.getAbbr())) {
+					return state.getAbbr();
 				}
 			}
 		}
@@ -114,13 +117,13 @@ public class StateCleaner implements ICleaner {
 	 */
 	public String getFullNameByConcatenation(String val) throws Exception {
 		val = val.replaceAll("[^a-z]", "");
-		List<State> stateList = State.getList();
-		for (State state : stateList) {
-			if (val.equals(state.getFullName())) {
-				return state.getFullName();
+
+		for (State state : states) {
+			if (val.equals(state.getName())) {
+				return state.getName();
 			}
-			if (val.equals(state.getInitial())) {
-				return state.getFullName();
+			if (val.equals(state.getAbbr())) {
+				return state.getAbbr();
 			}
 		}
 		return null;
@@ -132,11 +135,11 @@ public class StateCleaner implements ICleaner {
 	public String getFullNameBySpellCheck(String val) throws Exception {
 		int thres = 10;
 		List result = SpellCheckManager.getSuggestions(val, thres);
-		List<State> stateList =State.getList();
+
 		for(Object o : result){
-			for(State state : stateList){
-				if(((Word) o).getWord().equalsIgnoreCase(state.getFullName())){
-					return state.getFullName();
+			for(State state : states){
+				if(((Word) o).getWord().equalsIgnoreCase(state.getName())){
+					return state.getName();
 				}
 			}
 		}

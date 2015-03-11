@@ -1,5 +1,6 @@
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
@@ -7,10 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
@@ -179,6 +183,33 @@ public class StatisticDAOImpl implements StatisticDAO {
 		params.put("categoryid", categoryID);
 
 		return call.execute(params);
+	}
+
+	@Override
+	public void merge(final Statistic stat) {
+		String sql = "SELECT mhtc_sch.merge_statistics(?, ?, ?, ?)";
+				
+		jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>() {
+
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				
+				ps.setInt(1, stat.getStateID());
+				ps.setInt(2, stat.getMetricID());
+				ps.setInt(3, stat.getYear());
+				ps.setDouble(4, stat.getValue());
+				
+				return ps.execute();
+			}
+			
+		});
+	}
+
+	@Override
+	public void save(Statistic stat) {
+		String sql = "INSERT INTO mhtc_sch.statistics VALUES (?, ?, ?, ?)";
+		
+		jdbcTemplate.update(sql, stat.getStateID(), stat.getMetricID(), stat.getYear(), stat.getValue());
 	}
 
 }

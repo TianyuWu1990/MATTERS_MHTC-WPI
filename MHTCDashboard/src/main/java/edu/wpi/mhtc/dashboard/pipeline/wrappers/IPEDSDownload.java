@@ -14,6 +14,8 @@ import org.jsoup.Connection.Method;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 
+import edu.wpi.mhtc.helpers.UnZip;
+
 /**
  * IPEDS Data Downloader - Browser Simulator.
  * @author: Long Nguyen Duc Hoang @ WPI'16 - Any maintenance issue, please contact: hlong290494@gmail.com.

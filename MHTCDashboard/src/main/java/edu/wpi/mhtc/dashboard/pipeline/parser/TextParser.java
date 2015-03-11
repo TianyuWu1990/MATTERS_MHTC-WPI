@@ -25,6 +25,13 @@ import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
 import edu.wpi.mhtc.dashboard.pipeline.data.Line;
 import edu.wpi.mhtc.dashboard.pipeline.data.Metric;
 
+/**
+ * TextParser takes in a properly formatted CSV file to
+ * gather data to put in the database
+ * TODO Currently not in a working state. Needs to be revisted
+ * @author cakulhman
+ *
+ */
 public class TextParser implements IParser {
 
 	public DataSource source;
@@ -151,7 +158,6 @@ public class TextParser implements IParser {
 				}
 				m.setValue(Float.parseFloat(value)); 
 				
-				line.addMetric(m);
 				lines.add(line);
 			}
 		}

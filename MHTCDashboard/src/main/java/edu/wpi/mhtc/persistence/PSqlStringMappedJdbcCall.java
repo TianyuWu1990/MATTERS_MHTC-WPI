@@ -141,13 +141,26 @@ public class PSqlStringMappedJdbcCall<T> {
 
 		for (int i = 0; i < declaredParams.size(); i++) {
 			
-			//only handles integer arrays
+			// Only handles integer arrays
 			if (declaredParams.get(i).getSqlType() == Types.ARRAY) {
-				statement.append("'");
-				statement.append(params.get(declaredParams.get(i).getName()).toString().replaceAll("\"",	""));
-				statement.append("'");
+				statement.append("'{");
+				
+				Object paramObj = params.get(declaredParams.get(i).getName());
+				Integer[] paramArray = (Integer[])paramObj;
+				
+				for (int j = 0; j < paramArray.length; j++)
+				{
+					Integer param = paramArray[j];
+					statement.append(param.intValue());
+					
+					if (j != paramArray.length - 1)
+						statement.append(",");
+				}
+				
+				statement.append("}'");
 				statement.append("::int[]");
 			}
+
 			else{
 				statement.append(declaredParams.get(i).getName());
 				statement.append(" := ");
@@ -158,7 +171,8 @@ public class PSqlStringMappedJdbcCall<T> {
 					statement.append("'");
 
 				} else if (declaredParams.get(i).getSqlType() == Types.INTEGER
-					|| declaredParams.get(i).getSqlType() == Types.BOOLEAN) {
+					|| declaredParams.get(i).getSqlType() == Types.BOOLEAN
+					|| declaredParams.get(i).getSqlType() == Types.DOUBLE) {
 					statement.append(params.get(declaredParams.get(i).getName()));
 				}
 			}

@@ -27,8 +27,13 @@ import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.persistence.StateMapper;
 
+/**
+ * UnifiedParser is responsible for taking in a properly-formatted spreadsheet
+ * and getting the data ready to be submitted to the database
+ * @author afortier, cakuhlman
+ *
+ */
 public class UnifiedParser implements IParser {
 		
 	List<edu.wpi.mhtc.dashboard.pipeline.dao.Metric> metrics;
@@ -88,7 +93,7 @@ public class UnifiedParser implements IParser {
 	public boolean parseAll() throws Exception{
 
 		YearCleaner yearCleaner = new YearCleaner();
-		StateCleaner stateCleaner = new StateCleaner();
+		StateCleaner stateCleaner = new StateCleaner(states);
 		NumericCleaner numCleaner = new NumericCleaner();
 
 		lines = new ArrayList<Statistic>();	
@@ -98,7 +103,6 @@ public class UnifiedParser implements IParser {
 		for (Row row : sheet) {
 
 			if(row.getRowNum() > headerRow){	//skip extra info above header
-				int i = row.getRowNum();
 				if (!isRowEmpty(row)){		
 
 					line = new Statistic();
@@ -200,12 +204,10 @@ public class UnifiedParser implements IParser {
 
 			}
 		}
+		
 		return lines.isEmpty();
 	}
 
-	
-	
-//	Once source has been parsed, can iterate over the lines to be added to db
 	@Override
 	public Iterator<Statistic> iterator() {
 		return lines.iterator();
@@ -241,10 +243,12 @@ public class UnifiedParser implements IParser {
 		throw new UnifiedFormatException("No header found!!");
 	}
 
-
+	/**
+	 * Checks all cells in row to determine if they are blank
+	 * @param row
+	 * @return true if row is empty
+	 */
 	boolean isRowEmpty(Row row) {
-//		int i = row.getPhysicalNumberOfCells();
-//		return  i == 0;
 		for (int c = row.getFirstCellNum(); c <= row.getLastCellNum(); c++) {
 			Cell cell = row.getCell(c);
 			if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
@@ -256,6 +260,9 @@ public class UnifiedParser implements IParser {
 	}
 
 	/**
+	 * Check and verify column header names
+	 * 'year' and 'state' must be there, and for the given category,
+	 * the proper metric name column headers must be there as well
 	 * @throws CategoryException if the metric header names do not match the metrics for this category
 	 */
 	@Override
@@ -276,6 +283,12 @@ public class UnifiedParser implements IParser {
 		}
 	}
 	
+	/**
+	 * Confirms if the header for a metric column in the spreadsheet
+	 * matches one of the possible metric names for the given category
+	 * @param cellValue
+	 * @throws CategoryException if the metric header name(s) does not match the metrics for this category
+	 */
 	private void validateHeaderName(String cellValue) throws CategoryException {
 		for (edu.wpi.mhtc.dashboard.pipeline.dao.Metric m : metrics) {
 			if (m.getName().equalsIgnoreCase(cellValue)) {
@@ -297,6 +310,11 @@ public class UnifiedParser implements IParser {
 		
 	}
 	
+	/**
+	 * Retrieve a metric from the list of metrics by name
+	 * @param name
+	 * @return 
+	 */
 	public edu.wpi.mhtc.dashboard.pipeline.dao.Metric getMetric(String name) {
 		for (edu.wpi.mhtc.dashboard.pipeline.dao.Metric m : metrics) {
 			if (m.getName().equalsIgnoreCase(name)) {
@@ -306,6 +324,11 @@ public class UnifiedParser implements IParser {
 		return null;
 	}
 	
+	/**
+	 * Retrieve a state from the list of states by name
+	 * @param stateName
+	 * @return
+	 */
 	public State getState(String stateName) {
 		for (State s : states) {
 			if (s.getName().equalsIgnoreCase(stateName)) {

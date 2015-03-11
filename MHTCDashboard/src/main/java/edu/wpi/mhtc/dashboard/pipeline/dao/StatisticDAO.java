@@ -12,4 +12,7 @@ public interface StatisticDAO {
 	
 	public List<Statistic> getStatsByMetricAndState(int metricID, int stateID);
 	
+	public void save(Statistic stat);
+
+	public void merge(Statistic stat);
 }

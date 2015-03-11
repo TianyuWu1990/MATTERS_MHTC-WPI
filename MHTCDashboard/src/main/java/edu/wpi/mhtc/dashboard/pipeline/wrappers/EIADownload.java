@@ -5,8 +5,6 @@
 package edu.wpi.mhtc.dashboard.pipeline.wrappers;
 
 import java.io.PrintWriter;
-
-import edu.wpi.mhtc.dashboard.pipeline.data.State;
 import org.json.*;
 
 /**
