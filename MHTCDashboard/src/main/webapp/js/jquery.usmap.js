@@ -166,10 +166,7 @@
       
       // Scale to fit
       this.paper.setSize(width, height);
-//      this.paper.setViewBox(0, 0, paperWidthWithLabels, HEIGHT, false);
-      this.paper.setViewBox(0, 0, WIDTH, HEIGHT, false);
-      this.paper.canvas.setAttribute('preserveAspectRatio', 'xMidYmin meet');
-//      this.paper.canvas.setAttribute('preserveAspectRatio', 'none');
+      this.paper.setViewBox(0, 0, paperWidthWithLabels, HEIGHT, false);
       
       // Keep track of all the states
       this.stateHitAreas = {}; // transparent for the hit area
@@ -269,8 +266,8 @@
         this.stateHitAreas[state] = R.path(paths[state]).attr({fill: "#000",
       "stroke-width": 0, "opacity" : 0.0, 'cursor': 'pointer'});
         this.stateHitAreas[state].node.dataState = state;
-        //this.stateShapes[state].node.setAttribute("id",state);
       }
+      
       // Bind events
       this._onClickProxy = $.proxy(this, '_onClick');
       this._onMouseOverProxy = $.proxy(this, '_onMouseOver'),
@@ -595,13 +592,6 @@
       var stateData = this._getState(state);
       
       this._triggerEvent(type, event, stateData);
-    },
-
-    changeStateColor: function(stateAbbr,newColor){
-          var stateData = this._getState(stateAbbr);
-          var attrs = {fill: newColor};
-          this.options.stateSpecificStyles[stateData.name] = attrs;
-          stateData.shape.animate(attrs, this.options.stateHoverAnimation);
     },
     
     

@@ -14,7 +14,7 @@ public class Line {
 	int stateID;
 	int metricID;
 	int year;
-	Float value;	
+	Double value;	
 
 	public Line(){
 	}
@@ -36,7 +36,7 @@ public class Line {
 		return metricID;
 	}
 	
-	public Float getMetricValue(){
+	public Double getMetricValue(){
 		return value;
 	}
 	/**

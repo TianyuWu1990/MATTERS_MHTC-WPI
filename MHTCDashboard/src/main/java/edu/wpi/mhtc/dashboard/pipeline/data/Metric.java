@@ -13,7 +13,7 @@ public class Metric {
 	
 	int id;
 	String name;
-	Float value;
+	Double value;
 	
 	/**
 	 * One value stored in the database is represented as a Metric object. It is associated with only one category.
@@ -30,7 +30,7 @@ public class Metric {
 	 * 
 	 * @param value of the metric (to be inserted into database). 
 	 */
-	public void setValue(Float value){
+	public void setValue(Double value){
 		this.value = value;
 	}
 
@@ -42,7 +42,7 @@ public class Metric {
 		return name;
 	}
 
-	public Float getValue() {
+	public Double getValue() {
 		return value;
 	}
 	

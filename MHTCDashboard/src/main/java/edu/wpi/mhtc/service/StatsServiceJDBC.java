@@ -100,14 +100,12 @@ public class StatsServiceJDBC implements StatsService
 	/**
 	 * Retrieve all metrics for this state and bin, includes all child categories of the bin. 
 	 */
-	public List<DataSeries> getStateBinData(String state, Integer binId)
-	{
+	public List<DataSeries> getStateBinData(String state, Integer binId) {
 
 		State dbState = stateMapper.getStateFromString(state);
 		List<Metric> metrics = metricsService.getMetricsFromParents(binId);
 		
 		return getDataForState(dbState, metrics);
-				
 	}
 
 	private List<Metric> getListOfMetricsFromCommaSeparatedString(String metric)

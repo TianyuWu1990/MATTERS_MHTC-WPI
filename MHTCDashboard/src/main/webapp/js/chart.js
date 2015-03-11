@@ -10,40 +10,977 @@
 var dt;
 var CM = (function($) {
 	
+	/**
+	 * Constructor
+	 */
 	function Chart() {
 		this.array_colors=["#F90101","#F2B50F","#00933B","#0266C8","#603CBA","#1E7145","#9F00A7",
 		                  "#7f7f7f","#bcbd22","#17becf","#F2F5A9","#FE2EF7","#6E6E6E","#F6CED8","#3B0B0B","#181907"];
 		
-		this.current_graph = 'line'; 
-		this.current_graph_function = null; 
-		this.graph_title_prefix = ''; 
-		this.multiDataMultipleQuery=[];/**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
-		this.kcounter;/**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
-		this.kcounterexecute;/**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
-		this.year_selected; /**MULTIPLE METRICS+MULTIPLE STATE+MULTIPLE YEARS**/
+		/**************************
+		 * Visualization Types
+		 **************************/
+		this.visualizationTypes = {
+				TABLE : 0,
+				LINE : 1,
+				BAR : 2,
+				HEATMAP : 3
+		}
+		
+		this.currentVisualization = this.visualizationTypes.TABLE;
+		
+		this.yearSelected = -1;
+		
+		this.heatMapColorMap = {};
+		this.heatMapValuesMap = {};
+		
+		this.heatMapColorScheme = ["#0c1b26","#102c3d","#1b4255","#34586c","#586d80","#b8626d","#973d57","#8c1b36","#650c1e","#3d1218"];
+		// Setup type processing for datatables to work with ranks.
+		jQuery.fn.dataTableExt.aTypes.push(
+			    function ( sData )
+			    {
+			    	if ( sData.length < 3) // can't possibly be a rank.
+			    	{
+			    		return null;
+			    	}
+			    	
+			    	var isRank = false;
+			    	
+			    	// To be a rank, must end with a rank suffix.
+			    	isRank = isRank || sData.indexOf("th", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("st", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("nd", sData.length - 2) !== -1;
+			    	isRank = isRank || sData.indexOf("rd", sData.length - 2) !== -1;
+			    	
+			    	
+			    	// And before the suffix, must have some digit.
+			    	var digitChars = "0123456789";
+			    	var charBeforeSuffix = sData.charAt(sData.length - 3);
+			    	
+			    	isRank = isRank && digitChars.indexOf(charBeforeSuffix) !== -1;
+			    	
+			    	if (isRank)
+			    	{
+						return 'rank';
+			    	}
+			    	else
+			    	{
+			    		return null;
+			    	}		
+			    }
+			);
+		
+		jQuery.fn.dataTableExt.oSort['rank-asc']  = function(x,y) {
+		    
+			// Isolate actual digits
+			var xIsolate = parseInt(x.substring(0, x.length - 2));
+			var yIsolate = parseInt(y.substring(0, y.length - 2));
+			
+			return ((xIsolate < yIsolate) ? -1 : ((xIsolate > yIsolate) ?  1 : 0));
+		};
+		 
+		jQuery.fn.dataTableExt.oSort['rank-desc'] = function(x,y) {
+			var xIsolate = parseInt(x.substring(0, x.length - 2));
+			var yIsolate = parseInt(y.substring(0, y.length - 2));
+			
+		    return ((xIsolate < yIsolate) ?  1 : ((xIsolate > yIsolate) ? -1 : 0));
+		};
 	};
-	/*********************************************************************************************/
-	/**************GET ONLY THE POSSIBLE YEARS ACCORDING TO THE METRICS SELECTED ****************/
-	/*********************************************************************************************/					
-	Chart.prototype.getMultipleYearsMetricState = function(states,multiDataMultipleQuery) {
-		var array_years=[];
+	
+	/**
+	 * Sets the table as the currently displayed visualization and displays it.
+	 */
+	Chart.prototype.displayTable = function() {
+		this.currentVisualization = this.visualizationTypes.TABLE;
+		
+		this.refresh();
+	};
+	
+	/**
+	 * Sets the line graph as the currently displayed visualization and displays it.
+	 */
+	Chart.prototype.displayLineGraph = function() {
+		this.currentVisualization = this.visualizationTypes.LINE;
+		
+		this.refresh();
+	};
+	
+	/**
+	 * Sets the bar graph as the currently displayed visualization and displays it.
+	 */
+	Chart.prototype.displayBarGraph = function() {
+		this.currentVisualization = this.visualizationTypes.BAR;
+		
+		this.refresh();
+	};
+	
+	/**
+	 * Sets the heat map as the currently displayed visualization and displays it.
+	 */
+	Chart.prototype.displayHeatMap = function() {
+		this.currentVisualization = this.visualizationTypes.HEATMAP;
+		
+		this.refresh();
+	};
+	
+	/**
+	 * Refreshes the currently displayed visualization/chart.
+	 */
+	Chart.prototype.refresh = function() {
+		switch (this.currentVisualization) 
+		{
+			case this.visualizationTypes.TABLE:
+				this.refreshTable();
+				break;
+			case this.visualizationTypes.LINE:
+				this.refreshGraphs();
+				break;
+			case this.visualizationTypes.BAR:
+				this.refreshGraphs();
+				break;
+			case this.visualizationTypes.HEATMAP:
+				this.refreshHeatMap();
+				break;
+		}
+	};
+	
+	/**
+	 * Handles resizing charts when window size changes.
+	 */
+	Chart.prototype.refreshSizing = function() {
+		this.refreshHeatMapSizing();
+	};
+	
+	/**
+	 * Sets the currently selected year for the chart. 
+	 * Note: Does not refresh the charts to display the year. This must be done
+	 * manually with refresh()
+	 * @param year The year to select
+	 */
+	Chart.prototype.selectYear = function(year) {
+		this.yearSelected = year;
+	};
+	
+	/**
+	 * Resets the currently selected year for the chart to -1.
+	 * This means that the year will default to the most recent year upon refresh.
+	 * Note: Does not refresh the charts to display this year. This must be done manually
+	 * with refresh()
+	 */
+	Chart.prototype.resetYear = function() {
+		this.yearSelected = -1;
+	};
+	
+	/**
+	 * Refreshes the heat map based on the currently selected metric in the App State.
+	 */
+	Chart.prototype.refreshHeatMap = function() {
+		this.refreshHeatMapSizing(); // Make sure sizing is right
+		
+		// Get data from server on the currently selected metric
+		var allStates = States.getAllstates();
+		
+		var allStatesForQuery = allStates.map(function(s) {
+			return s.abbr;
+		});
+
+		var query = DQ.create().addState(allStatesForQuery)
+			.addMetric(Metrics.getMetricByID(as.currentind).getName());
+		
+		query.execute(function(multiData) {
+			var yearsForMetric = cm.getYearsMetricState(allStates, multiData); // Get the years that the metric exists for from the data
+			yearsForMetric.sort(function(a,b) {return b - a;} ); 
+			
+			if (cm.yearSelected == -1)
+				cm.selectYear(yearsForMetric[0]);
+				
+			// Show the years table		
+			var timelineTableHTML = cm.buildTimeline(yearsForMetric);
+				
+			$("#heatmap-timeline").empty();
+			$("#heatmap-timeline").append(timelineTableHTML);
+			
+			
+			// Create coloring map for all states.
+					
+			// First, separate out the info we care about (ABBR, VALUE, TYPE)
+			var stateValueInOrder = multiData.map(function(e) { 
+				var dataPointForYear = e[0].dataPoints.filter(function(f){
+					return f.year == cm.yearSelected;
+				});
+				
+				dataPointForYear = dataPointForYear.length == 0 ? null : dataPointForYear[0].value;
+				
+				return [e[0].state.abbr, dataPointForYear, e[0].metric.type];
+			});
+			
+			// Remove any without real data, but keep track of them for later.
+			// Also remove US average
+			var missingData = [];
+			stateValueInOrder = stateValueInOrder.filter(function(e) {
+				
+				if (e[1] == null)
+				{
+					missingData.push(e);
+					return false;
+				}
+				
+				if (e[0] == "US")
+				{
+					return false;
+				}
+				
+				return true;				
+			});
+			
+			// Then we sort so that the highest value is at the 0th position
+			stateValueInOrder.sort(function (a,b) {
+				return b[1] - a[1];
+			});
+					
+			
+			// Create the stored data structure for each state
+			cm.heatMapValuesMap = {};
+			cm.heatMapColorMap = {};
+			
+			var maxValue = stateValueInOrder[0][1];
+			var minValue = stateValueInOrder[stateValueInOrder.length - 1][1];
+			
+			// Add records for every state we have data for
+			for (var i = 0; i < stateValueInOrder.length; i++)
+			{
+				var value = stateValueInOrder[i][1];
+				var stateAbbr = stateValueInOrder[i][0];
+				var metricType = stateValueInOrder[i][2];
+				
+				var ranking = i + 1;
+				
+				if (metricType == "rank")
+				{
+					ranking = stateValueInOrder.length - i;
+				}
+				
+				var stateColor = cm.getHeatmapColor(cm.heatMapColorScheme, value, minValue, maxValue);
+				
+				var actualState = States.getStateByAbbreviation(stateAbbr);
+				
+				cm.heatMapValuesMap[stateAbbr] = { 
+						ranking	:	cm.getFormattedMetricValue("rank", ranking),
+						value			:	cm.getFormattedMetricValue(metricType, value),
+						state			:	actualState,
+						metricType		:	metricType,
+						color			:	stateColor,
+				};
+				
+				cm.heatMapColorMap[stateAbbr] = { 
+						'fill' : stateColor, 
+						'stroke' : '#000',
+						'stroke-width' : 1
+						};
+			}
+			
+			// Add record for the states where we are missing data.
+			for (var i = 0; i < missingData.length; i++)
+			{
+				var stateAbbr = missingData[i][0];
+				var metricType = missingData[i][2];
+				
+				var ranking = missingData.length + 1 + i;
+				
+				var stateColor = "#fff";
+				
+				var actualState = States.getStateByAbbreviation(stateAbbr);
+				
+				cm.heatMapValuesMap[stateAbbr] = { 
+						ranking	:	cm.getFormattedMetricValue("rank", ranking),
+						value			:	null,
+						state			:	actualState,
+						metricType		:	metricType,
+						color			:	stateColor,
+				};
+				
+				cm.heatMapColorMap[stateAbbr] = { 
+						'fill' : stateColor, 
+						'stroke' : '#000',
+						'stroke-width' : 1
+						};
+			}
+			
+			// What first rank is depends on the type of metric.
+			if (stateValueInOrder[0][2] == "rank")
+			{
+				$("#heatmap-generalinfo-first").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+				$("#heatmap-generalinfo-last").html(stateValueInOrder[0][0]);
+			}
+			else
+			{
+				$("#heatmap-generalinfo-first").html(stateValueInOrder[0][0]);
+				$("#heatmap-generalinfo-last").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+			}
+			
+			$("#heatmap-generalinfo-ma").html(cm.heatMapValuesMap["MA"].ranking);
+			
+			
+			cm.buildHeatMapLegend(minValue, maxValue, stateValueInOrder[0][2]);
+			
+			
+			$("#heatmap-actual").empty();
+			$("#heatmap-actual").removeData("pluginUsmap");
+			$("#heatmap-actual").usmap({
+				stateHoverAnimation: 100,
+				showLabels: true,
+				stateHoverStyles: {'stroke-width': 3},
+				
+				mouseover: function(event, data) {					
+					var infoForState = cm.heatMapValuesMap[data.name];
+					
+					$("#heatmap-specificDetails-name").html(infoForState.state.getName() + " (" + infoForState.state.getAbbr() + ")" );
+					
+					if (infoForState.value == null)
+					{
+						$("#heatmap-specificDetails-rank").html("No Data");
+						$("#heatmap-specificDetails-value").html("No Data");
+					}
+					else
+					{
+						$("#heatmap-specificDetails-rank").html(infoForState.ranking);
+						$("#heatmap-specificDetails-value").html(infoForState.value);
+					}
+				
+					if (infoForState.state.isPeerState())
+					{
+						$("#heatmap-specificDetails-peer").show();
+					}
+					else
+					{
+						$("#heatmap-specificDetails-peer").hide();
+					}
+					
+					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 200;
+					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top - 80;
+					
+					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
+					
+					$("#heatmap-tooltip").show();
+				},
+				
+				mouseout: function(event, data) {
+					$("#heatmap-tooltip").hide();
+				},
+				
+				stateSpecificStyles: cm.heatMapColorMap,
+			});
+		});
+	};
+	
+	Chart.prototype.getHeatmapColor = function(colorMap, value, highest, lowest)
+	{	
+		
+		var endVal = highest - lowest;
+		var actValue = value - lowest;
+		
+		var indexInMap = Math.floor((1 - (actValue / endVal)) * (colorMap.length - 1));
+			
+		return colorMap[indexInMap];	
+	}
+	
+	Chart.prototype.buildHeatMapLegend = function(lowerBound, upperBound, metricType)
+	{
+		// Empty existing legend, if any.
+		$("#heatmap-legend-legend").empty();
+		
+		var numberBuckets = this.heatMapColorScheme.length;
+		var range = upperBound - lowerBound;
+		var increment = range / numberBuckets;
+		
+		
+		var currLowerBound = this.getFormattedMetricValue(metricType, lowerBound);
+		var currUpperBound = null;
+		
+		//Add a bucket for each.
+		for (var i = 0; i < numberBuckets; i++)
+		{
+			var bucketColor = this.heatMapColorScheme[i];
+		
+			currUpperBound = lowerBound + increment * (i + 1);
+			currUpperBound = this.getFormattedMetricValue(metricType, currUpperBound);
+			
+			var bucketRange = currLowerBound + " - " + currUpperBound;
+	
+			if (bucketRange.length > 22)
+			{
+				bucketRange = bucketRange.substr(0, 19) + "...";
+			}
+			
+			var bucketHTML = '<div class="heatmap-legend-bucket">'
+				+ '<div class="heatmap-legend-bucket-swatch" style="background-color:' + bucketColor + ';"></div>'
+				+ '<div class="heatmap-legend-bucket-num">' + bucketRange + '</div></div>';
+			
+			$("#heatmap-legend-legend").append(bucketHTML);
+			
+			currLowerBound = currUpperBound;
+		}
+	}
+	
+	Chart.prototype.refreshHeatMapSizing = function() {
+		var containerHeight = $("#viewWrapper").height() - 150; // 130 is room for year and metric controls at top
+		var containerWidth = $("#viewWrapper").width();
+		
+		var height = containerHeight;
+		if (height < 200)
+		{
+			height = 200;
+		}		
+		
+		var width = height / .6;
+				
+		$("#heatmap-actual").height(height);
+		$("#heatmap-actual").width(width);		
+		
+		$("#heatmap-inner-wrapper").width(width + 205 + 150 + 40);
+	};
+	
+	/**
+	 * Refreshes the table view based on the currently selected states and metrics in the App State.
+	 */
+	Chart.prototype.refreshTable = function() {
+		
+		var selectedStates = as.getSelectedStates();
+		var selectedMetrics = as.getSelectedMetrics();
+				
+		// Clear table
+		$("#mbodyMultipleQuery > *").remove();
+		
+		// Add new table
+		$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='font-size: 13px; background-color:#fff'></table>");
+		
+		// Select the new table for future manipulation
+		var table = $("#mbodyMultipleQuery table");
+
+		if(selectedMetrics.length > 0) {	
+			if(selectedStates.length == 1) { // If we only have 1 state to load data for
+				
+				$("#timelinetable").hide();
+				
+				var fullState = States.getStateByAbbreviation(selectedStates[0]);
+				$("#optionalTableTitle").html(fullState.name + " (" + fullState.abbr + ")");
+				$("#optionalTableTitle").show();
+				
+				// We treat the query as if it is a multi-metric query as there can be any number of metrics selected.
+				var processedMetrics = selectedMetrics.map(function(e) { return Metrics.getMetricByID(e).getName(); });
+				
+				query = DQ.create().addState(selectedStates).addMultipleMetrics(processedMetrics);
+				
+				query.execute(function(multiData) {
+					
+					if(multiData.length == 0)
+						return; // Do nothing if we got no data back.
+					
+					var yearsForMetrics = cm.getYearsWhereDataExistsForMultipleMetrics(multiData);
+					yearsForMetrics.sort(function(a,b) {return a - b;} ); 
+					
+					
+					if(yearsForMetrics.length==0) { // If theres no data for the metric...
+		        		 table.append("<tr><td>No data available for your current selection.</td></tr>");
+		        	} else {
+		        		// Build header
+		        		
+		        		var row ="<th>Metric</th>";
+		        		
+		        		for (var r = 0; r < yearsForMetrics.length; r++)
+		        		{
+		        			var yearName = yearsForMetrics[r];
+		        			
+		        			row = row + "<th>" + yearName + "</th>";
+		        		}
+		        		
+		        		row = "<thead>" + row + "</thead>";
+		        		table.append(row);
+		        		
+		        		// Populate data for each metric.		        		
+		        		for (var r = 0; r < multiData[0].length; r++)
+		        		{
+		        			var metricData = multiData[0][r];
+		        			var metric = metricData.metric;
+		        			var data = metricData.dataPoints;
+
+		        			row = "<th>"+ '<span id="info" title="' + metric.desc 
+							+ '"><span>' + " " + metric.name + "</th>";
+		        			
+		        			var yearIndex = 0;
+		        			for (var k = 0; k < data.length; k++)
+		        			{
+		        				var year = data[k].year;
+		        				
+		        				while (year !== yearsForMetrics[yearIndex])
+		        				{
+		        					row = row + "<td>N/A</td>";
+		        					yearIndex++;
+		        				}
+		        				
+		        				row = row + "<td>" + cm.getFormattedMetricValue(metric.type, data[k].value) + "</td>";
+		        				yearIndex++;
+		        			}
+		        			
+		        			while (yearIndex < yearsForMetrics.length)
+		        			{
+		        				row = row + "<td>N/A</td>";
+		        				yearIndex++;
+		        			}
+		        			
+		        			row = "<tr>" + row + "</tr>";
+		        			
+		        			table.append(row);
+		        		}
+		        			
+		        	}
+					cm.setDataTable(false);
+				
+				});
+				
+				
+			} 
+			else if(selectedMetrics.length == 1) { // If we only have one metric to load
+				
+				$("#timelinetable").hide();
+				
+				var fullMetric = Metrics.getMetricByID(selectedMetrics[0]);
+				
+				// Query for appropriate data
+				var query = DQ.create().addState(selectedStates).addMetric(fullMetric.getName());
+				
+				query.execute(function(multiData) {
+					
+						
+						var metricFromQuery = multiData[0][0].metric;
+						
+						$("#optionalTableTitle").html('<span id="info" title="' + metricFromQuery.desc 
+								+ '"><span>' + " " + metricFromQuery.name);
+						
+						$("#optionalTableTitle").show();
+					
+					
+			        	var yearsForMetric = cm.getYearsMetricState(selectedStates, multiData); // Get the years that the metric exists for from the data
+			        	yearsForMetric.sort(function(a,b) {return a - b;} ); 
+			        	
+			        	if(yearsForMetric.length==0) { // If theres no data for the metric...
+			        		 table.append("<tr><td>No data available for your current selection.</td></tr>");
+			        	} else {
+			        		
+			        		// Create single metric header
+			        		var row = "<thead><th>State</th>";
+			        		
+			        		for(var i = 0; i < yearsForMetric.length; i++) {			        			
+			        			 row = row + "<th>" + yearsForMetric[i] + "</th>";
+			        		}
+			        		
+			        		row = row + "</thead>";
+				            table.append(row); // Append header
+				             
+			                for (var i = 0; i < multiData.length; i++)
+			                {
+			                    row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
+
+			                    var indexModifier = 0;
+			                    
+			                    for (var j = 0; j < yearsForMetric.length; j++)
+			                    {
+			                    	var actualIndex = j - indexModifier;
+			                    	
+			                    	if (multiData[i][0].dataPoints.length <= actualIndex)
+			                    	{
+			                    		row = row + "<td> N/A </td>";
+			                    	}
+			                    	else
+			                    	{
+			                    		var currDataYear = multiData[i][0].dataPoints[actualIndex].year;
+
+			                    		if (currDataYear !== yearsForMetric[j])
+			                    		{
+			                    			indexModifier++;
+			                    			row = row + "<td> N/A </td>";
+			                    		}
+			                    		else
+			                    		{
+			                    			// Format the data based on type.
+				                    		var formattedData = cm.getFormattedMetricValue(multiData[i][0].metric.type, 
+				                    				multiData[i][0].dataPoints[actualIndex].value);
+				                    		row = row + "<td>" + formattedData + "</td>";
+			                    		}
+			                    	}
+			                    }
+			                    row = "<tr>" +row +"</tr>";
+				                table.append(row);
+			                }
+			        	}
+			        	cm.setDataTable(true);
+				});
+			}
+			else	// Multiple metrics
+			{					
+					$("#optionalTableTitle").hide();
+				
+					var processedMetrics = selectedMetrics.map(function(e) { return Metrics.getMetricByID(e).getName(); });
+					
+					query = DQ.create().addState(selectedStates).addMultipleMetrics(processedMetrics);
+					
+					query.execute(function(multiData) {
+						
+						if(multiData.length == 0)
+							return; // Do nothing if we got no data back.
+						
+						var yearsForMetrics = cm.getYearsWhereDataExistsForMultipleMetrics(multiData);
+						yearsForMetrics.sort(function(a,b) {return b - a;} ); 
+						
+					    // Set the selected year if its not already set.
+					    if(cm.yearSelected == -1)
+							cm.selectYear(yearsForMetrics[0]);
+						
+						// Show the years table		
+						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
+						
+						$("#timelinetable").empty();
+						$("#timelinetable").append(timelineTableHTML);
+						$("#timelinetable").show();
+						
+						// Build Header
+						var row = "<th>State</th>";
+						
+						for(var r = 0; r < multiData[0].length; r++)
+						{
+							var metricName = multiData[0][r].metric.name;
+							
+							row = row + "<th>"+ '<span id="info" title="' + multiData[0][r].metric.desc 
+							+ '"><span>' + " " + metricName + "</th>";
+						}
+						
+						row = "<thead>" + row +"</thead>"; 
+						table.append(row);
+						// Finish building State header
+						
+						// Populate data from each state
+						// Note: we assume here that there was atleast 1 metric data returned for this state.
+						for(var j = 0; j < multiData.length; j++)
+						{
+							row = "";
+							
+							for(var k = 0; k < multiData[j].length; k++)
+							{
+								var metricData = multiData[j][k];
+								
+								if (k == 0) // First one...have to add the state header.
+								{
+									row = "<th>" + metricData.state.abbr + "</th>";
+								}
+								
+								var dataPointForCurrentYear = metricData.dataPoints.filter(function(point) { return point.year == cm.yearSelected; });
+								
+								dataPointForCurrentYear = dataPointForCurrentYear.length == 0 ? null : dataPointForCurrentYear[0].value;
+								
+								var formattedValue = cm.getFormattedMetricValue(metricData.metric.type, dataPointForCurrentYear);
+								
+								row = row + "<td>" + formattedValue + "</td>";
+							}
+							
+							row = "<tr>" + row + "</tr>";
+							table.append(row);
+						}
+						cm.setDataTable(true);
+					
+					});
+				}		
+			}	
+	};
+		
+	/**
+	 * Performs additional setup functions for the data table.
+	 * Should not be called on its own - is used as a utility function by refreshTable
+	 */
+	Chart.prototype.setDataTable = function(enableSort) {		
+		if ( $("#myTable").html().indexOf("<thead>") != -1 ){
+			
+			$('#myTable tbody tr td').each( function() {
+				var sTitle= $(this).text();
+				if ( sTitle == "N/A" )
+					this.setAttribute( 'title', "No value for this year." );	
+				
+			} );
+			
+			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
+				var oTable = $('#myTable').dataTable(
+						{
+							"iDisplayLength": 15,
+							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
+							"bSort": enableSort,
+							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
+						
+						});
+				dt = oTable;
+			}
+			else
+			{
+				$('#myTable').dataTable().fnDestroy();
+				var oTable = $('#myTable').dataTable(
+						{
+							"iDisplayLength": 20,
+							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
+							"bSort": enableSort,
+							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
+							
+						});
+				dt = oTable;
+			}
+
+		}
+	};
+	
+	/**
+	 * Refreshes the bar and line graphs
+	 */
+	Chart.prototype.refreshGraphs = function() {
+		if(as.currentind == null || as.currentind == undefined)
+			return;
+		   
+		var states = as.getSelectedStates();
+		
+    	if(this.currentVisualization == this.visualizationTypes.LINE){
+    		$("#mbody > *").remove();
+	    	
+	    	if($("#mbody svg").length==0){
+	    		
+	    		$("#mbody").append( "<svg style=\"background-color:#fff\"></svg>" );
+
+			    d3.selectAll("#mbody svg > *").remove();
+	    	}
+    	}else{
+    		$("#mbodyBar > *").remove();
+    		if($("#mbodyBar svg").length==0){
+	    		$("#mbodyBar").append( "<svg style=\"background-color:#fff\"></svg>" );
+
+			    d3.selectAll("#mbodyBar svg > *").remove();
+			        
+	    	}
+    	}
+	    
+    	// Query for data
+	    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
+	    query.execute(function(multiData) {
+            nv.addGraph(function() {
+              
+                var data = [];
+                
+                var years = [];
+                
+                // Get collection of all data
+                for (var i = 0; i < multiData.length; i++)
+                {
+                	if (multiData[i].length == 0)
+                		continue;
+                	
+                	data[i] = {
+                			key : multiData[i][0].state.abbr,
+                			color : cm.array_colors[i % cm.array_colors.length]
+                	};
+                	
+                	data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
+                		var yearForPoint = d["year"];
+                		
+                		if (years.indexOf(yearForPoint) == -1)
+                			years.push(yearForPoint);
+                		
+                		return { "x" : yearForPoint, "y" : (d["value"].toFixed(2)) * 1 };
+                	});
+                }
+                
+                years.sort(function(a,b) { return a - b; });
+                            	
+                // Build the chart for the data.
+            	var chart;
+    
+                if (cm.currentVisualization == cm.visualizationTypes.LINE) 
+                {
+                    chart = nv.models.lineChart()
+                    	.transitionDuration(350)
+                    	.useInteractiveGuideline(true)
+                    	.margin({ left : 150, right : 50 });     
+                } 
+                else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
+                {
+                    chart = nv.models.multiBarChart()
+                    	.transitionDuration(350)
+                    	.showControls(false)
+                    	.margin({ left : 150, right : 50 });
+                    
+                    // Calculate new min y for the bar charts
+                    var minY = d3.min(data, function(d) { 
+                    	return d3.min(d["values"], function(e) {
+                    		return e["y"];
+                    	});
+                    });
+                    	
+                    var maxY = d3.max(data, function(d) { 
+                    	return d3.max(d["values"], function(e) {
+                    		return e["y"];
+                    	});
+                    });
+                    	
+                    var range = maxY - minY;
+                    
+                    var newRange = range + (range / 10);
+                    var newMin = maxY - newRange;
+                    newMin = (newMin.toFixed(2)) * 1;
+                    
+                    if (newMin < 0)
+                    	newMin = 0;
+                    
+                    chart.forceY(newMin);
+                }
+                                
+                chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
+
+                var type_var = Metrics.getMetricByID(as.currentind).getType();
+                if (type_var == "integer") 
+                {
+			        chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
+	            } 
+                else if (type_var == "rank") 
+                {
+	                chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
+	            } 
+                else if (type_var == "percentage") 
+                {
+	                chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
+	            } 
+                else if (type_var == "numeric") 
+                {
+	                chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
+	            } 
+                else if (type_var == "currency") 
+                {
+	            	chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
+	            }
+                
+                
+                if (cm.currentVisualization == cm.visualizationTypes.LINE) 
+                {
+                	d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
+                }
+                else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
+                {
+                	d3.select('#mbodyBar svg').datum(data).transition().duration(500).call(chart);
+                }
+                
+                nv.utils.windowResize(chart.update);
+                
+                return chart;
+            });
+	    });
+	};
+	
+	/**
+	 * Returns a formatted string of the given value based on the given metric type.
+	 * @param metricType The type of metric.
+	 * @param value The value of the metric.
+	 * @returns {String} A formatted string of the value based on the metric type.
+	 */
+	Chart.prototype.getFormattedMetricValue = function(metricType, value)
+	{
+		var formattedValue = "";
+		
+		if (value == null)
+			return "N/A";
+		
+		if(metricType == "percentage") {
+			formattedValue = (value * 100).toFixed(2)+"%";
+		} else if(metricType =="currency") {
+			formattedValue = "$" + value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+		}else if(metricType == "numeric"){
+			formattedValue = value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+		}else if(metricType == "rank") {
+			
+			value = Math.floor(value); // Make sure we get a whole number
+			
+			var firstDigit = value % 10;
+		
+			var suffix = "th";
+			
+			if (value <= 10 || value >= 14) // 11th, 12th, 13th...
+			{
+				switch(firstDigit)
+				{
+					case 1:
+						suffix = "st";
+						break;
+					case 2:
+						suffix = "nd";
+						break;
+					case 3:
+						suffix = "rd";
+						break;
+				}
+			}
+			
+			formattedValue = value.toFixed(0);
+		}else if(metricType=="integer"){
+			formattedValue = value.toFixed(0);
+		}else{
+			formattedValue = value;
+		}	
+		
+		return formattedValue;
+	};
+	
+	/**
+	 * Builds the timeline for year selection
+	 * @param yearsList The years to show in the timeline
+	 */
+	Chart.prototype.buildTimeline = function(yearsList) {				
+		var timeLineHTML = '<table align="center"><tr><td></td><td><ul class="timelineListStyle">';
+		for(var k = yearsList.length - 1; k >= 0; k--){
+			if(cm.yearSelected != yearsList[k]){
+				timeLineHTML += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+yearsList[k]+')" >'+yearsList[k]+'</button></li>';
+			}else{
+				timeLineHTML += '<li id="clicktable'+cm.yearSelected+'"><button class="active"  id="tableTimeLineButton" >'+cm.yearSelected+'</button></li>';
+			}
+		}
+		
+		timeLineHTML += '</ul ></td></tr></table>';
+		
+		return timeLineHTML;
+	};
+	
+	/**
+	 * Returns the years where any of the metrics within the query have data.
+	 * @param multiDataMultipleQuery The query data to search over
+	 * @returns {Array} An array of the years where there is data
+	 */
+	Chart.prototype.getYearsWhereDataExistsForMultipleMetrics = function(multiDataMultipleQuery) {
+		var array_years = [];
 		var k=0;
-		for(var j=0; j<states.length; j++){
-			for(var i=0;i<multiDataMultipleQuery.length;i++){
-				for(var w=0;w<multiDataMultipleQuery[i][j][0].dataPoints.length; w++){
-					if(array_years.indexOf(multiDataMultipleQuery[i][j][0].dataPoints[w].year) < 0){
-						array_years[k]=multiDataMultipleQuery[i][j][0].dataPoints[w].year;
+		
+		for(var i = 0; i < multiDataMultipleQuery.length;i++) { // For every state...
+			for(var w = 0; w < multiDataMultipleQuery[i].length; w++) { // Check every returned metric
+				for(var j = 0; j < multiDataMultipleQuery[i][w].dataPoints.length; j++) // For every data point for those metrics..
+				{
+					if(array_years.indexOf(multiDataMultipleQuery[i][w].dataPoints[j].year) < 0)
+					{
+						array_years[k] = multiDataMultipleQuery[i][w].dataPoints[j].year;
 						k++;
 					}
 				}
 			}
 		}
+		
 		return array_years;
 	};
-	/*
-	 * This is a 2d table. WHen you only have one metric to show
+	
+	/**
+	 * Returns the years where there is data within the given query data
+	 * @param states The states to look for data for
+	 * @param multiData The query data to search over
+	 * @returns {Array} An array of the years where there is data
 	 */
-	Chart.prototype.getYearsMetricState = function(states,multiData) {
+	Chart.prototype.getYearsMetricState = function(states, multiData) {
 		var array_years=[];
 		var k=0;
 		for(var j=0; j<states.length; j++){
@@ -53,655 +990,12 @@ var CM = (function($) {
 					  array_years[k]=multiData[j][0].dataPoints[w].year;
 					  k++;
 					}
-				}
-				
-
+				}	
 			}
-			
 		}
-		
 		return array_years;
 	};
 	
-	/*changed by manik*/
-	Chart.prototype.showMultipleMetricsStatesYears = function(states,selected_multiple_metrics,year_in) {
-		var query;
-		this.year_selected=year_in;
-		$("#mbodyMultipleQuery > *").remove();
-		
-		$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='font-size: 13px; background-color:#fff'></table>");
-		var table = $("#mbodyMultipleQuery table");
-
-		if(selected_multiple_metrics.length>0){
-			
-			if(selected_multiple_metrics.length==1) { // If we only have one metric to load
-				$("#yearsMultipleQuery").addClass("hidden");
-				$("#timelinetable").addClass("hidden");
-				query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[0]).getName());
-				
-				query.execute(function(multiData) {
-			        setTimeout(function() {
-			        	var row;
-			        	var array_years=cm.getYearsMetricState(states,multiData);
-			        	if(array_years.length==0){
-			        		 row="<tr><td>No data available for your current selection.</td></tr>";
-			        		 table.append(row);
-			        	}else{
-			        		 row="<thead><th>State</th>";
-			        		 var i=0;
-			        		while(i<array_years.length){			        			
-			        			 row = row+"<th>"+array_years[i]+"</th>";
-			        			 i++;
-			        		}
-			        		row = row +"</thead>";
-				            table.append(row);
-				             
-			                var data = new Array();
-			                var percentage;
-			                var j;
-			                var type_var;
-			                for (var i = 0; i < multiData.length; i++)
-			                {
-			                    row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
-			                    j=0;
-			                    while(j<array_years.length)
-			                    {
-			                    	if(multiData[i][0].dataPoints.length==0)
-			                    	{
-			                    		row = row +"<td> N/A </td>"; 
-			                    	}
-			                    	else
-			                    	{
-			                    		type_var=Metrics.getMetricByID(multiData[i][0].metric.id).getType();
-			                    		if(type_var=="percentage"){
-			                    			percentage=(multiData[i][0].dataPoints[j].value*100).toFixed(2)+"%";
-			                    			row=row+"<td>" +  percentage+ "</td>";
-			                    		}else if(type_var =="currency"){
-			                    			
-			                    			row=row+"<td>$" +  multiData[i][0].dataPoints[j].value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</td>";
-			                    		}else if(type_var=="numeric"){
-			                    			row=row+"<td>" +  multiData[i][0].dataPoints[j].value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</td>";
-			                    		}else{
-			                    			row=row+"<td>" +  multiData[i][0].dataPoints[j].value+"</td>";
-			                    		}	
-			                    	}
-			                    	j++;
-			                    }
-			                    row = "<tr>" +row +"</tr>";
-				                table.append(row);
-			                }
-			        	}
-			        	cm.setDataTable();
-			        }, 500);
-				});
-			}
-			else	//multiple metrics
-			{
-					this.kcounterexecute=0;
-					this.multiDataMultipleQuery=[];
-					
-					for(this.kcounter=0; this.kcounter<selected_multiple_metrics.length;this.kcounter++){
-
-						this.multiDataMultipleQuery=[];
-						query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[this.kcounter]).getName());
-
-						query.execute(function(multiData) {
-							cm.multiDataMultipleQuery[cm.kcounterexecute]=multiData;
-
-							cm.kcounterexecute++;
-						});
-						
-					}
-					setTimeout(function() {	
-						
-						var array_years=cm.getMultipleYearsMetricState(states,cm.multiDataMultipleQuery);
-						
-					    $("#yearsMultipleQuery").removeClass("hidden");
-					    $("#timelinetable").removeClass("hidden");
-					    var sel = $("#yearsMultipleQuery");
-		    			sel.empty();
-		    			array_years.sort(function(a,b){return b - a;}); 
-		    			if(cm.year_selected==-1)
-		    				cm.year_selected=array_years[0];
-		    			for(var k=0; k<array_years.length; k++){
-		    				
-		    				if(array_years[k]==cm.year_selected)
-		    					sel.append('<option value="' + array_years[k] + '" selected>' + array_years[k] + '</option>');
-		    				else
-		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
-		    			}
-
-		    			var seltimeline=$("#timelinetable");
-		    			seltimeline.empty();
-		    			var liststring =""
-		    			array_years.sort(function(a,b){return b - a;});
-						if(cm.year_selected==-1)
-		    				cm.year_selected=array_years[0];
-						liststring += '<table align="center"><tr><td></td><td><ul class="timelineListStyle">';
-						for(var k=array_years.length-1; k>=0; k--){
-							if(cm.year_selected!=array_years[k]){
-								liststring += '<li ><button class="" id="tableTimeLineButton" onClick="return tableButtonClicked(this,'+array_years[k]+')" >'+array_years[k]+'</button></li>';
-							}else{
-								liststring += '<li id="clicktable'+cm.year_selected+'"><button class="active"  id="tableTimeLineButton" >'+cm.year_selected+'</button></li>';
-							}
-						}
-						liststring += '</ul ></td></tr></table>';
-						seltimeline.append(liststring);
-						
-						var row="<th>State</th>";
-						var checkduplicity;//hack to fix the fact the titles and rows were strnagly duplicating
-						var array_duplicates=new Array();
-						var counter_control_duplicates=0;// Hack: the rows were duplicating like crazy but now always
-						//.. needed a way to work around it but currently it is not the elegant  way
-						
-						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
-							checkduplicity = $.inArray(cm.multiDataMultipleQuery[r][0][0].metric.name, array_duplicates) > -1;
-							if(checkduplicity==false){
-								row = row + "<th>"+ '<span id="info" title="' + cm.multiDataMultipleQuery[r][0][0].metric.desc + '"><i class="fa fa-info-circle"></i><span>' + " " + cm.multiDataMultipleQuery[r][0][0].metric.name + "</th>";
-								array_duplicates[counter_control_duplicates]=cm.multiDataMultipleQuery[r][0][0].metric.name;
-								counter_control_duplicates++;
-							}
-	
-						}
-						row = "<thead>" +row +"</thead>"; 
-						table.append(row);
-						
-						var data = new Array();
-						var current_state="-1";
-						var band;
-						var foundvalue;
-						var sentinel;
-						var w;
-						var percentage;
-						 var type_var;
-						for(var j=0; j<states.length; j++){
-							if(current_state!=states[j]){
-								current_state=states[j];
-								band=false;
-							}
-							var rows_written=0;// Hack: the rows were duplicating like crazy but now always
-							//.. needed a way to work around it but currently it is not the elegant  way
-							for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
-								foundvalue=false;
-								sentinel=false;
-								w=0; 
-								
-								while((w< cm.multiDataMultipleQuery[r][j][0].dataPoints.length)&&(!sentinel)){
-
-									if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year==cm.year_selected){
-										if(!band){
-											
-											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
-											band=true;
-										}
-										
-										if((cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value!=null)&&(rows_written<counter_control_duplicates)){
-											rows_written++;
-											type_var=Metrics.getMetricByID(cm.multiDataMultipleQuery[r][j][0].metric.id).getType();
-											
-											if(type_var=="percentage"){
-												percentage=(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value*100).toFixed(2)+"%";
-				                    			row=row+"<td>" +  percentage+ "</td>";
-				                    		}else if(type_var=="currency"){
-				                    			
-				                    			row=row+"<td>$" +  cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</td>";
-				                    		}else if(type_var=="numeric"){
-				                    			row = row +"<td>"+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+"</td>";
-				                    			
-				                    		}else{
-				                    			row=row+"<td>" +  cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value+"</td>";
-				                    		}	
-											foundvalue=true;
-											
-										}
-									sentinel=true;		
-									}
-								w++;
-								}
-								if(!band){
-									row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
-									band=true;
-								}
-								if((!foundvalue)&&(rows_written<counter_control_duplicates)){
-									rows_written++;
-									row = row +"<td>N/A</td>";
-								}
-							}
-							if(band){ 
-								row = "<tr>" +row +"</tr>";
-								table.append(row);
-							}
-						}
-						cm.setDataTable();
-					}, 500);
-			}		
-					
-		}	
-		
-	};
-	/**added by manik*/
-	Chart.prototype.setDataTable = function() {
-
-		stateList = States.getAllstates();
-
-		
-		if ( $("#myTable").html().indexOf("<thead>") != -1 ){
-			
-			$('#myTable tbody tr td').each( function() {
-				var sTitle= $(this).text();
-				if ( sTitle == "N/A" )
-					this.setAttribute( 'title', "No Value for the year selected" );	
-				
-			} );
-			$('#myTable tbody tr th').each( function() {
-				var sTitle= $(this).text();
-				this.setAttribute( 'title', States.getStateFromString(sTitle).name );	
-
-			} );
-			
-			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
-				var oTable = $('#myTable').dataTable({"iDisplayLength": 20}, {});
-				dt = oTable;
-			}
-			else
-			{
-				console.log("table already present");
-				$('#myTable').dataTable().fnDestroy();
-				var oTable = $('#myTable').dataTable({"iDisplayLength": 20});
-				dt = oTable;
-			}
-		 /* Apply the tooltips */
-			oTable.$('tr').tooltip( {
-				"delay": 0,
-				"track": true,
-				"fade": 0
-			} );
-			
-			
-			$('#myTable tbody').on( 'click', 'tr', function () {
-		        if ( $(this).hasClass('selected') ) {
-		            $(this).removeClass('selected');
-		        }
-		        else {
-		        	oTable.$('tr.selected').removeClass('selected');
-		            $(this).addClass('selected');
-		        }
-		    } );
-		}
-	}
-	
-	
-	/**
-	 * This function display the different types of chart (line,bar or table) for selected state/s and metric.
-	 */
-    
-	Chart.prototype.showMultiGraph = function(states) {
-		
-		   if (this.current_graph == 'table') {
-		    	$("#mbody > *").remove();
-		    
-	    	$("#mbody").append("<table id='myTable' class='table table-condensed' style='font-size: 13px; background-color:#fff'></table>");
-	    	var table=$("#mbody table");
-		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
-		    // Adding a Table view in chart 
-		    query.execute(function(multiData) {
-		        setTimeout(function() {
-		                var chart;
-		                var row="<th>&nbsp;</th>";
-		                row = row + multiData[0][0].dataPoints.map(function(d) {
-		                    return "<th>"+d["year"] + "</th>";
-		                }).join("");
-		                row = "<tr>" +row +"</tr>";
-		                table.append(row);
-		                var data = new Array();
-		                for (var i = 0; i < multiData.length; i++) {
-		                        row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
-		                    row = row + multiData[i][0].dataPoints.map(function(d) {
-		                        return "<td>" +  d["value"] + "</td>";
-		                    }).join("");
-		                    row = "<tr>" +row +"</tr>";
-			                table.append(row);
-		                }    
-		        }, 500);
-		    });
-
-		    
-	    	
-	    }else{
-	    	
-	    	$("#mbody > *").remove();
-	    	if($("#mbody svg").length==0){
-	    		$("#mbody").append( "<svg style=\"height: 50%; background-color:#fff\"></svg>" );
-	    	}
-	    	
-		    d3.selectAll("#mbody svg > *").remove();
-		    
-		    // Query for data
-		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
-		   
-		    query.execute(function(
-		            multiData) {
-		    	// On query callback, populate graph/table/chart with data
-		        setTimeout(function() {
-		            nv.addGraph(function() {
-		                var chart;
-		    
-		                if (cm.current_graph == 'line') {
-		                    chart = nv.models.lineChart()
-		                    		.useInteractiveGuideline(true)
-		                    		.transitionDuration(350);
-		                } else if (cm.current_graph == 'bar') {
-		                    chart = nv.models.multiBarChart();
-		                }
-		                
-		                chart.margin({left : 100})
-		                	.x(function(d) { return d[0] })
-		                	.y(function(d) { return d[1] }) // adjusting, 100% is 1.00, not 100 as it is in the data
-		                	.color(d3.scale.category10().range())
-
-		                var xtickvalues = multiData[0][0].dataPoints.map(function(d) {
-		                    return d["year"];
-		                });
-		                
-		                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
-	
-		                var type_var=Metrics.getMetricByID(as.currentind).getType();
-		                
-		                if (type_var == "integer") {
-					        chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
-			            } else if (type_var == "rank") {
-			                chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
-			            } else if (type_var == "percentage") {
-			                chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
-			            } else if (type_var == "numeric") {
-			                chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
-			            } else if (type_var == "currency") {
-			            	chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
-			            }
-		                
-		                var data = new Array();
-		                for (var i = 0; i < multiData.length; i++) {
-		                    data[i] = {
-		                        key : multiData[i][0].state.abbr,
-		                        color: cm.array_colors[i%cm.array_colors.length]
-		                    };
-		                    data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-		                        return [ d["year"], d["value"] ];
-		                    });
-		                }
-		                d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
-	
-		                // TODO: Figure out a good way to do this automatically
-		                
-		                nv.utils.windowResize(chart.update);
-		                
-		                return chart;
-		            });
-		        }, 500);
-		    });
-		   
-		  }
-	   
-	}
-	Chart.prototype.showMultiGraphReloded = function(states) {
-		if(as.currentind == null || as.currentind == undefined)
-			return;
-		   
-	    	if(this.current_graph=='line'){
-	    		$("#mbody > *").remove();
-		    	
-		    	if($("#mbody svg").length==0){
-		    		
-		    		$("#mbody").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
-
-				    d3.selectAll("#mbody svg > *").remove();
-		    	}
-	    	}else{
-	    		$("#mbodyBar > *").remove();
-	    		if($("#mbodyBar svg").length==0){
-		    		$("#mbodyBar").append( "<svg style=\"height: 70%; background-color:#fff\"></svg>" );
-
-				    d3.selectAll("#mbodyBar svg > *").remove();
-				        
-		    	}
-	    	}
-	    
-	    	// Query for data
-		    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
-		    query.execute(function(
-		            multiData) {
-		        setTimeout(function() { // On query callback, populate graph/table with data from server
-		            nv.addGraph(function() {
-		                var chart;
-		    
-		                if (cm.current_graph == 'line') {
-		                    chart = nv.models.lineChart()
-		                    	.useInteractiveGuideline(true)
-		                    	.transitionDuration(350);     
-		                } else if (cm.current_graph == 'bar') {
-		                    chart = nv.models.multiBarChart();
-		                }
-		                
-		                chart.margin({left : 100})
-		                	.x(function(d) {return d[0]})
-		                	.y(function(d) {return d[1]}) // adjusting, 100% is 1.00, not 100 as it is in the data
-		                	.color(d3.scale.category10().range())
-	
-		                var k=0;var sentinel=0;
-		                while((k<multiData.length)&&(sentinel==0)){
-		                	var xtickvalues = multiData[k][0].dataPoints.map(function(d) {
-			                    return d["year"];
-			                });
-		                	if(xtickvalues.length>0)
-		                		sentinel=1;
-		                	k++;
-		                }
-		                
-		                chart.xAxis.axisLabel("Year").tickValues(xtickvalues).tickFormat(d3.format('.0f'));
-	
-		                var type_var=Metrics.getMetricByID(as.currentind).getType();
-		                if (type_var == "integer") {
-					        chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
-			            } else if (type_var == "rank") {
-			                chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
-			            } else if (type_var == "percentage") {
-			                chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
-			            } else if (type_var == "numeric") {
-			                chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
-			            } else if (type_var == "currency") {
-			            	chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
-			            }
-		                
-		                var data = new Array();
-		                if(multiData[0][0].metric.binName!="National"){ //Attemnpting to fix the inverted line and bar graphs
-		                												//For national ranking. Unsuccesful so far
-		                	for (var i = 0; i < multiData.length; i++) {
-		                		
-		                			data[i] = {
-			                				key : multiData[i][0].state.abbr,
-			                				color: cm.array_colors[i%cm.array_colors.length]
-			                		};
-			                		data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-			                			return [ d["year"], d["value"] ];
-			                		});
-		                	}
-		                }else{
-		                	var limit_array=multiData.length-1;
-		                	for (var i = limit_array; i>=0  ; i--) {
-		                			data[i] = {
-		                				key : multiData[i][0].state.abbr,
-		                				color: cm.array_colors[i%cm.array_colors.length]
-		                			};
-		                			data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
-		                			return [ d["year"], d["value"] ];
-		                			});
-		                	}
-		                }
-		                if(data[0].values.length==0){
-		                	var counter=0;
-		                	var sentinel=0;
-		                	var temp;
-		                	while((counter<data.length)&&(sentinel==0)){
-		                		if(data[counter].values.length>0){
-		                			temp=data[0];
-		                			data[0]=data[counter];
-		                			data[counter]=temp;
-		                			sentinel=1;
-		                		}
-		                		counter++;
-		                	}
-			                
-		                }
-		                
-		                
-		                if (cm.current_graph == 'line') {
-		                	d3.select('#mbody svg').datum(data).transition().duration(500).call(chart);
-		                }else if (cm.current_graph == 'bar') {
-		                	d3.select('#mbodyBar svg').datum(data).transition().duration(500).call(chart);
-		                }
-		                // TODO: Figure out a good way to do this automatically
-		                
-		                nv.utils.windowResize(chart.update);
-		                
-		                return chart;
-		            });
-		        }, 500);
-		    });
-	};
-	
-	Chart.prototype.showMultipleMetricsStatesYearsReloaded = function(states,selected_multiple_metrics,year_in) {
-		var query;
-		this.year_selected=year_in;
-		$("#mbodyMultipleQuery > *").remove();
-		
-		$("#mbodyMultipleQuery").append("<table id='myTable' class='table table-condensed' style='font-size: 13px; background-color:#fff'></table>");
-		var table=$("#mbodyMultipleQuery table");
-		if(selected_multiple_metrics.length>0){
-			
-			if(selected_multiple_metrics.length==1){ /*Similar to the one we had**/
-				$("#yearsMultipleQuery").addClass("hidden");
-				query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[0]).getName());
-				document.getElementById("graphTitleMultipleQuery").innerHTML = this.graph_title_prefix + Metrics.getMetricByID(selected_multiple_metrics[0]).getName();
-				
-				query.execute(function(multiData) {
-			        setTimeout(function() {
-			        	
-		                var row="<th>&nbsp;</th>";
-		                row = row + multiData[0][0].dataPoints.map(function(d) {
-		                    return "<th>"+d["year"] + "</th>";
-		                }).join("");
-		                row = "<tr>" +row +"</tr>";
-		                table.append(row);
-		                var data = new Array();
-		                for (var i = 0; i < multiData.length; i++) {
-		                        row = "<th>" + multiData[i][0].state.abbr + "</th>" ;
-		                    row = row + multiData[i][0].dataPoints.map(function(d) {
-		                        return "<td>" +  d["value"] + "</td>";
-		                    }).join("");
-		                    row = "<tr>" +row +"</tr>";
-			                table.append(row);
-		                }
-			        }, 500);
-				});
-			}else{
-				
-				document.getElementById("graphTitleMultipleQuery").innerHTML = this.graph_title_prefix + "Multiple metrics selected";
-					this.kcounterexecute=0;
-					this.multiDataMultipleQuery=[];
-					
-					for(this.kcounter=0; this.kcounter<selected_multiple_metrics.length;this.kcounter++){
-
-						this.multiDataMultipleQuery=[];
-						query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(selected_multiple_metrics[this.kcounter]).getName());
-
-						query.execute(function(multiData) {
-							cm.multiDataMultipleQuery[cm.kcounterexecute]=multiData;
-
-							cm.kcounterexecute++;
-						});
-					}
-					
-					
-					setTimeout(function() {	
-						var array_years=cm.getMultipleYearsMetricState(states,cm.multiDataMultipleQuery);
-					    $("#yearsMultipleQuery").removeClass("hidden");
-					    var sel = $("#yearsMultipleQuery");
-		    			sel.empty();
-		    			array_years.sort(function(a,b){return b - a;}); 
-		    			if(cm.year_selected==-1)
-		    				cm.year_selected=array_years[0];
-		    			for(var k=0; k<array_years.length; k++){
-		    				
-		    				if(array_years[k]==cm.year_selected)
-		    					sel.append('<option value="' + array_years[k] + '" selected>' + array_years[k] + '</option>');
-		    				else
-		       					sel.append('<option value="' + array_years[k] + '">' + array_years[k] + '</option>');
-		    			}
-						
-						var row="<th>State</th>";
-
-						for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
-							row = row + "<th>"+cm.multiDataMultipleQuery[r][0][0].metric.name+"</th>";
-						}
-						row = "<tr>" +row +"</tr>"; 
-						table.append(row);
-						
-						var data = new Array();
-						var current_state="-1";
-						var band;
-						var foundvalue;
-						var sentinel;
-						var w;
-						for(var j=0; j<states.length; j++){
-							if(current_state!=states[j]){
-								current_state=states[j];
-								band=false;
-							}
-							
-							for(var r=0;r<cm.multiDataMultipleQuery.length;r++){
-								foundvalue=false;
-								sentinel=false;
-								w=0;
-								while((w<cm.multiDataMultipleQuery[r][j][0].dataPoints.length)&&(!sentinel)){
-
-									if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].year==cm.year_selected){
-										if(!band){
-											row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
-											band=true;
-										}
-										
-										if(cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value!=null){
-											row = row +"<td>"+cm.multiDataMultipleQuery[r][j][0].dataPoints[w].value+"</td>";
-											foundvalue=true;
-										}
-									sentinel=true;		
-									}
-								w++;
-								}
-								if(!band){
-									row = "<th>" + cm.multiDataMultipleQuery[r][j][0].state.abbr + "</th>";
-									band=true;
-								}
-								if(!foundvalue)	
-									row = row +"<td>N/A</td>";
-									
-							}
-							if(band){ 
-								row = "<tr>" +row +"</tr>";
-								table.append(row);
-							}
-						}
-				
-					}, 500);
-
-			}			
-					
-		}else{
-			var row="<tr><td valign='top' align='center'>Select at least one metric<td></tr>";
-			table.append(row);
-		}
-			
-	};	
 	var publicInterface = {};
 	/**
 	 * Initializes the default Chart parameters.  

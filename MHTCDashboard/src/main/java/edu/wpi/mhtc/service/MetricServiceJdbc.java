@@ -39,57 +39,6 @@ public class MetricServiceJdbc implements MetricService {
         this.template = template;
 
     }
-   
-    /**
-     * Create Metric objects for all metrics in category, assigning them to the bin corresponding to their parent category.
-     * 
-     */
-    @Override
-    public List<Metric> getMetricsInCategory(final int categoryId, final int binId) {
-        PSqlStringMappedJdbcCall<Metric> metricCall = new PSqlStringMappedJdbcCall<Metric>(template)
-                .withSchemaName("mhtc_sch").withProcedureName("getmetrics");
-
-        String name = "";
-        if (binId == RANK) {
-            name = "National";
-
-        } else if (binId == TALENT) {
-            name = "Talent";
-
-        } else if (binId == COST) {
-            name = "Cost";
-            
-        } else if (binId == ECONOMY) {
-            name = "Economy";
-            
-        }else if (binId == PROFILE) {
-            name = "Profile";
-        }
-
-        final String binName = name;
-
-        metricCall.addDeclaredRowMapper(new PSqlRowMapper<Metric>() {
-
-            @Override
-            public Metric mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                String trendType = rs.getString("TrendType");
-                		
-                return new Metric(rs.getInt("Id"), rs.getString("Name"), binId, binName, rs.getString("DataType"), 
-                		trendType == null ? "" : trendType, rs.getString("URL"), rs.getString("Source"), rs.getString("DisplayName"));
-            }
-
-        });
-
-        metricCall.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
-        metricCall.addDeclaredParameter(new SqlParameter("showall", Types.BOOLEAN));
-
-        Map<String, Object> metricParams = new HashMap<String, Object>();
-        metricParams.put("categoryid", categoryId);
-        metricParams.put("showall", false);
-
-        return metricCall.execute(metricParams);
-
-    }
 
     /**
      * Retrieves all metrics under parent category ids. 
@@ -123,7 +72,7 @@ public class MetricServiceJdbc implements MetricService {
                 
                 final String categoryName = name;
                 		
-// trendtypes no longer used
+                // trendtypes no longer used
                 return new Metric(rs.getInt("Id"), rs.getString("Name"), categoryId, categoryName, 
                 		rs.getString("DataType"), "", rs.getString("URL"), rs.getString("Source"),rs.getString("DisplayName"));
             }
@@ -302,6 +251,6 @@ public class MetricServiceJdbc implements MetricService {
 
     @Override
     public List<Metric> getAllMetrics() {
-		return getMetricsFromParents(TALENT,COST,RANK,ECONOMY);
+    	return getMetricsFromParents(TALENT,COST,RANK,ECONOMY);
     }
 }
