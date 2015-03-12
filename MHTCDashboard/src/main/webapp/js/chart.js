@@ -34,7 +34,7 @@ var CM = (function($) {
 		this.heatMapColorMap = {};
 		this.heatMapValuesMap = {};
 		
-		this.heatMapColorScheme = ["#0c1b26","#102c3d","#1b4255","#34586c","#586d80","#b8626d","#973d57","#8c1b36","#650c1e","#3d1218"];
+		this.heatMapColorScheme = ["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"];
 		// Setup type processing for datatables to work with ranks.
 		jQuery.fn.dataTableExt.aTypes.push(
 			    function ( sData )
@@ -357,7 +357,7 @@ var CM = (function($) {
 					}
 					
 					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 200;
-					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top - 80;
+					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top;
 					
 					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
 					
@@ -423,21 +423,17 @@ var CM = (function($) {
 	}
 	
 	Chart.prototype.refreshHeatMapSizing = function() {
-		var containerHeight = $("#viewWrapper").height() - 150; // 130 is room for year and metric controls at top
-		var containerWidth = $("#viewWrapper").width();
-		
-		var height = containerHeight;
-		if (height < 200)
-		{
-			height = 200;
-		}		
-		
-		var width = height / .6;
+		var containerHeight = $(".tab-content").height() - 150; // 150 is room for year and metric controls at top				
 				
-		$("#heatmap-actual").height(height);
-		$("#heatmap-actual").width(width);		
+		if (containerHeight < 500)
+			containerHeight = 500;
 		
-		$("#heatmap-inner-wrapper").width(width + 205 + 150 + 40);
+		var width = containerHeight * 1.518;
+		
+		$("#heatmap-actual").height(containerHeight);
+		
+		$("#heatmap-actual").width(width);
+		$("#heatmap-inner-wrapper").width(width + 200);
 	};
 	
 	/**
