@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.persistence.DBState;
 import edu.wpi.mhtc.persistence.MetricMapper;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
@@ -60,16 +59,16 @@ public class StateServiceJDBC implements StateService {
     }
 
     @Override
-    public List<DBState> getPeersFull() {
+    public List<State> getPeersFull() {
 
-        PSqlStringMappedJdbcCall<DBState> call = new PSqlStringMappedJdbcCall<DBState>(template).withSchemaName(
+        PSqlStringMappedJdbcCall<State> call = new PSqlStringMappedJdbcCall<State>(template).withSchemaName(
                 "mhtc_sch").withProcedureName("getstates");
 
-        call.addDeclaredRowMapper(new PSqlRowMapper<DBState>() {
+        call.addDeclaredRowMapper(new PSqlRowMapper<State>() {
 
             @Override
-            public DBState mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new DBState(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"), rs
+            public State mapRow(SqlRowSet rs, int rowNum) throws SQLException {
+                return new State(rs.getInt("Id"), rs.getString("Name"), rs.getString("Abbreviation"), rs
                         .getBoolean("IsPeerState"));
             }
 
