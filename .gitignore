@@ -1,9 +1,6 @@
 MHTCDashboard/target/
 MHTCDashboard/tmp/
 MHTCDashboard/MHTCDashboard/src/main/java/Spring-Mail.xml
-MHTCDashboard/.classpath
-MHTCDashboard/.settings/org.eclipse.wst.common.component
-MHTCDashboard/.settings/org.eclipse.wst.common.project.facet.core.xml
 .class
 /target/
 MHTCDashboard/src/main/java/edu/wpi/mhtc/dashboard/pipeline/db/DBConnector.java
