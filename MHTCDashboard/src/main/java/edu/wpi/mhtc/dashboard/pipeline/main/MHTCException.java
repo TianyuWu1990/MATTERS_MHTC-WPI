@@ -12,7 +12,7 @@ package edu.wpi.mhtc.dashboard.pipeline.main;
  * @version Oct 15, 2014
  *
  */
-public abstract class MHTCException extends Exception {
+public class MHTCException extends Exception {
 	
 	private static final long serialVersionUID = -3154924536739068711L;
 	private StringBuffer solution = new StringBuffer();

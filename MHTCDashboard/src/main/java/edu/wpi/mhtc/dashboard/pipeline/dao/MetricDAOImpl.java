@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
 import java.sql.ResultSet;
@@ -19,6 +23,11 @@ import org.springframework.stereotype.Repository;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
+/**
+ * Implementation of DAO layer for Metric
+ * @author Alex Fortier
+ *
+ */
 @Repository
 public class MetricDAOImpl implements MetricDAO {
 

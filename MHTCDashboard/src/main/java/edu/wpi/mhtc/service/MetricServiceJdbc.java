@@ -18,8 +18,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.model.Data.Metric;
-import edu.wpi.mhtc.model.admin.AdminMetric;
-import edu.wpi.mhtc.model.admin.TreeViewNode;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
@@ -87,80 +85,6 @@ public class MetricServiceJdbc implements MetricService {
         return metricCall.execute(metricParams);
 
     }
-    
-    @Override
-    public TreeViewNode getCategoriesAsTree() {
-        PSqlStringMappedJdbcCall<TreeViewNode> call = new PSqlStringMappedJdbcCall<TreeViewNode>(template)
-                .withSchemaName("mhtc_sch").withProcedureName("getcategories");
-
-        call.addDeclaredRowMapper(new PSqlRowMapper<TreeViewNode>() {
-
-            @Override
-            public TreeViewNode mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new TreeViewNode(rs.getString("Name"), rs.getInt("Id"));
-            }
-
-        });
-
-        call.addDeclaredParameter(new SqlParameter("showall", Types.BOOLEAN));
-        call.addDeclaredParameter(new SqlParameter("parentid", Types.INTEGER));
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("showall", true);
-        params.put("parentid", null);
-
-        List<TreeViewNode> categories = call.execute(params);
-        List<TreeViewNode> nodesToExpand = new LinkedList<TreeViewNode>();
-        nodesToExpand.addAll(categories);
-
-        while (nodesToExpand.size() > 0) {
-
-            TreeViewNode next = nodesToExpand.get(0);
-
-            Map<String, Object> subParams = new HashMap<String, Object>();
-            subParams.put("showall", true);
-            subParams.put("parentid", next.getId());
-
-            List<TreeViewNode> subCategories = call.execute(subParams);
-            for (TreeViewNode node : subCategories) {
-                next.addChild(node);
-                nodesToExpand.add(node);
-            }
-
-            nodesToExpand.remove(0);
-        }
-
-        return new TreeViewNode("All Categories", -1, categories);
-
-    }
-
-    @Override
-    public List<AdminMetric> getMetricsForCategory(int categoryID) {
-        PSqlStringMappedJdbcCall<AdminMetric> metricCall = new PSqlStringMappedJdbcCall<AdminMetric>(template)
-                .withSchemaName("mhtc_sch").withProcedureName("getmetrics");
-
-        metricCall.addDeclaredRowMapper(new PSqlRowMapper<AdminMetric>() {
-
-            @Override
-            public AdminMetric mapRow(SqlRowSet rs, int rowNum) throws SQLException {
-                return new AdminMetric(rs.getInt("Id"), rs.getString("Name"), rs.getString("DataType"), rs
-                        .getBoolean("Visible"), rs.getBoolean("IsCalculated"));
-            }
-
-        });
-
-        metricCall.addDeclaredParameter(new SqlParameter("categoryid", Types.INTEGER));
-        metricCall.addDeclaredParameter(new SqlParameter("showall", Types.BOOLEAN));
-
-        Map<String, Object> metricParams = new HashMap<String, Object>();
-        metricParams.put("categoryid", categoryID);
-        metricParams.put("showall", true);
-
-        return metricCall.execute(metricParams);
-
-    }
-    
-    
 
     @Override
     public void storeCategory(String name, int parentId, String source) {

@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
 import java.util.List;
@@ -13,6 +17,11 @@ import edu.wpi.mhtc.helpers.MD5;
 import edu.wpi.mhtc.helpers.Mailer;
 import edu.wpi.mhtc.model.admin.User;
 
+/**
+ * Implementation of Service layer for User DAO
+ * @author Alex Fortier
+ *
+ */
 @Service
 public class UserService {
 

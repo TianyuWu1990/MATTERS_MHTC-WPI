@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
 import java.sql.ResultSet;
@@ -19,6 +23,11 @@ import edu.wpi.mhtc.model.admin.User;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 
+/**
+ * Implementation of DAO layer for User model
+ * @author Alex Fortier
+ *
+ */
 @Repository
 public class UserDAOImpl implements UserDAO {
 

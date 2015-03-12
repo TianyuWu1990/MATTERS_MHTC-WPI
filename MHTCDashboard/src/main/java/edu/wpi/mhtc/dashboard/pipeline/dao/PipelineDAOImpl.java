@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
 import java.sql.ResultSet;
@@ -11,6 +15,11 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Implementation of Pipeline DAO layer
+ * @author Alex Fortier
+ *
+ */
 @Repository
 public class PipelineDAOImpl implements PipelineDAO {
 	
