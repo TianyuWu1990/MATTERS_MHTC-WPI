@@ -772,6 +772,15 @@ h2{
 }
 }
 
+.feedback_label .gfield_required {
+	color: red;
+}
+
+label.feedback_label {
+	color: black;
+	font-weight: bold;
+}
+
 
 
 
