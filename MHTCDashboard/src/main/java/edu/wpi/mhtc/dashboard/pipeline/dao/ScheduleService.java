@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
 import java.text.ParseException;
@@ -8,6 +12,11 @@ import org.springframework.stereotype.Service;
 
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 
+/**
+ * Implementation of Service layer for Schedule
+ * @author Alex Fortier
+ *
+ */
 @Service
 public class ScheduleService {
 

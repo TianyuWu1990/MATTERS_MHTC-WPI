@@ -12,7 +12,7 @@ package edu.wpi.mhtc.dashboard.pipeline.main;
  * @version Oct 15, 2014
  *
  */
-public abstract class MHTCException extends Exception {
+public class MHTCException extends Exception {
 	
 	private StringBuffer solution = new StringBuffer();
 	

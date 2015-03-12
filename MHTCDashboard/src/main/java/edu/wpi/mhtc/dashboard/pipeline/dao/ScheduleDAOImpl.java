@@ -1,3 +1,7 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.dao;
 
 import java.io.File;
@@ -21,6 +25,11 @@ import org.springframework.stereotype.Repository;
 
 import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
 
+/**
+ * Implementation of Schedule DAO layer
+ * @author Alex Fortier
+ *
+ */
 @Repository
 public class ScheduleDAOImpl implements ScheduleDAO {
 	
