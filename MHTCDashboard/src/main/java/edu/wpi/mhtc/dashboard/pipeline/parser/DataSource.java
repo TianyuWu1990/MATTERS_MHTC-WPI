@@ -2,11 +2,11 @@
  *  Copyright (C) 2013 Worcester Polytechnic Institute 
  *  All Rights Reserved.
  */
-package edu.wpi.mhtc.dashboard.pipeline.data;
+package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import java.io.File;
 
-import edu.wpi.mhtc.dashboard.pipeline.parser.ParserType;
+import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 
 /**
  * Wraps an input file and all associated metadata.

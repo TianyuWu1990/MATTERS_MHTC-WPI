@@ -2,7 +2,7 @@
  *  Copyright (C) 2013 Worcester Polytechnic Institute 
  *  All Rights Reserved.
  */
-package edu.wpi.mhtc.dashboard.pipeline.data;
+package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 /**
  *File formats of parsable input files. 

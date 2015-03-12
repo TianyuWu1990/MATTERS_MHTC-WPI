@@ -24,16 +24,22 @@ import edu.wpi.mhtc.dashboard.pipeline.cleaner.YearCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
+<<<<<<< HEAD
 import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
 import edu.wpi.mhtc.model.state.State;
+=======
+import edu.wpi.mhtc.dashboard.pipeline.data.Line;
+import edu.wpi.mhtc.dashboard.pipeline.data.Metric;
 
 /**
- * UnifiedParser is responsible for taking in a properly-formatted spreadsheet
+ * UnifiedParser is responsible for taking in a properly-formatted excel file
  * and getting the data ready to be submitted to the database
  * @author afortier, cakuhlman
+ * @version December 2014
  *
  */
+
 public class UnifiedParser implements IParser {
 		
 	List<edu.wpi.mhtc.dashboard.pipeline.dao.Metric> metrics;
@@ -100,6 +106,15 @@ public class UnifiedParser implements IParser {
 		Statistic line = null;
 		int stateCol = columnNames.remove("state");
 		int yearCol = columnNames.remove("year");
+		
+		String state = null;
+		String year = null;
+		String cleanedValue = null;
+		
+		Cell stateCell = null;
+		Cell yearCell = null;
+		Cell metricCell = null;
+		
 		for (Row row : sheet) {
 
 			if(row.getRowNum() > headerRow){	//skip extra info above header
@@ -107,11 +122,8 @@ public class UnifiedParser implements IParser {
 
 					line = new Statistic();
 
-					String state = null;
-					String year = null;
-
 //					get state field
-					Cell stateCell = row.getCell(stateCol);
+					stateCell = row.getCell(stateCol);
 					if(stateCell != null){
 						try {
 							state = stateCleaner.clean(stateCell.getStringCellValue());
@@ -123,7 +135,7 @@ public class UnifiedParser implements IParser {
 					}
 
 //					get year field
-					Cell yearCell = row.getCell(yearCol);
+					yearCell = row.getCell(yearCol);
 					if(yearCell != null){
 						try{
 							if(yearCell.getCellType() == Cell.CELL_TYPE_STRING){
@@ -152,16 +164,18 @@ public class UnifiedParser implements IParser {
 
 //					get metric fields
 					for (String name: columnNames.keySet()) {
-						
-						Cell cell = row.getCell(columnNames.get(name));
-						if(cell != null){
+
+						metricCell = row.getCell(columnNames.get(name));
+						if(metricCell != null){
+
 
 							edu.wpi.mhtc.dashboard.pipeline.dao.Metric m = getMetric(name);
 							String value = null;
 
-							switch (cell.getCellType()) {
+							switch (metricCell.getCellType()) {
 
 							case Cell.CELL_TYPE_NUMERIC:
+								
 								Double val = cell.getNumericCellValue();
 								if(val < 1 && val >0){
 									value = String.valueOf(val);
@@ -173,7 +187,7 @@ public class UnifiedParser implements IParser {
 								break;
 
 							case Cell.CELL_TYPE_STRING:
-								value = cell.getStringCellValue();
+								value = metricCell.getStringCellValue();
 								break;
 
 							case Cell.CELL_TYPE_BOOLEAN:
@@ -186,7 +200,7 @@ public class UnifiedParser implements IParser {
 
 							if(value != null){
 								try{
-									String cleanedValue = numCleaner.clean(value);
+									cleanedValue = numCleaner.clean(value);
 //									TODO: don't want to use -1 to check this, could be actual value
 									if(cleanedValue.equals(Integer.toString(-1))){
 //										invalid data
@@ -202,6 +216,7 @@ public class UnifiedParser implements IParser {
 								}
 								catch(Exception e){
 									//	TODO: use this to report error to admin
+									e.printStackTrace();
 								}
 								
 							}

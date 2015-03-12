@@ -14,6 +14,7 @@ package edu.wpi.mhtc.dashboard.pipeline.main;
  */
 public abstract class MHTCException extends Exception {
 	
+	private static final long serialVersionUID = -3154924536739068711L;
 	private StringBuffer solution = new StringBuffer();
 	
 	/**

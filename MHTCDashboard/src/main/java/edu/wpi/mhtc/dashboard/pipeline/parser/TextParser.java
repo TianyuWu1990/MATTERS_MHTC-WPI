@@ -5,7 +5,9 @@
 package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,12 +27,13 @@ import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
 import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
 import edu.wpi.mhtc.model.state.State;
 
+
 /**
  * TextParser takes in a properly formatted CSV file to
  * gather data to put in the database
- * TODO Currently not in a working state. Needs to be revisted
  * @author cakulhman
- *
+ * @version December 2014
+ * 
  */
 public class TextParser implements IParser {
 
@@ -46,12 +49,16 @@ public class TextParser implements IParser {
 	/**
 	 * 
 	 * @param source
+	 * @throws UnifiedFormatException 
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 * @throws Exception if the source is not a csv file
 	 */
+	
 	public TextParser(DataSource source, List<Metric> metrics, List<State> states) throws Exception {
 		
 		if (source.getFileType() != FileType.csv){
-			throw new Exception("Wrong file type for csv parser: "+source.getFileType());
+			throw new UnifiedFormatException("Wrong file type for csv parser: "+source.getFileType());
 		}
 		
 		this.source = source;
@@ -107,9 +114,11 @@ public class TextParser implements IParser {
 
 		columnNames = new HashMap<String, Integer>();
 		CSVRecord record = findHeader();
+		String cellValue = null;
+		
 		if(record.getRecordNumber()==headerRecordNumber){
 			for(int i = 0 ; i<record.size() ; i++ ){
-				String cellValue = record.get(i);
+				cellValue = record.get(i);
 				if(cellValue.equalsIgnoreCase("year") || cellValue.equalsIgnoreCase("state")){
 					columnNames.put(cellValue, i);
 				}
@@ -161,16 +170,20 @@ public class TextParser implements IParser {
 		NumericCleaner numCleaner = new NumericCleaner();
 		StateCleaner stateCleaner = new StateCleaner(states);
 		YearCleaner yearCleaner = new YearCleaner();
+		Statistic line = null;
+		String year = null;
+		String state = null;
+		String value = null;
 		
 		for(CSVRecord record : parser){
 			
 			for(String name: columnNames.keySet()){
-				Statistic line = new Statistic();
-				
+				line = new Statistic();
+
 				String year = record.get(yearColumnNum);
 				year = yearCleaner.clean(year);
 				
-				String state = record.get(stateColumnNum);
+				state = record.get(stateColumnNum);
 				try {
 					state = stateCleaner.clean(state);
 				} catch (Exception e) {
@@ -179,6 +192,7 @@ public class TextParser implements IParser {
 				}
 				
 				String value = record.get(name);
+
 				try {
 					value = numCleaner.clean(value);
 				} catch (Exception e) {

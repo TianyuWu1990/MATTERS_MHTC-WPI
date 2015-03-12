@@ -27,22 +27,36 @@ public class DOLDownload {
 		URLDownload down = new URLDownload();
 		PDFReader reader = new PDFReader();
 		
+		StringBuilder link = new StringBuilder("http://www.ows.doleta.gov/unemploy/docs/aetr-");
+		StringBuilder filename = new StringBuilder(directory);
+		filename.append("/Unemployment_Employer_Rates_");
+		URL url = null;
+		URLConnection con = null;
+		
 		for(int i = beginyear ; i <= endyear;  i++){
 			
-			String link = "http://www.ows.doleta.gov/unemploy/docs/aetr-"+i+"est.pdf";
-			String filename = directory+"/Unemployment_Employer_Rates_"+i;
+			link.delete(45, link.length()); 
+			link.append(i);
+			link.append("est.pdf");
+			
+			filename.delete(32, filename.length());
+			filename.append(i);
+			filename.append(".pdf");
 			
 			try{
-				URL url = new URL(link);
-				URLConnection con = url.openConnection();
+				url = new URL(link.toString());
+				con = url.openConnection();
 				con.getInputStream();
 				
-				down.HTTPDownload(link, filename+".pdf");
-				reader.readPDF(new File(filename+".pdf"));
+				down.HTTPDownload(link.toString(), filename.toString());
+				reader.readPDF(new File(filename.toString()));
 			}
 			catch(FileNotFoundException e){	
-				link = "http://www.ows.doleta.gov/unemploy/docs/aetr-"+i+"est.xls";
-				down.HTTPDownload(link, filename+".xls");
+				link.delete(link.length() - 3, link.length());
+				link.append("xls");
+				filename.delete(filename.length()-3, filename.length());
+				filename.append("xls");
+				down.HTTPDownload(link.toString(), filename.toString());
 			}
 		}
 	}

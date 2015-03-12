@@ -8,6 +8,8 @@ import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
 
 /**
  * Exceptions pertaining to categories.
+ * @author caitlin kuhlman
+ * @version December 2014
  *
  */
 public class CategoryException extends MHTCException {

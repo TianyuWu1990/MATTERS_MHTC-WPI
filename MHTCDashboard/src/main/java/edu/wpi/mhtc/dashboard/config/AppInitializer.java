@@ -38,7 +38,6 @@ public class AppInitializer implements WebApplicationInitializer {
 		} catch (Exception e) {
 			System.out.println("Error starting the job scheduler.");
 		}*/
-		
 
 	}
 	

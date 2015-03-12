@@ -9,6 +9,7 @@ import java.util.List;
 /**
  * Corresponds to tuples in categories table in db.
  * @author cakuhlman
+ * @version December 2014
  *
  */
 public class Category {

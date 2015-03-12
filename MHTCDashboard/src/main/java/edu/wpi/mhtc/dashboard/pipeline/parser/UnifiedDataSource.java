@@ -2,19 +2,22 @@
  *  Copyright (C) 2013 Worcester Polytechnic Institute 
  *  All Rights Reserved.
  */
-package edu.wpi.mhtc.dashboard.pipeline.data;
+package edu.wpi.mhtc.dashboard.pipeline.parser;
 
 import java.io.File;
 
-import edu.wpi.mhtc.dashboard.pipeline.parser.ParserType;
-import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedFormatException;
+import edu.wpi.mhtc.dashboard.pipeline.data.Category;
 
 /**
- * Excel containing data organized in unified format.
+ * Excel file containing data organized in unified format loaded using manual upload tool in admin center.
  * @author cakuhlman
+ * @version December 2014
  *
  */
 public class UnifiedDataSource extends DataSource {
+	
+	FileType fileType;
+	ParserType parserType;
 	
 	public UnifiedDataSource(File file, Category category) throws UnifiedFormatException {
 		super(file, category);
@@ -31,8 +34,6 @@ public class UnifiedDataSource extends DataSource {
 			throw u;
 		}
 		
-		parserType = ParserType.excel;
-		 
 	}
 	
 	
