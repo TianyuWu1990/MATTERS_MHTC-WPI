@@ -23,8 +23,10 @@ import edu.wpi.mhtc.dashboard.pipeline.cleaner.YearCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
-import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
-import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.parser.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.parser.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.parser.IParser;
+import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedFormatException;
 import edu.wpi.mhtc.model.state.State;
 
 
@@ -180,7 +182,7 @@ public class TextParser implements IParser {
 			for(String name: columnNames.keySet()){
 				line = new Statistic();
 
-				String year = record.get(yearColumnNum);
+				year = record.get(yearColumnNum);
 				year = yearCleaner.clean(year);
 				
 				state = record.get(stateColumnNum);
@@ -191,7 +193,7 @@ public class TextParser implements IParser {
 					System.out.println(record.toString());
 				}
 				
-				String value = record.get(name);
+				value = record.get(name);
 
 				try {
 					value = numCleaner.clean(value);

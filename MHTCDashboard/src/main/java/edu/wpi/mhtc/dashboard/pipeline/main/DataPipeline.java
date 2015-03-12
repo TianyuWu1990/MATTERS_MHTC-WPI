@@ -5,13 +5,12 @@
 package edu.wpi.mhtc.dashboard.pipeline.main;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.Category;
-import edu.wpi.mhtc.dashboard.pipeline.data.UnifiedDataSource;
+import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedDataSource;
 import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedParser;
 import edu.wpi.mhtc.model.state.State;
 

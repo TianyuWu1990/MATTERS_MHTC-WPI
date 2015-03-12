@@ -24,13 +24,11 @@ import edu.wpi.mhtc.dashboard.pipeline.cleaner.YearCleaner;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Metric;
 import edu.wpi.mhtc.dashboard.pipeline.dao.Statistic;
 import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
-<<<<<<< HEAD
-import edu.wpi.mhtc.dashboard.pipeline.data.DataSource;
-import edu.wpi.mhtc.dashboard.pipeline.data.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.parser.DataSource;
+import edu.wpi.mhtc.dashboard.pipeline.parser.FileType;
+import edu.wpi.mhtc.dashboard.pipeline.parser.IParser;
+import edu.wpi.mhtc.dashboard.pipeline.parser.UnifiedFormatException;
 import edu.wpi.mhtc.model.state.State;
-=======
-import edu.wpi.mhtc.dashboard.pipeline.data.Line;
-import edu.wpi.mhtc.dashboard.pipeline.data.Metric;
 
 /**
  * UnifiedParser is responsible for taking in a properly-formatted excel file
@@ -176,7 +174,7 @@ public class UnifiedParser implements IParser {
 
 							case Cell.CELL_TYPE_NUMERIC:
 								
-								Double val = cell.getNumericCellValue();
+								Double val = metricCell.getNumericCellValue();
 								if(val < 1 && val >0){
 									value = String.valueOf(val);
 								}
