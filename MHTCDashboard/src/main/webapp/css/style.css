@@ -1,31 +1,29 @@
+body 
+{
+	height: 100%;
+	width: 100%;
+}
+
+#toggle-sidebar
+{
+	cursor: pointer;
+}
+
 /*
    Modifications to Mesh's Stylesheet to allow for our stuff to work
 */
 
 .site-footer {
-	position: absolute;
+	position: relative;
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
-	
+	z-index: 999;
 	padding: 10px 0px !important;
 }
 
 option {
 	font-size: 10px !important;
-}
-
-#preContentBar {
-	background-color: #080606;
-	
-	border-top: 10px solid #393938;
-
-	position: absolute;
-	left: 0px;
-	right: 0px;
-	top: 105px;
-	
-	height: 50px;
 }
 
 .menu > ul > li > a:hover
@@ -164,7 +162,9 @@ table.dataTable tbody tr:nth-child(even) {
 	margin: 0px;
 	
 	width: auto;
-	height: 100%;
+	
+	top: 0px;
+	bottom: 0px;
 	
 	z-index: 999;
 	
@@ -346,11 +346,14 @@ table.dataTable tbody tr:nth-child(even) {
 
 .container-fluid-full
 {
-	position: absolute;	
+	position: relative;	
 	left: 0px;
 	right: 0px;
-	top: 165px;
-	bottom: 82px;	
+	
+	border-top:5px solid #000;
+
+	height: 90%;
+	min-height: 420px;
 	
 	background: #fff;
 }
@@ -365,25 +368,12 @@ table.dataTable tbody tr:nth-child(even) {
 
 /* Box containing tables/graphs for visualization */
 .box-content {
-	position: absolute;
-	top: 0px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
+	width: 100%;
+	height: 100%;
 }
 
 .box-content > table {	
-	width: 80%;
-	
-	margin-top: 20px !important;
-	margin-left: auto !important;
-	margin-right: auto !important;
-}
-
-.box-content > div {	
-	width: 80%;
-	
-	margin-top: 20px !important;
+	width: 90%;	
 	margin-left: auto !important;
 	margin-right: auto !important;
 }
@@ -392,15 +382,12 @@ table.dataTable tbody tr:nth-child(even) {
 	width: 100% !important;
 }
 
-#feedbackModal .fa, .box-content .fa {	
-	color: white !important;
-	font-size: 14px !important;
-}
-
 svg text {
 	font-size: 14px;
 }
 
+
+/** Heatmap **/
 #heatmap-wrapper {
 	
 	margin-top: 0px !important;
@@ -412,11 +399,11 @@ svg text {
 #heatmap-inner-wrapper {
 	position: relative;
 	margin-left: auto;
-	margin-right: auto;	
+	margin-right: auto;
 }
 
 #heatmap-actual {
-	margin-left: 175px;
+	margin-left: 200px;
 }
 
 #heatmap-tooltip {
@@ -449,6 +436,14 @@ svg text {
 	display: block;
 }
 
+.heatmap-detailTitle {
+	display: inline-block;
+	font-weight: 600;
+	
+	padding-left: 10px;
+	padding-top: 5px;
+}
+
 .heatmap-detailVal
 {
 	text-align: right;
@@ -461,15 +456,28 @@ svg text {
 	border: 2px solid  rgba(158,158,158, 0.5);
 	
 	box-shadow: 0px 0px 2px rgba(158, 158, 158, 0.3);
+	
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	
+	width: 190px;
 }
 
-#heatmap-infobox-inner {
-	position: absolute;
-	
-	top: 0px;
-	bottom: 0px;
-	right: 0px;
-	left: 0px;
+.heatmap-infobox-inner {
+	position: relative;
+	width: 100%;	
+}
+
+#heatmap-details
+{
+	height: 110px;
+	border-bottom: 2px solid rgba(158, 158, 158, 0.3);
+}
+
+#heatmap-legend
+{
+	height: 255px;
 }
 
 .heatmap-infobox-title {
@@ -484,6 +492,8 @@ svg text {
 .heatmap-infobox-content {	
 	padding-top: 10px;	
 	padding-bottom: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
 	
 	position: absolute;
 	top: 35px;
@@ -491,42 +501,7 @@ svg text {
 	left: 0px;
 	right: 0px;
 	
-	overflow-y: scroll;
-	overflow-x: hidden;
-}
-
-#heatmap-details {
-	position: absolute;
-	top: -15px;
-	left: 0px;
-	
-	height: 100px;
-	max-height: 100%;
-	width: 150px;
-}
-
-#heatmap-details > .heatmap-infobox-inner > .heatmap-infobox-content
-{
-	padding: 5px;
-	overflow: hidden;
-}
-
-.heatmap-detailTitle {
-	display: inline-block;
-	font-weight: 600;
-	
-	padding-left: 10px;
-	padding-top: 5px;
-}
-
-#heatmap-controls {
-	position: absolute;
-	top: -15px;
-	right: 0px;
-	
-	height: 360px;
-	max-height: 100%;
-	width: 205px;
+	overflow:hidden;
 }
 
 .heatmap-legend-bucket {
@@ -562,11 +537,8 @@ svg text {
 	left: 450px;
 	right: 0px;
 	bottom: 0px;
-	
-	padding-bottom: 10px;
-	
-	overflow-y: scroll;
-	overflow-x: scroll;
+		
+	overflow:hidden;
 }
 
 #vizView {
@@ -574,7 +546,8 @@ svg text {
 	top: 0px;
 	left: 0px;
 	right: 0px;
-	bottom: 0px;	
+	bottom: 0px;
+	overflow: scroll;
 }
 
 #errorView {
@@ -1008,7 +981,7 @@ i.fa.fa-info-circle {
 
 #viz-tabs
 {
-	float: right;
+	float:right;
 }
 
 .pagination-header-left 
@@ -1094,7 +1067,8 @@ i.fa.fa-info-circle {
 }
 
 #MultipleMetricTitle {
-	width: auto;
+	width: 300px;
+	text-align: center;
 	font-size:20px;
 	font-weight: 400;
 	padding-left: 20px;
@@ -1128,7 +1102,7 @@ ul.timelineListStyle
 ul.timelineListStyle > li
 {
 	display:inline;
-	 margin-left:5px;;
+	 margin-left:5px;
 }
 
 .tab-content
@@ -1138,25 +1112,36 @@ ul.timelineListStyle > li
 	left: 0px;
 	right: 0px;
 	bottom: 0px;
-	
 	overflow: visible !important;
+	
+	min-width:700px;
+	min-height:500px;
 }
 
 .tab-pane
 {
 	position: absolute;
-	top: 60px;
+	top: 0px;
 	left: 0px;
 	right: 0px;
-	bottom: 20px;
-	
+	bottom: 0px;
 	padding: 0px;
 	margin: 0px;
 }
 
+#bar.tab-pane, #line.tab-pane
+{
+	top: 80px;
+}
+
+#heatmaptab.tab-pane
+{
+	top: 55px;
+}
+
 #table.tab-pane
 {
-	top: 20px;
+	top: 30px;
 }
 
 .metricHeader {
@@ -1203,50 +1188,11 @@ ul.timelineListStyle > li
 	margin-top: 75px;
 }
 
-
-
-/*
- * Login Menu
- */
-.navbar .nav li.dropdown.open > .dropdown-toggle,
-.navbar .nav li.dropdown.active > .dropdown-toggle,
-.navbar .nav li.dropdown.open.active > .dropdown-toggle 
-{
-  	  	outline: 0;
-        background :#444;
-        color : #fff;
-        text-shadow:none;
-}
-
-.dropdown-menu 
-{
-  	background-color:#fff;
-  	color: #000;
-  	
-	border-bottom-left-radius:5px;
-	border-bottom-right-radius:5px;
-		
-	height:210px;
-	width:200px;
+.side-icon{
 	
-	position:absolute;
-	right:0px;
-	display:none;
-}
-
-.dropdown-menu  form
-{
-	padding: 20px;
-}
-
-form.signin .textbox label { 
-	display:block; 
-}
-
-form.signin .textbox span { 
-	display:block;
-}
-
-form.signin .textbox input { 
-	width: 150px;
+	float:left;
+	position:relative;
+	color:#fff;
+	padding:15px;
+	font-size:15px;
 }

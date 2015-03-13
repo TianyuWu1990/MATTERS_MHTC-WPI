@@ -1,41 +1,86 @@
-/* Higher than 1200 (desktop devices)
-====================================================================== */
-@media (min-width: 1200px) {
-
-}
-
-/* Higher than 960 (desktop devices)
-====================================================================== */
-@media only screen and (min-width: 980px) and (max-width: 1199px){
-	
-}
-
-/* Tablet Portrait (devices and browsers)
-====================================================================== */
-@media only screen and (min-width: 768px) and (max-width: 979px) {
-	
-}
-
-/* All Mobile Sizes (devices and browser)
-====================================================================== */
-@media only screen and (max-width: 767px) {
-	
-}
-
-/* Mobile Landscape Size to Tablet Portrait (devices and browsers)
-====================================================================== */
-@media only screen and (min-width: 480px) and (max-width: 767px) {
-	
-	body {
-		padding: 0px;
+@media only screen and (max-width:320px){
+	body{
+		width:320px;
+	}
+	.pagination{
+		width:320px;
 	}
 }
 
-/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers)
-=================================================================== */
-@media only screen and (max-width: 479px) {
+@media only screen and (max-width: 830px){
 	
-	body {
-		padding: 0px;
+	.pagination-header-left{
+		display:none;
+	}
+	
+	#viz-tabs{
+		position:absolute;
+		right:0px;
+		top:0px;
+		height:100%;
+		float:right;
+	}
+	
+	.pagination > ul > li > a{
+		height:36px;
+		padding:7px;
+	}
+	
+	.pagination > ul > li > a > i{
+		padding:0px;
+	}
+	
+	.trigger-button:hover
+	{
+		background-color: #b41432;
+	}
+	
+	.trigger-button.open
+	{
+		background-color: #b41432;
+	}
+	
+	#metricSelectionCol > .sidebar-content
+	{
+		border-left: 1px solid #000;
+		border-right: 1px solid #000;
+	}
+	
+	.sidebar
+	{
+		top:50px;
+		bottom: 0px;
+		left:0px;
+		
+		position: absolute;
+	}
+	
+	.sidebar-content.accordion-menu{
+		top:0px;
+	}
+	.sidebar-content.single-section{
+		top:0px;
+	}
+	
+	#viewWrapper{
+		left:0px;
+	}
+
+}
+
+@media only screen and (min-width: 830px){
+	#states-trigger-wrapper
+	{
+		display: none;
+	}
+	
+	#metrics-trigger-wrapper
+	{
+		display: none;
+	}
+	
+	.sidebar
+	{
+		height: 100%;
 	}
 }

@@ -12,7 +12,7 @@
 <html lang="en">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Library CSS -->
 		<link href="css/nv.d3.css" rel="stylesheet">
 		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -25,6 +25,7 @@
 		<!-- Custom CSS -->
 		<link href="css/mesh/base.css" rel="stylesheet">
 		<link href="css/mesh/main.css" rel="stylesheet">
+		<link href="css/mesh/main-responsive.css" rel="stylesheet">
 		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
@@ -64,9 +65,7 @@
 	<body>
 	
 	<jsp:include page="unifiedHeader.jsp"/>
-
-	<div id="preContentBar"></div>
-
+	
 	<div id="globalErrorDiv" style="display:none;">
 		<div id="globalErrorMsgWrapper">
 			<i class="fa fa-exclamation-triangle fa-2x"></i>
@@ -86,13 +85,13 @@
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
-						<div class="title">
+						<div class="title" >
 							<span>Select Metrics</span>
 						</div>
 						<div class="sidebar-content accordion-menu" id="metricListWrapper">
 							<ul>
 								<li>
-									<a class="metricHeader" href="#">
+									<a class="metricHeader">
 										National Ranking 
 									</a>
 									<ul id="nationalProfileList" class="metricList">
@@ -110,7 +109,7 @@
 									</ul>
 								</li>
 								<li>
-									<a class="metricHeader" href="#">
+									<a class="metricHeader">
 										Talent Metrics 
 									</a>
 									<ul id="talentProfileList" class="metricList">
@@ -128,7 +127,7 @@
 									</ul>
 								</li>
 								<li>
-									<a class="metricHeader" href="#">
+									<a class="metricHeader">
 										Cost Metrics
 									</a>
 									<ul id= "costProfileList" class="metricList">
@@ -146,7 +145,7 @@
 									</ul>
 								</li>
 								<li>
-									<a class="metricHeader" href="#">
+									<a class="metricHeader">
 										Economy Metrics
 									</a>
 									<ul id="economyProfileList" class="metricList">
@@ -206,15 +205,20 @@
 			
 				<div id="content">
 					<div class="pagination pagination-right">
+						<div id="metrics-trigger-wrapper">
+							<label id="metrics-trigger" class="side-icon trigger-button">Metrics</label>
+						</div>
+						<div id="states-trigger-wrapper">
+							<label id="states-trigger" class="side-icon trigger-button">States</label>
+						</div>
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<a href="#" id="toggle-sidebar"> 
+							<a id="toggle-sidebar"> 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
-					
-						<!--  Right side of the pagination header. -->
+
 						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
 								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
@@ -237,6 +241,7 @@
 								</a>
 							</li>
 						</ul>
+						
 					</div>
 					
 					<div id="viewWrapper">
@@ -270,7 +275,7 @@
 								<!-- Line Graph -->
 								<div class="tab-pane fade" id="line">
 									<div class="box-content">
-										<div id="mbody" style="margin-right: 5px; margin-top: 20px;">
+										<div id="mbody" style="margin-right: 5px;">
 											<svg style="height: 90%;"></svg>
 										</div>
 									</div>
@@ -301,7 +306,7 @@
 								<!-- Bar Chart -->
 								<div class="tab-pane fade" id="bar">
 									<div class="box-content">
-										<div id="mbodyBar" style="margin-top:20px;"></div>
+										<div id="mbodyBar"></div>
 									</div>
 								</div>
 								
@@ -312,8 +317,8 @@
 											<div id="heatmap-timeline"></div>
 											<div id="heatmap-inner-wrapper">
 											
-												<div id="heatmap-details" class="heatmap-infobox">
-													<div class="heatmap-infobox-inner">
+												<div id="heatmap-info" class="heatmap-infobox">
+													<div class="heatmap-infobox-inner" id="heatmap-details">
 														<div class="heatmap-infobox-title">Details</div>
 														<div class="heatmap-infobox-content" style="overflow: hidden;">
 															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Top Ranked</div> 
@@ -326,18 +331,17 @@
 															<span id="heatmap-generalinfo-ma" class="heatmap-detailVal"></span>
 														</div>
 													</div>
-												</div>
-												
-												<div id="heatmap-actual"></div>
-												
-												<div id="heatmap-controls" class="heatmap-infobox">
-													<div class="heatmap-infobox-inner">
+													<div class="heatmap-infobox-inner" id="heatmap-legend">
 														<div class="heatmap-infobox-title">Legend</div>
 														<div id="heatmap-legend-legend" class="heatmap-infobox-content">
 														
 														</div>
 													</div>
 												</div>
+												
+												<div id="heatmap-actual"></div>
+												
+												
 												<div id="heatmap-tooltip" style="display: none;">
 													<span id="heatmap-specificDetails-name"></span>
 													
@@ -376,7 +380,7 @@
 							</div>
 						</div>
 					</div>
-				</div>		
+				</div>	
 		</div>
 		<!-- end: Content -->
 
@@ -391,47 +395,6 @@
 		<!-- .site-info -->
 	</footer>
 	<!-- #colophon -->
-
-	<%
-		/*<div class="modal fade in" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		 <div class="modal-dialog">
-		 <div class="modal-content" >
-		 <div class="modal-header">
-		 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		 <h4 class="modal-title" id="myModalLabel">About The Massachusetts High Technology Council</h4>
-		 </div>
-		 <div class="modal-body" id="aboutBody">
-		 <p>
-		 As part of its mission to make Massachusetts the world&apos;s most attractive place in which to live and work, and
-		 in which to create, and grow high technology business, the <strong>Massachusetts High Technology Council</strong> has developed the
-		 <span class="bluetext">Massachusetts&apos; Technology, Talent and Economy Reporting Systems</span> or <span class="bluetext">MATTERS</span>. <span class="bluetext">MATTERS</span> is a tool designed to
-		 help measure and evaluate Massachusetts&apos; current competitive position among leading technology states while
-		 providing policy makers with the information critical to developing public policy that attracts and retains
-		 business to the state. <br /> <br /> <span class="bluetext">MATTERS</span> is an online system that consolidates a collection of independent
-		 national rankings along with a set of key cost, economic and talent metrics into a single source for use by all
-		 parties interested in building a successful future for Massachusetts&apos; technology-based business. Both private
-		 and public-sector decision makers will have the key information necessary to evaluate and understand
-		 Massachusetts&apos; current business position as it compares to peer states and international communities who are
-		 working aggressively to attract the same talent, apital and jobs that characterize our Bay State technology
-		 economy. Armed with <span class="bluetext">MATTERS</span>&apos; data, business, education and public-policy leaders will chart
-		 Massachusetts&apos; future collaboratively by aligning what needs to be improved or protected in order to create a
-		 prosperous, competitive business environment fundamental to building long-term economic stability and job growth
-		 within the state.
-		 </p>
-		 <p class="text-muted centered"><br />&copy;2014 Worcester Polytechnic Institute. All rights reserved.<br /> Sponsored by Mass High Technology
-		 Council
-		 </p>
-		 </div>
-		 <div class="modal-footer">
-		 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		 </div>
-		 </div>
-		 </div>
-		 </div>
-		 <div class="modal-backdrop fade in"></div>
-		 <div class="modal-backdrop fade in"></div>
-		 */
-	%>
 		<script src="js/load.js"></script>	
 	</body>
 </html>

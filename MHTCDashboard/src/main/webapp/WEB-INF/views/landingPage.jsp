@@ -21,6 +21,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 	<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+	<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/popup.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/ie9compatibility.css" rel="stylesheet" type="text/css">
@@ -94,8 +95,13 @@
 				</div>
 			</script>
 		</div>
+		
+		<!-- cxf -->
+		<div id="map-label">
 		<a class="map-btn db-btn" href="explore">Explore the Data</a>
 		<a class="map-btn state" href="profile">View State Profiles</a>
+		</div>
+		<!-- cxf -->
 	</div>
 </section>
 
