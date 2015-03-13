@@ -151,7 +151,8 @@ $(function() {
 			            	"bSortable": false,
 			            	"sDefaultContent": "<button type='button' class='btn btn-success run'>Run</button>"
 			            }
-		]
+		],
+		"order": [[3, "desc"]]
 	});
 	
 	$('#pipelines').show();
