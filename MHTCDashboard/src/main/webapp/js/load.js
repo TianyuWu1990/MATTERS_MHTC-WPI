@@ -1,316 +1,470 @@
-toggleMultiSelect = function(ind){
-	$("#multiSelecter").toggle("slide",{direction:"right"},200);$("#sidebar").toggle("slide",{direction:"left"},200);
-	$("#map").usmap('toggleMultiselect');
-	dataIndex = ind;
-}
-selectState = function(state){
-	$('#map').usmap('select',state, false);
-	if(!multiMode)
-		loadState(state);
-}
-loadFunction = function(){
-		$('#sidebar li:eq(0) a').tab('show');
-		$(function () {
-			        $("[rel='tooltip']").tooltip();
-    			    });
-		$( "#toggle" ).toggle( "slide");
-		$('#map').usmap({
-			'stateSpecificStyles': {
-				'WA': {fill: 'MidnightBlue'},
-				'CA': {fill: 'MidnightBlue'},
-				'UT': {fill: 'MidnightBlue'},
-				'CO': {fill: 'MidnightBlue'},
-				'TX': {fill: 'MidnightBlue'},
-				'MN': {fill: 'MidnightBlue'},
-				'GA': {fill: 'MidnightBlue'},
-				'NC': {fill: 'MidnightBlue'},
-				'VA': {fill: 'MidnightBlue'},
-				'MD': {fill: 'MidnightBlue'},
-				'PA': {fill: 'MidnightBlue'},
-				'NY': {fill: 'MidnightBlue'},
-				'CT': {fill: 'MidnightBlue'},
-				'NH': {fill: 'MidnightBlue'},
-				'MA': {fill: 'green'}
-			}
-		});
-		getData("data/stats/query?states=MA&metrics=all", function(data) { currData = data[0]; }); 
-}
-var dataIndex = 0;
-showGraph = function(ind){
-	dataIndex = ind;
-	document.getElementById("graphTitle").innerHTML = currData.params[ind].name;
-	document.getElementById("graphStates").innerHTML = currData.name;
-	setTimeout(function(){
-			nv.addGraph(function() {
-				var chart = nv.models.cumulativeLineChart()
-				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1] }) //adjusting, 100% is 1.00, not 100 as it is in the data
-				.color(d3.scale.category10().range())
-				.useInteractiveGuideline(true)
-				;
-				 
-				 var data = {key:currData.abbr};
-				 data["values"] = currData.params[dataIndex].data.map(function(d){
-				 	return [d["year"], d["value"]];
-				 });
-				chart.yAxis
-				.tickFormat(d3.format(',.1%'));
-				d3.select('#mbody svg')
-				.datum([data])
-				.transition().
-				duration(500)
-				.call(chart);
-				 
-				//TODO: Figure out a good way to do this automatically
-				nv.utils.windowResize(chart.update);
-				 
-				return chart;
-			});
-	}, 500);
-}
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 
-showMultiGraph = function(){
-	document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
-	document.getElementById("graphStates").innerHTML = selected.join(", ");
-	getData("data/stats/query?states=" + selected.join(",") + "&metrics=" + currData.params[dataIndex].name, function(multiData){
-		setTimeout(function(){
-			nv.addGraph(function() {
-				var chart = nv.models.cumulativeLineChart()
-				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1] }) //adjusting, 100% is 1.00, not 100 as it is in the data
-				.color(d3.scale.category10().range())
-				.useInteractiveGuideline(true)
-				;
-				 
-				 var data = new Array();
-				 for(var i = 0; i < multiData.length; i++)
-				 {
-				 	data[i] = {key:multiData[i].abbr};
-					data[i]["values"] = multiData[i].params[0].data.map(function(d){
-				 	return [d["year"], d["value"]];
-				 	});
-				 }
-				 chart.yAxis
-				.tickFormat(d3.format(',.1%'));
-				d3.select('#mbody svg')
-				.datum(data)
-				.transition().
-				duration(500)
-				.call(chart);
-				 
-				//TODO: Figure out a good way to do this automatically
-				nv.utils.windowResize(chart.update);
-				 
-				return chart;
-			});
-		}, 500);
-	});
-}
+var global_timer = null;
+var year_global=-1;
 
-showPeerGraph = function(ind){
-	dataIndex = ind;
-	document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
-	document.getElementById("graphStates").innerHTML = "All Peer States";
-	getData("data/stats/query?states=CA,CO,CT,GA,MD,MA,MN,NH,NJ,NY,NC,PA,TX,UT,VA,WA&metrics=" + currData.params[dataIndex].name, function(multiData){
-		setTimeout(function(){
-			nv.addGraph(function() {
-				var chart = nv.models.cumulativeLineChart()
-				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1]}) //adjusting, 100% is 1.00, not 100 as it is in the data
-				.color(d3.scale.category10().range())
-				.useInteractiveGuideline(true)
-				;
-				 
-				 var data = new Array();
-				 for(var i = 0; i < multiData.length; i++)
-				 {
-				 	data[i] = {key:multiData[i].abbr};
-					data[i]["values"] = multiData[i].params[0].data.map(function(d){
-				 	return [d["year"], d["value"]];
-				 	});
-				 }
-				 chart.yAxis
-				.tickFormat(d3.format(',.1%'));
-				d3.select('#mbody svg')
-				.datum(data)
-				.transition().
-				duration(500)
-				.call(chart);
-				 
-				//TODO: Figure out a good way to do this automatically
-				nv.utils.windowResize(chart.update);
-				 
-				return chart;
-			});
-		}, 500);
-	});
-}
+var globalcounter=0;
 
-showTopGraph = function(ind){
-	dataIndex = ind;
-	document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
-	document.getElementById("graphStates").innerHTML = "Top Ten States";
-	getData("data/stats/query?states=CA,CO,CT,GA,MD,MA,MN,NH,NJ,NY,NC,PA,TX,UT,VA,WA&metrics=" + currData.params[dataIndex].name, function(multiData){
-		setTimeout(function(){
-			nv.addGraph(function() {
-				var chart = nv.models.cumulativeLineChart()
-				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1]}) //adjusting, 100% is 1.00, not 100 as it is in the data
-				.color(d3.scale.category10().range())
-				.useInteractiveGuideline(true)
-				;
-				 
-
-				 var data = new Array();
-				 for(var i = 0; i < multiData.length; i++)
-				 {
-				 	data[i] = {key:multiData[i].abbr};
-					data[i]["values"] = multiData[i].params[0].data.map(function(d){
-				 	return [d["year"], d["value"]];
-				 	});
-				    data[i]["values"].sort(compareYear);
-				 }
-				 data.sort(compareValue);
-				 data.splice(10,16);
-				 chart.yAxis
-				.tickFormat(d3.format(',.1%'));
-				d3.select('#mbody svg')
-				.datum(data)
-				.transition().
-				duration(500)
-				.call(chart);
-				 
-				//TODO: Figure out a good way to do this automatically
-				nv.utils.windowResize(chart.update);
-				 
-				return chart;
-			});
-		}, 500);
-	});	
-}
-
-function compareYear(a,b) {
-  if (a.year < b.year)
-     return -1;
-  if (a.year > b.year)
-    return 1;
-  return 0;
-}
-
-function compareValue(a,b) {
-  if (a.values[0].value < b.values[0].value)
-     return -1;
-  if (a.values[0].value > b.values[0].value)
-    return 1;
-  return 0;
-}
-
-showBottomGraph = function(ind){
-	dataIndex = ind;
-	document.getElementById("graphTitle").innerHTML = currData.params[dataIndex].name;
-	document.getElementById("graphStates").innerHTML = "Bottom Ten States";
-	getData("data/stats/query?states=CA,CO,CT,GA,MD,MA,MN,NH,NJ,NY,NC,PA,TX,UT,VA,WA&metrics=" + currData.params[dataIndex].name, function(multiData){
-		setTimeout(function(){
-			nv.addGraph(function() {
-				var chart = nv.models.cumulativeLineChart()
-				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1]}) //adjusting, 100% is 1.00, not 100 as it is in the data
-				.color(d3.scale.category10().range())
-				.useInteractiveGuideline(true)
-				;
-				 
-
-				 var data = new Array();
-				 for(var i = 0; i < multiData.length; i++)
-				 {
-				 	data[i] = {key:multiData[i].abbr};
-					data[i]["values"] = multiData[i].params[0].data.map(function(d){
-				 	return [d["year"], d["value"]];
-				 	});
-				 	data[i]["values"].sort(compareYear);
-				 }
-				 data.sort(compareValue);
-				 data.reverse();
-				 data.splice(10,16);
-
-				 chart.yAxis
-				.tickFormat(d3.format(',.1%'));
-				d3.select('#mbody svg')
-				.datum(data)
-				.transition().
-				duration(500)
-				.call(chart);
-				 
-				//TODO: Figure out a good way to do this automatically
-				nv.utils.windowResize(chart.update);
-				 
-				return chart;
-			});
-		}, 500);
-	});	
-}
-
-
-function getData(url, callback){
-	http = new XMLHttpRequest();
-	http.open("GET", url, true);
-	http.onreadystatechange = function() { 
-		if(http.readyState == 4 && http.status == 200) { 
-			callback(JSON.parse(http.responseText)); 
-	} }
-	http.send(null);
-}
-
-function loadState(stateAbbr){
-	getData("data/stats/query?states="+stateAbbr+"&metrics=all", loadData);
-}
-
-var currData = "";
-function loadData(stateData){
-        currData = stateData[0];
-	var metrics = stateData[0].params;
-        document.getElementById('National-tbody').innerHTML = '';
-        document.getElementById('Talent-tbody').innerHTML = '';
-        document.getElementById('Economy-tbody').innerHTML = '';
-        document.getElementById('Cost-tbody').innerHTML = '';
-        for(var i = 0; i < metrics.length; i++){
+animateHeatMap=function(){
+	var limit=array_years_global.length;
+	if(year_global==-1)
 		
-                var tr = document.createElement('tr');
-                var name = document.createElement('td');
-                name.appendChild(document.createTextNode(metrics[i].name));
-                var trend = document.createElement('td');
-                var trendSp = document.createElement('span');
-                trendSp.setAttribute("class","trend_icon trend_"+metrics[i].trend);
-                trend.appendChild(trendSp);
-                var avg = document.createElement('td');
-		if(metrics[i].binName == "National"){
-			var innerhtml = "<table class=\"table table-condensed\"	style=\"font-size: 13px;\"><tr><td>Rank</td>";
-			for(var j = 0; j < metrics[i].data.length; j++){
-				innerhtml += "<td>" + metrics[i].data[j].value + "</td>";
-			}
-			innerhtml += "</tr><tr><td>Year</td>";
-			for(var j = 0; j < metrics[i].data.length; j++){
-				innerhtml += "<td>" + metrics[i].data[j].year + "</td>";
-			}
-			innerhtml += "</tr></table>";
-			avg.innerHTML = innerhtml;
-			//{#data}{/data}</tr><tr><td>Year</td>{#data}d>'{year}</td>{/data}</tr>	</table>"
+	
+		year_global=array_years_global[globalcounter];
+		//as.showHeatMapGraphReloaded(as.currentind,as.current_tab_style,'#mbodyHeatMap', year_global);
+		as.showHeatMapGraphReloaded(as.currentind,'#mbodyHeatMap', year_global);
+		globalcounter++;
+		if(globalcounter==limit){
+			year_global=-1;
+			globalcounter=0;
 		}else{
-	                avg.appendChild(document.createTextNode(metrics[i].dataAverage));
+			year_global=array_years_global[globalcounter];
 		}
-                var src = document.createElement('td');
-                var srcLink = document.createElement('a');
-                srcLink.href = "http://"+metrics[i].urlFrom;
-                srcLink.appendChild(document.createTextNode(metrics[i].sourceName));
-                var dropDown = document.createElement('tr');
-                dropDown.innerHTML = "<div class=\"btn-group btn-group-sm\"><button type=\"button\" class=\"btn btn-primary dropdown-toggle\" data-toggle=\"dropdown\"><span class=\"glyphicon glyphicon-chevron-down\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li><a  data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showPeerGraph(" + i + ")\">Compare to Peer States</a></li><li><a href=\"#\" onClick=\"toggleMultiSelect(" + i + ")\">Compare to Select States</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showTopGraph(" + i + ")\">Compare to Top Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showBottomGraph(" + i + ")\">Compare to Bottom Ten</a></li><li><a data-toggle=\"modal\" data-target=\"#myModal\" onClick=\"showGraph("+i+")\">View Graph</a></li></ul></div>";
-                src.appendChild(srcLink);
-                tr.appendChild(name);
-                if(metrics[i].binName != "National")
-                	tr.appendChild(trend);
-                tr.appendChild(avg);
-                tr.appendChild(src);
-                tr.appendChild(dropDown);
-                document.getElementById(metrics[i].binName + "-tbody").appendChild(tr);
-        }
+		
+		
+
+}; 
+stopHeatMapAnimation=function() {
+	if (!global_timer) return false;
+	  	clearInterval(global_timer);
+	global_timer = null;
+};
+
+function isCompatibleBrowser() 
+{	
+	if (typeof isLtIE9 !== 'undefined')
+	{
+		return false;
+	}
+
+	return true;
+}
+
+function displayBrowserVersionMsg()
+{
+	$("#mainContentDiv").hide();
+	
+	$("#globalErrorDiv").attr("style", "display: block;");
+}
+
+$(document).ready(function() {
+		
+	// Init menu
+	$(".menu-close").prependTo(".menu > ul");
+	   
+	$(".menu-toggle").click(function(){
+		$(".menu").slideDown();
+	});
+
+	$(".menu-close").click(function(){
+		$(".menu").slideUp();
+	});
+	
+	
+	if (isCompatibleBrowser())
+	{
+		loadFunction();
+	}
+	else
+	{
+		displayBrowserVersionMsg();
+	}
+});
+
+
+loadFunction = function() {	
+	
+	cm = CM.create();
+	as = AS.create();
+	
+	as.loadFunction();
+	
+	// Perform resize functions on resize.
+	$(window).on('resize', function() {
+		cm.refreshSizing();
+	});	
+	
+    // Initializes button that toggles the sidebar
+		
+    $("#toggle-sidebar").click(function() {
+    	
+    	var icon = $(this).find("i")[0];
+    	
+    	if ($("#sidebar-left").hasClass("open"))
+    	{    				
+    		$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300);
+    		
+    		$("#viewWrapper").animate({ left: 0 }, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#sidebar-left").removeClass("open");
+    		
+    		$(icon).removeClass("fa-caret-left");
+    		$(icon).addClass("fa-caret-right");
+    	}
+    	else
+    	{	
+    		$("#sidebar-left").animate({ marginLeft: 0}, 300);
+    		
+    		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
+    		
+    		$("#sidebar-left").addClass("open");
+    		
+    		$(icon).addClass("fa-caret-left");
+    		$(icon).removeClass("fa-caret-right");
+    	}
+    	
+    });
+        
+    /**************************************************
+     * Start Sidebar Metric Menus logic
+     **************************************************/
+    
+    // Utility function to calculate the appropriate height of the metric list
+    getSizeOfMetricList = function() {
+    	var numMetricHeaders = $('.metricHeader').length;
+    	var metricHeaderHeight = $('.metricHeader').first().outerHeight();
+    	
+    	var sidebarHeightTotal = $('#metricListWrapper').height();
+    	
+    	return sidebarHeightTotal - (numMetricHeaders * metricHeaderHeight);
+    };
+    
+    // Utility function to open the given metric list.
+    // This will close all other open metric lists
+    openMetricList = function(metricList) {
+    	var heightOfList = getSizeOfMetricList();
+    	
+    	$(".metricList.open").each(function(e) {
+    		closeMetricList(this);
+    	});
+    	
+    	$(metricList).animate({ height: heightOfList}, 300);
+    	$(metricList).addClass("open");
+    	
+    };
+    
+    // Utility function to close the given metric list
+    closeMetricList = function(metricList) {
+    	$(metricList).animate({ height: 0}, 300);
+    	$(metricList).removeClass("open");
+    };
+    
+    // Make sure to resize the list when the window resizes
+    $(window).on('resize', function() {
+    	var listHeight = getSizeOfMetricList();
+    	
+    	$(".metricList.open").height(listHeight);
+    });
+    
+    // Event listener to open/close metric lists on metric header click
+    $('.metricHeader').click(function(e){
+    	
+    	var list = $(this).parent().find('.metricList').first();
+    	
+    	if (list.hasClass("open"))
+    	{
+    		closeMetricList(list);
+    	}
+    	else
+    	{
+    		openMetricList(list);
+    	}    	
+	});
+    
+    
+    /**************************************************
+     * End Sidebar Metric Menus logic
+     **************************************************/
+    
+    /******************************************
+     * Start state selection logic
+     ******************************************/
+    
+    // When a state selection option is clicked, designate it as selected
+    $(".stateSelectionOption").click(function(e){
+    	
+    	// Check the clicked input if it has not already been checked.
+    	var isCheckedAlready = $(this).hasClass("selected");
+    	
+    	if (!isCheckedAlready)
+    		$(this).addClass("selected");
+    	else
+    		$(this).removeClass("selected");
+    	    	
+    	$(".selectPeerStates").removeClass("selected");
+    	
+    	updateStateSelection(); // Reflect changes in data
+    });
+    
+    // When unselect/select all button is clicked, do the appropriate action
+    $(".selectUnselectAllStates").click(function(e){
+    	
+    	var checked = $(this).attr("id") == "select";
+
+    	// Go through and deselect/select all of the states
+    	var stateOptions = $(".stateSelectionOption");
+    	
+    	for(i = 0; i < stateOptions.length; i++)
+    	{
+    		var curNode = stateOptions[i]
+    		
+    		if (checked)
+    		{
+    			$(curNode).addClass("selected");
+    		}
+    		else
+    		{
+    			$(curNode).removeClass("selected");
+    		}
+    	}
+    	
+    	$(".selectPeerStates").removeClass("selected");
+    	
+    	updateStateSelection(); // Reflect changes in data
+    });
+    
+    // When select peers is clicked, select only the peer states.
+    $(".selectPeerStates").click(function(e){
+    	
+    	if ($(".selectPeerStates").hasClass("selected"))
+    	{
+    		$(".selectUnselectAllStates").click(); // Force deselect
+    		return;
+    	}
+    	
+    	// Check peer states checkbox
+    	$(".selectPeerStates").addClass("selected");
+    	
+    	// Deselect all states to start
+    	var allStates = $(".stateSelectionOption");
+    	
+    	for(i = 0; i < allStates.length; i++)
+    	{
+    		$(allStates[i]).removeClass("selected");
+    	}
+    	
+    	// Then go through and select only the peer states
+    	var peerStates = States.getPeers();
+    	
+    	for(i = 0; i < peerStates.length; i++)
+    	{
+    		var curNode = "#" + peerStates[i].id + ".stateSelectionOption";
+    		
+    		$(curNode).addClass("selected");
+    	}
+    	
+    	// Reflect updated state selection within data.
+    	updateStateSelection();
+    });
+	 
+    var filterStates = function() {
+    	// First, show all options
+    	var allOptions = $(".stateSelectionOptionWrapper");
+    	for(i = 0; i < allOptions.length; i++)
+    	{
+    		$(allOptions[i]).removeClass("hidden");
+    	}
+    	
+    	var inputVal = $(".stateFilter > input").val().trim();
+    	
+    	var nonMatchingStates = States.filterStates(inputVal);
+    	
+    	for(i = 0; i < nonMatchingStates.length; i++)
+    	{
+    		var matchingText = "#" + nonMatchingStates[i].id + ".stateSelectionOptionWrapper";
+
+    		$(matchingText).addClass("hidden");
+    	}
+    }
+    
+    // When the user filters the states...
+    $(".stateFilter > input").on("input", function(e){
+    	filterStates();
+    });
+    
+    // Keyup event used as workaround for IE9 bug where backspace does not register as input
+    // Note that there are still bugs with Cut and drag in IE9.
+    $(".stateFilter > input").on("keyup", function(e){
+    	filterStates();
+    });
+    
+    /******************************************
+     * End state selection logic
+     ******************************************/
+	
+	/******************************************
+     * Start metric selection logic
+     ******************************************/
+	
+	$(".metricOption").click(function(){
+		var isChecked = $(this).hasClass("selected");
+		var checkedMetricId = $(this).attr("id");
+		
+		if(!isChecked)
+		{		
+			selectMetric(checkedMetricId);
+			
+			as.SelectUnselectMultipleMetric(checkedMetricId, 1);
+		}
+		else if (isChecked)
+		{	
+			unselectMetric(checkedMetricId);
+			
+			as.SelectUnselectMultipleMetric(checkedMetricId, 2);
+		}
+	});
+	
+	$(".selectUnselectAll" ).click(function() { 
+    	var checked = $(this).attr("id") == "select";
+
+    	var targetFunction = selectMetric;
+    	var actionID = 1;
+    	
+    	if (!checked)
+    	{
+    		targetFunction = unselectMetric;
+    		actionID = 2;
+    	}
+    	
+    	// Go through and deselect/select all of the metrics
+    	var metricOptions = $(this).parent().find(".metricOption");
+    	var metricList = [];
+    	
+    	for(i = 0; i < metricOptions.length; i++)
+    	{
+    		var curNode = metricOptions[i]
+    		var curNodeID = $(curNode).attr("id");
+    		
+    		metricList[i] = curNodeID;
+    		
+    		targetFunction(curNodeID);
+    	}    	
+    	
+		as.SelectUnselectMultipleMetric(metricList, actionID);
+	});
+	
+	$(".backButton" ).click(function(){ 
+		var currentIdString = $(this).attr('id');
+		//strip current Id from end of string
+		prefix = "clickMultipleMetric";
+		var currentId = currentIdString.substring(prefix.length);	 
+		as.SelectUnselectMultipleMetric(currentId,3);
+	});
+	$(".nextButton" ).click(function(){ 
+		var currentIdString = $(this).attr('id');
+		prefix = "clickMultipleMetric";
+		var currentId = currentIdString.substring(prefix.length);;	 
+		as.SelectUnselectMultipleMetric(currentId,3);
+	});
+	
+	/******************************************
+     * End metric selection logic
+     ******************************************/
+};
+
+/**
+ * Updates the list of selected states
+ */
+function updateStateSelection() 
+{
+	var stateOptions = $(".stateSelectionOption");
+	
+	// Get the list of all states that are checked
+	var selectedItems = [];
+	for (i = 0; i < stateOptions.length; i++)
+	{
+		if ($(stateOptions[i]).hasClass("selected"))
+		{
+			selectedItems.push($(stateOptions[i]).attr('id'));
+		}
+	}
+	
+	// Update the text of the select/unselect button based on how many states are selected
+	if (selectedItems.length > 0)
+	{
+		$(".selectUnselectAllStates > a").html("Deselect All");
+		$(".selectUnselectAllStates").attr("id", "deselect");
+	}
+	else
+	{
+		$(".selectUnselectAllStates > a").html("Select All");
+		$(".selectUnselectAllStates").attr("id", "select");
+	}
+	
+	// Update the data visualization
+	as.setStatesSelected(selectedItems, -1); // -1 means set to list of selected states.
+}
+
+/**
+ * Selects the given metric ID
+ * @param metricID the ID of the metric to select
+ */
+function selectMetric(metricID)
+{
+	return selectUnselectMetricHelper(metricID, true);
+}
+
+/**
+ * Unselects the given metric ID
+ * @param metricID the ID of the metric to unselect
+ */
+function unselectMetric(metricID)
+{
+	return selectUnselectMetricHelper(metricID, false);
+}
+
+/**
+ * Helper for selecting and unselecting metrics
+ * @param metricID the ID of the metric to select/unselect
+ * @param select whether or not the metric should be selected
+ */
+function selectUnselectMetricHelper(metricID, select)
+{
+	// Get the identifier for the metric in question
+	var metricOption = $("#" + metricID + ".metricOption");
+	
+	// Either select or deselect, as appropriate
+	if (select)
+	{
+		$(metricOption).addClass("selected");
+	}
+	else
+	{
+		$(metricOption).removeClass("selected");
+	}
+
+	
+	// Metrics can be in 2 + categories. Make sure that we reflect the change to the metric selection in
+	// all categories, if applicable.
+	for (var i = 0; i < metricOption.length; i++)
+	{
+		var currMetricOption = metricOption[i];
+		var parentUL = $(currMetricOption).parent().parent();
+		
+		// Update the select all text for the parent category
+		var numberSelectedInCat = $(parentUL).find("a.selected").length;
+		var selectAllButtonForCat = $(parentUL).find(".selectUnselectAll > a")[0];
+		var selectAllWrapperForCat = $(parentUL).find(".selectUnselectAll")[0];
+		
+		
+		if (numberSelectedInCat > 0)
+		{
+			$(selectAllButtonForCat).html("Deselect All");
+			$(selectAllWrapperForCat).attr("id", "deselect");
+		}
+		else
+		{
+			$(selectAllButtonForCat).html("Select All");
+			$(selectAllWrapperForCat).attr("id", "select");
+		}	
+	}
+}
+
+function tableButtonClicked(obj, year_in)
+{ 	
+	cm.selectYear(year_in);
+	cm.refresh();
 }

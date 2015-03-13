@@ -1,13 +1,14 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.model.state;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.wpi.mhtc.model.Model;
-import edu.wpi.mhtc.rson.ParseException;
-
-public class PeerStates implements Model<State>{
+public class PeerStates {
 	private LinkedList<State> states;
 
 	public PeerStates(List<State> list)
@@ -15,7 +16,7 @@ public class PeerStates implements Model<State>{
 		states = (LinkedList<State>) list;
 	}
 
-	public LinkedList<HashMap<String, LinkedList<State>>> getAsGrid(int rows) throws ParseException {
+	public LinkedList<HashMap<String, LinkedList<State>>> getAsGrid(int rows) {
 		@SuppressWarnings("unchecked")
         LinkedList<State> queue = (LinkedList<State>) states.clone();
 		LinkedList<HashMap<String, LinkedList<State>>> result = new LinkedList<HashMap<String, LinkedList<State>>>();

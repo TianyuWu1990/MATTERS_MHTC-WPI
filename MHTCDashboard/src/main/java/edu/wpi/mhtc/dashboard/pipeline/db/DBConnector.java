@@ -1,14 +1,30 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.pipeline.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * Connect to db.
+ *
+ */
 public class DBConnector {
 
 	private static DBConnector dbConnector;
-	private String url = "jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc";
-	private String user = "dev";
-	private String password = "password";
+	
+	/* Local DB Configuration */
+//	private String url = "jdbc:postgresql://localhost:5432/mhtc_local";
+//	private String user = "postgres";
+//	private String password = "12345";
+	
+	/*Production Configuration*/
+	private String url = "jdbc:postgresql://mhtc.cs.wpi.edu:5432/mhtc-dev";
+	private String user ="server";
+	private String password ="mhtcboxofducks";
+	
 	private Connection conn = null;
 
 	private DBConnector() {
@@ -37,5 +53,5 @@ public class DBConnector {
 	public void setConn(Connection conn) {
 		this.conn = conn;
 	}
-
+	
 }

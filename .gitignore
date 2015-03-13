@@ -1,2 +1,7 @@
 MHTCDashboard/target/
+MHTCDashboard/tmp/
+MHTCDashboard/MHTCDashboard/src/main/java/Spring-Mail.xml
 .class
+/target/
+MHTCDashboard/src/main/java/edu/wpi/mhtc/dashboard/pipeline/db/DBConnector.java
+MHTCDashboard/src/main/java/edu/wpi/mhtc/dashboard/config/DevelopmentConfiguration.java

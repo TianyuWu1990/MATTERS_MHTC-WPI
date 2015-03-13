@@ -1,7 +1,13 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.dashboard.config;
 
 import javax.servlet.MultipartConfigElement;
 import javax.sql.DataSource;
+
+import net.tanesha.recaptcha.ReCaptchaImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
@@ -9,14 +15,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import com.fergiggles.giggledust.dust.DustViewResolver;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
  * Provides configuration that is global to all profiles for the web dashboard.
@@ -32,7 +39,7 @@ import com.fergiggles.giggledust.dust.DustViewResolver;
 @ComponentScan("edu.wpi.mhtc")
 @Configuration
 @Import({ DevelopmentConfiguration.class, LocalConfiguration.class,
-		ProductionConfiguration.class })
+		ProductionConfiguration.class, SecurityConfiguration.class })
 public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
@@ -43,6 +50,16 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 				"/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations(
 				"/js/");
+		registry.addResourceHandler("/fonts/**").addResourceLocations(
+				"/fonts/");
+		registry.addResourceHandler("/font-awesome-4.1.0/**").addResourceLocations(
+				"/font-awesome-4.1.0/");
+		registry.addResourceHandler("/less/**").addResourceLocations(
+				"/less/");
+		registry.addResourceHandler("/img/**").addResourceLocations(
+				"/img/");
+		registry.addResourceHandler("/adminPanel/**").addResourceLocations(
+				"/adminPanel/");
 	}
 	
 	@Bean
@@ -52,12 +69,11 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 		
 		return props;
 	}
-
 	@Bean
-	public DustViewResolver viewResolver() {
-		DustViewResolver resolver = new DustViewResolver();
+	public InternalResourceViewResolver viewResolver() {
+	    InternalResourceViewResolver resolver = new InternalResourceViewResolver();
 		resolver.setPrefix("/WEB-INF/views/");
-		resolver.setSuffix(".dust");
+		resolver.setSuffix(".jsp");
 		resolver.setOrder(0);
 		return resolver;
 	}
@@ -80,6 +96,15 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	public CommonsMultipartResolver multipartResolver() {
 	    CommonsMultipartResolver mr = new CommonsMultipartResolver();
 	    return mr;
+	} 
+	
+	@Bean
+	public ReCaptchaImpl recaptcha() {
+		ReCaptchaImpl rc = new ReCaptchaImpl();
+		rc.setPrivateKey("6LfXmgATAAAAAP_qkRZBcBBqnb8yRuUKMm9LJYSW");
+		rc.setPublicKey("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb");
+		
+		return rc;
 	}
 
 }

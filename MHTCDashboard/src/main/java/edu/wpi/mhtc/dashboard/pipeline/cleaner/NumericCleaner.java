@@ -1,9 +1,21 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
+
 package edu.wpi.mhtc.dashboard.pipeline.cleaner;
 
 import java.util.regex.Pattern;
 
+/**
+ * Cleaner for numeric values.
+ *
+ */
 public class NumericCleaner implements ICleaner {
 
+	
+//	TODO: returning -1 for invalid is not helpful -1 could be actual value
+	
 	@Override
 	public String clean(String val) throws Exception {
 		val.trim();
@@ -27,11 +39,17 @@ public class NumericCleaner implements ICleaner {
 	 * Clean all the value if it contains characters
 	 */
 	public String CleanCharValue(String val) {
+//		if (Pattern.compile(".*[a-zA-Z]+.*").matcher(val).matches()) {
+//			return "-1";
+//		} else {
+//			return val;
+//		}
+		
+//above simply says invalid if contains non-numeric chars, this strips them out 
 		if (Pattern.compile(".*[a-zA-Z]+.*").matcher(val).matches()) {
-			return "-1";
-		} else {
-			return val;
-		}
+		val = val.replaceAll("[^\\d.]", "");
+		} 
+		return val;
 	}
 
 	/*

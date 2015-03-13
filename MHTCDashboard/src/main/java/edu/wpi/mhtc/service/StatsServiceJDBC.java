@@ -1,10 +1,12 @@
+/*
+ *  Copyright (C) 2013 Worcester Polytechnic Institute 
+ *  All Rights Reserved.
+ */
 package edu.wpi.mhtc.service;
 
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,27 +18,27 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
+import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
 import edu.wpi.mhtc.model.Data.Data;
-import edu.wpi.mhtc.model.Data.DataSource;
+import edu.wpi.mhtc.model.Data.DataSeries;
+import edu.wpi.mhtc.model.Data.Metric;
 import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.persistence.DBMetric;
-import edu.wpi.mhtc.persistence.DBState;
 import edu.wpi.mhtc.persistence.MetricMapper;
 import edu.wpi.mhtc.persistence.PSqlRowMapper;
 import edu.wpi.mhtc.persistence.PSqlStringMappedJdbcCall;
 import edu.wpi.mhtc.persistence.StateMapper;
 
 @Service
-public class StatsServiceJDBC extends StatsService
+public class StatsServiceJDBC implements StatsService
 {
 
 	private JdbcTemplate template;
 	private StateMapper stateMapper;
 	private MetricMapper metricMapper;
-	private MetricsService metricsService;
-
+	private MetricService metricsService;
+	
 	@Autowired
-	public StatsServiceJDBC(JdbcTemplate template, StateMapper stateMapper, MetricMapper metricMapper, MetricsService metricsService)
+	public StatsServiceJDBC(JdbcTemplate template, StateMapper stateMapper, MetricMapper metricMapper, MetricService metricsService)
 	{
 		this.template = template;
 		this.stateMapper = stateMapper;
@@ -44,19 +46,18 @@ public class StatsServiceJDBC extends StatsService
 		this.metricsService = metricsService;
 	}
 
-	@Override
-	protected List<DataPoint> getAllYearsForStateAndMetric(final DBState state, final DBMetric metric)
+	private List<Data> getAllYearsForStateAndMetric(final State state, final Metric metric)
 	{
 
-		PSqlStringMappedJdbcCall<DataPoint> call = new PSqlStringMappedJdbcCall<DataPoint>(template).withSchemaName(
+		PSqlStringMappedJdbcCall<Data> call = new PSqlStringMappedJdbcCall<Data>(template).withSchemaName(
 				"mhtc_sch").withProcedureName("getdatabymetricandstate");
 
-		call.addDeclaredRowMapper(new PSqlRowMapper<DataPoint>()
+		call.addDeclaredRowMapper(new PSqlRowMapper<Data>()
 			{
 				@Override
-				public DataPoint mapRow(SqlRowSet rs, int rowNum) throws SQLException
+				public Data mapRow(SqlRowSet rs, int rowNum) throws SQLException
 				{
-					return new DataPoint(state, metric, rs.getInt("Year"), rs.getDouble("Value"));
+					return new Data(rs.getInt("Year"), rs.getDouble("Value"));
 				}
 			});
 
@@ -71,94 +72,56 @@ public class StatsServiceJDBC extends StatsService
 
 	}
 
-	@Override
-	protected State getDataForState(DBState state, List<DBMetric> metrics)
+	private List<DataSeries> getDataForState(State state, List<Metric> metrics)
 	{
-		LinkedList<DataSource> sources = new LinkedList<DataSource>();
+		List<DataSeries> series = new LinkedList<DataSeries>();
 
-		for (DBMetric metric : metrics)
+		for (Metric metric : metrics)
 		{
-			List<DataPoint> points = getAllYearsForStateAndMetric(state, metric);
+			List<Data> points = getAllYearsForStateAndMetric(state, metric);
+			DataSeries single = new DataSeries(metric, state);
+			single.addData(points);
 
-			String trend = "none";
-			if (points.size() > 0) {
-				DataPoint recent = points.get(0);
-				DataPoint old = points.get(0);
-				for (DataPoint datapoint : points) {
-					if (datapoint.getYear() > recent.getYear()) {
-						recent = datapoint;
-					}
-				}
-				for (DataPoint datapoint : points) {
-				
-					if (datapoint.getYear() < old.getYear() && recent.getYear() - datapoint.getYear() <= 5) {
-						old = datapoint;
-					}
-				}
-				// TODO calculate this depending on the datatype and do a real calculation
-				double diff = recent.getValue() - old.getValue();
-				if (diff > 0) {
-					trend = "up";
-				} else if (diff < 0) {
-					trend = "down";
-				}
-				
-			}
-
-			DataSource source = new DataSource(metric.getName(), metric.getURL(), trend, metric.getSource(), metric.getBinName());
-			
-			for (DataPoint datapoint : points)
-			{
-				try
-				{
-					double value = datapoint.getValue();
-					if (metric.getDataType().equals("percentage")) {
-						value *= 100;
-						BigDecimal bd = new BigDecimal(value);
-					    bd = bd.setScale(2, RoundingMode.HALF_UP);
-					    value = bd.doubleValue();
-					} else {
-						
-					}
-					
-					source.addData(new Data(datapoint.getYear(), value));
-				}
-				catch (Exception e)
-				{
-					//TODO log it!
-				}
-			}
-			sources.add(source.sort());
+			series.add(single);
 		}
 
-		return new State(state, sources);
+		return series;
 	}
 
 	@Override
-	public State getDataForStateByName(String state, String metrics)
+	public List<DataSeries> getDataForStateByName(String state, String metrics)
 	{
 
-		DBState dbState = stateMapper.getStateFromString(state);
-		List<DBMetric> dbMetrics = getListOfMetricsFromCommaSeparatedString(metrics);
+		State dbState = stateMapper.getStateFromString(state);
+		List<Metric> dbMetrics = getListOfMetricsFromCommaSeparatedString(metrics);
 
 		return getDataForState(dbState, dbMetrics);
 	}
 	
-	
-	
-
 	@Override
-	public State getStateBinData(String state, Integer binId)
+	/**
+	 * Retrieve all metrics for this state and bin, includes all child categories of the bin. 
+	 */
+	public List<DataSeries> getStateBinData(String state, Integer binId)
 	{
 
-		DBState dbState = stateMapper.getStateFromString(state);
-		List<DBMetric> dbMetrics = metricsService.getMetricsInCategory(binId);
-
-		return getDataForState(dbState, dbMetrics);
+		State dbState = stateMapper.getStateFromString(state);
+		List<Metric> dbMetrics = new ArrayList<Metric>();
+		try {
+			for(String s : DBLoader.getSubCategories(binId.toString()).values()){
+				dbMetrics.addAll(metricsService.getMetricsInCategory(Integer.parseInt(s), binId));
+			}
+//	TODO: should be able to use getMetricsFromParents instead of for loop above, but hangs
+//			List<Metric> dbMetrics = metricsService.getMetricsFromParents(binId);
+			return getDataForState(dbState, dbMetrics);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 
-	@Override
-	public List<DBMetric> getListOfMetricsFromCommaSeparatedString(String metric)
+	private List<Metric> getListOfMetricsFromCommaSeparatedString(String metric)
 	{
 
 		if (metric.equals("all"))
@@ -166,30 +129,16 @@ public class StatsServiceJDBC extends StatsService
 
 		String[] splits = metric.split(",");
 
-		List<DBMetric> metrics = new LinkedList<DBMetric>();
+		List<Metric> metrics = new LinkedList<Metric>();
 
 		for (String split : splits)
 		{
-			metrics.add(metricMapper.getMetricFromString(split));
+			Metric m = metricMapper.getMetricFromString(split);
+			if(m!=null){
+				metrics.add(m);
+			}
 		}
 
 		return metrics;
 	}
-
-	
-
-	
-	@Override
-	public State invokeThis(Method m, Object[] params)
-	{
-		try
-		{
-			return (State) m.invoke(this, params);
-		}
-		catch (Exception e)
-		{
-			return null;
-		}
-	}
-
 }

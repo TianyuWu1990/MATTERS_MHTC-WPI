@@ -1,0 +1,381 @@
+.modal-dialog
+{
+  width: 60%;
+ 	
+}
+
+.trend_icon
+{
+display: block;
+width: 25px;
+height: 25px;
+background-image: url(img/trend_meter.png);
+background-repeat: no-repeat;
+}
+  
+.bluetext 
+{
+	
+	color: #2d6ca2;
+}
+
+nav.navbar.navbar-default
+{
+	margin-bottom:0px;
+}
+
+.dropdown-menu
+{
+left:auto;
+right:0;
+	
+}
+
+.title
+{
+	color: #2d6ca2;
+	display: inline-block;
+	font-size: 28px;
+	margin-top:10px;
+	
+}
+
+.btn-right
+{
+	margin-right:20px;
+	float:right;
+}
+
+#mbody .nv-lineChart circle.nv-point
+{
+    fill-opacity: 1;
+    stroke-opacity: 1;
+    
+}
+
+.legendbox
+{
+	width:20px;
+	height:20px;
+	border-radius:6px;
+	margin-right:5px;
+	margin-bottom:2px;
+	margin-top:3px;
+}
+
+.centered
+{
+	text-align:center;
+}
+
+.spaced
+{
+	margin-left:40px;
+}
+
+.boxblue
+{
+	background-color: rgb(61,138,244);  /**rgb(0,0,128);*/
+}
+
+.boxgreen
+{
+	background-color:rgb(0,128,0);
+}
+
+.boxyellow
+{
+	background-color:rgb(255,153,0);
+}
+
+.boxred {
+	background-color:#FF4D4D;
+}
+
+
+#legend
+{
+	padding:10px;
+}
+
+label.statebutton.active
+{
+	background-color: #46AF31;
+	background-image: none;
+	border-color: rgb(128, 128, 128);
+	
+}
+
+.activestatelabel
+{
+	background-color: rgb(255,178,71);
+	background-image: none;
+	color: dark-gray;
+	text-decoration: none;
+	text-shadow: none;
+	border-color: rgb(43, 102, 154);
+	border-radius: 4px;
+	height:34px;
+	width:125px;
+	text-align: center;
+	font-size: 14px;
+	font-weight: normal;
+	padding-top: 6px;
+	display: inline-block;
+}
+.multiselectbutton 
+{
+margin-bottom: 0;
+vertical-align: middle;
+cursor: pointer;
+border: 1px solid transparent;
+white-space: nowrap;
+padding: 6px 12px;
+line-height: 1.42857143;
+-webkit-user-select: none;
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.15),0 1px 1px rgba(0,0,0,.075);
+	background-repeat: repeat-x;
+	width:125px;
+	text-align:center;
+	border-radius: 4px;
+	border-color: rgb(43, 102, 154);
+	text-shadow: none;
+	text-decoration: none;
+	height:34px;
+	font-size: 14px;
+	font-weight: normal;
+	padding-top: 6px;
+	display: inline-block;
+}
+
+
+label.statebutton
+{
+	background-color: #2d6ca2;
+	background-image: linear-gradient(to bottom,#428bca 0,#2d6ca2 100%);
+	color: #fff;
+	text-decoration: none;
+	text-shadow: none;
+	border-color: rgb(43, 102, 154);'
+}
+
+.trend_down
+{
+background-position: 0px 0px;
+}
+.trend_down_reversed
+{
+background-position: 0px -30px;
+}
+
+.trend_no_change
+{
+background-position: 0px -150px;
+}
+
+.trend_up
+{
+background-position: 0px -210px;
+}
+.trend_up_reversed
+{
+background-position: 0px -240px;
+}
+#sidebar,#multiSelecter,#multiSelecterMetricState,#legend
+{
+	border-color: #ABC;
+	border-style: solid;
+	border-top-style: none;
+	border-left-style: none;
+	border-radius: 20px;
+	border-radius: 20px;
+}
+.stateButton
+{
+	width: 125;
+}
+input[type="checkbox"]{
+	display:none;
+}
+
+table.table tbody tr td.tabbed_metric
+{
+	padding-left:30px;
+	
+}
+
+.tab-pane
+{
+	height:70%;
+	overflow:auto;
+	
+}
+
+#profiletab a{
+	background-color: #3D8AF4 ; 
+	color:#fff;
+	
+	text-align: center;
+	width: 145px;
+}
+
+#profiletab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#3D8AF4 100%);
+}
+#nationaltab a
+{
+		background-color: #7ECB98;
+		color: black;
+	
+	    text-align: center;
+	    width: 160px;
+}
+#nationaltab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#7ECB98 100%);
+}
+#talenttab a
+{
+		background-color: #F17171; /*#FF7171; // #FF4D4D**/;
+		color: white;
+		
+	   	text-align: center;
+		width: 145px;
+}
+#talenttab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#FF7171 100%);
+}
+#economytab a
+{
+		background-color: #977509;
+		color: white;
+		
+		text-align: center;
+		width: 160px;	
+}
+#economytab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#977509 100%);
+}
+#costtab a
+{
+		background-color: #A366E0;// #6600CC;
+		color: white;
+		
+		text-align: center;
+		width: 145px;	
+}
+#costtab.active a {
+	background-image: linear-gradient(to bottom,#FFFFFF 0,#A366E0 100%);
+}
+#multiplequerytab a
+{
+		background-color: #191970; /*#3D8AF4;*/
+		color: white;
+	
+	    text-align: center;
+	    width: 160px;
+}
+
+/**#National-tbody tr:nth-child(odd)
+ {
+ background-color: #F6FFED;
+ }
+ #National-tbody tr:nth-child(even)
+ {
+ background-color: #FFFFFF;
+ }
+
+
+#talent-tbody tr:nth-child(odd)
+ {
+ background-color:  #FFE0E0;
+ }
+ 
+ #talent-tbody tr:nth-child(even)
+ {
+ background-color: #FFFFFF;
+ }
+ 
+ #cost-tbody tr:nth-child(odd)
+ {
+ background-color:#DAC2F2;
+ }
+ #cost-tbody tr:nth-child(even)
+ {
+ background-color:#FFFFFF;
+  }
+ 
+ #economy-tbody tr:nth-child(odd)
+   {
+   background-color: #6699FF;
+   }
+   
+#economy-tbody tr:nth-child(even)
+   {
+   background-color: #FFFFFF;
+   }
+*/
+#Profile tbody tr:hover td
+  {
+  background-color:  #ADC2FF; 
+  }
+
+#national tbody tr:hover td
+
+ {
+ background-color:#CBFFF2;	 /**#7ECB98;**/
+ }
+ 
+/*
+ #national tbody tr:hover tr td{
+  background-color:#D0A9F5;	 #7ECB98;  }
+ 
+ */
+#talent tbody tr:hover td
+ {
+ background-color: #F27B7B;
+ }
+ #cost tbody tr:hover td
+ {
+ background-color:#DAC2F2;
+ }
+ #economy tbody tr:hover td 
+  {
+  background-color: #FFE48A;
+  } 
+
+.topContainer{
+	background-color:#000099;
+	height:30px;
+	width:100%;
+	
+}   
+.bottomContainer{
+	background-color:#000099;
+	height:10px;
+	width:100%;
+}
+#navbarid{
+background-image: linear-gradient(to bottom,#FFFFFF 0,#3D8AF4 100%);
+background-repeat: repeat-x;}
+
+.container {
+width: 85%;	
+}
+
+
+.nav >li.active>a{
+	font-size:14px;
+	font-weight:bold;
+	background-color:#fff;
+	border:1px solid #ddd;
+	border-bottom-color:transparent;
+	cursor:default
+}
+
+.arrow { 
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent; 
+	border-right: 10px solid transparent; 
+	border-top: 10px solid black; 
+}
