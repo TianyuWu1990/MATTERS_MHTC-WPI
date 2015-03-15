@@ -4,16 +4,23 @@
  */
 package edu.wpi.mhtc.controllers;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,9 +29,19 @@ import net.tanesha.recaptcha.ReCaptchaImpl;
 import net.tanesha.recaptcha.ReCaptchaResponse;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.IOUtils;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -65,7 +82,7 @@ public class HomeController {
 	
 	@Autowired
     ReCaptchaImpl reCaptcha;
-	
+		
 	@Autowired
 	public HomeController(StatsService statsService, StateService stateService)
 	{
@@ -390,46 +407,139 @@ public class HomeController {
     public String loginPage() {
         return "loginPage";
     }
-    /********** Excel exporter 
+    
+    /* Excel exporter 
      * Exports excel file for the chart data
-     * @throws IOException **********/
+     * @throws IOException */
+    
     @RequestMapping(value = "/excel", method = RequestMethod.GET)
     public @ResponseBody String excel_exporter(Locale locale, Model model, @RequestParam("data") String data, HttpServletResponse response) throws IOException {	
-		Workbook wb;
+    	/***************** JSON Preprocessor ***************************/
+    	JSONObject json = new JSONObject(data);
+    	String title = json.getString("title");
+    	boolean metricTitle = json.getBoolean("metricTitle");
+		JSONArray jsonTable =  json.getJSONArray("rows");
+		JSONArray jsonMetrics =  json.getJSONArray("metrics");
+		
+		/***************** Excel Data Preparation ***************************/
+    	Workbook wb;
 		wb = new XSSFWorkbook();
 		Sheet sheet = wb.createSheet();
+		
+	    XSSFFont boldFont= (XSSFFont) wb.createFont(); // Init Bold fonts
+	    boldFont.setFontHeightInPoints((short)10);
+	    boldFont.setFontName("Arial");
+	    boldFont.setBold(true);
+	    boldFont.setItalic(false);
+	    
+	    CellStyle boldStyle = wb.createCellStyle();
+	    boldStyle.setFont(boldFont);
+	    /***************** MISC INIT ***************************/
+	    
+		/* For (1,1), put MHTC logo */
+	    String path = this.getClass().getClassLoader().getResource("").getPath() + "../../css/img/";
+	    InputStream mhtc_logo = new FileInputStream(path + "main-logo.jpg");
+	    byte[] bytes = IOUtils.toByteArray(mhtc_logo);
+	    int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+	    mhtc_logo.close();
+	    
+	    CreationHelper helper = wb.getCreationHelper();
+	    Drawing drawing = sheet.createDrawingPatriarch();
 
-    	JSONObject json = new JSONObject(data);
-    	String year = json.getString("year");
-		JSONArray rows =  json.getJSONArray("rows");
+	    ClientAnchor anchor = helper.createClientAnchor();
+	    anchor.setAnchorType(ClientAnchor.DONT_MOVE_AND_RESIZE);
+	    anchor.setCol1(0);
+	    anchor.setRow1(0);
+	    Picture pict = drawing.createPicture(anchor, pictureIdx);
+ 
+		Row logoRow = sheet.createRow(0);
+		Cell logoCell = logoRow.createCell(0);
+		logoRow.setHeight((short) 1000);
 		
-		// For the first row, put the year number into
-		Row yearRow = sheet.createRow(0);
-		Cell sheetCell = yearRow.createCell(0);
-		sheetCell.setCellValue(year);
+		/* For (2,1), put date */
+		Row dateRow = sheet.createRow(1);
+		Cell dateCell = dateRow.createCell(0);
+		SimpleDateFormat downloadDateFormat = new SimpleDateFormat("MMM d, yyyy hh:mm:ss aaa");
+		dateCell.setCellValue("Date: "+ downloadDateFormat.format(new Date()));
 		
+		/* For (4,1), a title cell */
+		Row titleRow = sheet.createRow(3);
+		Cell titleCell = titleRow.createCell(0);
 		
-		//Write header row, first col State followed by metric names
-		Row headerRow = sheet.createRow(1);
-		Cell cell = headerRow.createCell(0);
-		cell.setCellValue("State");
-		
-		JSONArray row = rows.getJSONArray(0);
-		for (int j = 1; j < row.length(); j++) {
-			cell = headerRow.createCell(j);
-			cell.setCellValue(row.getString(j));
+		// If there's only 1 metric, multiple states, set the metric font weight normal
+		if (!metricTitle) { 
+			titleCell.setCellValue(title);
+		} else {
+			RichTextString richString = new XSSFRichTextString(title);
+			richString.applyFont(0, 5, boldFont);
+			titleCell.setCellValue(richString);
 		}
 		
-		// Read and put data into the Excel file
-		for (int i = 0; i < rows.length()-1; i++) {
-			row = rows.getJSONArray(i+1);
-			Row sheetRow = sheet.createRow(i+2);
-			for (int j = 0; j < row.length(); j++) {
-				cell = sheetRow.createCell(j);
-				cell.setCellValue(row.getString(j));
+		titleCell.setCellStyle(boldStyle);
+		
+		/* We can now put the rows from the table in, the table header row should be in bold font.
+		 * This will go from row 4 to row [4 + (table_length) - 1]
+		 */
+		for (int i = 0; i < jsonTable.length(); i++) {
+			JSONArray jsonDataRow = jsonTable.getJSONArray(i);
+			Row dataRow = sheet.createRow(i+4);
+			for (int j = 0; j < jsonDataRow.length(); j++) {
+				Cell cell = dataRow.createCell(j);
+				cell.setCellValue(jsonDataRow.getString(j));
+				
+				if (i == 0) {
+					cell.setCellStyle(boldStyle);
+				}
+			}
+			
+			if (i > 0) {
+				sheet.autoSizeColumn(i);
 			}
 		}
+	    
+		/* "Original Data Sources" row: */
+		int currentPtr = 4 + jsonTable.length() + 1;
+		Row dsTextRow = sheet.createRow(currentPtr);
+		Cell dsCell = dsTextRow.createCell(0);
+		dsCell.setCellValue("Original Data Sources");
 		
+		dsCell.setCellStyle(boldStyle);
+	    
+	    /* Now, list all the metrics and its sources */
+		for (int i = 0; i < jsonMetrics.length(); i++) {
+			currentPtr++;
+			JSONArray jsonMetricRow = jsonMetrics.getJSONArray(i);
+			Row metricRow = sheet.createRow(currentPtr);
+			
+			Cell metricCell = metricRow.createCell(0);
+			Cell metricUrlCell = metricRow.createCell(1);
+			
+			metricCell.setCellValue(jsonMetricRow.getString(0));
+			metricUrlCell.setCellValue(jsonMetricRow.getString(1));
+		}	    
+		
+		sheet.autoSizeColumn(0);
+		sheet.autoSizeColumn(1);
+		
+		// Copyrights stuff
+		currentPtr = currentPtr + 2;
+		Row copyrightRow = sheet.createRow(currentPtr);
+		Cell copyrightCell = copyrightRow.createCell(0);
+		copyrightCell.setCellValue("Generated from http://matters.mhtc.org/. Copyright 2015 Worcester Polytechnic Institute. Sponsored by the Massachusetts High Technology Council.");
+		
+		// Disclaimer stuff
+		currentPtr = currentPtr + 2;
+		Row disclaimerRow = sheet.createRow(currentPtr);
+		Cell disclaimerCell = disclaimerRow.createCell(0);
+		disclaimerCell.setCellValue("Please note that in any tax-related information, data or metrics are reflective of the tax policy that is generally applicable to the broadest set of taxpayers. Please note that in many instances and jurisdictions, various and differing tax regimes may be applicable. Similarly, tax-related information contained within MATTERS is not intended to be tax advice. Neither MATTERS nor the Massachusetts High Technology Council is a tax advice expert offering tax advice.");
+		
+		// Disclaimer stuff 2
+		currentPtr = currentPtr + 2;
+		Row disclaimerRow2 = sheet.createRow(currentPtr);
+		Cell disclaimerCell2 = disclaimerRow2.createCell(0);
+		disclaimerCell2.setCellValue("Neither MATTERS nor the Massachusetts High Technology Council makes any representations, warranties, or assurances as to the accuracy, currency or completeness of the content contain in MATTERS or any sites linked to this site.");
+		
+		pict.resize();
 		response.setHeader( "Content-Disposition", "attachment;filename=matters_data.xlsx");
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		ServletOutputStream out = response.getOutputStream();

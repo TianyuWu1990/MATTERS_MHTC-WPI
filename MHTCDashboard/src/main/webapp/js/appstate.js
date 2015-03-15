@@ -404,10 +404,18 @@ var AS = (function($) {
 	 */
 	AppState.prototype.exportExcelData = function() {
 		var data = {
-			year : $("ul.timelineListStyle button#tableTimeLineButton.active")
-					.text(),
-			rows : []
+			rows : [],
+			title : "",
+			metrics: [],
+			metricTitle : false
 		};
+		
+		// Decide which title to put into the excel file
+		var year  = "Year: " + $("ul.timelineListStyle button#tableTimeLineButton.active").text();
+		var tableHeader = $(".box-content #optionalTableTitle").text();
+		
+		data.title = $(".box-content #optionalTableTitle").is(":visible") ? tableHeader: year;
+		
 
 		// Column heads
 		var header = [];
@@ -415,10 +423,27 @@ var AS = (function($) {
 			header.push($(this).text());
 		});
 		data.rows.push(header);
+		
 		// Table data
 		$.each(dt.fnGetData(), function(key, value) {
-			data.rows.push(value);
+			value[0] = $('<div>' + value[0] + '<div>').text();
+			data.rows.push(value);	
 		});
+		
+		var firstStateQuery = recentQueryData[0];
+		
+		for (var i = 0; i < firstStateQuery.length; i++) {
+			var name = firstStateQuery[i].metric.name;
+			var url = firstStateQuery[i].metric.urlFrom == null ? "N/A" : firstStateQuery[i].metric.urlFrom;
+			data.metrics.push([name, url]);
+		}
+		
+		// Only one metric but multiple states, add "Metric" to the title
+		if ((firstStateQuery.length == 1) && (recentQueryData.length > 1)) {
+			data.title = "Metric:" + data.title;
+			data.metricTitle = true;
+		}
+		 
 		var url = "excel?data=" + encodeURIComponent(JSON.stringify(data));
 		window.location = url;
 	};
