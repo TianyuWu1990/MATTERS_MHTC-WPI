@@ -67,7 +67,7 @@ body {
     <div class="container">    
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
             <div class="panel panel-info" >
-                    <div class="panel-heading">
+                    <div class="panel-heading" style="color: white; background-color: #680017;">
                         <div class="panel-title">Forgot your password?</div>
                     </div>     
 
@@ -95,7 +95,7 @@ body {
                             
                             <div style="margin-top:10px" class="form-group">
                                 <div class="col-sm-12 controls center" align="center">
-                                  <a id="btn-login" href="#" class="btn btn-success" onclick="$('#resetRequestForm').submit();">Request password reset</a>
+                                  <a id="btn-login" href="#" class="btn btn-danger" onclick="$('#resetRequestForm').submit();">Request password reset</a>
                                 </div>
                             </div>   
                         </form> 
