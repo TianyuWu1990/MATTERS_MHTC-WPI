@@ -23,21 +23,14 @@ public class AppInitializer implements WebApplicationInitializer {
 		//servletContext.addListener(new ContextLoaderListener(context));
 		//ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
        // dispatcher.setLoadOnStartup(1);
-        //dispatcher.addMapping("/*");
-		/*try {
-			Logger.log("Server", "Server has been restarted.");
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+        //dispatcher.addMapping("/*");	
 		try {
 			JobScheduler.createScheduler();
 			JobScheduler.start();
 			System.out.println("Scheduler started");
 		} catch (Exception e) {
 			System.out.println("Error starting the job scheduler.");
-		}*/
+		}
 		
 
 	}
