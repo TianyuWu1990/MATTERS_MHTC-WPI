@@ -17,11 +17,16 @@
 <!-- Bootstrap core CSS -->
 <link href="../adminPanel/css/bootstrap.min.css" rel="stylesheet">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
+
 <style>
 body {
 	padding-top: 40px;
 	padding-bottom: 40px;
 	background-color: #eee;
+	font-family: Muli,sans-serif;
 }
 
 .form-signin {
