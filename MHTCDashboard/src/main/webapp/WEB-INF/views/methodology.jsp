@@ -212,7 +212,7 @@
 										<tr>
 										<tr>
 											<td>Cost</td>
-											<td>State Sales Ttax Rate</td>
+											<td>State Sales Tax Rate</td>
 											<td>KPMG/Sales Tax Clearinghouse</td>
 											<td>2011-2014</td>
 											<td>Annual</td>
