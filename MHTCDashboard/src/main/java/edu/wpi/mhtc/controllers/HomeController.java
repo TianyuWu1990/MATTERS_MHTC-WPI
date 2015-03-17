@@ -52,6 +52,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -82,6 +83,9 @@ public class HomeController {
 	
 	@Autowired
     ReCaptchaImpl reCaptcha;
+	
+	@Autowired
+	ServletContext context;
 		
 	@Autowired
 	public HomeController(StatsService statsService, StateService stateService)
@@ -436,25 +440,26 @@ public class HomeController {
 	    boldStyle.setFont(boldFont);
 	    /***************** MISC INIT ***************************/
 	    
+	    
 		/* For (1,1), put MHTC logo */
-	    String path = this.getClass().getClassLoader().getResource("").getPath() + "../../css/img/";
-	    InputStream mhtc_logo = new FileInputStream(path + "main-logo.jpg");
+	    InputStream mhtc_logo = context.getResourceAsStream("/css/img/excel-logo.jpg");
 	    byte[] bytes = IOUtils.toByteArray(mhtc_logo);
 	    int pictureIdx = wb.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
 	    mhtc_logo.close();
 	    
 	    CreationHelper helper = wb.getCreationHelper();
 	    Drawing drawing = sheet.createDrawingPatriarch();
-
+	    
+	    Row logoRow = sheet.createRow(0);
+		logoRow.setHeight((short) 1000);
+		
 	    ClientAnchor anchor = helper.createClientAnchor();
 	    anchor.setAnchorType(ClientAnchor.DONT_MOVE_AND_RESIZE);
 	    anchor.setCol1(0);
 	    anchor.setRow1(0);
 	    Picture pict = drawing.createPicture(anchor, pictureIdx);
  
-		Row logoRow = sheet.createRow(0);
-		Cell logoCell = logoRow.createCell(0);
-		logoRow.setHeight((short) 1000);
+		
 		
 		/* For (2,1), put date */
 		Row dateRow = sheet.createRow(1);
@@ -496,6 +501,7 @@ public class HomeController {
 				sheet.autoSizeColumn(i);
 			}
 		}
+		sheet.setColumnWidth(0, 3000);
 	    
 		/* "Original Data Sources" row: */
 		int currentPtr = 4 + jsonTable.length() + 1;
