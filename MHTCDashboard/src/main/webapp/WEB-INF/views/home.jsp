@@ -29,8 +29,7 @@
 		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
-		
-		
+		<link href="css/style-print.css" id="base-style-print" rel="stylesheet">
 		
 		<!-- Library JS -->
 		<script src="js/d3.v3.min.js"></script>
