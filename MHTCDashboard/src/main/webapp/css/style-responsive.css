@@ -9,6 +9,10 @@
 
 @media only screen and (max-width: 830px){
 	
+	#startupMsgAct{
+		width:80%;
+	}
+	
 	.pagination-header-left{
 		display:none;
 	}
@@ -30,10 +34,6 @@
 		padding:0px;
 	}
 	
-	.trigger-button:hover
-	{
-		background-color: #b41432;
-	}
 	
 	.trigger-button.open
 	{
@@ -64,6 +64,9 @@
 	
 	#viewWrapper{
 		left:0px;
+	}
+	.side-icon{
+		padding:15px 10px;
 	}
 
 }
