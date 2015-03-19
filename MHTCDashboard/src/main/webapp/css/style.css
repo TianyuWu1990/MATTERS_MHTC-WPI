@@ -378,6 +378,12 @@ table.dataTable tbody tr:nth-child(even) {
 	margin-right: auto !important;
 }
 
+.box-content > .excel-download {
+	margin-left: auto !important;
+    margin-right: auto !important;
+    width: 90%;
+}
+
 #mbody, #mbodyBar {
 	width: 100% !important;
 }

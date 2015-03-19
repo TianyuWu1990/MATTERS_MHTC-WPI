@@ -547,7 +547,9 @@ var CM = (function($) {
 				
 				query.execute(function(multiData) {
 					
-						
+						// TODO: THIS CODE IS BUGGY WHEN YOU SELECTED MULTIPLE STATES AND 
+						// ONE METRIC THAT HAS NO DATA IN IT
+						// multidata[0][0] will be undefined.
 						var metricFromQuery = multiData[0][0].metric;
 						
 						$("#optionalTableTitle").html('<span id="info" title="' + metricFromQuery.desc 

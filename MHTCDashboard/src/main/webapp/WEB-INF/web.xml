@@ -25,7 +25,7 @@
      </context-param>
      <context-param>
          <param-name>quartz:wait-on-shutdown</param-name>
-         <param-value>true</param-value>
+         <param-value>false</param-value>
      </context-param>
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
