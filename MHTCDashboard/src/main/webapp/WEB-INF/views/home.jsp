@@ -297,8 +297,8 @@
 										<div class="excel-download">
 											<button title="Save selected data as an Excel file." id="excelDownloadBtn" style="display:none;" class="btn btn-danger" type="button" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
 												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
-												Download table as Excel spreadsheet
 											</button>
+											<span>Download table as Excel spreadsheet</span>
 										</div>
 									</div>
 								</div>
