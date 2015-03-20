@@ -100,6 +100,19 @@ public class HomeController {
 	}
 	
 	/**
+	 * Returns the unsupported browser page.
+	 * @throws ParseException 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
+	 */
+	@RequestMapping(value = "/unsupported", method = RequestMethod.GET)
+	public String unsupportedBrowser(Locale locale, Model model)
+	{
+	    return "unsupported_browser";
+	}
+	
+	/**
 	 * Returns the about page.
 	 * @throws ParseException 
 	 * @throws IOException 

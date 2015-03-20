@@ -13,6 +13,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
 		<!-- Library CSS -->
 		<link href="css/nv.d3.css" rel="stylesheet">
 		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -30,6 +31,31 @@
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
 		<link href="css/style-print.css" id="base-style-print" rel="stylesheet">
+			
+		<!-- Check for browser compatibility before we do anything else -->
+		<script src="js/modernizr.js"></script>
+		
+		<script type="text/javascript">						
+			var compatible = true;
+			compatible = compatible & Modernizr.rgba;
+			compatible = compatible & Modernizr.backgroundsize;
+			compatible = compatible & Modernizr.borderradius;
+			compatible = compatible & Modernizr.boxshadow;
+			compatible = compatible & Modernizr.opacity;
+			compatible = compatible & Modernizr.cssanimations;
+			compatible = compatible & Modernizr.csstransforms;
+			compatible = compatible & Modernizr.svg;
+			compatible = compatible & Modernizr.generatedcontent;
+			compatible = compatible & Modernizr.inlinesvg;
+			compatible = compatible & Modernizr.svgclippaths;
+			compatible = compatible & Modernizr.mediaqueries;
+			compatible = compatible & Modernizr.boxsizing;
+			compatible = compatible & Modernizr.bgpositionshorthand;
+			compatible = compatible & Modernizr.bgpositionxy;
+			
+			if (!compatible)
+				window.location = "./unsupported";			
+		</script>
 		
 		<!-- Library JS -->
 		<script src="js/d3.v3.min.js"></script>
@@ -42,20 +68,12 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
 		
-		<script src="js/modernizr.js"></script>
-		
 		<!-- Custom JS -->
 		<script src="js/dataquery.js"></script>
 		<script src="js/state.js"></script>
 		<script src="js/metric.js"></script>
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
-		
-		<!--[if lt IE 9]
-		<script type="text/javascript">
-			var isLtIE9 = true;
-		</script>
-		<![endif]-->
 		
 		<title>MATTERS</title>
 	
@@ -64,21 +82,6 @@
 	<body>
 	
 	<jsp:include page="unifiedHeader.jsp"/>
-	
-	<div id="globalErrorDiv" style="display:none;">
-		<div id="globalErrorMsgWrapper">
-			<i class="fa fa-exclamation-triangle fa-2x"></i>
-			<span id="globalErrorMsg">
-			Sorry! Your browser is not currently supported by MATTERS. 
-			
-			<br/><br/>
-			
-			Please upgrade your browser or switch to a supported browser, 
-			such as <a href="http://www.google.com/chrome/">Chrome</a> 
-			or <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>.
-			</span>
-		</div>
-	</div>
 
 	<div class="container-fluid-full" style="z-index: 1;" id="mainContentDiv">
 				<!-- start: left sidebar -->
@@ -369,13 +372,20 @@
 						<!-- End Error Reporting -->	
 						
 						<div id="startupMsg">
-							<div id="startupMsgAct"><b>
+							<div id="startupMsgAct">
+							<div id="noJSError" style="color: #680017; font-weight: bolder;">
+								WARNING: You must have JavaScript enabled to use this site.
+								<br/>
+								<br/>
+							</div>
+							
+							<b>
 							Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
 							
 							To start, please select metrics and states from the menu to the left.<br/><br/><br/>
 				 			<div>
 				 			Use the buttons in the red bar above to view your selection in different ways.
-				 			</div>
+				 			</div>				 			
 							</div>
 						</div>
 					</div>
