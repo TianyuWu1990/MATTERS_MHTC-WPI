@@ -46,7 +46,13 @@
     <main class="site-main" role="main">
       
       <div class="main-content-wrap">
-       <div class="container interior-container">
+      	<div id="noJSError" style="color: #680017; font-weight: bolder; font-size: 25px; text-align: center; padding-top: 20px;">
+			WARNING: You must have JavaScript enabled to use this page.
+			<br/>
+			<br/>
+		</div>
+      
+       <div class="container interior-container" id="mainContent" style="display: none;">
 
 
 		   <div class="copy-block">
@@ -143,6 +149,11 @@
 		}
 	});
 
+</script>
+
+<script type="text/javascript">
+	$("#mainContent").show();
+	$("#noJSError").hide();
 </script>
 </body>
 </html>

@@ -374,7 +374,7 @@
 						<div id="startupMsg">
 							<div id="startupMsgAct">
 							<div id="noJSError" style="color: #680017; font-weight: bolder;">
-								WARNING: You must have JavaScript enabled to use this site.
+								WARNING: You must have JavaScript enabled to use this page.
 								<br/>
 								<br/>
 							</div>

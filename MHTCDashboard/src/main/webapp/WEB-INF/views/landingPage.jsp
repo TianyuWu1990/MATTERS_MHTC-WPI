@@ -69,6 +69,12 @@
 <!-- ==================================== MAP SECTION ========= -->
 
 <section class="map-sect">
+	<div id="noJSError" style="color: white; font-weight: bolder; font-size: 25px; text-align: center; padding-top: 20px;">
+		WARNING: This page will not display correctly with JavaScript disabled. 
+		<br/><br/>Please enable JavaScript and refresh your page.
+		<br/>
+		<br/>
+	</div>
 	<div class="container map-container" ng-app="map_application">
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
@@ -241,6 +247,9 @@
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+$("#noJSError").hide();
+</script>
 
 </body>
 </html>
