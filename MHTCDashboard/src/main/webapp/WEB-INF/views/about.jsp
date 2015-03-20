@@ -21,6 +21,31 @@
 <link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 
+<!-- Check for browser compatibility before we do anything else -->
+<script src="js/modernizr.js"></script>
+
+<script type="text/javascript">						
+	var compatible = true;
+	compatible = compatible & Modernizr.rgba;
+	compatible = compatible & Modernizr.backgroundsize;
+	compatible = compatible & Modernizr.borderradius;
+	compatible = compatible & Modernizr.boxshadow;
+	compatible = compatible & Modernizr.opacity;
+	compatible = compatible & Modernizr.cssanimations;
+	compatible = compatible & Modernizr.csstransforms;
+	compatible = compatible & Modernizr.svg;
+	compatible = compatible & Modernizr.generatedcontent;
+	compatible = compatible & Modernizr.inlinesvg;
+	compatible = compatible & Modernizr.svgclippaths;
+	compatible = compatible & Modernizr.mediaqueries;
+	compatible = compatible & Modernizr.boxsizing;
+	compatible = compatible & Modernizr.bgpositionshorthand;
+	compatible = compatible & Modernizr.bgpositionxy;
+	
+	if (!compatible)
+		window.location = "./unsupported";			
+</script>
+
 </head>
 
 <body class="home" id="top">
