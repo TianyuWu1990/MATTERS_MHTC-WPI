@@ -18,11 +18,16 @@
 	#metricCycleButtons
 	{
 		top: 5px !important;
-	}
+	}	
 	
 	.backButton
 	{
-		display: none;
+		display: none !important;
+	}
+	
+	.nextButton
+	{
+		display: none !important;
 	}
 	
 	#table.tab-pane
@@ -81,4 +86,8 @@
 		display: none;
 	}
 	
+	.heatmap-legend-bucket-swatch
+	{
+		-webkit-print-color-adjust: exact;
+	}
 }
