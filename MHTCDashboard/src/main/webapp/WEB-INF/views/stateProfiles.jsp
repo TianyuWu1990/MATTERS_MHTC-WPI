@@ -24,6 +24,32 @@
 	<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 	<link href="css/stateProfiles.css" rel="stylesheet" type="text/css">
+	
+	<!-- Check for browser compatibility before we do anything else -->
+	<script src="js/modernizr.js"></script>
+	
+	<script type="text/javascript">						
+		var compatible = true;
+		compatible = compatible & Modernizr.rgba;
+		compatible = compatible & Modernizr.backgroundsize;
+		compatible = compatible & Modernizr.borderradius;
+		compatible = compatible & Modernizr.boxshadow;
+		compatible = compatible & Modernizr.opacity;
+		compatible = compatible & Modernizr.csstransforms;
+		compatible = compatible & Modernizr.svg;
+		compatible = compatible & Modernizr.generatedcontent;
+		compatible = compatible & Modernizr.inlinesvg;
+		compatible = compatible & Modernizr.svgclippaths;
+		compatible = compatible & Modernizr.mediaqueries;
+		compatible = compatible & Modernizr.boxsizing;
+		compatible = compatible & Modernizr.bgpositionshorthand;
+		compatible = compatible & Modernizr.bgpositionxy;
+		
+		if (!compatible)
+			window.location = "./unsupported";			
+	</script>
+
+	
 	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/libjs"></script>
 	<script type="text/javascript" src="js/mesh/caliper/profile-app.js"></script>
 </head>
@@ -44,7 +70,12 @@
                        "Tax burden per capita rank", "Percent tech employment", "Tech employment rank", "Unempl insurance",
                        "Unempl insurance rank"
        -->
-		<div class="container" ng-controller="profile_controller as state" initial="Massachusetts" style="overflow-x:hidden;">
+       <div id="noJSError" style="color: #680017; font-weight: bolder; font-size: 25px; text-align: center; padding-top: 20px;">
+			WARNING: You must have JavaScript enabled to use this page.
+			<br/>
+			<br/>
+		</div>
+		<div class="container" ng-controller="profile_controller as state" initial="Massachusetts" style="overflow-x:hidden; display:none;" id="mainContent">
 		
 			<div class="state-profile-title">
 				<div id="stateChooserWrapper">
@@ -225,5 +256,10 @@
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/mesh/data/state-profiles.js"></script>
 <script type="text/javascript" src="js/stateChooser.stateProfiles.js"></script>
+
+<script type="text/javascript">
+	$("#mainContent").show();
+	$("#noJSError").hide();
+</script>
 </body>
 </html>

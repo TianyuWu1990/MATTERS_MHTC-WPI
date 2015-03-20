@@ -413,7 +413,8 @@ var CM = (function($) {
 			}
 			
 			var bucketHTML = '<div class="heatmap-legend-bucket">'
-				+ '<div class="heatmap-legend-bucket-swatch" style="background-color:' + bucketColor + ';"></div>'
+				+ '<svg class="heatmap-legend-bucket-swatch" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="20px" height="20px"' 
+				+ 'fill="' + bucketColor + '"></rect></svg>'
 				+ '<div class="heatmap-legend-bucket-num">' + bucketRange + '</div></div>';
 			
 			$("#heatmap-legend-legend").append(bucketHTML);

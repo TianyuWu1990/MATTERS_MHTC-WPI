@@ -33,25 +33,10 @@ stopHeatMapAnimation=function() {
 	global_timer = null;
 };
 
-function isCompatibleBrowser() 
-{	
-	if (typeof isLtIE9 !== 'undefined')
-	{
-		return false;
-	}
-
-	return true;
-}
-
-function displayBrowserVersionMsg()
-{
-	$("#mainContentDiv").hide();
-	
-	$("#globalErrorDiv").attr("style", "display: block;");
-}
-
 $(document).ready(function() {
-		
+	
+	$("#noJSError").hide();
+	
 	// Init menu
 	$(".menu-close").prependTo(".menu > ul");
 	   
@@ -63,21 +48,13 @@ $(document).ready(function() {
 		$(".menu").slideUp();
 	});
 	
-	
-	if (isCompatibleBrowser())
-	{
-		loadFunction();
-	}
-	else
-	{
-		displayBrowserVersionMsg();
-	}
+	loadFunction();
 });
 
 var mobileMode = false;
 
 loadFunction = function() {	
-	
+
 	cm = CM.create();
 	as = AS.create();
 	

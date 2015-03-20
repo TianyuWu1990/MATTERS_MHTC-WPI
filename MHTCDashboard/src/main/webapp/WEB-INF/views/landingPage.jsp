@@ -56,6 +56,32 @@
 				display: none;
 			}
 	</style>
+	
+	<!-- Check for browser compatibility before we do anything else -->
+	<script src="js/modernizr.js"></script>
+	
+	<script type="text/javascript">						
+		var compatible = true;
+		compatible = compatible & Modernizr.rgba;
+		compatible = compatible & Modernizr.backgroundsize;
+		compatible = compatible & Modernizr.borderradius;
+		compatible = compatible & Modernizr.boxshadow;
+		compatible = compatible & Modernizr.opacity;
+		compatible = compatible & Modernizr.csstransforms;
+		compatible = compatible & Modernizr.svg;
+		compatible = compatible & Modernizr.generatedcontent;
+		compatible = compatible & Modernizr.inlinesvg;
+		compatible = compatible & Modernizr.svgclippaths;
+		compatible = compatible & Modernizr.mediaqueries;
+		compatible = compatible & Modernizr.boxsizing;
+		compatible = compatible & Modernizr.bgpositionshorthand;
+		compatible = compatible & Modernizr.bgpositionxy;
+		
+		if (!compatible)
+			window.location = "./unsupported";			
+	</script>
+	
+	
 	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/js"></script>
 </head>
 
@@ -69,6 +95,12 @@
 <!-- ==================================== MAP SECTION ========= -->
 
 <section class="map-sect">
+	<div id="noJSError" style="color: white; font-weight: bolder; font-size: 25px; text-align: center; padding-top: 20px;">
+		WARNING: This page will not display correctly with JavaScript disabled. 
+		<br/><br/>Please enable JavaScript and refresh your page.
+		<br/>
+		<br/>
+	</div>
 	<div class="container map-container" ng-app="map_application">
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
@@ -241,6 +273,9 @@
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+$("#noJSError").hide();
+</script>
 
 </body>
 </html>
