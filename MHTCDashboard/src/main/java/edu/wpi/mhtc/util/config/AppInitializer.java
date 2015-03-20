@@ -37,7 +37,7 @@ public class AppInitializer implements WebApplicationInitializer {
 	@SuppressWarnings("unused")
 	private AnnotationConfigWebApplicationContext getContext() {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.setConfigLocation("edu.wpi.mhtc.dashboard.config");
+		context.setConfigLocation("edu.wpi.mhtc.util.config");
 		
 		return context;
 		
