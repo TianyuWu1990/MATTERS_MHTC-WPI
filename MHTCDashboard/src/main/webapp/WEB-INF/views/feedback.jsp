@@ -45,7 +45,6 @@
 	compatible = compatible & Modernizr.borderradius;
 	compatible = compatible & Modernizr.boxshadow;
 	compatible = compatible & Modernizr.opacity;
-	compatible = compatible & Modernizr.cssanimations;
 	compatible = compatible & Modernizr.csstransforms;
 	compatible = compatible & Modernizr.svg;
 	compatible = compatible & Modernizr.generatedcontent;
