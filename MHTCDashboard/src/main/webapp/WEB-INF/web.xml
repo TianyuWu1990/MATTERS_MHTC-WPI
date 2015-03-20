@@ -14,12 +14,12 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			edu.wpi.mhtc.dashboard.config.GlobalConfiguration
+			edu.wpi.mhtc.util.config.GlobalConfiguration
 		</param-value>
 	</context-param>
 	<context-param>
 	    <param-name>contextInitializerClasses</param-name>
-	    <param-value>edu.wpi.mhtc.dashboard.config.AppContextInitializer</param-value>
+	    <param-value>edu.wpi.mhtc.util.config.AppContextInitializer</param-value>
 	</context-param>
 
 	<!-- Quart Scheduler Initializer -->
@@ -48,7 +48,7 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				edu.wpi.mhtc.dashboard.config.GlobalConfiguration
+				edu.wpi.mhtc.util.config.GlobalConfiguration
 			</param-value>
 		</init-param>
 

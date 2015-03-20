@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import edu.wpi.mhtc.model.Data.DataSeries;
-import edu.wpi.mhtc.model.Data.Metric;
-import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.service.MetricService;
-import edu.wpi.mhtc.service.StateService;
-import edu.wpi.mhtc.service.StatsService;
+import edu.wpi.mhtc.model.dashboard.DataSeries;
+import edu.wpi.mhtc.model.dashboard.Metric;
+import edu.wpi.mhtc.model.dashboard.State;
+import edu.wpi.mhtc.service.dashboard.MetricService;
+import edu.wpi.mhtc.service.dashboard.StateService;
+import edu.wpi.mhtc.service.dashboard.StatsService;
 
 @Controller
 public class StatsController {

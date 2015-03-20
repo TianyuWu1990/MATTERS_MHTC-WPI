@@ -54,14 +54,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
-import edu.wpi.mhtc.dashboard.pipeline.dao.UserService;
-import edu.wpi.mhtc.helpers.Mailer;
-import edu.wpi.mhtc.model.Data.DataSeries;
 import edu.wpi.mhtc.model.admin.User;
-import edu.wpi.mhtc.model.state.PeerStates;
-import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.service.StateService;
-import edu.wpi.mhtc.service.StatsService;
+import edu.wpi.mhtc.model.dashboard.DataSeries;
+import edu.wpi.mhtc.model.dashboard.PeerStates;
+import edu.wpi.mhtc.model.dashboard.State;
+import edu.wpi.mhtc.service.admin.UserService;
+import edu.wpi.mhtc.service.dashboard.StateService;
+import edu.wpi.mhtc.service.dashboard.StatsService;
+import edu.wpi.mhtc.util.helpers.Mailer;
 
 /**
  * Handles requests for the application home page.

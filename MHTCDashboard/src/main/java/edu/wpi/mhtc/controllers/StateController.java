@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import edu.wpi.mhtc.model.state.State;
-import edu.wpi.mhtc.service.MetricService;
-import edu.wpi.mhtc.service.StateService;
+import edu.wpi.mhtc.model.dashboard.State;
+import edu.wpi.mhtc.service.dashboard.MetricService;
+import edu.wpi.mhtc.service.dashboard.StateService;
 
 /**
  * A controller that provides endpoints that returns states or lists of states.
