@@ -13,6 +13,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
+		
 		<!-- Library CSS -->
 		<link href="css/nv.d3.css" rel="stylesheet">
 		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">

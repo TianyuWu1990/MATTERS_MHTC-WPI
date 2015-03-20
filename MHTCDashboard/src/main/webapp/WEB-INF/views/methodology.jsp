@@ -12,6 +12,8 @@
 <meta name="application-version" content="2015.2.12">
 <meta name="generator" content="Maptitude">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
+
 <title>MATTERS</title>
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
