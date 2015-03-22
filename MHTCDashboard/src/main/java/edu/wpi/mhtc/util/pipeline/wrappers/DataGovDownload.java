@@ -22,7 +22,7 @@ public class DataGovDownload {
 	private Map<String, String> cookies;
 	
 	public DataGovDownload() throws IOException {
-		this.loginInventoryPage();
+		loginInventoryPage();
 		downloader = new URLDownload();
 	}
 	

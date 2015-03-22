@@ -17,13 +17,12 @@ public class EIADownload implements IWrapper {
 	private PrintWriter writerRate;
 	
 	public EIADownload() throws Exception {
-		
-		this.download();
+		download();
 	}
 	
 	public void download() throws Exception {
 		System.out.println("==== eiv.gov API downloader started ====");
-		this.DownloadAverageElectricityCost();	
+		DownloadAverageElectricityCost();	
 	}
 	
 	/**

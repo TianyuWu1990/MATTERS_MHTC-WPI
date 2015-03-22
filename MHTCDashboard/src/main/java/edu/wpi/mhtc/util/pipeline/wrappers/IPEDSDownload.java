@@ -23,7 +23,7 @@ import edu.wpi.mhtc.util.helpers.UnZip;
 
 public class IPEDSDownload {
 	public IPEDSDownload() throws IOException {
-		this.download();
+		download();
 	}
 
 	
