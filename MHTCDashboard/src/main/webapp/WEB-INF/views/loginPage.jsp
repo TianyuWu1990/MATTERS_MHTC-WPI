@@ -74,6 +74,7 @@
 				<label>Password</label> <br/>
 				<input name="password" type="password" id="inputPassword" placeholder="Password" required>
 				<br/><br/>
+				<a href="user/forgot" target="_blank">Forgot password?</a> <br/><br/>
 				<button class="btn btn-lg btn-primary" type="submit">Sign in</button>
 			</form>
 		   </div> <!-- copy block -->

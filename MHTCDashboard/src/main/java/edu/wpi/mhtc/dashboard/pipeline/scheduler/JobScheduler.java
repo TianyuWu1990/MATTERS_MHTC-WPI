@@ -39,7 +39,6 @@ public class JobScheduler {
 		} else {
 			JobScheduler.createTalendJob(specificDateTimeTrigger(sched.getSched_date()), sched);
 		}
-		
 	}
 
 	/**************** Job operations ****************/

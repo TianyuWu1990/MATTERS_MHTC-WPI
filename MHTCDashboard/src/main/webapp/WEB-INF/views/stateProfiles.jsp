@@ -159,23 +159,23 @@
 				<div class="source">Source</div>
 			</div>
 
-					<div class="index row">
-						<div class="rank">{{state.properties["Milken Science and Tech Index"]}}</div>
+					<div class="index row" >
+						<div class="rank" >{{state.properties["Milken Science and Tech Index"]}}</div>
 						<div class="data">-</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Milken Science and Tech Index"]) }}'></div></div>
 						<div class="year">2014</div>
 						<div class="survey">Milken State Science and Technology Index</div>
 						<div class="source">Milken Institute</div>
 					</div>
-					<div class="index row">
-						<div class="rank">{{state.properties["Tax Foundation Business Tax Index"]}}</div>
+					<div class="index row" >
+						<div class="rank" >{{state.properties["Tax Foundation Business Tax Index"]}}</div>
 						<div class="data">-</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tax Foundation Business Tax Index"]) }}'></div></div>
 						<div class="year">2015</div>
 						<div class="survey">State Business Tax Climate Index</div>
 						<div class="source">Tax Foundation</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["CNBC Top States for Business"]}}</div>
 						<div class="data">-</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["CNBC Top States for Business"]) }}'></div></div>
@@ -183,7 +183,7 @@
 						<div class="survey">CNBC Top States for Business</div>
 						<div class="source">CNBC</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Key tech demand hiring rank"]}}</div>
 						<div class="data">{{state.properties["Key tech demand hiring difficulty"]}}</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Key tech demand hiring rank"]) }}'></div></div>
@@ -191,7 +191,7 @@
 						<div class="survey">Tech Demand Hiring Difficulty</div>
 						<div class="source">Wanted Analytics and Monster Government Solutions</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Tech employment rank"]}}</div>
 						<div class="data">{{state.properties["Percent tech employment"]}}%</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tech employment rank"]) }}'></div></div>
@@ -199,7 +199,7 @@
 						<div class="survey">Tech Employment as a % of Workforce</div>
 						<div class="source">National Science Foundation and Bureau of Labor Statistics, Occupational Employment  Statistics Survey</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Bachelors degree holders rank"]}}</div>
 						<div class="data">{{state.properties["Percent bachelors degree holders"]}}%</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Bachelors degree holders rank"]) }}'></div></div>
@@ -207,7 +207,7 @@
 						<div class="survey">Bachelors degree holders as a % of Workforce</div>
 						<div class="source">US Census/Bureau of Labor Statistics</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Unempl insurance rank"]}}</div>
 						<div class="data">{{state.properties["Unempl insurance"]}}</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Unempl insurance rank"]) }}'></div></div>
@@ -215,7 +215,7 @@
 						<div class="survey">Unemployment Insurance Average Premium per Employee</div>
 						<div class="source">US Department of Labor - Employment and Training Administration, Bureau of Labor Statistics</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Tax burden per capita rank"]}}</div>
 						<div class="data">{{state.properties["Tax burden per capita"]}}</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tax burden per capita rank"]) }}'></div></div>
