@@ -380,6 +380,21 @@ var AS = (function($) {
 		if (this.currentVisualizationType == this.visualizations.BAR)
 			visualizationKey = "#mbodyBar > svg";
 		
+		// Add styles directly to the SVG so they'll appear in the download
+		$(".nvd3 .nv-axis .nv-axisMaxMin text").css("font-weight", "bold");
+		$(".nvd3 .nv-groups path.nv-line").css("fill", "none");
+		$(".nvd3 .nv-groups path.nv-line").css("stroke-width", "1.5px");
+		$("svg text").css("font", "normal 12px Arial");
+		$(".nvd3 .nv-axis line").css("fill", "none");
+		$(".nvd3 .nv-axis line").css("stroke", "#e5e5e5");
+		$(".nvd3 .nv-axis line").css("shape-rendering", "crispEdges");
+		$(".nvd3 .nv-multibar .nv-groups rect").css("stroke-opacity", "0");
+		$(".nvd3 .nv-axis path").css("fill", "none");
+		$(".nvd3 .nv-axis path").css("stroke", "#000");
+		$(".nvd3 .nv-axis path").css("stroke-opacity", "1");
+		$(".nvd3 .nv-axis path").css("shape-rendering", "crispEdges");
+		$(".nvd3 .nv-axis.nv-x path.domain").css("stroke-opacity", "0");
+		
 		// Load SVG onto canvas
 		$("#printCanvasWrapper").show();
 				
