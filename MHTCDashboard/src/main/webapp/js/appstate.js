@@ -404,13 +404,20 @@ var AS = (function($) {
 		var ctx = canvas.getContext('2d');
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		
-		$("#printCanvas").attr("width", $(visualizationKey).width());
-		$("#printCanvas").attr("height", $(visualizationKey).height() + 150);
+		canvas.width = $(visualizationKey).width();
+		canvas.height = $(visualizationKey).height() + 150;
+		
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = "#fff";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		
+		ctx.fillStyle = "#000";
 		
 		var xCoord = $(visualizationKey).width() / 2;
 		var metricIndex = this.currentind;
 		
-		canvg(canvas, serialized, { offsetY: 150, ignoreMouse: true, ignoreAnimation: true, renderCallback: function() {
+		canvg(canvas, serialized, { offsetY: 150, ignoreMouse: true, ignoreClear: true, 
+			ignoreAnimation: true, renderCallback: function() {
 			
 			ctx.drawImage(document.getElementById('printCanvasLogo'), canvas.width / 2 - 95, 0, 330, 100);
 			ctx.font = "22px sans-serif";
@@ -420,7 +427,8 @@ var AS = (function($) {
 			
 			var image = document.getElementById('printCanvas').toDataURL("image/png");
 			
-			window.open(image);
+			var win = window.open("about:blank");
+			win.document.write("<img src='" + image + "'></img>");
 			
 			$("#printCanvasWrapper").hide();
 		}});

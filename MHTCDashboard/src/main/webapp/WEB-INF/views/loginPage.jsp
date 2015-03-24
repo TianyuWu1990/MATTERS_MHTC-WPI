@@ -41,7 +41,6 @@
 	compatible = compatible & Modernizr.mediaqueries;
 	compatible = compatible & Modernizr.boxsizing;
 	compatible = compatible & Modernizr.bgpositionshorthand;
-	compatible = compatible & Modernizr.bgpositionxy;
 	
 	if (!compatible)
 		window.location = "./unsupported";			
