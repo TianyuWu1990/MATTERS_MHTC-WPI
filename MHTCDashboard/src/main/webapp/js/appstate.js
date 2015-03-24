@@ -394,22 +394,36 @@ var AS = (function($) {
 		$(".nvd3 .nv-axis path").css("stroke-opacity", "1");
 		$(".nvd3 .nv-axis path").css("shape-rendering", "crispEdges");
 		$(".nvd3 .nv-axis.nv-x path.domain").css("stroke-opacity", "0");
-		
+				
 		// Load SVG onto canvas
 		$("#printCanvasWrapper").show();
 				
-		$("#printCanvas").attr("width", $(visualizationKey).width());
-		$("#printCanvas").attr("height", $(visualizationKey).height());
-		
 		var serialized = (new XMLSerializer()).serializeToString($(visualizationKey).get(0));
 		
-		canvg(document.getElementById('printCanvas'), serialized);
+		var canvas = document.getElementById('printCanvas');
+		var ctx = canvas.getContext('2d');
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		
-		var image = document.getElementById('printCanvas').toDataURL("image/png");
+		$("#printCanvas").attr("width", $(visualizationKey).width());
+		$("#printCanvas").attr("height", $(visualizationKey).height() + 150);
 		
-		window.open(image);
+		var xCoord = $(visualizationKey).width() / 2;
+		var metricIndex = this.currentind;
 		
-		$("#printCanvasWrapper").hide();
+		canvg(canvas, serialized, { offsetY: 150, ignoreMouse: true, ignoreAnimation: true, renderCallback: function() {
+			
+			ctx.drawImage(document.getElementById('printCanvasLogo'), canvas.width / 2 - 95, 0, 330, 100);
+			ctx.font = "22px sans-serif";
+			ctx.textAlign = "center";
+			ctx.fillText(Metrics.getMetricByID(metricIndex)
+					.getName(), xCoord + 70, 130)
+			
+			var image = document.getElementById('printCanvas').toDataURL("image/png");
+			
+			window.open(image);
+			
+			$("#printCanvasWrapper").hide();
+		}});
 	};
 	
 	/**

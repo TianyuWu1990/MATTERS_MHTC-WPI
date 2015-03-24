@@ -68,9 +68,9 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
 		
-		<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
-		<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
-		<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
+		<script type="text/javascript" src="js/rgbcolor.js"></script> 
+		<script type="text/javascript" src="js/StackBlur.js"></script>
+		<script type="text/javascript" src="js/canvg.js"></script> 
 		
 		<!-- Custom JS -->
 		<script src="js/dataquery.js"></script>
@@ -410,6 +410,8 @@
 				<div id="printCanvasWrapper" style="display:none;">
 					<canvas id="printCanvas">
 					</canvas>
+					
+					<img id="printCanvasLogo" src="./css/img/MATTERS_Logo.jpg"></img>
 				</div>
 				
 		</div>
