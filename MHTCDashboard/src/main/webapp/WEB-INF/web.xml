@@ -14,8 +14,12 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			edu.wpi.mhtc.dashboard.config.GlobalConfiguration
+			edu.wpi.mhtc.util.config.GlobalConfiguration
 		</param-value>
+	</context-param>
+	<context-param>
+	    <param-name>contextInitializerClasses</param-name>
+	    <param-value>edu.wpi.mhtc.util.config.AppContextInitializer</param-value>
 	</context-param>
 
 	<!-- Quart Scheduler Initializer -->
@@ -25,8 +29,9 @@
      </context-param>
      <context-param>
          <param-name>quartz:wait-on-shutdown</param-name>
-         <param-value>true</param-value>
+         <param-value>false</param-value>
      </context-param>
+     
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -43,7 +48,7 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				edu.wpi.mhtc.dashboard.config.GlobalConfiguration
+				edu.wpi.mhtc.util.config.GlobalConfiguration
 			</param-value>
 		</init-param>
 

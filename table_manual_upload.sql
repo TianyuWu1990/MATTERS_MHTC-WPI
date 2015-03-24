@@ -43,3 +43,29 @@ $BODY$
   COST 100;
 ALTER FUNCTION mhtc_sch.insertcategory(character varying, integer, character varying)
   OWNER TO postgres;
+
+-- Function: mhtc_sch.updatecategory(integer, character varying, boolean, character varying)
+
+-- DROP FUNCTION mhtc_sch.updatecategory(integer, character varying, boolean, character varying);
+
+CREATE OR REPLACE FUNCTION mhtc_sch.updatecategory(categoryid integer, cname character varying, visible boolean, source character varying, url character varying)
+  RETURNS integer AS
+$BODY$
+declare 
+  num_rows int;
+ begin
+	update mhtc_sch.categories set "Name" = cName, 
+				    "Visible" = visible,
+				    "Source" = source,
+                    "URL" = url
+	where 	"Id" = categoryId; 
+
+	GET DIAGNOSTICS num_rows = ROW_COUNT;
+
+	return num_rows;
+ end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION mhtc_sch.updatecategory(integer, character varying, boolean, character varying, character varying)
+  OWNER TO postgres;

@@ -16,12 +16,15 @@
 <meta name="application-version" content="2015.2.12">
 <meta name="generator" content="Maptitude">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
+
 <title>MATTERS</title>
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 <link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 
 <style>
@@ -29,6 +32,9 @@
 	height: 20px;
 }
 
+.form-error {
+	color: red;
+}
 </style>
 
 
@@ -55,24 +61,31 @@
 				</div>
 			</c:if>
 			<form action="feedback_post" method="post">
-				<label style="color:black;">Name</label><br/>
-				<input name="name" id="name" type="text" style="width: 530px; height: 30px; margin-top: 5px;" autofocus> 
+
+				<label class="feedback_label">Name <span class="gfield_required">*</span></label><br/>
+				<input name="name" id="name" type="text" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" autofocus> 
+				<span class="form-error"></span> 
 				<br/><br/>
 				
-				<label style="color:black;">Affiliation</label><br/>
-				<input name="affiliation" id="affiliation" style="width: 530px; height: 30px; margin-top: 5px;" type="text"> 
+				<label class="feedback_label">Affiliation</label><br/>
+				<input name="affiliation" id="affiliation" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text"> 
+				<span class="form-error"></span> 
 				<br/><br/>
 				
-				<label style="color:black;">Email Address</label><br/>
-				<input name="email" id="email" style="width: 530px; height: 30px; margin-top: 5px;" type="text"> 
+				<label class="feedback_label">Email Address <span class="gfield_required">*</span> </label><br/>
+				<input name="email" id="email" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text">
+				<span class="form-error"></span>  
 				<br/><br/>
 				
-				<label style="color:black;">Subject</label><br/>
-				<input name="subject" id="subject" style="width: 530px; height: 30px; margin-top: 5px;" type="text"> 
+				<label class="feedback_label">Subject <span class="gfield_required">*</span></label><br/>
+				<input name="subject" id="subject" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text">
+				<span class="form-error"></span>  
 				<br/><br/>
-				
-				<label style="color:black;">Comments</label><br/>
-				<textarea name="comments" style="width: 530px; height: 180px; margin-top: 5px;"></textarea>
+
+				<label class="feedback_label">Comments <span class="gfield_required">*</span></label><br/>
+				<textarea name="comments" style="width: 100%; max-width: 530px; height: 180px; margin-top: 5px;"></textarea>
+				<span class="form-error"></span> 
+
 				<br/><br/>
 				
                    <%
@@ -112,7 +125,26 @@
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/jquery.svgdom.min.js" type="text/javascript"></script>
 <script src="js/mesh/jquery.svg.min.js" type="text/javascript"></script>
+<script src="js/mesh/jquery.validate.min.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
+<script>
+	// Validation
+	var validator = $("form").validate({
+		rules: {
+			name: "required",
+			affiliation: "required",
+			email: {
+				required: true,
+				email: true
+			},
+			subject: "required",
+			comments: "required"
+		},
+		errorPlacement: function(error, element) {
+			error.appendTo(element.next(".form-error"));
+		}
+	});
 
+</script>
 </body>
 </html>

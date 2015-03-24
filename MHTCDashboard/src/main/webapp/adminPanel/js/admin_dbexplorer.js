@@ -17,9 +17,9 @@ $(function() {
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
-				for (key in data) {
-					options.append($("<option />").val(data[key]).text(key));
-				}
+				data.forEach(function(arrayItem) {
+					options.append($("<option />").val(arrayItem.id).text(arrayItem.name));
+				});
 			}
 	
 		});
@@ -45,9 +45,15 @@ $(function() {
 		
 		$('#categoryTable').DataTable({
 			"ajax": {
-				"url": "admin_dbexplorer/getDataByMetric?categoryid="+value,
+				"url": "admin_dbexplorer/getDataByCategory?categoryid="+value,
 				"dataSrc": ""
-			}
+			},
+			"columns": [
+			            {"data" : "stateName"},
+			            {"data" : "metricName"},
+			            {"data" : "value"},
+			            {"data" : "year"}
+			            ]
 		});
 		
 		$('#dbrows').show();
@@ -60,9 +66,17 @@ $(function() {
 	
 	$('#metricTable').DataTable({
 		"ajax": {
-			"url": "admin_dbexplorer/getDetailedMetrics",
+			"url": "admin_dbexplorer/getAllMetrics",
 			"dataSrc": ""
-		}
+		},
+		"columns": [
+			       {"data" : "name"},
+		           {"data" : "displayName"},
+		           {"data" : "categoryName"},
+		           {"data" : "source"},
+		           {"data" : "url"},
+		           {"data" : "visible"}
+		           ]
 	});
 	
 	// Controls tab functionality

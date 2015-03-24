@@ -64,7 +64,7 @@
 												<select id="category" name="category">
 													<option value="">-- Select a category --</option>
 													<c:forEach items="${categories}" var="category">
-														<option value="${category.value}">${category.key}</option>
+														<option value="${category.id}">${category.name}</option>
 													</c:forEach>
 												</select>
 											</td>
@@ -110,11 +110,12 @@
 										<table class="table table-striped table-bordered table-hover" id="metricTable">
 											<thead>
 												<tr>
-													<th>Category Name</th>
 													<th>Metric Name</th>
-													<th>Display Name</th>
+													<th>Display Name</th>													
+													<th>Category Name</th>
 													<th>Source</th>
 													<th>URL</th>
+													<th>Visible?</th>
 												</tr>
 											</thead>
 											<tbody>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en-US" style="">
 
@@ -13,6 +14,8 @@
 	<meta name="generator" content="Maptitude">
 	<meta name="apple-mobile-web-app-capable" content="yes"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
+	
 	<title>MATTERS</title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<link rel="stylesheet" href="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/css">
@@ -20,6 +23,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 	<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/main.css" rel="stylesheet" type="text/css">
+	<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/popup.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/ie9compatibility.css" rel="stylesheet" type="text/css">
@@ -93,8 +97,13 @@
 				</div>
 			</script>
 		</div>
+		
+		<!-- cxf -->
+		<div id="map-label">
 		<a class="map-btn db-btn" href="explore">Explore the Data</a>
 		<a class="map-btn state" href="profile">View State Profiles</a>
+		</div>
+		<!-- cxf -->
 	</div>
 </section>
 
@@ -121,7 +130,7 @@
 				and grow a high technology business.  MATTERS is designed to measure and evaluate Massachusetts' current competitive 
 				position, while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions 
 				that help attract and retain business to the state.<br/><br/></p>
-				<a class="view-more" href="/mhtc/about">LEARN MORE</a>
+				<a class="view-more" href="<c:url value="/about"/>">LEARN MORE</a>
 
 			</div>
 		</div>
@@ -133,7 +142,7 @@
 				including federal and state governmental agencies, non-profit organizations and media outlets.  Click "learn more" to access 
 				a listing of the sources for each metric or data point in MATTERS with links to the source where available.				
 				</p>
-				<a class="view-more" href="/mhtc/methodology">LEARN MORE</a>
+				<a class="view-more" href="<c:url value="/methodology"/>">LEARN MORE</a>
 
 			</div>
 		</div>
@@ -147,7 +156,7 @@
 		   displayed in a variety of visualizations including tables, line charts, bar charts, and heatmaps. 
 		   	<br/><br/></p>
 			
-				<a class="view-more" href="/mhtc/howto">LEARN MORE</a>
+				<a class="view-more" href="<c:url value="/howto"/>">LEARN MORE</a>
 
 			</div>	
 		</div>
@@ -190,21 +199,21 @@
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.mitre.org/">
-					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" width="" height="50" />
+					<img src="img/mitrelogo-blue.jpg" alt="header-sponsors" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			 <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.caliper.com/">
-					<img src="img/caliper100x100.jpg" alt="header-sponsors" width="30" height="30" />
+					<img src="img/caliper-mapping-software.png" alt="header-sponsors" height="30" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://meshagency.com/">
-					<img src="img/mesh.jpg" alt="header-sponsors" width="" height="30" />
+					<img src="img/mesh.jpg" alt="header-sponsors"  height="30" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->

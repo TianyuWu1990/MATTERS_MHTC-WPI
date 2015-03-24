@@ -88,12 +88,12 @@
 					        			<c:forEach var="schedule" items="${schedList}">
 					        			
 						        			<tr>
-						          				<td>${schedule.getSched_name()}</td>
-						          				<td><a href="admin_reports_detail?job=${schedule.getTalendJob()}">${schedule.getSched_datePassed()}</a></td>
-						          				<td>${schedule.getSched_job() }</td>
-						          				<td>${schedule.getSched_description() }</td> 
+						          				<td>${schedule.sched_name}</td>
+						          				<td><a href="admin_reports_detail?job=${schedule.filename}">${schedule.status}</a></td>
+						          				<td>${schedule.sched_job}</td>
+						          				<td>${schedule.sched_description}</td> 
 						          				<td>
-						          					<a href="admin_scheduler_stop?job_name=${schedule.getJob_name()}"><button class="btn btn-xs btn-danger" type="button"><i class="fa fa-times-circle"></i> Stop / Remove</button> </a> 
+						          					<a href="admin_scheduler_stop?job_name=${schedule.job_name}"><button class="btn btn-xs btn-danger" type="button"><i class="fa fa-times-circle"></i> Stop / Remove</button> </a> 
 						          				</td> 			
 						        			</tr>
 					        			</c:forEach>

@@ -19,7 +19,7 @@
 	        						<select class="form-control" id="parentcategory" name="parentcategory" required>
 										<option value="">-- Select a category --</option>
 										<c:forEach items="${categories}" var="category">
-											<option value="${category.value}">${category.key}</option>
+											<option value="${category.id}">${category.name}</option>
 										</c:forEach>
 									</select>
 	        					</div>

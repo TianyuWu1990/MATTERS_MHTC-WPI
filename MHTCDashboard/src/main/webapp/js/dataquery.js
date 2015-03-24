@@ -1,4 +1,4 @@
-
+var recentQueryData;
 var DQ = (function($){
     
     function buildQuery(dataQuery) {
@@ -63,7 +63,15 @@ var DQ = (function($){
         var query = buildQuery(this);
         
         $.get( query, function(data) {
+        	recentQueryData = data;
             callback(data);
+            
+            if (data[0].length > 0) {
+            	$("#excelDownloadBtn").show();
+            } else {
+            	$("#excelDownloadBtn").hide();
+            }
+            
         });
     }
 
