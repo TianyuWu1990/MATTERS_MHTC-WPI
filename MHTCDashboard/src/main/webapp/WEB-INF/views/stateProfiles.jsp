@@ -37,6 +37,7 @@
 		compatible = compatible & Modernizr.opacity;
 		compatible = compatible & Modernizr.csstransforms;
 		compatible = compatible & Modernizr.svg;
+		compatible = compatible & Modernizr.canvas;
 		compatible = compatible & Modernizr.generatedcontent;
 		compatible = compatible & Modernizr.inlinesvg;
 		compatible = compatible & Modernizr.svgclippaths;

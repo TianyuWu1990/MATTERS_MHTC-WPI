@@ -19,7 +19,6 @@ var AS = (function($) {
 				LINE : 1,
 				BAR : 2,
 				HEATMAP : 3,
-				EXCEL : 4
 		}
 		
 		this.currentVisualizationType = this.visualizations.TABLE;
@@ -369,14 +368,35 @@ var AS = (function($) {
 				this.showGraphTitle();
 				cm.displayHeatMap();
 				break;
-			case this.visualizations.EXCEL:
-				this.exportExcelData();
-				break;
 			default:
 				return; // Do nothing if we don't get a match
 		}
 	};
 
+	AppState.prototype.savePNG = function() {
+		
+		var visualizationKey = "#mbody > svg";
+		
+		if (this.currentVisualizationType == this.visualizations.BAR)
+			visualizationKey = "#mbodyBar > svg";
+		
+		// Load SVG onto canvas
+		$("#printCanvasWrapper").show();
+				
+		$("#printCanvas").attr("width", $(visualizationKey).width());
+		$("#printCanvas").attr("height", $(visualizationKey).height());
+		
+		var serialized = (new XMLSerializer()).serializeToString($(visualizationKey).get(0));
+		
+		canvg(document.getElementById('printCanvas'), serialized);
+		
+		var image = document.getElementById('printCanvas').toDataURL("image/png");
+		
+		window.open(image);
+		
+		$("#printCanvasWrapper").hide();
+	};
+	
 	/**
 	 * Refreshes all of the visualizations.
 	 */
