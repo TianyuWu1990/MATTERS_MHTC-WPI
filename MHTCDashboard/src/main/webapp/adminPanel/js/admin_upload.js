@@ -17,9 +17,9 @@ $(function() {
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
-				for (key in data) {
-					options.append($("<option />").val(data[key]).text(key));
-				}
+				data.forEach(function(arrayItem) {
+					options.append($("<option />").val(arrayItem.id).text(arrayItem.name));
+				})
 			}
 	
 		});
@@ -41,9 +41,9 @@ $(function() {
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
-				for (key in data) {
-					options.append($("<option />").val(data[key]).text(key));
-				}
+				data.forEach(function(arrayItem) {
+					options.append($("<option />").val(arrayItem.id).text(arrayItem.name));
+				});
 			}
 	
 		});
@@ -62,11 +62,9 @@ $(function() {
 		$.getJSON('admin/metrics', {"categoryid":value}, function(data) {
 			var divContents = "The possible metrics for category \""+text+"\" are:\n<ul>";
 
-			for (var key in data) {
-				if (data.hasOwnProperty(key)) {
-					divContents = divContents + "<li>" + key + "</li>";
-				}
-			}
+			data.forEach(function(arrayItem) {
+				divContents = divContents + "<li>" + arrayItem.name + "</li>";
+			});
 			
 			divContents = divContents + "</ul>";
 						

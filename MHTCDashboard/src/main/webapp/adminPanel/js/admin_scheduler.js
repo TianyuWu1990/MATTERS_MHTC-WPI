@@ -4,7 +4,11 @@ $(function() {
 	var pipeline_selector = $("#addSchedModal select[name='sched_job']");
 	
 	$.get("admin_pipeline/getPipelineData", function(data) {
-		pipelineJobs = data;
+		// Populate Talend pipelines;
+		data.forEach(function(arrayItem) {
+			pipeline_selector.append('<option value="' + arrayItem.pipelineName + '">' + arrayItem.pipelineName + '</option>');
+			pipeline_selector_cron.append('<option value="' + arrayItem.pipelineName + '">' + arrayItem.pipelineName + '</option>');
+		});
 	});
 	
 	
@@ -16,23 +20,11 @@ $(function() {
 			minDate: new Date(),
 			format: 'MM/DD/YYYY HH:mm:ss',
 			useSeconds: true
-		});
-		
-		// Populate Talend pipelines;
-		jQuery.each(pipelineJobs, function(index, value) {
-			console.log(pipelineJobs);
-			pipeline_selector.append('<option value="' + value.pipelinename + '">' + value.pipelinename + '</option>');
-		});
-		
+		});		
 	});
 	
 	$("#addCronSchedBtn").click(function(e) {
 		$("#addCronSchedModal").modal("show");
-		
-		// Populate Talend pipelines;
-		jQuery.each(pipelineJobs, function(index, value) {
-			pipeline_selector_cron.append('<option value="' + value.pipelinename + '">' + value.pipelinename + '</option>');
-		});
 	});
 	
 	$("#pauseSchedBtn").click(function(e) {

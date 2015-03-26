@@ -12,7 +12,7 @@ BEGIN
         -- if someone else inserts the same key concurrently,
         -- we could get unique-key failure (unlikely in our case)
         BEGIN
-            SELECT mhtc_sch.insertvalue(stateid, metricid, year_val, val);
+            PERFORM mhtc_sch.insertvalue(stateid, metricid, year_val, val);
             RETURN;
         EXCEPTION WHEN unique_violation THEN
             -- do nothing, and loop to try the UPDATE again
@@ -20,4 +20,4 @@ BEGIN
     END LOOP;
 END;
 $$
-LANGUAGE plpsql;
+LANGUAGE plpgsql;

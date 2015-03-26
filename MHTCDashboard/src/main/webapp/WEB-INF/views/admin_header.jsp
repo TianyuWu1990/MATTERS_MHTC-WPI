@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    
+    <link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
     <title>${title}</title>
 
     <!-- Bootstrap Core CSS -->

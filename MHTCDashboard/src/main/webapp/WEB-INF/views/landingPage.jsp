@@ -14,6 +14,8 @@
 	<meta name="generator" content="Maptitude">
 	<meta name="apple-mobile-web-app-capable" content="yes"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
+	
 	<title>MATTERS</title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<link rel="stylesheet" href="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/css">

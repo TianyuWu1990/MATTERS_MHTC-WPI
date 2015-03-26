@@ -4,9 +4,12 @@
  */
  %>
  
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="admin_header.jsp" %> 
 <%@ include file="admin_navigation_bar.jsp" %> 
+
+		<script src="adminPanel/js/admin_reports_details.js"></script>
+
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -55,7 +58,7 @@
 
 <%@ include file="admin_footer.jsp" %> 
 
-<script type="text/javascript">
+<script>
 $(function() {
 	$('#reports-tbl').DataTable({
 		"processing": true,
@@ -63,13 +66,13 @@ $(function() {
 			"url": "admin_get_logs?job=${job}",
 			"dataSrc": ""
 		},
-		"aoColumns": [
-		            { "mData": "id" },
-		            { "mData": "origin" },
-		            { "mData": "code" },
-		            { "mData": "moment" }, 
-		            { "mData": "message" },
-		            { "mData": "priority" },        
+		"columns": [
+		            { "data": "id" },
+		            { "data": "origin" },
+		            { "data": "code" },
+		            { "data": "moment" }, 
+		            { "data": "message" },
+		            { "data": "priority" },        
 		],
 		"createdRow": function ( row, data, index ) {
 			var $cell = $('td', row).eq(4);

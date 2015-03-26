@@ -4,9 +4,12 @@
  */
  %>
  
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="admin_header.jsp" %> 
 <%@ include file="admin_navigation_bar.jsp" %> 
+
+		<script src="adminPanel/js/admin_reports.js"></script>
+		
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -51,27 +54,3 @@
         <!-- /#page-wrapper -->
 
 <%@ include file="admin_footer.jsp" %> 
-
-<script type="text/javascript">
-$(function() {
-	$('#reports-tbl').DataTable({
-		"processing": true,
-		"ajax": {
-			"url": "admin_get_logs?job=",
-			"dataSrc": ""
-		},
-		"aoColumns": [
-					{ "mData": "job" },
-		            { "mData": "message" },
-		            { "mData": "log_count" }, 
-		            { "mData": "job" }
-     
-		],
-		"createdRow": function ( row, data, index ) {
-			console.log(data);
-			var $cell = $('td', row).eq(3);
-			$cell.html("<a href=\"admin_reports_detail?job=" +  data['job'] +" \"> View </a>");
-        }
-	});
-});
-</script>
