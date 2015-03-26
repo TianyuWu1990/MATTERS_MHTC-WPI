@@ -20,6 +20,20 @@
 
 <link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script type='text/javascript'>
+$(function() {
+	$("form").on('submit', function (e) {
+		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		
+		if (!re.test($("#email").val())) {
+			e.preventDefault();
+			alert("Invalid email address.");
+		}
+	});	
+});
+
+</script>
 
 <style>
 body {
@@ -86,7 +100,7 @@ body {
                                     
                             <div style="margin-bottom: 25px" class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="email" placeholder="Email">
+                                    <input type="email" id="email" class="form-control" name="email" placeholder="Email">
 									<div class="help-block with-errors"></div>                                       
                             </div>
                             
