@@ -17,9 +17,9 @@ $(function() {
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
-				for (key in data) {
-					options.append($("<option />").val(data[key]).text(key));
-				}
+				data.forEach(function(arrayItem) {
+					options.append($("<option />").val(arrayItem.id).text(arrayItem.name));
+				});
 			}
 	
 		});
@@ -42,11 +42,9 @@ $(function() {
 			// Add default <option>
 			options.append('<option value="">-- Select a metric --</option>');
 			
-			for (var key in data) {
-				if (data.hasOwnProperty(key)) {
-					options.append($("<option />").val(data[key]).text(key));
-				}
-			}
+			data.forEach(function(arrayItem) {
+				options.append($("<option />").val(arrayItem.id).text(arrayItem.name));
+			});
 			
 		});
 		
@@ -117,9 +115,9 @@ $(function() {
 			
 			if (!$.isEmptyObject(data)) {
 				// Add each entry from data object to <select>
-				for (key in data) {
-					options.append($("<option />").val(data[key]).text(key));
-				}
+				data.forEach(function(arrayItem) {
+					options.append($("<option />").val(arrayItem.id).text(arrayItem.name));
+				});
 			}
 	
 		});
@@ -137,21 +135,40 @@ $(function() {
 			"url": "admin_pipeline/getPipelineData",
 			"dataSrc": ""
 		},
-		"aoColumns": [
-			            { "mData": "pipelinename" },
-			            { "mData": "pipelinedesc" },
-			            { "mData": "filename" },
-			            { "mData": "dateadded" },
-			            { "mData": "user"},
-			            { "mData": null,
+		"columns": [
+			            { "data": "pipelineName" },
+			            { "data": "pipelineDesc" },
+			            { "data": "filename" },
+			            { "data": "dateAdded" },
+			            { "data": "uploadedBy"},
+			            { "data": null,
 			            	"sClass": "center",
 			            	"bSortable": false,
 			            	"sDefaultContent": "<button type='button' class='btn btn-link btn-sm delete'><i class='fa fa-times fa-2x'></i></button>"
+			            },
+			            { "data": null,
+			            	"sClass": "center",
+			            	"bSortable": false,
+			            	"sDefaultContent": "<button type='button' class='btn btn-success run'>Run</button>"
 			            }
-		]
+		],
+		"order": [[3, "desc"]]
 	});
 	
 	$('#pipelines').show();
+	
+	$('#pipelineTbl tbody').on("click", "button.run", function() {
+		var $row = $(this).closest("tr");
+		
+		// Get the pipeline name of the one user wants to delete/edit
+		var pipelineName = $row.find('td:first').html();
+
+		
+		$.post("admin/execute", {pipelineName:pipelineName}, function(data) {
+			$("#deletePipelineSuccess").after('<div class="alert alert-success" role="alert">'+data+'</div>');
+		});
+		
+	});
 	
 	$('#pipelineTbl tbody').on("click", "button.delete", function() {
 		var $row = $(this).closest("tr");
