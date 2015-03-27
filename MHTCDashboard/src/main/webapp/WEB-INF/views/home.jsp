@@ -54,8 +54,8 @@
 			compatible = compatible & Modernizr.bgpositionshorthand;
 			
 
-			//if (!compatible)
-			//	window.location = "./unsupported";			
+			if (!compatible)
+				window.location = "./unsupported";			
 
 		</script>
 		
