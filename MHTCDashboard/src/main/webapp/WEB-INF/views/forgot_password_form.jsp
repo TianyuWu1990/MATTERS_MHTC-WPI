@@ -18,9 +18,8 @@
 <link href="../adminPanel/css/bootstrap.min.css" rel="stylesheet">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
-<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
-
+<link href="http://fonts.googleapis.com/css?family=Muli:400,400italic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600" rel="stylesheet" type="text/css">
 <style>
 body {
 	padding-top: 40px;
@@ -66,6 +65,18 @@ body {
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	$("form").on('submit', function (e) {
+		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		
+		if (!re.test($("#email").val())) {
+			e.preventDefault();
+			alert("Invalid email address.");
+		}
+	});	
+});
+</script>
 </head>
 
 <body>
@@ -78,7 +89,7 @@ body {
 
                     <div style="padding-top:20px" class="panel-body" >
                         <div id="login-alert" class="alert alert-warning">
-                        If you have forgotten your username or password, you can request to have your username emailed to you and to reset your password. 
+                        If you have forgotten your username or password, you can request to have your username emailed to you to reset your password. 
                         When you fill in your registered email address, you will be sent instructions on how to reset your password.
                         </div>
                         <div>    
@@ -86,7 +97,7 @@ body {
                                     
                             <div style="margin-bottom: 25px" class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="email" placeholder="Email">
+                                    <input type="email" id="email" class="form-control" name="email" placeholder="Email">
 									<div class="help-block with-errors"></div>                                       
                             </div>
                             
