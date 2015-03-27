@@ -71,13 +71,13 @@
 		compatible = compatible & Modernizr.opacity;
 		compatible = compatible & Modernizr.csstransforms;
 		compatible = compatible & Modernizr.svg;
+		compatible = compatible & Modernizr.canvas;
 		compatible = compatible & Modernizr.generatedcontent;
 		compatible = compatible & Modernizr.inlinesvg;
 		compatible = compatible & Modernizr.svgclippaths;
 		compatible = compatible & Modernizr.mediaqueries;
 		compatible = compatible & Modernizr.boxsizing;
 		compatible = compatible & Modernizr.bgpositionshorthand;
-		compatible = compatible & Modernizr.bgpositionxy;
 		
 		//if (!compatible)
 		//	window.location = "./unsupported";			

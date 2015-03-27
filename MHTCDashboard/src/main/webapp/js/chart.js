@@ -356,8 +356,11 @@ var CM = (function($) {
 						$("#heatmap-specificDetails-peer").hide();
 					}
 					
-					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 200;
-					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top;
+					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 220;
+					var tooltipY = event.originalEvent.clientY + $("body").scrollTop() - $("#heatmap-actual").offset().top;
+										
+					if (tooltipX > $("#heatmap-actual").width())
+						tooltipX = tooltipX - 220;
 					
 					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
 					

@@ -45,13 +45,13 @@
 			compatible = compatible & Modernizr.opacity;
 			compatible = compatible & Modernizr.csstransforms;
 			compatible = compatible & Modernizr.svg;
+			compatible = compatible & Modernizr.canvas;
 			compatible = compatible & Modernizr.generatedcontent;
 			compatible = compatible & Modernizr.inlinesvg;
 			compatible = compatible & Modernizr.svgclippaths;
 			compatible = compatible & Modernizr.mediaqueries;
 			compatible = compatible & Modernizr.boxsizing;
 			compatible = compatible & Modernizr.bgpositionshorthand;
-			compatible = compatible & Modernizr.bgpositionxy;
 			
 
 			//if (!compatible)
@@ -69,6 +69,10 @@
 		
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
+		
+		<script type="text/javascript" src="js/rgbcolor.js"></script> 
+		<script type="text/javascript" src="js/StackBlur.js"></script>
+		<script type="text/javascript" src="js/canvg.js"></script> 
 		
 		<!-- Custom JS -->
 		<script src="js/dataquery.js"></script>
@@ -282,6 +286,12 @@
 										<div id="mbody" style="margin-right: 5px;">
 											<svg style="height: 90%;"></svg>
 										</div>
+										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
+											<button title="Save the visualization as a PNG" class="btn btn-danger" type="button" onclick="as.savePNG();">
+												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
+											</button>
+											<span>Download as PNG</span>
+										</div>
 									</div>
 								</div>
 								
@@ -298,11 +308,11 @@
 											</tr>
 										</table>
 										
-										<div class="excel-download">
-											<button title="Save selected data as an Excel file." id="excelDownloadBtn" style="display:none;" class="btn btn-danger" type="button" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
+										<div class="download" style="padding-bottom: 20px;">
+											<button title="Save selected data as an Excel file." class="btn btn-danger" type="button" onclick="as.exportExcelData();">
 												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
 											</button>
-											<span>Download table as Excel spreadsheet</span>
+											<span>Download as Excel Spreadsheet</span>
 										</div>
 									</div>
 								</div>
@@ -311,6 +321,12 @@
 								<div class="tab-pane fade" id="bar">
 									<div class="box-content">
 										<div id="mbodyBar"></div>
+										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
+											<button title="Save the visualization as a PNG." class="btn btn-danger" type="button" onclick="as.savePNG();">
+												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
+											</button>
+											<span>Download as PNG</span>
+										</div>
 									</div>
 								</div>
 								
@@ -392,6 +408,14 @@
 						</div>
 					</div>
 				</div>	
+				
+				<div id="printCanvasWrapper" style="display:none;">
+					<canvas id="printCanvas">
+					</canvas>
+					
+					<img id="printCanvasLogo" src="./css/img/MATTERS_Logo.jpg"></img>
+				</div>
+				
 		</div>
 		<!-- end: Content -->
 
