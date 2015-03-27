@@ -17,11 +17,15 @@
 <!-- Bootstrap core CSS -->
 <link href="../adminPanel/css/bootstrap.min.css" rel="stylesheet">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+<link href="http://fonts.googleapis.com/css?family=Muli:400,400italic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600" rel="stylesheet" type="text/css">
 <style>
 body {
 	padding-top: 40px;
 	padding-bottom: 40px;
 	background-color: #eee;
+	font-family: Muli,sans-serif;
 }
 
 .form-signin {
@@ -61,19 +65,31 @@ body {
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	$("form").on('submit', function (e) {
+		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		
+		if (!re.test($("#email").val())) {
+			e.preventDefault();
+			alert("Invalid email address.");
+		}
+	});	
+});
+</script>
 </head>
 
 <body>
     <div class="container">    
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
             <div class="panel panel-info" >
-                    <div class="panel-heading">
+                    <div class="panel-heading" style="color: white; background-color: #680017;">
                         <div class="panel-title">Forgot your password?</div>
                     </div>     
 
                     <div style="padding-top:20px" class="panel-body" >
                         <div id="login-alert" class="alert alert-warning">
-                        If you have forgotten your username or password, you can request to have your username emailed to you and to reset your password. 
+                        If you have forgotten your username or password, you can request to have your username emailed to you to reset your password. 
                         When you fill in your registered email address, you will be sent instructions on how to reset your password.
                         </div>
                         <div>    
@@ -81,7 +97,7 @@ body {
                                     
                             <div style="margin-bottom: 25px" class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                    <input type="email" class="form-control" name="email" placeholder="Email">
+                                    <input type="email" id="email" class="form-control" name="email" placeholder="Email">
 									<div class="help-block with-errors"></div>                                       
                             </div>
                             
@@ -95,7 +111,7 @@ body {
                             
                             <div style="margin-top:10px" class="form-group">
                                 <div class="col-sm-12 controls center" align="center">
-                                  <a id="btn-login" href="#" class="btn btn-success" onclick="$('#resetRequestForm').submit();">Request password reset</a>
+                                  <a id="btn-login" href="#" class="btn btn-danger" onclick="$('#resetRequestForm').submit();">Request password reset</a>
                                 </div>
                             </div>   
                         </form> 

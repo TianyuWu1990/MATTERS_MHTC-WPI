@@ -19,7 +19,6 @@ var AS = (function($) {
 				LINE : 1,
 				BAR : 2,
 				HEATMAP : 3,
-				EXCEL : 4
 		}
 		
 		this.currentVisualizationType = this.visualizations.TABLE;
@@ -369,14 +368,72 @@ var AS = (function($) {
 				this.showGraphTitle();
 				cm.displayHeatMap();
 				break;
-			case this.visualizations.EXCEL:
-				this.exportExcelData();
-				break;
 			default:
 				return; // Do nothing if we don't get a match
 		}
 	};
 
+	AppState.prototype.savePNG = function() {
+		
+		var visualizationKey = "#mbody > svg";
+		
+		if (this.currentVisualizationType == this.visualizations.BAR)
+			visualizationKey = "#mbodyBar > svg";
+		
+		// Add styles directly to the SVG so they'll appear in the download
+		$(".nvd3 .nv-axis .nv-axisMaxMin text").css("font-weight", "bold");
+		$(".nvd3 .nv-groups path.nv-line").css("fill", "none");
+		$(".nvd3 .nv-groups path.nv-line").css("stroke-width", "1.5px");
+		$("svg text").css("font", "normal 12px Arial");
+		$(".nvd3 .nv-axis line").css("fill", "none");
+		$(".nvd3 .nv-axis line").css("stroke", "#e5e5e5");
+		$(".nvd3 .nv-axis line").css("shape-rendering", "crispEdges");
+		$(".nvd3 .nv-multibar .nv-groups rect").css("stroke-opacity", "0");
+		$(".nvd3 .nv-axis path").css("fill", "none");
+		$(".nvd3 .nv-axis path").css("stroke", "#000");
+		$(".nvd3 .nv-axis path").css("stroke-opacity", "1");
+		$(".nvd3 .nv-axis path").css("shape-rendering", "crispEdges");
+		$(".nvd3 .nv-axis.nv-x path.domain").css("stroke-opacity", "0");
+				
+		// Load SVG onto canvas
+		$("#printCanvasWrapper").show();
+				
+		var serialized = (new XMLSerializer()).serializeToString($(visualizationKey).get(0));
+		
+		var canvas = document.getElementById('printCanvas');
+		var ctx = canvas.getContext('2d');
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		
+		canvas.width = $(visualizationKey).width();
+		canvas.height = $(visualizationKey).height() + 150;
+		
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.fillStyle = "#fff";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		
+		ctx.fillStyle = "#000";
+		
+		var xCoord = $(visualizationKey).width() / 2;
+		var metricIndex = this.currentind;
+		
+		canvg(canvas, serialized, { offsetY: 150, ignoreMouse: true, ignoreClear: true, 
+			ignoreAnimation: true, renderCallback: function() {
+			
+			ctx.drawImage(document.getElementById('printCanvasLogo'), canvas.width / 2 - 95, 0, 330, 100);
+			ctx.font = "22px sans-serif";
+			ctx.textAlign = "center";
+			ctx.fillText(Metrics.getMetricByID(metricIndex)
+					.getName(), xCoord + 70, 130)
+			
+			var image = document.getElementById('printCanvas').toDataURL("image/png");
+			
+			var win = window.open("about:blank");
+			win.document.write("<img src='" + image + "'></img>");
+			
+			$("#printCanvasWrapper").hide();
+		}});
+	};
+	
 	/**
 	 * Refreshes all of the visualizations.
 	 */
@@ -404,10 +461,18 @@ var AS = (function($) {
 	 */
 	AppState.prototype.exportExcelData = function() {
 		var data = {
-			year : $("ul.timelineListStyle button#tableTimeLineButton.active")
-					.text(),
-			rows : []
+			rows : [],
+			title : "",
+			metrics: [],
+			metricTitle : false
 		};
+		
+		// Decide which title to put into the excel file
+		var year  = "Year: " + $("ul.timelineListStyle button#tableTimeLineButton.active").text();
+		var tableHeader = $(".box-content #optionalTableTitle").text();
+		
+		data.title = $(".box-content #optionalTableTitle").is(":visible") ? tableHeader: year;
+		
 
 		// Column heads
 		var header = [];
@@ -415,10 +480,27 @@ var AS = (function($) {
 			header.push($(this).text());
 		});
 		data.rows.push(header);
+		
 		// Table data
 		$.each(dt.fnGetData(), function(key, value) {
-			data.rows.push(value);
+			value[0] = $('<div>' + value[0] + '<div>').text();
+			data.rows.push(value);	
 		});
+		
+		var firstStateQuery = recentQueryData[0];
+		
+		for (var i = 0; i < firstStateQuery.length; i++) {
+			var name = firstStateQuery[i].metric.name;
+			var url = firstStateQuery[i].metric.urlFrom == null ? "N/A" : firstStateQuery[i].metric.urlFrom;
+			data.metrics.push([name, url]);
+		}
+		
+		// Only one metric but multiple states, add "Metric" to the title
+		if ((firstStateQuery.length == 1) && (recentQueryData.length > 1)) {
+			data.title = "Metric:" + data.title;
+			data.metricTitle = true;
+		}
+		 
 		var url = "excel?data=" + encodeURIComponent(JSON.stringify(data));
 		window.location = url;
 	};

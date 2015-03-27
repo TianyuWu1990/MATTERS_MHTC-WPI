@@ -1,0 +1,93 @@
+@media print {
+	
+	#sidebar-left
+	{
+		display: none !important;
+	}
+	
+	.pagination
+	{
+		display: none !important;
+	}
+	
+	#colophon
+	{
+		display: none !important;
+	}
+	
+	#metricCycleButtons
+	{
+		top: 5px !important;
+	}	
+	
+	.backButton
+	{
+		display: none !important;
+	}
+	
+	.nextButton
+	{
+		display: none !important;
+	}
+	
+	#table.tab-pane
+	{
+		top: 0px !important;
+	}
+	
+	.tab-content
+	{
+		min-width: auto !important;
+		min-height: auto !important;
+		
+		max-width: 8.5in !important;
+		max-height: 10in !important;
+	}
+	
+	#mainContentDiv
+	{
+		border-top: none;
+	}
+	
+	#vizView
+	{
+		overflow: visible !important;
+	}
+	
+	#viewWrapper
+	{
+		left: 0px !important;
+		top: 5px !important;
+		overflow: visible !important;
+	}
+	
+	#tableTimeLineButton
+	{
+		display: none;
+	}
+	
+	#tableTimeLineButton.active
+	{
+		display: inline-block;
+	}
+	
+	#myTable_filter
+	{
+		display: none;
+	}
+	
+	#myTable_length
+	{
+		display: none;
+	}
+	
+	#myTable_paginate
+	{
+		display: none;
+	}
+	
+	.heatmap-legend-bucket-swatch
+	{
+		-webkit-print-color-adjust: exact;
+	}
+}

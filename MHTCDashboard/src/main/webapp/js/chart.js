@@ -356,8 +356,11 @@ var CM = (function($) {
 						$("#heatmap-specificDetails-peer").hide();
 					}
 					
-					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 200;
-					var tooltipY = event.originalEvent.clientY - $("#heatmap-actual").offset().top;
+					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 220;
+					var tooltipY = event.originalEvent.clientY + $("body").scrollTop() - $("#heatmap-actual").offset().top;
+										
+					if (tooltipX > $("#heatmap-actual").width())
+						tooltipX = tooltipX - 220;
 					
 					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
 					
@@ -413,7 +416,8 @@ var CM = (function($) {
 			}
 			
 			var bucketHTML = '<div class="heatmap-legend-bucket">'
-				+ '<div class="heatmap-legend-bucket-swatch" style="background-color:' + bucketColor + ';"></div>'
+				+ '<svg class="heatmap-legend-bucket-swatch" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="20px" height="20px"' 
+				+ 'fill="' + bucketColor + '"></rect></svg>'
 				+ '<div class="heatmap-legend-bucket-num">' + bucketRange + '</div></div>';
 			
 			$("#heatmap-legend-legend").append(bucketHTML);
@@ -547,7 +551,9 @@ var CM = (function($) {
 				
 				query.execute(function(multiData) {
 					
-						
+						// TODO: THIS CODE IS BUGGY WHEN YOU SELECTED MULTIPLE STATES AND 
+						// ONE METRIC THAT HAS NO DATA IN IT
+						// multidata[0][0] will be undefined.
 						var metricFromQuery = multiData[0][0].metric;
 						
 						$("#optionalTableTitle").html('<span id="info" title="' + metricFromQuery.desc 

@@ -13,6 +13,8 @@
 <meta name="application-version" content="2015.2.12">
 <meta name="generator" content="Maptitude">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
+
 <title>MATTERS</title>
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
@@ -21,6 +23,30 @@
 <link href="css/mesh/main.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
+
+<!-- Check for browser compatibility before we do anything else -->
+<script src="js/modernizr.js"></script>
+
+<script type="text/javascript">						
+	var compatible = true;
+	compatible = compatible & Modernizr.rgba;
+	compatible = compatible & Modernizr.backgroundsize;
+	compatible = compatible & Modernizr.borderradius;
+	compatible = compatible & Modernizr.boxshadow;
+	compatible = compatible & Modernizr.opacity;
+	compatible = compatible & Modernizr.csstransforms;
+	compatible = compatible & Modernizr.svg;
+	compatible = compatible & Modernizr.canvas;
+	compatible = compatible & Modernizr.generatedcontent;
+	compatible = compatible & Modernizr.inlinesvg;
+	compatible = compatible & Modernizr.svgclippaths;
+	compatible = compatible & Modernizr.mediaqueries;
+	compatible = compatible & Modernizr.boxsizing;
+	compatible = compatible & Modernizr.bgpositionshorthand;
+	
+	if (!compatible)
+		window.location = "./unsupported";			
+</script>
 </head>
 
 <body class="home" id="top">
@@ -50,6 +76,7 @@
 				<label>Password</label> <br/>
 				<input name="password" type="password" id="inputPassword" placeholder="Password" required>
 				<br/><br/>
+				<a href="user/forgot" target="_blank">Forgot password?</a> <br/><br/>
 				<button class="btn btn-lg btn-primary" type="submit">Sign in</button>
 			</form>
 		   </div> <!-- copy block -->

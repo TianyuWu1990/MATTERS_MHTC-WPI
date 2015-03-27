@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import edu.wpi.mhtc.model.Data.Metric;
-import edu.wpi.mhtc.service.MetricService;
+import edu.wpi.mhtc.model.dashboard.Metric;
+import edu.wpi.mhtc.service.dashboard.MetricService;
 
 /**
  * A controller that provides endpoints that returns metrics or lists of metrics.

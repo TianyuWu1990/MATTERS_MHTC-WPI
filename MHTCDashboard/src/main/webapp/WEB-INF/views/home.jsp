@@ -13,6 +13,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
+		
 		<!-- Library CSS -->
 		<link href="css/nv.d3.css" rel="stylesheet">
 		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
@@ -29,8 +31,33 @@
 		
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
+		<link href="css/style-print.css" id="base-style-print" rel="stylesheet">
+			
+		<!-- Check for browser compatibility before we do anything else -->
+		<script src="js/modernizr.js"></script>
 		
-		
+		<script type="text/javascript">						
+			var compatible = true;
+			compatible = compatible & Modernizr.rgba;
+			compatible = compatible & Modernizr.backgroundsize;
+			compatible = compatible & Modernizr.borderradius;
+			compatible = compatible & Modernizr.boxshadow;
+			compatible = compatible & Modernizr.opacity;
+			compatible = compatible & Modernizr.csstransforms;
+			compatible = compatible & Modernizr.svg;
+			compatible = compatible & Modernizr.canvas;
+			compatible = compatible & Modernizr.generatedcontent;
+			compatible = compatible & Modernizr.inlinesvg;
+			compatible = compatible & Modernizr.svgclippaths;
+			compatible = compatible & Modernizr.mediaqueries;
+			compatible = compatible & Modernizr.boxsizing;
+			compatible = compatible & Modernizr.bgpositionshorthand;
+			
+
+			if (!compatible)
+				window.location = "./unsupported";			
+
+		</script>
 		
 		<!-- Library JS -->
 		<script src="js/d3.v3.min.js"></script>
@@ -43,7 +70,9 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
 		
-		<script src="js/modernizr.js"></script>
+		<script type="text/javascript" src="js/rgbcolor.js"></script> 
+		<script type="text/javascript" src="js/StackBlur.js"></script>
+		<script type="text/javascript" src="js/canvg.js"></script> 
 		
 		<!-- Custom JS -->
 		<script src="js/dataquery.js"></script>
@@ -52,12 +81,6 @@
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
 		
-		<!--[if lt IE 9]
-		<script type="text/javascript">
-			var isLtIE9 = true;
-		</script>
-		<![endif]-->
-		
 		<title>MATTERS</title>
 	
 	</head>
@@ -65,21 +88,6 @@
 	<body>
 	
 	<jsp:include page="unifiedHeader.jsp"/>
-	
-	<div id="globalErrorDiv" style="display:none;">
-		<div id="globalErrorMsgWrapper">
-			<i class="fa fa-exclamation-triangle fa-2x"></i>
-			<span id="globalErrorMsg">
-			Sorry! Your browser is not currently supported by MATTERS. 
-			
-			<br/><br/>
-			
-			Please upgrade your browser or switch to a supported browser, 
-			such as <a href="http://www.google.com/chrome/">Chrome</a> 
-			or <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>.
-			</span>
-		</div>
-	</div>
 
 	<div class="container-fluid-full" style="z-index: 1;" id="mainContentDiv">
 				<!-- start: left sidebar -->
@@ -278,6 +286,12 @@
 										<div id="mbody" style="margin-right: 5px;">
 											<svg style="height: 90%;"></svg>
 										</div>
+										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
+											<button title="Save the visualization as a PNG" class="btn btn-danger" type="button" onclick="as.savePNG();">
+												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
+											</button>
+											<span>Download as PNG</span>
+										</div>
 									</div>
 								</div>
 								
@@ -294,12 +308,12 @@
 											</tr>
 										</table>
 										
-										<!-- <div>
-											<button id="excelDownloadBtn" style="display:none;" class="btn btn-success" type="button" onclick="as.visualizationDeployer(as.visualizations.EXCEL);">
+										<div class="download" style="padding-bottom: 20px;">
+											<button title="Save selected data as an Excel file." class="btn btn-danger" type="button" onclick="as.exportExcelData();">
 												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
-												Download table as Excel spreadsheet
 											</button>
-										</div>-->
+											<span>Download as Excel Spreadsheet</span>
+										</div>
 									</div>
 								</div>
 								
@@ -307,6 +321,12 @@
 								<div class="tab-pane fade" id="bar">
 									<div class="box-content">
 										<div id="mbodyBar"></div>
+										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
+											<button title="Save the visualization as a PNG." class="btn btn-danger" type="button" onclick="as.savePNG();">
+												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
+											</button>
+											<span>Download as PNG</span>
+										</div>
 									</div>
 								</div>
 								
@@ -370,17 +390,32 @@
 						<!-- End Error Reporting -->	
 						
 						<div id="startupMsg">
-							<div id="startupMsgAct"><b>
+							<div id="startupMsgAct">
+							<div id="noJSError" style="color: #680017; font-weight: bolder;">
+								WARNING: You must have JavaScript enabled to use this page.
+								<br/>
+								<br/>
+							</div>
+							
+							<b>
 							Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
 							
 							To start, please select metrics and states from the menu to the left.<br/><br/><br/>
 				 			<div>
 				 			Use the buttons in the red bar above to view your selection in different ways.
-				 			</div>
+				 			</div>				 			
 							</div>
 						</div>
 					</div>
 				</div>	
+				
+				<div id="printCanvasWrapper" style="display:none;">
+					<canvas id="printCanvas">
+					</canvas>
+					
+					<img id="printCanvasLogo" src="./css/img/MATTERS_Logo.jpg"></img>
+				</div>
+				
 		</div>
 		<!-- end: Content -->
 

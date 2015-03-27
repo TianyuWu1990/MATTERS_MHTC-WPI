@@ -10,18 +10,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -30,11 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,38 +39,62 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
-import edu.wpi.mhtc.dashboard.pipeline.data.CategoryException;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBConnector;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBLoader;
-import edu.wpi.mhtc.dashboard.pipeline.db.DBSaver;
-import edu.wpi.mhtc.dashboard.pipeline.main.DataPipeline;
-import edu.wpi.mhtc.dashboard.pipeline.main.MHTCException;
-import edu.wpi.mhtc.dashboard.pipeline.scheduler.JobScheduler;
-import edu.wpi.mhtc.dashboard.pipeline.scheduler.Schedule;
-import edu.wpi.mhtc.dashboard.pipeline.wrappers.UnZip;
-import edu.wpi.mhtc.dashboard.util.FileFinder;
-import edu.wpi.mhtc.helpers.Logger;
-import edu.wpi.mhtc.model.Data.Metric;
-import edu.wpi.mhtc.model.admin.Admin;
-//import edu.wpi.mhtc.persistence.JdbcProcedure;
-import edu.wpi.mhtc.service.MetricService;
+import edu.wpi.mhtc.model.admin.Category;
+import edu.wpi.mhtc.model.admin.Metric;
+import edu.wpi.mhtc.model.admin.Pipeline;
+import edu.wpi.mhtc.model.admin.Schedule;
+import edu.wpi.mhtc.model.admin.Statistic;
+import edu.wpi.mhtc.model.admin.TalendLog;
+import edu.wpi.mhtc.model.dashboard.State;
+import edu.wpi.mhtc.service.admin.CategoryService;
+import edu.wpi.mhtc.service.admin.MetricService;
+import edu.wpi.mhtc.service.admin.PipelineService;
+import edu.wpi.mhtc.service.admin.ScheduleService;
+import edu.wpi.mhtc.service.admin.StatisticService;
+import edu.wpi.mhtc.service.admin.TalendLogService;
+import edu.wpi.mhtc.service.admin.UserService;
+import edu.wpi.mhtc.util.helpers.FileFinder;
+import edu.wpi.mhtc.util.helpers.UnZip;
+import edu.wpi.mhtc.util.persistence.StateMapper;
+import edu.wpi.mhtc.util.pipeline.main.CategoryException;
+import edu.wpi.mhtc.util.pipeline.main.DataPipeline;
+import edu.wpi.mhtc.util.pipeline.main.MHTCException;
+import edu.wpi.mhtc.util.pipeline.scheduler.JobScheduler;
+import edu.wpi.mhtc.util.pipeline.scheduler.TalendJob;
 
 @Controller
 public class AdminController {
 	
     private DateFormat fileDateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
     
-    private MetricService service;
-    private JdbcTemplate template;
-    @Autowired ServletContext servletContext=null;
+    @Autowired private ServletContext servletContext;
     
+    private CategoryService categoryService;
+    private StatisticService statService;
+    private UserService userService;
+    private ScheduleService schedService;
+    private PipelineService pipelineService;
+    private MetricService metricService;
+    private TalendLogService logService;
+    private StateMapper stateMapper;
+        
     @Autowired
-    public AdminController(MetricService service, JdbcTemplate template) {
-        this.service = service;
-        this.template = template;
-    }
+    public AdminController(CategoryService categoryService,
+			StatisticService statService, UserService userService,
+			ScheduleService schedService, PipelineService pipelineService,
+			MetricService metricService, TalendLogService logService,
+			StateMapper stateMapper) {
+		this.categoryService = categoryService;
+		this.statService = statService;
+		this.userService = userService;
+		this.schedService = schedService;
+		this.pipelineService = pipelineService;
+		this.metricService = metricService;
+		this.logService = logService;
+		this.stateMapper = stateMapper;
+	}
 
-    /********** Admin manager page **********/
+	/********** Admin manager page **********/
     @RequestMapping(value = "admin_manager", method = RequestMethod.GET)
     public String admin_manager(Model model) {
     	
@@ -89,45 +105,42 @@ public class AdminController {
     }
     
     @RequestMapping(value = "admin/account/create", method = RequestMethod.POST, params = { "Username", "Password", "Email", "FirstName", "LastName"})
-    public @ResponseBody String account_create(@RequestParam("Username") String username, @RequestParam("Password") String password, @RequestParam("Email") String email, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) {
-        Admin newAdmin = new Admin(username, password, email, firstName, lastName);
-        
-        try {
-			newAdmin.insertToDB();
-			return "Added";
-		} catch (SQLException e) {
-				
-			return e.toString();
-		}
+    public @ResponseBody String account_create(@RequestParam("Username") String username, @RequestParam("Password") String password, 
+    		@RequestParam("Email") String email, @RequestParam("FirstName") String firstName, @RequestParam("LastName") String lastName) {
+    	
+    	userService.createUser(username, password, firstName, lastName, email, true);
+    	
+		return "Admin created successfully";
     }
     
     @RequestMapping(value = "admin/account/change-password", method = RequestMethod.POST, params = {"oldPassword", "newPassword", "confirmPassword"})
-    public @ResponseBody String account_create(Principal principal, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, @RequestParam("confirmPassword") String confirmPassword) throws SQLException {
-        Admin current = new Admin(principal.getName());
+    public @ResponseBody String account_create(Principal principal, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, 
+    		@RequestParam("confirmPassword") String confirmPassword) throws SQLException {
         
-        switch (current.changePassword(oldPassword, newPassword, confirmPassword)) {
+        switch (userService.changePassword(oldPassword, newPassword, confirmPassword, principal.getName())) {
         	case -1: return "Old password does not match";
         	case -2: return "Please reconfirm your new password.";
         	case -3: return "Cannot change the password. Please try again.";
         	default: return "Changed password successfully"; 
         }
+        
     } 
     
     @RequestMapping(value = "admin/account/reset-password", method = RequestMethod.POST, params = {"resetUsername"})
     public @ResponseBody String reset_password(@RequestParam("resetUsername") String resetUsername) throws SQLException {
-    	Admin resetAdmin = new Admin(resetUsername);
-    	String newPassword = resetAdmin.resetPassword();
+    	
+    	String newPassword = userService.resetPassword(resetUsername);
+    	
         return "The new password for " + resetUsername + " is " + newPassword;
-    }        
+    }
+    
     /********** End authentication pages **********/
     
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String admin(Locale locale, Model model) throws Exception {
-        Map<String, String> categories = DBLoader.getCategoryInfo();
         String title = "MATTERS: Administration Center";
         
-        model.addAttribute("categories", categories);
         model.addAttribute("title", title);
         
         return "admin_tool";
@@ -138,12 +151,12 @@ public class AdminController {
     	
         return "admin_help";
     }
-    
+        
     /*********************** DB EXPLORER ********************************/
     @RequestMapping(value = "/admin_dbexplorer", method = RequestMethod.GET)
     public String admin_db(Locale locale, Model model) throws Exception {
       
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
+    	List<Category> categories = categoryService.getAll();
     	String title = "MATTERS: Database Explorer";
     	
     	model.addAttribute("categories", categories);
@@ -153,33 +166,26 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/getSubCategories", method = RequestMethod.GET)
-    public @ResponseBody Map<String, String> getSubCategories(@RequestParam("categoryid") String categoryid) throws Exception {
-    	
-    	Map<String, String> subCategories = DBLoader.getSubCategories(categoryid);
-    	return subCategories;
+    public @ResponseBody List<Category> getSubCategories(@RequestParam("categoryid") String categoryid) throws Exception {
+    	return categoryService.getChilrden(Integer.parseInt(categoryid));
     }
     
-    @RequestMapping(value = "/admin_dbexplorer/getDataByMetric", method = RequestMethod.GET)
-    public @ResponseBody List<ArrayList<String>> getDataByMetric(@RequestParam("categoryid") String categoryid) throws Exception {
-    	
-    	List<ArrayList<String>> metricData = DBLoader.getDataByMetric(categoryid);
-    	return metricData;
+    @RequestMapping(value = "/admin_dbexplorer/getDataByCategory", method = RequestMethod.GET)
+    public @ResponseBody List<Statistic> getDataByCategory(@RequestParam("categoryid") String categoryid) throws Exception {
+    	return statService.getStatsByCategory(Integer.parseInt(categoryid));
     }
-    
-    @RequestMapping(value ="/admin_dbexplorer/getDetailedMetrics", method = RequestMethod.GET)
-    public @ResponseBody List<ArrayList<String>> getDetailedMetrics() throws SQLException {
-    	
-    	List<ArrayList<String>> metricData = DBLoader.getDetailedMetrics();
-    	
-		return metricData;
+        
+    @RequestMapping(value ="/admin_dbexplorer/getAllMetrics", method = RequestMethod.GET)
+    public @ResponseBody List<Metric> getDetailedMetrics() throws SQLException {
+    	return metricService.getAll();
     }
     
     /*********************** UPLOAD ********************************/
     @RequestMapping(value = "/admin_upload", method = RequestMethod.GET)
     public String admin_upload(Locale locale, Model model) throws Exception {
       
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	Set<String> dataTypes = DBLoader.getMetricDataTypes();
+    	List<Category> categories = categoryService.getAll();
+    	Set<String> dataTypes = metricService.getMetricDataTypes();
     	String title = "MATTERS: Manual Upload";
     	
     	model.addAttribute("datatypes", dataTypes);
@@ -194,7 +200,11 @@ public class AdminController {
     		@RequestParam("parentcategory") String parentid, @RequestParam("categoryName") String categoryName, 
     		@RequestParam("source") String source, @RequestParam("url") String url) throws SQLException 
     {
-    	DBSaver.insertNewCategory(categoryName, parentid, source, url);
+    	if (parentid.isEmpty()) {
+    		parentid = "-1";
+    	}
+    	
+    	categoryService.save(categoryName, Integer.parseInt(parentid), source, url);
     	String referer = request.getHeader("Referer");
     	
     	// For status message
@@ -218,7 +228,8 @@ public class AdminController {
     	}
 
     	boolean isCalc = Boolean.parseBoolean(isCalculated);
-    	DBSaver.insertNewMetric(metricName, metricDesc, isCalc, categoryID, datatype);
+    	
+    	metricService.save(metricName, metricDesc, isCalc, categoryID, datatype);
 
     	String referer = request.getHeader("Referer");
     	
@@ -229,18 +240,17 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin/metrics", method = RequestMethod.GET)
-    public @ResponseBody Map<String, String> getMetrics(@RequestParam("categoryid") String categoryid) throws Exception {
+    public @ResponseBody List<Metric> getMetrics(@RequestParam("categoryid") String categoryid) throws Exception {
     	
-    	Map<String, String> metricData = DBLoader.getMetricInfo(categoryid);
-    	return metricData;
+    	return metricService.getMetricsForCategory(Integer.parseInt(categoryid));
     }    
     
     /*********************** PIPELINE ********************************/
     @RequestMapping(value = "/admin_pipeline", method = RequestMethod.GET)
     public String admin_pipeline(Locale locale, Model model) throws Exception {
     	
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
-    	Set<String> dataTypes = DBLoader.getMetricDataTypes();
+    	List<Category> categories = categoryService.getAll();
+    	Set<String> dataTypes = metricService.getMetricDataTypes();
 
     	String title = "MATTERS: Pipeline Manager";
     	
@@ -318,7 +328,7 @@ public class AdminController {
 		String user = principal.getName();
 		
     	// Now let's add the entry to the database if nothing has failed yet    	
-    	DBSaver.insertPipeline(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename(), user);
+    	pipelineService.save(pipelineName, pipelineDesc, scriptFilePath.toString(), script.getOriginalFilename(), user);
     	
     	redir.addFlashAttribute("pipeline_add_success", true);
     	redir.addFlashAttribute("pipelineName", pipelineName);
@@ -330,39 +340,12 @@ public class AdminController {
      * Returns a JSON array of every pipeline jobs.
      * Used for Scheduler and Table Pipeline Listing
      */
-    @RequestMapping(value = "/admin_pipeline/getPipelineData", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>> admin_get_pipeline_data(Locale locale, Model model) throws Exception {
-		ArrayList<HashMap<String,String>> data = new ArrayList<HashMap<String,String>>();
-		Connection conn = DBConnector.getInstance().getConn();
-		
-		String sql = "SELECT * FROM mhtc_sch.pipelines";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-		ResultSet rs = pstatement.executeQuery();
-		
-		while (rs.next()) {
-			HashMap<String,String> row = new HashMap<String,String>();
-			String pipelineName = rs.getString("pipelinename");
-			String pipelineDesc = rs.getString("pipelinedesc");	
-			String filename = rs.getString("filename");
-			String user = rs.getString("uploadedby");
-			
-			// Need to convert Date to String
-			Date dateAdded = rs.getTimestamp("dateadded");
-			DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-			String date = df.format(dateAdded);
-			
-			row.put("pipelinename",pipelineName);
-			row.put("pipelinedesc", pipelineDesc);
-			row.put("filename", filename);
-			row.put("dateadded", date);
-			row.put("user", user);
-			
-			data.add(row);
-		}
-		
-		return data;
+    @RequestMapping(value = "/admin_pipeline/getPipelineData")
+    public @ResponseBody List<Pipeline> admin_get_pipeline_data(Locale locale, Model model) throws Exception 
+    {
+		return pipelineService.getAll();
     }
-    
+        
     /**
      * Deletes pipeline from database with that name
      * TODO Does not wipe data from server
@@ -375,27 +358,28 @@ public class AdminController {
     @RequestMapping(value = "/admin_pipeline/delete", method = RequestMethod.POST, params = {"pipelineName"})
     public @ResponseBody boolean admin_pipeline_delete(Locale locale, Model model, @RequestParam("pipelineName") String pipelineName) throws SQLException
     {
-		Connection conn = DBConnector.getInstance().getConn();
-
-		String sql = "DELETE FROM mhtc_sch.pipelines WHERE pipelinename = ?";
-		PreparedStatement pstatement = conn.prepareStatement(sql);
+		pipelineService.delete(pipelineName);
 		
-		pstatement.setString(1, pipelineName);
-		
-		// Will return false since there is no result, but just want to make sure it executed properly
-		return !pstatement.execute();
-		
+		return true;
+    }
+    
+    @RequestMapping(value = "/admin/execute", method = RequestMethod.POST, params = {"pipelineName"})
+    public @ResponseBody String admin_pipleline_run(Locale locale, Model model, @RequestParam("pipelineName") String pipelineName) throws IOException {
+    	Pipeline p = pipelineService.get(pipelineName);
+    	
+    	TalendJob.runPipeline(p.getPipelineName(), p.getPath());
+    	
+    	return "Pipeline successfully ran!";
     }
     
     /********************** SCHEDULER *******************************/
     @RequestMapping(value = "/admin_scheduler", method = RequestMethod.GET)
-    public String admin_scheduler(Locale locale, Model model) throws Exception {
+    public String admin_scheduler(Locale locale, Model model) throws Exception 
+    {
       
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
     	String title = "MATTERS: Scheduler";
-    	List<Schedule> schedList = DBLoader.getSchedules();
+    	List<Schedule> schedList = schedService.getAll();
     	
-    	model.addAttribute("categories", categories);
         model.addAttribute("title", title);
 		model.addAttribute("schedList", schedList);
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
@@ -404,10 +388,11 @@ public class AdminController {
     }
     
     @RequestMapping(value = "/admin_scheduler_add", method=RequestMethod.POST, params = {"sched_job", "sched_name", "sched_description", "sched_date", "sched_cron"})
-    public String admin_scheduler_add(Locale locale, Model model, @RequestParam("sched_job") String sched_job, @RequestParam("sched_name") String sched_name, @RequestParam("sched_date") String sched_date, @RequestParam("sched_description") String sched_description, @RequestParam("sched_cron") boolean sched_cron) throws Exception {
-		Schedule newSched = new Schedule(sched_name, sched_job, sched_description, sched_date, sched_cron);
-		newSched.insertToDB();
-		List<Schedule> schedList = DBLoader.getSchedules();
+    public String admin_scheduler_add(Locale locale, Model model, @RequestParam("sched_job") String sched_job, @RequestParam("sched_name") String sched_name, 
+    		@RequestParam("sched_date") String sched_date, @RequestParam("sched_description") String sched_description, @RequestParam("sched_cron") boolean sched_cron) throws Exception 
+    {
+		schedService.save(sched_name, sched_job, sched_description, sched_date, sched_cron);
+		List<Schedule> schedList = schedService.getAll();
 		
     	String title = "MATTERS: Scheduler";
 		
@@ -419,25 +404,21 @@ public class AdminController {
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		
 		// Schedule the job
-		JobScheduler.schedule(newSched);
+		JobScheduler.schedule(new Schedule(sched_name, sched_job, sched_description, sched_date, sched_cron));
 		
 		return "admin_scheduler";
     }
     
     @RequestMapping(value = "/admin_scheduler_stop", method=RequestMethod.GET, params = {"job_name"})
     public String admin_scheduler_stop(Locale locale, Model model, @RequestParam("job_name") String job_name) throws Exception {
-		String sql = "DELETE FROM mhtc_sch.schedules WHERE job_name = ?";
-		Connection conn = DBConnector.getInstance().getConn();
-		PreparedStatement pstatement = conn.prepareStatement(sql);
-
-		pstatement.setString(1, job_name);
-		boolean success_stop = pstatement.execute();   
-		
+    	// Delete from DB
+    	schedService.delete(job_name);
+    	
 		// Actually stop the job
 		JobScheduler.deleteJob(job_name);
 		
 		// Get the jobs
-		List<Schedule> schedList = DBLoader.getSchedules();
+		List<Schedule> schedList = schedService.getAll();
 		
     	String title = "MATTERS: Scheduler";
 		
@@ -460,10 +441,8 @@ public class AdminController {
     @RequestMapping(value = "/admin_reports", method = RequestMethod.GET)
     public String admin_reports(Locale locale, Model model) throws Exception {
       
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
     	String title = "MATTERS: Reporting";
     	
-    	model.addAttribute("categories", categories);
         model.addAttribute("title", title);
               
         return "admin_reports";
@@ -472,10 +451,8 @@ public class AdminController {
     @RequestMapping(value = "/admin_reports_detail", method = RequestMethod.GET)
     public String admin_reports_detail(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
       
-    	Map<String, String> categories = DBLoader.getCategoryInfo();
     	String title = "MATTERS: Reporting";
     	
-    	model.addAttribute("categories", categories);
         model.addAttribute("title", title);
         model.addAttribute("job", job);      
         
@@ -491,64 +468,18 @@ public class AdminController {
     												@RequestParam("origin") String origin,
     												@RequestParam("code") int code) throws Exception {
     	// TODO: Add some security measures to prevent unauthorized users to access this RESTful service.
-    	Logger.jsonTalendLog(job, code, message, origin, moment, priority);
+    	logService.save(job, code, message, origin, moment, priority);
     	return "{\"success\" : true}";
     }    
     
     @RequestMapping(value = "/admin_get_logs", method = RequestMethod.GET)
-    public @ResponseBody List<HashMap<String,String>> admin_get_logs(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
+    public @ResponseBody List<TalendLog> admin_get_logs(Locale locale, Model model, @RequestParam("job") String job) throws Exception {
     	if (job.equals("")) {
-    		return Logger.retriveLogSummary();
+    		return logService.getSummary();
     	} else {
-    		return Logger.retrieveLogByJobName(job);
+    		return logService.get(job);
     	}
     }    
-    
-    @RequestMapping(value = "/admin/categories", method = RequestMethod.GET)
-    public @ResponseBody List<Metric> categories() {
-        //List<TreeViewNode> returnList = new LinkedList<TreeViewNode>();
-        //returnList.add(service.getCategoriesAsTree());
-        return null;
-    }
-    
-    @RequestMapping(value = "/admin/categories/{categoryid}/metrics/table")
-    public String metricTable(Model model, @PathVariable("categoryid") int categoryId) {
-        
-        //model.addAttribute("jv_metrics", service.getMetricsForCategory(categoryId));
-        
-        return "admin_metrics_table";
-    }
-    
-    @RequestMapping(value = "/admin/categories/new", method=RequestMethod.POST, params = { "parentid", "name", "source"})
-    @ResponseStatus(value = HttpStatus.OK)
-    public void addCategory(@RequestParam("parentid") int parentId, @RequestParam("name") String name, @RequestParam("source") String source) {
-        
-        //service.storeCategory(name, parentId, source);
-        
-    }
-    
-    @RequestMapping(value = "/admin/categories/{categoryid}/update", method=RequestMethod.POST, params = { "name", "visible", "source"})
-    @ResponseStatus(value = HttpStatus.OK)
-    public void updateCategory(Model model, @PathVariable("categoryid") int categoryId, @RequestParam("visible") boolean visible, @RequestParam("name") String name, @RequestParam("source") String source) {
-
-        //service.updateCategory(categoryId, name, visible, source);
-    }
-    
-    @RequestMapping(value = "/admin/categories/{categoryid}/metrics/new", method=RequestMethod.POST, params = { "name", "iscalculated", "type"})
-    @ResponseStatus(value = HttpStatus.OK)
-    public void addMetric(@PathVariable("categoryid") int categoryId, @RequestParam("name") String name, @RequestParam("iscalculated") boolean isCalculated, @RequestParam("type") String type) {
-        
-        //service.storeMetric(categoryId, name, isCalculated, type);
-        
-    }
-    
-    @RequestMapping(value = "/admin/metrics/{metricid}/update", method=RequestMethod.POST, params = { "name", "visible", "iscalculated", "type"})
-    @ResponseStatus(value = HttpStatus.OK)
-    public void updateMetric(@PathVariable("metricid") int metricId, @RequestParam("name") String name, @RequestParam("visible") boolean visible, @RequestParam("iscalculated") boolean isCalculated, @RequestParam("type") String type) {
-        
-        //service.updateMetric(metricId, name, visible, isCalculated, type);
-        
-    }
     
     @RequestMapping(value = "/admin/upload/add", method=RequestMethod.POST)
     public String uploadAddFile(RedirectAttributes redir, @RequestParam("file") MultipartFile dataFile, @RequestParam("category") String subCategoryID, 
@@ -563,13 +494,13 @@ public class AdminController {
     	// whereas the "category" parameter is the ID of the subcategory
     	
     	// Need to get actual name of subcategory
-    	String subCategory = DBLoader.getCategoryNameFromID(Integer.parseInt(subCategoryID));
-    	String parentCategory = DBLoader.getCategoryNameFromID(Integer.parseInt(parentCategoryID));
+    	Category subCategory = categoryService.get(Integer.parseInt(subCategoryID));
+    	Category parentCategory = categoryService.get(Integer.parseInt(parentCategoryID));
     	
     	// Create directory structure
     	final String DATA_DIRECTORY = "/matters/data";
-    	String parentDir = parentCategory.toLowerCase().replaceAll(" ", "_");
-    	String childDir = subCategory.toLowerCase().replaceAll(" ", "_");
+    	String parentDir = parentCategory.getName().toLowerCase().replaceAll(" ", "_");
+    	String childDir = subCategory.getName().toLowerCase().replaceAll(" ", "_");
     	
     	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
     	String dataFileLocation = dir.toString() + "/" + newFileName;
@@ -584,12 +515,20 @@ public class AdminController {
     	File localFile = new File(dataFileLocation);
     	dataFile.transferTo(localFile);
     	
+    	// Get a list of metrics for that category
+    	List<Metric> metrics = metricService.getMetricsForCategory(subCategory.getId());  
+    	
+    	// Get current state mappings
+    	List<State> states = stateMapper.getAllStates();
+    	
         // Now that the file is saved, time to run it
-        DataPipeline.run(localFile, subCategoryID, overwrite);
+        List<Statistic> lines = DataPipeline.run(localFile, subCategory, metrics, states);
         
-        // Once completed, need to add entry to database for record keeping
+        // Save the lines extracted from data pipeline
+        statService.save(lines, overwrite);
+        
+        // TODO Once completed, need to add entry to database for record keeping
         // TODO Need to somehow get the metric from the spreadsheet for DB record
-        DBSaver.insertManualUpload(parentCategory, subCategory, "metric", dataFile.getOriginalFilename(), dir.toString());
         
         redir.addFlashAttribute("upload_file_success", true);
         redir.addFlashAttribute("filename", dataFile.getOriginalFilename());

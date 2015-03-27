@@ -378,6 +378,12 @@ table.dataTable tbody tr:nth-child(even) {
 	margin-right: auto !important;
 }
 
+.box-content > .download {
+	margin-left: auto !important;
+    margin-right: auto !important;
+    width: 90%;
+}
+
 #mbody, #mbodyBar {
 	width: 100% !important;
 }
@@ -1166,15 +1172,11 @@ ul.timelineListStyle > li
 	padding-right: 15px;
 }
 
-#mbody 
+#mbody, #mbodyBar
 {
-	height: 100%;
-	margin-right: 15px;
-}
-
-#mbodyBar
-{
-	height: 100%;
+	position: absolute;
+	top: 0px;
+	bottom: 35px;
 	margin-right: 15px;
 }
 

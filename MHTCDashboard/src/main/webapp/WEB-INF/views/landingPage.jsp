@@ -14,6 +14,8 @@
 	<meta name="generator" content="Maptitude">
 	<meta name="apple-mobile-web-app-capable" content="yes"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
+	
 	<title>MATTERS</title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<link rel="stylesheet" href="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/css">
@@ -56,6 +58,32 @@
 				display: none;
 			}
 	</style>
+	
+	<!-- Check for browser compatibility before we do anything else -->
+	<script src="js/modernizr.js"></script>
+	
+	<script type="text/javascript">						
+		var compatible = true;
+		compatible = compatible & Modernizr.rgba;
+		compatible = compatible & Modernizr.backgroundsize;
+		compatible = compatible & Modernizr.borderradius;
+		compatible = compatible & Modernizr.boxshadow;
+		compatible = compatible & Modernizr.opacity;
+		compatible = compatible & Modernizr.csstransforms;
+		compatible = compatible & Modernizr.svg;
+		compatible = compatible & Modernizr.canvas;
+		compatible = compatible & Modernizr.generatedcontent;
+		compatible = compatible & Modernizr.inlinesvg;
+		compatible = compatible & Modernizr.svgclippaths;
+		compatible = compatible & Modernizr.mediaqueries;
+		compatible = compatible & Modernizr.boxsizing;
+		compatible = compatible & Modernizr.bgpositionshorthand;
+		
+		if (!compatible)
+			window.location = "./unsupported";			
+	</script>
+	
+	
 	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/js"></script>
 </head>
 
@@ -69,6 +97,12 @@
 <!-- ==================================== MAP SECTION ========= -->
 
 <section class="map-sect">
+	<div id="noJSError" style="color: white; font-weight: bolder; font-size: 25px; text-align: center; padding-top: 20px;">
+		WARNING: This page will not display correctly with JavaScript disabled. 
+		<br/><br/>Please enable JavaScript and refresh your page.
+		<br/>
+		<br/>
+	</div>
 	<div class="container map-container" ng-app="map_application">
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
@@ -241,6 +275,9 @@
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+$("#noJSError").hide();
+</script>
 
 </body>
 </html>
