@@ -613,7 +613,15 @@ label.feedback_label {
 	-o-transition: all .3s ease-in-out;
 	z-index: -1;
 }
-
+td.recaptcha_r7_c1{
+	display:none;
+}
+td.recaptcha_r8_c1{
+	display:none;
+}
+span#recaptcha_privacy a {
+	cursor:pointer;
+}
 
 
 .index.row{
