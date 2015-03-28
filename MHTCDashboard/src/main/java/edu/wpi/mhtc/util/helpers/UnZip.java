@@ -25,6 +25,9 @@ public class UnZip {
 	 *            zip file output folder
 	 */
 	public void unZipIt(String zipFile, String outputFolder) {
+		String fileName;
+		File newFile;
+		FileOutputStream fos;
 
 		byte[] buffer = new byte[1024];
 
@@ -44,10 +47,10 @@ public class UnZip {
 
 			while (ze != null) {
 
-				String fileName = ze.getName();
+				fileName = ze.getName();
 				//System.out.println(fileName);
 				
-				File newFile = new File(outputFolder + File.separator + fileName);
+				newFile = new File(outputFolder + File.separator + fileName);
 
 				//System.out.println("file unzip : " + newFile.getAbsoluteFile());
 
@@ -59,7 +62,7 @@ public class UnZip {
 					// folder
 					new File(newFile.getParent()).mkdirs();
 
-					FileOutputStream fos = new FileOutputStream(newFile);
+					fos = new FileOutputStream(newFile);
 
 					int len;
 					while ((len = zis.read(buffer)) > 0) {
