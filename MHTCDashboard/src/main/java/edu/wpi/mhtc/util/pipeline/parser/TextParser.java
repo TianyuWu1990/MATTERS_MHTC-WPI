@@ -118,7 +118,7 @@ public class TextParser implements IParser {
 		CSVRecord record = findHeader();
 		String cellValue = null;
 		
-		if(record.getRecordNumber()==headerRecordNumber){
+		if(record.getRecordNumber() == headerRecordNumber){
 			for(int i = 0 ; i<record.size() ; i++ ){
 				cellValue = record.get(i);
 				if(cellValue.equalsIgnoreCase("year") || cellValue.equalsIgnoreCase("state")){

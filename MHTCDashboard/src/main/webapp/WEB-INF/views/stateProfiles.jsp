@@ -26,6 +26,32 @@
 	<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 	<link href="css/stateProfiles.css" rel="stylesheet" type="text/css">
+	
+	<!-- Check for browser compatibility before we do anything else -->
+	<script src="js/modernizr.js"></script>
+	
+	<script type="text/javascript">						
+		var compatible = true;
+		compatible = compatible & Modernizr.rgba;
+		compatible = compatible & Modernizr.backgroundsize;
+		compatible = compatible & Modernizr.borderradius;
+		compatible = compatible & Modernizr.boxshadow;
+		compatible = compatible & Modernizr.opacity;
+		compatible = compatible & Modernizr.csstransforms;
+		compatible = compatible & Modernizr.svg;
+		compatible = compatible & Modernizr.generatedcontent;
+		compatible = compatible & Modernizr.inlinesvg;
+		compatible = compatible & Modernizr.svgclippaths;
+		compatible = compatible & Modernizr.mediaqueries;
+		compatible = compatible & Modernizr.boxsizing;
+		compatible = compatible & Modernizr.bgpositionshorthand;
+		compatible = compatible & Modernizr.bgpositionxy;
+		
+		if (!compatible)
+			window.location = "./unsupported";			
+	</script>
+
+	
 	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/libjs"></script>
 	<script type="text/javascript" src="js/mesh/caliper/profile-app.js"></script>
 </head>
@@ -46,7 +72,12 @@
                        "Tax burden per capita rank", "Percent tech employment", "Tech employment rank", "Unempl insurance",
                        "Unempl insurance rank"
        -->
-		<div class="container" ng-controller="profile_controller as state" initial="Massachusetts" style="overflow-x:hidden;">
+       <div id="noJSError" style="color: #680017; font-weight: bolder; font-size: 25px; text-align: center; padding-top: 20px;">
+			WARNING: You must have JavaScript enabled to use this page.
+			<br/>
+			<br/>
+		</div>
+		<div class="container" ng-controller="profile_controller as state" initial="Massachusetts" style="overflow-x:hidden; display:none;" id="mainContent">
 		
 			<div class="state-profile-title">
 				<div id="stateChooserWrapper">
@@ -130,23 +161,23 @@
 				<div class="source">Source</div>
 			</div>
 
-					<div class="index row">
-						<div class="rank">{{state.properties["Milken Science and Tech Index"]}}</div>
+					<div class="index row" >
+						<div class="rank" >{{state.properties["Milken Science and Tech Index"]}}</div>
 						<div class="data">-</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Milken Science and Tech Index"]) }}'></div></div>
 						<div class="year">2014</div>
 						<div class="survey">Milken State Science and Technology Index</div>
 						<div class="source">Milken Institute</div>
 					</div>
-					<div class="index row">
-						<div class="rank">{{state.properties["Tax Foundation Business Tax Index"]}}</div>
+					<div class="index row" >
+						<div class="rank" >{{state.properties["Tax Foundation Business Tax Index"]}}</div>
 						<div class="data">-</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tax Foundation Business Tax Index"]) }}'></div></div>
 						<div class="year">2015</div>
 						<div class="survey">State Business Tax Climate Index</div>
 						<div class="source">Tax Foundation</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["CNBC Top States for Business"]}}</div>
 						<div class="data">-</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["CNBC Top States for Business"]) }}'></div></div>
@@ -154,7 +185,7 @@
 						<div class="survey">CNBC Top States for Business</div>
 						<div class="source">CNBC</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Key tech demand hiring rank"]}}</div>
 						<div class="data">{{state.properties["Key tech demand hiring difficulty"]}}</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Key tech demand hiring rank"]) }}'></div></div>
@@ -162,7 +193,7 @@
 						<div class="survey">Tech Demand Hiring Difficulty</div>
 						<div class="source">Wanted Analytics and Monster Government Solutions</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Tech employment rank"]}}</div>
 						<div class="data">{{state.properties["Percent tech employment"]}}%</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tech employment rank"]) }}'></div></div>
@@ -170,7 +201,7 @@
 						<div class="survey">Tech Employment as a % of Workforce</div>
 						<div class="source">National Science Foundation and Bureau of Labor Statistics, Occupational Employment  Statistics Survey</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Bachelors degree holders rank"]}}</div>
 						<div class="data">{{state.properties["Percent bachelors degree holders"]}}%</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Bachelors degree holders rank"]) }}'></div></div>
@@ -178,7 +209,7 @@
 						<div class="survey">Bachelors degree holders as a % of Workforce</div>
 						<div class="source">US Census/Bureau of Labor Statistics</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Unempl insurance rank"]}}</div>
 						<div class="data">{{state.properties["Unempl insurance"]}}</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Unempl insurance rank"]) }}'></div></div>
@@ -186,7 +217,7 @@
 						<div class="survey">Unemployment Insurance Average Premium per Employee</div>
 						<div class="source">US Department of Labor - Employment and Training Administration, Bureau of Labor Statistics</div>
 					</div>
-					<div class="index row">
+					<div class="index row" >
 						<div class="rank">{{state.properties["Tax burden per capita rank"]}}</div>
 						<div class="data">{{state.properties["Tax burden per capita"]}}</div>
 						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tax burden per capita rank"]) }}'></div></div>
@@ -227,5 +258,10 @@
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/mesh/data/state-profiles.js"></script>
 <script type="text/javascript" src="js/stateChooser.stateProfiles.js"></script>
+
+<script type="text/javascript">
+	$("#mainContent").show();
+	$("#noJSError").hide();
+</script>
 </body>
 </html>
