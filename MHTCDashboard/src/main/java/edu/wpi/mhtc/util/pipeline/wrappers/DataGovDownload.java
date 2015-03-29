@@ -5,6 +5,7 @@
 package edu.wpi.mhtc.util.pipeline.wrappers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
 
@@ -31,9 +32,10 @@ public class DataGovDownload {
 	 * Perform SQL data extraction from data.gov website.
 	 * @param sql: A PostgreSQL query that can be performed on the API
 	 * @param filename
+	 * @throws UnsupportedEncodingException 
 	 */
-	public void queryDownload(String sql, String filename) {
-		String download_url = base_url + "datastore_search_sql?sql=" + URLEncoder.encode(sql);
+	public void queryDownload(String sql, String filename) throws UnsupportedEncodingException {
+		String download_url = base_url + "datastore_search_sql?sql=" + URLEncoder.encode(sql, "UTF-8");
 		URLDownload downloader = new URLDownload();
 		downloader.HTTPDownload(download_url, filename);
 	}

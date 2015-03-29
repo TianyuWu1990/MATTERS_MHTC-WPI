@@ -21,8 +21,8 @@ public class User {
 		this.username = username;
 	}
 	
-	public User(String username,String password, String email,String firstName,String lastName, boolean isAdmin) {
-		this.id = 0;
+	public User(String username, String password, String email, String firstName, String lastName, boolean isAdmin) {
+		id = 0;
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -31,7 +31,7 @@ public class User {
 		this.isAdmin = isAdmin;
 	}
 	
-	public User(int id, String username,String password,String firstName,String lastName,String email) {
+	public User(int id, String username, String password, String firstName, String lastName, String email) {
 		this.id = 0;
 		this.username = username;
 		this.password = password;

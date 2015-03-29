@@ -15,17 +15,14 @@ import edu.wpi.mhtc.model.admin.Category;
  *
  */
 public class UnifiedDataSource extends DataSource {
-	
-	FileType fileType;
-	ParserType parserType;
-	
+		
 	public UnifiedDataSource(File file, Category category) throws UnifiedFormatException {
 		super(file, category);
 		if(file.getName().endsWith("xls")){
-			this.fileType = FileType.xls;
+			fileType = FileType.xls;
 		}
 		else if(file.getName().endsWith("xlsx")){
-			this.fileType = FileType.xlsx;
+			fileType = FileType.xlsx;
 		}
 		else {
 			UnifiedFormatException u = new UnifiedFormatException("File must be an Excel spreadsheet. File was "+file.getName());
@@ -35,19 +32,6 @@ public class UnifiedDataSource extends DataSource {
 		}
 		
 	}
-	
-	
-//	public static void main(String[] args) throws Exception{
-//		
-//		File file = new File("TestUnifiedFile.xlsx");
-//		Category cat = new Category(2);
-//		
-//		UnifiedDataSource uni = new UnifiedDataSource(file, cat);
-//		
-//		File badFile = new File("pom.xml");
-//		
-//		UnifiedDataSource uni2 = new UnifiedDataSource(badFile, cat);
-//	}
 	
 }
 

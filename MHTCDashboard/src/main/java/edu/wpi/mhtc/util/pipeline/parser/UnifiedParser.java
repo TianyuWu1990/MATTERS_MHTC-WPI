@@ -25,10 +25,6 @@ import edu.wpi.mhtc.util.pipeline.cleaner.NumericCleaner;
 import edu.wpi.mhtc.util.pipeline.cleaner.StateCleaner;
 import edu.wpi.mhtc.util.pipeline.cleaner.YearCleaner;
 import edu.wpi.mhtc.util.pipeline.main.CategoryException;
-import edu.wpi.mhtc.util.pipeline.parser.DataSource;
-import edu.wpi.mhtc.util.pipeline.parser.FileType;
-import edu.wpi.mhtc.util.pipeline.parser.IParser;
-import edu.wpi.mhtc.util.pipeline.parser.UnifiedFormatException;
 
 /**
  * UnifiedParser is responsible for taking in a properly-formatted excel file
@@ -44,7 +40,7 @@ public class UnifiedParser implements IParser {
 	List<State> states;
 
 	HashMap<String, Integer> columnNames;	//holds column names from header in order
-	ArrayList<Statistic> lines;
+	List<Statistic> lines;
 	Workbook workbook;
 	Sheet sheet;			//files in unified format only have one sheet
 	DataSource source;
@@ -62,11 +58,11 @@ public class UnifiedParser implements IParser {
 	public UnifiedParser(DataSource source, List<Metric> metrics, List<State> states) throws UnifiedFormatException, CategoryException, InvalidFormatException, IOException{
 
 		if (source.getFileType() == FileType.xlsx) {
-			this.workbook = (XSSFWorkbook) WorkbookFactory.create(
+			workbook = WorkbookFactory.create(
 					source.getFile());
 		}
 		else if (source.getFileType() == FileType.xls) {
-			this.workbook = WorkbookFactory.create(source.getFile());
+			workbook = WorkbookFactory.create(source.getFile());
 		}
 		else{
 			throw new UnifiedFormatException("File must be in excel format, but file type was: "+ source.getFileType());
@@ -78,13 +74,13 @@ public class UnifiedParser implements IParser {
 		
 		this.source = source;
 		
-		this.sheet = workbook.getSheetAt(0);	//files in unified format only have one sheet
+		sheet = workbook.getSheetAt(0);	//files in unified format only have one sheet
 		
 		this.metrics = metrics;
 		
-		this.headerRow = findHeader();						//find file header, make sure has year and state
+		headerRow = findHeader();						//find file header, make sure has year and state
 				
-		this.columnNames = new HashMap<String, Integer>();
+		columnNames = new HashMap<String, Integer>();
 		getHeaderColumnNames();					// Get header column names, and validate if it is a metric
 		
 		this.states = states;
@@ -209,8 +205,9 @@ public class UnifiedParser implements IParser {
 									line.setMetricID(m.getId());
 									line.setValue(Double.parseDouble(cleanedValue));
 																		
-									if (line.isValid())
+									if (line.isValid()) {
 										lines.add(line);
+									}
 								}
 								catch(Exception e){
 									//	TODO: use this to report error to admin
@@ -271,9 +268,9 @@ public class UnifiedParser implements IParser {
 	boolean isRowEmpty(Row row) {
 		for (int c = row.getFirstCellNum(); c <= row.getLastCellNum(); c++) {
 			Cell cell = row.getCell(c);
-			if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
-			
+			if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK) {
 				return false;
+			}
 		}
 		
 		return true;
@@ -364,7 +361,7 @@ public class UnifiedParser implements IParser {
 	 * Simple getter for lines, which contains all data tuples
 	 * @return
 	 */
-	public ArrayList<Statistic> getLines() {
+	public List<Statistic> getLines() {
 		return lines;
 	}
 

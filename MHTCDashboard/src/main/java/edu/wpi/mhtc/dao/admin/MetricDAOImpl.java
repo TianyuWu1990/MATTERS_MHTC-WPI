@@ -34,8 +34,6 @@ public class MetricDAOImpl implements MetricDAO {
 
     @Autowired private JdbcTemplate jdbcTemplate;
 	
-    public MetricDAOImpl() {}
-	
 	@Override
 	public void save(Metric object) {
         PSqlStringMappedJdbcCall<Integer> call = 

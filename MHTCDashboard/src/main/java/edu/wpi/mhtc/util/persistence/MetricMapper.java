@@ -71,11 +71,13 @@ public class MetricMapper
 	public Metric getMetricFromString(String metric)
 	{
 	    Metric dbMetric = this.getMetricByName(metric);
-		if (dbMetric == null)
+	    
+		if (dbMetric == null) {
 			try {
 				dbMetric = this.getMetricByID(Integer.parseInt(metric));
 			}
 			catch (NumberFormatException e) {/*not a number*/}
+		}
 		
 		return dbMetric;
 	}
@@ -97,8 +99,9 @@ public class MetricMapper
 		List<Metric> binMetrics = new LinkedList<Metric>();
 		for (Metric metric : metrics)
 		{
-			if (metric.getBinId() == id)
+			if (metric.getBinId() == id) {
 				binMetrics.add(metric);
+			}
 		}
 		return binMetrics;
 	}

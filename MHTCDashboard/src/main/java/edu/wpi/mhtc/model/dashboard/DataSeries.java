@@ -28,7 +28,7 @@ public class DataSeries {
     }
     
     public void addData(List<Data> data) {
-        this.dataPoints.addAll(data);
+        dataPoints.addAll(data);
         
         updateData();
     }
@@ -90,10 +90,11 @@ public class DataSeries {
             double diff = recent.getValue() - old.getValue();
             
             String reversed;
-            if (metric.getTrendType().equals("reversed"))
+            if (metric.getTrendType().equals("reversed")) {
                 reversed = "_reversed";
-            else
+            } else {
                 reversed = "";
+            }
             
             if (diff > 0) {
                 trend = "up"+reversed;

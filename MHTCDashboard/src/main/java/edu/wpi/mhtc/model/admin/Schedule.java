@@ -25,7 +25,7 @@ public class Schedule {
 		this.sched_description = sched_description;
 		this.sched_cron = sched_cron;
 		this.sched_date = sched_date;
-		this.job_name =  sched_name.replaceAll("\\s+","") + MD5.getMD5(sched_description + sched_date + sched_job);
+		job_name =  sched_name.replaceAll("\\s+", "") + MD5.getMD5(sched_description + sched_date + sched_job);
 	}
 	
 	public Schedule(String job_name, String sched_name, String sched_job, String sched_description, String sched_date, boolean sched_cron) {

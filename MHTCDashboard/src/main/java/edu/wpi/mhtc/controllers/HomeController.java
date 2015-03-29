@@ -221,7 +221,7 @@ public class HomeController {
 		List<State> peers = stateService.getAllPeers();
 		List<State> allstates= stateService.getAllStates(); 
 		
-        model.addAttribute("jv_stats_profile",profile );
+        model.addAttribute("jv_stats_profile", profile );
         model.addAttribute("jv_stats_national", national);
         model.addAttribute("jv_stats_talent", talent);
         model.addAttribute("jv_stats_cost", cost);
@@ -247,7 +247,7 @@ public class HomeController {
     															ServletRequest servletRequest,
     												            SessionStatus sessionStatus) throws Exception {
     	String remoteAddress = servletRequest.getRemoteAddr();
-        ReCaptchaResponse reCaptchaResponse = this.reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
+        ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
  
         if (reCaptchaResponse.isValid()){
         	
@@ -338,7 +338,7 @@ public class HomeController {
 {
     	
     	String remoteAddress = servletRequest.getRemoteAddr();
-        ReCaptchaResponse reCaptchaResponse = this.reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
+        ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddress, challangeField, responseField);
  
         if(reCaptchaResponse.isValid()){
         	

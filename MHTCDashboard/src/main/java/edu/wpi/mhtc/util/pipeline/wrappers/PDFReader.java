@@ -4,14 +4,7 @@
  */
 package edu.wpi.mhtc.util.pipeline.wrappers;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.util.PDFTextStripper;
 
 /**
  * Text extractor for pdf files.

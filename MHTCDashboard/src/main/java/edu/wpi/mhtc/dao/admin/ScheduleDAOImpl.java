@@ -5,7 +5,6 @@
 package edu.wpi.mhtc.dao.admin;
 
 import java.io.File;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -15,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,8 +32,6 @@ import edu.wpi.mhtc.model.admin.Schedule;
 public class ScheduleDAOImpl implements ScheduleDAO {
 	
 	@Autowired private JdbcTemplate jdbcTemplate;
-	
-	public ScheduleDAOImpl() {}
 
 	@Override
 	public void save(Schedule schedule) {
@@ -146,7 +142,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 		
 		File file = new File(path);
 		String filename = file.getName();
-		return filename.substring(0,filename.lastIndexOf('.')-4);		
+		return filename.substring(0, filename.lastIndexOf('.')-4);		
 
 	}
 

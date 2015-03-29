@@ -12,7 +12,7 @@ package edu.wpi.mhtc.model.admin;
 public class Metric {
 	
 	public Metric() {
-		this.id = 0;
+		id = 0;
 	}
 
 	private int id;

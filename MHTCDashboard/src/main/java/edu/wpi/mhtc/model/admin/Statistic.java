@@ -18,8 +18,6 @@ public class Statistic {
 	int year;
 	Double value;
 	
-	public Statistic() {}
-	
 	/**
 	 * Check whether a Statistic is valid to be added to DB
 	 * @return

@@ -4,8 +4,6 @@
  */
 package edu.wpi.mhtc.model.admin;
 
-import java.util.List;
-
 /**
  * Corresponds to tuples in categories table in db.
  * @author cakuhlman
@@ -22,7 +20,7 @@ public class Category {
 	private boolean isVisible;
 		
 	public Category() {
-		this.id = 0;
+		id = 0;
 	}
 
 	/**
@@ -78,7 +76,7 @@ public class Category {
 	}
 
 	public void setURL(String uRL) {
-		this.URL = uRL;
+		URL = uRL;
 	}
 
 }

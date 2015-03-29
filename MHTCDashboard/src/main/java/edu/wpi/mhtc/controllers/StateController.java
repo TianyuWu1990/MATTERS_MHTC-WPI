@@ -59,7 +59,7 @@ public class StateController
 	List<State> topTenEndpoint(Model model, @RequestParam("metric") String metric, @RequestParam("year") int year)
 	{
 		//return service.getTopTenStatesForMetric(metricService.getMetricById(Integer.parseInt(metric)));
-		return service.getTopTenPeersForMetric(metric,year);
+		return service.getTopTenPeersForMetric(metric, year);
 	}
 
 	@RequestMapping(value = "/data/peers/bottom", params = { "metric" })
@@ -67,6 +67,6 @@ public class StateController
 	List<State> bottomTenEndpoint(Model model, @RequestParam("metric") String metric, @RequestParam("year") int year)
 	{
 		//return service.getBottomTenStatesForMetric(metricService.getMetricById(Integer.parseInt(metric)));
-		return service.getBottomTenPeersForMetric(metric,year);
+		return service.getBottomTenPeersForMetric(metric, year);
 	}
 }

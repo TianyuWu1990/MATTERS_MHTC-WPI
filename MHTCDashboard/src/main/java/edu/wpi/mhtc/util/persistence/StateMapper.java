@@ -59,10 +59,12 @@ public class StateMapper {
 	
 	public State getStateFromString(String state) {
 	    State dbState = this.getStateByName(state);
-		if (dbState == null)
+		if (dbState == null) {
 			dbState = this.getStateByAbbreviation(state);
-		if (dbState == null)
+		}
+		if (dbState == null) {
 			dbState = this.getStateByID(Integer.parseInt(state));
+		}
 		
 		return dbState;
 	}

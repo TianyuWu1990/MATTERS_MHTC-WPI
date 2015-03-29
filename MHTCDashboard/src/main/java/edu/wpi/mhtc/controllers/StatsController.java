@@ -33,8 +33,8 @@ public class StatsController {
 	@Autowired
 	public StatsController(StatsService service, MetricService mservice) {
 
-		this.statsService = service;
-		this.metricService = mservice;
+		statsService = service;
+		metricService = mservice;
 	}
 
 	@RequestMapping(value = "/data/stats/available", method = RequestMethod.GET)

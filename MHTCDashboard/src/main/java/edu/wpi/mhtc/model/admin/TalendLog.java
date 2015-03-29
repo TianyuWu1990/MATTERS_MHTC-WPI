@@ -52,7 +52,7 @@ public class TalendLog {
 	 */
 	public TalendLog(String moment, String job, String message, int code,
 			int priority, String origin) {
-		this.id = 0;
+		id = 0;
 		this.moment = moment;
 		this.job = job;
 		this.message = message;

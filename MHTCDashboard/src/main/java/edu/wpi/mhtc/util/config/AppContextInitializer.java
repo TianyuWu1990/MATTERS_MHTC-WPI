@@ -26,7 +26,8 @@ public class AppContextInitializer implements ApplicationContextInitializer<Conf
 		try {
 			enviro.getPropertySources().addFirst(new ResourcePropertySource("classpath:config.properties"));
 		} catch (IOException e) {
-			// TODO
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

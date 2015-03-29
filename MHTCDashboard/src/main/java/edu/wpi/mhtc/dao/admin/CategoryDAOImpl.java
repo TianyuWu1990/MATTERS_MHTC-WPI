@@ -34,8 +34,6 @@ public class CategoryDAOImpl implements CategoryDAO {
 	
 	@Autowired private JdbcTemplate jdbcTemplate;
 	
-	public CategoryDAOImpl() {}
-
 	@Override
 	public void save(Category object) {
         PSqlStringMappedJdbcCall<Integer> call = 

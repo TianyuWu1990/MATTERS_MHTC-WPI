@@ -73,12 +73,13 @@ public final class WebTableWrapper {
 				int cellNum = 0;
 				Row row = sheet.createRow(rowNum);
 				
-				for (int i = 0; i < headerCells.size(); i++) 
+				for (int i = 0; i < headerCells.size(); i++) {
 					if (!list.contains(i)) { // Ignore the column or not?
 						Cell cell = row.createCell(cellNum++);
 						String val = headerCells.get(i).text();
 						setCellValue(cell, val);
 					}
+				}
 				
 				// Print out data
 				rowNum = 1;
@@ -88,7 +89,7 @@ public final class WebTableWrapper {
 					row = sheet.createRow(rowNum++);
 					Elements currentRow = rows.get(i).select("td");
 					
-					for (int j = 0; j < currentRow.size(); j++) 
+					for (int j = 0; j < currentRow.size(); j++) {
 						if (!list.contains(j)) { // Ignore the column or not?
 							
 							Cell cell = row.createCell(cellNum++);
@@ -96,6 +97,7 @@ public final class WebTableWrapper {
 							String val = currentRow.get(j).text();
 							setCellValue(cell, val);
 						}
+					}
 				}
 				
 	            //Write the workbook in file system

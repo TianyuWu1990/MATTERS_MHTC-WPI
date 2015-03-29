@@ -113,8 +113,9 @@ public class StatsServiceJDBC implements StatsService
 	private List<Metric> getListOfMetricsFromCommaSeparatedString(String metric)
 	{
 
-		if (metric.equals("all"))
+		if (metric.equals("all")) {
 			return metricMapper.getAll();
+		}
 
 		String[] splits = metric.split(",");
 

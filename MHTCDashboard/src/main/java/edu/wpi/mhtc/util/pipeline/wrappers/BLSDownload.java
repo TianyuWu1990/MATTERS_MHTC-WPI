@@ -13,18 +13,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Map;
 
 /*
  * Wrapper for Unemployment (Not Seasonally adjusted) Data from Bureau of Labor Statistics.
  */
 public class BLSDownload {
 	
-	static final HashMap<String, String[]> map;
+	static final Map<String, String[]> map;
 	static{
 		map = new HashMap<String,String[]>();
 		
 		// All States/Regions are assigned a stateID as well as a excel file name
-		map.put("AL", new String[]{"01","AL-BLS.xls"});
+		map.put("AL", new String[]{"01", "AL-BLS.xls"});
 		map.put("AK", new String[]{"02","AK-BLS.xls"});
 		map.put("AZ", new String[]{"03","AZ-BLS.xls"});
 		map.put("AR", new String[]{"04","AR-BLS.xls"});

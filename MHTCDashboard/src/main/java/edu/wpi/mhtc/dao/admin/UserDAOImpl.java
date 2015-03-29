@@ -33,8 +33,6 @@ public class UserDAOImpl implements UserDAO {
 
 	@Autowired private JdbcTemplate jdbcTemplate;
 
-	public UserDAOImpl() {}
-
 	@Override
 	public void save(User user) {
 		PSqlStringMappedJdbcCall<User> call =

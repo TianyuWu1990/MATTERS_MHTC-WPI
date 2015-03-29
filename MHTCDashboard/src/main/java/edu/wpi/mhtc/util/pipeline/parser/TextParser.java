@@ -24,10 +24,6 @@ import edu.wpi.mhtc.util.pipeline.cleaner.NumericCleaner;
 import edu.wpi.mhtc.util.pipeline.cleaner.StateCleaner;
 import edu.wpi.mhtc.util.pipeline.cleaner.YearCleaner;
 import edu.wpi.mhtc.util.pipeline.main.CategoryException;
-import edu.wpi.mhtc.util.pipeline.parser.DataSource;
-import edu.wpi.mhtc.util.pipeline.parser.FileType;
-import edu.wpi.mhtc.util.pipeline.parser.IParser;
-import edu.wpi.mhtc.util.pipeline.parser.UnifiedFormatException;
 
 
 /**
@@ -39,7 +35,6 @@ import edu.wpi.mhtc.util.pipeline.parser.UnifiedFormatException;
  */
 public class TextParser implements IParser {
 
-	public DataSource source;
 	private List<Statistic> lines;
 	private CSVParser parser;
 	private Integer stateColumnNum;
@@ -63,9 +58,8 @@ public class TextParser implements IParser {
 			throw new UnifiedFormatException("Wrong file type for csv parser: "+source.getFileType());
 		}
 		
-		this.source = source;
 		parser = new CSVParser(new BufferedReader(new FileReader(source.getFile())), CSVFormat.DEFAULT);
-		this.lines = new ArrayList<Statistic>();
+		lines = new ArrayList<Statistic>();
 		
 		this.metrics = metrics;
 		this.states = states;

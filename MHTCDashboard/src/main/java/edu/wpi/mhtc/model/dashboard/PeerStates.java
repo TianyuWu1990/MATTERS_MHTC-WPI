@@ -35,7 +35,7 @@ public class PeerStates {
 	
 	public List<State> getStates()
 	{
-		return this.states;
+		return states;
 	}
 
 }

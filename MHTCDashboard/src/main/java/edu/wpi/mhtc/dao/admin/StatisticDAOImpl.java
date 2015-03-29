@@ -18,7 +18,6 @@ import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import edu.wpi.mhtc.model.admin.Statistic;
 import edu.wpi.mhtc.util.persistence.PSqlRowMapper;
@@ -33,8 +32,6 @@ import edu.wpi.mhtc.util.persistence.PSqlStringMappedJdbcCall;
 public class StatisticDAOImpl implements StatisticDAO {
 	
 	@Autowired private JdbcTemplate jdbcTemplate;
-	
-	public StatisticDAOImpl() {}
 
 	@Override
 	public List<Statistic> getStatsByMetric(int metricID) {

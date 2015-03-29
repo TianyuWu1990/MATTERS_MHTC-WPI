@@ -12,15 +12,12 @@ import edu.wpi.mhtc.model.admin.Category;
  * CSV file with data organized in the unified format.
  *
  */
-public class UnifiedCSVDataSource extends DataSource{
-	
-	FileType fileType;
-	ParserType parserType;
-	
+public class UnifiedCSVDataSource extends DataSource {
+		
 	public UnifiedCSVDataSource(File file, Category category){
 		super(file, category);
-		this.fileType = FileType.csv;
-		this.parserType = ParserType.text;
+		fileType = FileType.csv;
+		parserType = ParserType.text;
 	}
 	
 }

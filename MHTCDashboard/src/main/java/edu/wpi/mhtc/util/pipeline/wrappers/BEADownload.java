@@ -6,12 +6,6 @@ package edu.wpi.mhtc.util.pipeline.wrappers;
 
 
 public class BEADownload extends URLDownload{
-	/**
-	 * 
-	 * @param targeturl
-	 * @param filename
-	 */
-	public BEADownload() {}
 	
 	// Download class
 	public void download(String targeturl, String filename) {

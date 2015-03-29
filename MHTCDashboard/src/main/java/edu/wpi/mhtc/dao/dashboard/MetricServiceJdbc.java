@@ -7,7 +7,6 @@ package edu.wpi.mhtc.dao.dashboard;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +72,7 @@ public class MetricServiceJdbc implements MetricService {
                 		
                 // trendtypes no longer used
                 return new Metric(rs.getInt("Id"), rs.getString("Name"), categoryId, categoryName, 
-                		rs.getString("DataType"), "", rs.getString("URL"), rs.getString("Source"),rs.getString("DisplayName"));
+                		rs.getString("DataType"), "", rs.getString("URL"), rs.getString("Source"), rs.getString("DisplayName"));
             }
 
         });
@@ -176,6 +175,6 @@ public class MetricServiceJdbc implements MetricService {
 
     @Override
     public List<Metric> getAllMetrics() {
-    	return getMetricsFromParents(TALENT,COST,RANK,ECONOMY);
+    	return getMetricsFromParents(TALENT, COST, RANK, ECONOMY);
     }
 }

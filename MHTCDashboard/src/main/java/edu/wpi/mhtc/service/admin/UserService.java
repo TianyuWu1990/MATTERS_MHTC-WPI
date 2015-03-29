@@ -4,7 +4,6 @@
  */
 package edu.wpi.mhtc.service.admin;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.mail.MessagingException;

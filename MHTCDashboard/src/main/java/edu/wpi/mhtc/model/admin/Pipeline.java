@@ -4,10 +4,6 @@
  */
 package edu.wpi.mhtc.model.admin;
 
-import java.nio.file.Path;
-import java.sql.Date;
-import java.sql.Timestamp;
-
 /**
  * Pipeline class to store all information regarding a Talend pipeline
  * @author Alex Fortier
@@ -97,7 +93,7 @@ public class Pipeline {
 	 * @param timestamp the dateAdded to set
 	 */
 	public void setDateAdded(String timestamp) {
-		this.dateAdded = timestamp;
+		dateAdded = timestamp;
 	}
 	/**
 	 * @return the uploadedBy

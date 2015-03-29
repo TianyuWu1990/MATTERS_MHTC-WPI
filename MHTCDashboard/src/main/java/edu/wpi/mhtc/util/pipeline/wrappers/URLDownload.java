@@ -15,13 +15,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Wrapper for direct download links.
  *
  */
 public class URLDownload {
-	private HashMap<String, String> requestData = new HashMap<String, String>();
+	private Map<String, String> requestData = new HashMap<String, String>();
 	/**
 	 * 
 	 * @param targeturl
@@ -72,8 +73,9 @@ public class URLDownload {
         StringBuilder response = new StringBuilder();
         String inputLine;
 
-        while ((inputLine = in.readLine()) != null) 
+        while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
+        }
 
         in.close();
 

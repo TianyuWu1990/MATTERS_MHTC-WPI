@@ -57,7 +57,7 @@ public class PSqlStringMappedJdbcCall<T> {
 	 * Sets name of the schema that contains the procedure to execute.
 	 */
 	public PSqlStringMappedJdbcCall<T> withSchemaName(String schemaname) {
-		this.schemaName = schemaname;
+		schemaName = schemaname;
 		return this;
 	}
 
@@ -65,7 +65,7 @@ public class PSqlStringMappedJdbcCall<T> {
 	 * Sets the name of the procedure to execute.
 	 */
 	public PSqlStringMappedJdbcCall<T> withProcedureName(String procedurename) {
-		this.procedureName = procedurename;
+		procedureName = procedurename;
 		return this;
 	}
 
@@ -153,8 +153,9 @@ public class PSqlStringMappedJdbcCall<T> {
 					Integer param = paramArray[j];
 					statement.append(param.intValue());
 					
-					if (j != paramArray.length - 1)
+					if (j != paramArray.length - 1) {
 						statement.append(",");
+					}
 				}
 				
 				statement.append("}'");
@@ -177,8 +178,10 @@ public class PSqlStringMappedJdbcCall<T> {
 				}
 			}
 
-			if (i < declaredParams.size()-1)
+			if (i < declaredParams.size()-1) {
 				statement.append(",");
+			}
+			
 		}
 
 		statement.append(");");

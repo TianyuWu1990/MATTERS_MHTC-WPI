@@ -44,9 +44,12 @@ public class TalendJob implements Job {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line = null;
 		System.out.println("==== Talend job" + pipelineName + " shell script log ====");
+		
 		while ((line = reader.readLine()) != null)
 		{
 			System.out.println(line);
-		}	   
+		}
+		
+		reader.close();
 	}
 }

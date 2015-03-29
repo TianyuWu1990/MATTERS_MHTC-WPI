@@ -5,9 +5,7 @@
 
 package edu.wpi.mhtc.util.pipeline.cleaner;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.util.List;
 
 import com.swabunga.spell.engine.SpellDictionaryHashMap;
@@ -19,18 +17,7 @@ public class SpellCheckManager {
 
 	static {
 		File dict = new File("statedictionary.txt");
-		if(!dict.exists()){
-//			try(BufferedWriter writer = new BufferedWriter(new FileWriter(dict))){
-//				List<State> states = State.getList();
-//				for(State s : states){
-//					writer.write(s.toString());
-//					writer.write("\n");
-//				}
-//			}
-//			catch (Exception e) {
-//				e.printStackTrace();
-//			}
-		} 
+
 		try {
 			dictionary = new SpellDictionaryHashMap(dict);
 		} 

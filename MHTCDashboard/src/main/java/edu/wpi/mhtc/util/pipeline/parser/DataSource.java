@@ -19,7 +19,7 @@ public abstract class DataSource {
 	File file;
 	Category category;	
 	
-	public DataSource(File file, Category category){
+	protected DataSource(File file, Category category){
 		this.file = file;
 		this.category = category;
 	}

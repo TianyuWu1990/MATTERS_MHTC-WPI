@@ -9,9 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -26,8 +24,6 @@ import edu.wpi.mhtc.model.admin.TalendLog;
 public class TalendLogDAOImpl implements TalendLogDAO {
 
     @Autowired private JdbcTemplate jdbcTemplate;
-	
-    public TalendLogDAOImpl() {}
 
 	@Override
 	public void save(TalendLog log) {

@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-import edu.wpi.mhtc.util.pipeline.scheduler.JobScheduler;
+// import edu.wpi.mhtc.util.pipeline.scheduler.JobScheduler;
 
 public class AppInitializer implements WebApplicationInitializer {
 
