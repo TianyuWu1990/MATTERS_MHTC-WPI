@@ -58,28 +58,29 @@
 				</div>
 			</c:if>
 			<form action="feedback_post" method="post">
-				<label style="color:black;">Name</label><br/>
-				<input name="name" id="name" type="text" style="width: 530px; height: 30px; margin-top: 5px;" autofocus>
+
+				<label class="feedback_label">Name <span class="gfield_required">*</span></label><br/>
+				<input name="name" id="name" type="text" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" autofocus> 
 				<span class="form-error"></span> 
 				<br/><br/>
 				
-				<label style="color:black;">Affiliation</label><br/>
-				<input name="affiliation" id="affiliation" style="width: 530px; height: 30px; margin-top: 5px;" type="text"> 
+				<label class="feedback_label">Affiliation</label><br/>
+				<input name="affiliation" id="affiliation" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text"> 
 				<span class="form-error"></span> 
 				<br/><br/>
 				
-				<label style="color:black;">Email Address</label><br/>
-				<input name="email" id="email" style="width: 530px; height: 30px; margin-top: 5px;" type="text">
+				<label class="feedback_label">Email Address <span class="gfield_required">*</span> </label><br/>
+				<input name="email" id="email" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text">
 				<span class="form-error"></span>  
 				<br/><br/>
 				
-				<label style="color:black;">Subject</label><br/>
-				<input name="subject" id="subject" style="width: 530px; height: 30px; margin-top: 5px;" type="text">
+				<label class="feedback_label">Subject <span class="gfield_required">*</span></label><br/>
+				<input name="subject" id="subject" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text">
 				<span class="form-error"></span>  
 				<br/><br/>
-				
-				<label style="color:black;">Comments</label><br/>
-				<textarea name="comments" style="width: 530px; height: 180px; margin-top: 5px;"></textarea>
+
+				<label class="feedback_label">Comments <span class="gfield_required">*</span></label><br/>
+				<textarea name="comments" style="width: 100%; max-width: 530px; height: 180px; margin-top: 5px;"></textarea>
 				<span class="form-error"></span> 
 				<br/><br/>
 				

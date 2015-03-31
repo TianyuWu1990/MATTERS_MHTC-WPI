@@ -772,8 +772,23 @@ h2{
 }
 }
 
+.feedback_label .gfield_required {
+	color: red;
+}
 
-
+label.feedback_label {
+	color: black;
+	font-weight: bold;
+}
+td.recaptcha_r7_c1{
+	display:none;
+}
+td.recaptcha_r8_c1{
+	display:none;
+}
+span#recaptcha_privacy a {
+	cursor:pointer;
+}
 
 
 

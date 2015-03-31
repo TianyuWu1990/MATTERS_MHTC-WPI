@@ -43,10 +43,10 @@
 			previously disaggregated and static.  We encourage users to "dive in" and explore the data and to utilize MATTERS as one of many 
 			tools that comprise their research and analysis and inform their decision making.</p>
 			<br></br>
-		   <p>The <a href= "/mhtc">MATTERS overview map</a> highlights the 15 states that make up the MATTERS peer group. By selecting any individual state, 
+		   <p>The <a href= "/">MATTERS overview map</a> highlights the 15 states that make up the MATTERS peer group. By selecting any individual state, 
 		   users can view 8 pre-selected key metrics and link to an individual state profile.</p>
 			<br></br>  
-		   <p>The <a href= "/mhtc/explore">MATTERS data explorer</a> permits users to customize their experience and retrieve data on one or more metrics from one or more states and across 
+		   <p>The <a href= "/explore">MATTERS data explorer</a> permits users to customize their experience and retrieve data on one or more metrics from one or more states and across 
 		   multiple years simultaneously.  Data can be displayed in a variety of visualizations including tables, line charts, bar 
 		   charts, and heatmaps. </p>  
 			
