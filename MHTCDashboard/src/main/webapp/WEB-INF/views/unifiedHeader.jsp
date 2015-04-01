@@ -4,13 +4,13 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 	  	$(".x-close").click(function(){
-	  		$(".menu").slideUp(100);
-	  		
+	  		$(".menu").slideUp(200);
+	  		$("input").attr("checked",false);
 	  	});
 	});
 	$(document).ready(function(){
 		$(".menu-icon").click(function(){
-		  	$(".menu").slideDown();
+		  	$(".menu").slideDown(200);
 		});
 	});
 </script>
@@ -45,7 +45,7 @@
 	  </div><!-- .header-inner -->	  
   	  
   		 <nav id="site-navigation" class="main-navigation" role="navigation">
-  			<input type="checkbox" id="menuToggle" style="display:none">
+  			<input type="checkbox" id="menuToggle" >
   			 <!-- <h1 for="menuToggle" class="menu-toggle">Menu</h1>-->
   			<label for="menuToggle" class="menu-icon">&#9776;</label>
   			<!--  <div class="menu-close"></div>-->

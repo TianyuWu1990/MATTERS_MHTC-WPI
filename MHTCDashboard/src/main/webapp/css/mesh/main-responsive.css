@@ -31,6 +31,9 @@
 	top:3px;
 	z-index:99;
 }
+.x-close{
+	display:none;
+}
 .menu-icon{
 	
 	width: 55px;
