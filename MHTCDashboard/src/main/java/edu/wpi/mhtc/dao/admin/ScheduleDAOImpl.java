@@ -61,16 +61,16 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 	}
 	
 	@Override
-	public String getSchedStatus(String sched_date) throws ParseException {
+	public String getSchedStatus(String job_name, String sched_date) throws ParseException {
 		Date today = new Date();
 		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
 		Date runDate = format.parse(sched_date);
 		
 		if (today.after(runDate)) {
 			// Now, check the Logger to see the current status
-			String sql = "SELECT * FROM mhtc_sch.logs WHERE message = 'Pipeline has finished' AND job = ?";
+			String sql = "SELECT * FROM mhtc_sch.logs WHERE lower(message) = 'the pipeline has finished' AND job = ?";
 			
-			Object[] args = {sched_date};
+			Object[] args = {job_name};
 			
 			List<String> moments = jdbcTemplate.query(sql, args, new RowMapper<String>() {
 
@@ -112,7 +112,7 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 		});
 		
 		for (Schedule s: schedules) {
-			String status = getSchedStatus(s.getSched_date());
+			String status = getSchedStatus(getTalendJob(s.getSched_job()), s.getSched_date());
 			s.setStatus(status);
 
 			String filename = getTalendJob(s.getSched_job());
@@ -145,6 +145,4 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 		return filename.substring(0, filename.lastIndexOf('.')-4);		
 
 	}
-
-
 }

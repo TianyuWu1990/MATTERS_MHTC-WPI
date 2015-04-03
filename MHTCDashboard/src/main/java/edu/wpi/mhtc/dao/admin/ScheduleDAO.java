@@ -40,15 +40,7 @@ public interface ScheduleDAO {
 	 * @return
 	 */
 	public Schedule get(String sched_name);
-	
-	/**
-	 * Get current status of pipeline (Running..., Completed, etc.)
-	 * @param sched_date
-	 * @return
-	 * @throws ParseException
-	 */
-	public String getSchedStatus(String sched_date) throws ParseException;
-	
+
 	/**
 	 * Get all schedules in the database
 	 * @return
@@ -62,5 +54,15 @@ public interface ScheduleDAO {
 	 * @return
 	 */
 	public String getTalendJob(String sched_job);
+	
+	/**
+	 * Get current status of pipeline (Running..., Completed, etc.)
+	 * @param job_name
+	 * @param sched_date
+	 * @return
+	 * @throws ParseException
+	 */
+	String getSchedStatus(String job_name, String sched_date)
+			throws ParseException;
 	
 }

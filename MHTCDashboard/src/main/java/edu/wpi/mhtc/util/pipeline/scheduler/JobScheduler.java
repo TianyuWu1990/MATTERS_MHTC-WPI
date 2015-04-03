@@ -19,17 +19,26 @@ import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import edu.wpi.mhtc.model.admin.Pipeline;
 import edu.wpi.mhtc.model.admin.Schedule;
+import edu.wpi.mhtc.service.admin.PipelineService;
 
 public class JobScheduler {
 	private static SchedulerFactory sf ;
 	private static Scheduler sched;
 	private static boolean isRunning = true;
 	
+	private static PipelineService pipelineService;
+	
 	public static void createScheduler() throws Exception {
     	sf = new StdSchedulerFactory();
     	sched = sf.getScheduler();		 	
+	}
+	
+	public static void setPipelineService(PipelineService ps) {
+		JobScheduler.pipelineService = ps;
 	}
 	/**************** 
 	 * Job scheduler 
@@ -81,9 +90,15 @@ public class JobScheduler {
     	// Create Talend Job
     	JobDetail job = JobBuilder.newJob(TalendJob.class)
     		       .withIdentity(job_schedule.getJob_name())
-    		       .build();        
+    		       .build();      
+    	
+    	Pipeline p = pipelineService.get(job_schedule.getSched_job());
     	
     	job.getJobDataMap().put("jobPipelineName",  job_schedule.getSched_job());
+    	job.getJobDataMap().put("jobPath",  p.getPath());
+    	
+    	System.out.println("Scheduling job " +job_schedule.getSched_job() + " - " + p.getPath());
+    	
     	//Trigger the job to run on the next round minute
     	sched.scheduleJob(job, trigger);
      }

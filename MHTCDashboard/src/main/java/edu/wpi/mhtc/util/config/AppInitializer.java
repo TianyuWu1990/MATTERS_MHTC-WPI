@@ -10,6 +10,8 @@ import javax.servlet.ServletException;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
+import edu.wpi.mhtc.util.pipeline.scheduler.JobScheduler;
+
 // import edu.wpi.mhtc.util.pipeline.scheduler.JobScheduler;
 
 public class AppInitializer implements WebApplicationInitializer {
@@ -24,13 +26,14 @@ public class AppInitializer implements WebApplicationInitializer {
 		//ServletRegistration.Dynamic dispatcher = servletContext.addServlet("DispatcherServlet", new DispatcherServlet(context));
        // dispatcher.setLoadOnStartup(1);
         //dispatcher.addMapping("/*");	
-		/*try {
+		
+		try {
 			JobScheduler.createScheduler();
 			JobScheduler.start();
 			System.out.println("Scheduler started");
 		} catch (Exception e) {
 			System.out.println("Error starting the job scheduler.");
-		}*/
+		}
 
 	}
 	

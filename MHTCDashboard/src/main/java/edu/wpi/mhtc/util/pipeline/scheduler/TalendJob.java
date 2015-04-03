@@ -27,11 +27,10 @@ public class TalendJob implements Job {
 		// Process job parameters
 		JobDataMap parameters = context.getJobDetail().getJobDataMap();
 		String jobPipelineName = parameters.get("jobPipelineName").toString();
-		
-		Pipeline p = pipelineService.get(jobPipelineName);
+		String jobPath = parameters.get("jobPath").toString();
 		
 		try {
-			runPipeline(jobPipelineName, p.getPath());
+			runPipeline(jobPipelineName, jobPath);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

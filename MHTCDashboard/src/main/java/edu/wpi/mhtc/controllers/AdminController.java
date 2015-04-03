@@ -404,6 +404,7 @@ public class AdminController {
 		model.addAttribute("inStandbyMode", JobScheduler.isInStandbyMode());
 		
 		// Schedule the job
+		JobScheduler.setPipelineService(pipelineService);
 		JobScheduler.schedule(new Schedule(sched_name, sched_job, sched_description, sched_date, sched_cron));
 		
 		return "admin_scheduler";
