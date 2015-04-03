@@ -63,7 +63,7 @@ public class GlobalConfiguration extends WebMvcConfigurerAdapter {
 	}
 	
 	@Bean
-	public PropertyPlaceholderConfigurer properties() {
+	public static PropertyPlaceholderConfigurer properties() {
 		PropertyPlaceholderConfigurer props = new PropertyPlaceholderConfigurer();
 		props.setLocation(new ClassPathResource("config.properties"));
 		
