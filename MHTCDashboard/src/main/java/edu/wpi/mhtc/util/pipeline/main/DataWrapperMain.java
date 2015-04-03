@@ -48,7 +48,11 @@ public class DataWrapperMain {
 		down.HTTPDownload("http://www.taxpolicycenter.org/taxfacts/Content/Excel/state_unemp_rate.xls", DATA_DIRECTORY+"/state_unemp_rate.xls");
 
 		//Bureau of Labor Statistics-Unemployment rate
-		bls.getBLSAllStates("2004", "2014", dir);
+//		bls.getBLSAllStates("2004", "2014", dir);
+		
+		//Bureau of Labor Statistics-Unemployment rate
+		down.HTTPDownload("http://www.bls.gov/lau/staadata.zip", DATA_DIRECTORY+"/staadata.zip");
+		unZip.unZipIt(DATA_DIRECTORY+"/staadata.zip", DATA_DIRECTORY);
 
 
 		//Bureau of Economic Analysis-all regions and years
