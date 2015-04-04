@@ -27,13 +27,13 @@ public class AppInitializer implements WebApplicationInitializer {
        // dispatcher.setLoadOnStartup(1);
         //dispatcher.addMapping("/*");	
 		
-		/*try {
+		try {
 			JobScheduler.createScheduler();
 			JobScheduler.start();
 			System.out.println("Scheduler started");
 		} catch (Exception e) {
 			System.out.println("Error starting the job scheduler.");
-		}*/
+		}
 
 	}
 	

@@ -12,17 +12,8 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.quartz.PersistJobDataAfterExecution;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import edu.wpi.mhtc.model.admin.Pipeline;
-import edu.wpi.mhtc.service.admin.PipelineService;
-
-@PersistJobDataAfterExecution 
-public class TalendJob implements Job {
-	
-	@Autowired private PipelineService pipelineService;
-	
+public class TalendJob implements Job  {
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		// Process job parameters
 		JobDataMap parameters = context.getJobDetail().getJobDataMap();
