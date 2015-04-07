@@ -394,6 +394,14 @@ svg text {
 
 
 /** Heatmap **/
+#heatmap-error
+{
+	text-align:center;
+	padding-top: 50px;
+	font-weight: bold;
+	font-size:1.2em;
+}
+
 #heatmap-wrapper {
 	
 	margin-top: 0px !important;

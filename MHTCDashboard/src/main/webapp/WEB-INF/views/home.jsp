@@ -334,45 +334,50 @@
 								<div class="tab-pane fade" id="heatmaptab">
 									<div class="box-content">			
 										<div id="heatmap-wrapper">
-											<div id="heatmap-timeline"></div>
-											<div id="heatmap-inner-wrapper">
-											
-												<div id="heatmap-info" class="heatmap-infobox">
-													<div class="heatmap-infobox-inner" id="heatmap-details">
-														<div class="heatmap-infobox-title">Details</div>
-														<div class="heatmap-infobox-content" style="overflow: hidden;">
-															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Top Ranked</div> 
-															<span id="heatmap-generalinfo-first" class="heatmap-detailVal"></span><br/>
+											<div id="heatmap-content-wrapper">
+												<div id="heatmap-timeline"></div>
+												<div id="heatmap-inner-wrapper">
+												
+													<div id="heatmap-info" class="heatmap-infobox">
+														<div class="heatmap-infobox-inner" id="heatmap-details">
+															<div class="heatmap-infobox-title">Details</div>
+															<div class="heatmap-infobox-content" style="overflow: hidden;">
+																<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Top Ranked</div> 
+																<span id="heatmap-generalinfo-first" class="heatmap-detailVal"></span><br/>
+																
+																<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Bottom Ranked</div> 
+																<span id="heatmap-generalinfo-last" class="heatmap-detailVal"></span><br/>
+																
+																<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">MA Rank</div>
+																<span id="heatmap-generalinfo-ma" class="heatmap-detailVal"></span>
+															</div>
+														</div>
+														<div class="heatmap-infobox-inner" id="heatmap-legend">
+															<div class="heatmap-infobox-title">Legend</div>
+															<div id="heatmap-legend-legend" class="heatmap-infobox-content">
 															
-															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">Bottom Ranked</div> 
-															<span id="heatmap-generalinfo-last" class="heatmap-detailVal"></span><br/>
-															
-															<div class="heatmap-detailTitle" style="padding-left: 0px; padding-top: 0px;">MA Rank</div>
-															<span id="heatmap-generalinfo-ma" class="heatmap-detailVal"></span>
+															</div>
 														</div>
 													</div>
-													<div class="heatmap-infobox-inner" id="heatmap-legend">
-														<div class="heatmap-infobox-title">Legend</div>
-														<div id="heatmap-legend-legend" class="heatmap-infobox-content">
+													
+													<div id="heatmap-actual"></div>
+													
+													
+													<div id="heatmap-tooltip" style="display: none;">
+														<span id="heatmap-specificDetails-name"></span>
 														
-														</div>
+														<div class="heatmap-detailTitle">Rank</div>
+														<span id="heatmap-specificDetails-rank" class="heatmap-detailVal"></span><br/>
+														
+														<div class="heatmap-detailTitle">Value</div>
+														<span id="heatmap-specificDetails-value" class="heatmap-detailVal"></span><br/>
+														
+														<div id="heatmap-specificDetails-peer" style="font-style:italic; padding-left: 10px; padding-top: 5px; color: #7b0020;">Peer State</div>
 													</div>
 												</div>
-												
-												<div id="heatmap-actual"></div>
-												
-												
-												<div id="heatmap-tooltip" style="display: none;">
-													<span id="heatmap-specificDetails-name"></span>
-													
-													<div class="heatmap-detailTitle">Rank</div>
-													<span id="heatmap-specificDetails-rank" class="heatmap-detailVal"></span><br/>
-													
-													<div class="heatmap-detailTitle">Value</div>
-													<span id="heatmap-specificDetails-value" class="heatmap-detailVal"></span><br/>
-													
-													<div id="heatmap-specificDetails-peer" style="font-style:italic; padding-left: 10px; padding-top: 5px; color: #7b0020;">Peer State</div>
-												</div>
+											</div>
+											<div id="heatmap-error" style="display:none;">
+												No data available for the selected metric.
 											</div>
 										</div>
 									</div>

@@ -189,6 +189,20 @@ var CM = (function($) {
 		
 		query.execute(function(multiData) {
 			var yearsForMetric = cm.getYearsMetricState(allStates, multiData); // Get the years that the metric exists for from the data
+		
+			// If no data, say so.
+			if (yearsForMetric.length == 0)
+			{
+				$("#heatmap-content-wrapper").hide();
+				$("#heatmap-error").show();
+				return;
+			}
+			else
+			{
+				$("#heatmap-content-wrapper").show();
+				$("#heatmap-error").hide();
+			}
+				
 			yearsForMetric.sort(function(a,b) {return b - a;} ); 
 			
 			if (cm.yearSelected == -1)
