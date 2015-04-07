@@ -58,6 +58,64 @@
 			}
 	</style>
 	
+	<style>
+	#matters_map_tooltip
+	{
+		z-index: 9999;
+		position:absolute; 
+		top: 0px; 
+		width: 280px; 
+		height: 325px; 
+		background-color: white; 
+		border-radius: 8px; 
+		border: 2px solid  rgba(158,158,158, 0.5); 
+		box-shadow: 0px 0px 2px rgba(158, 158, 158, 0.3);
+	}
+	
+	#matters_map_tooltip_title
+	{
+		color: #7b0020;
+		font-size: 20px;
+		padding: 7px;
+		text-align: center;
+		
+		border-bottom: 2px solid rgba(158, 158, 158, 0.3);
+		
+		display: block;
+	}
+	
+	#matters_map_tooltip_stateProfile
+	{
+		margin-top: 5px;
+		color: #7b0020;
+		text-align: center;
+		border-top: 2px solid rgba(158, 158, 158, 0.3);
+		padding: 10px;
+	}
+	
+	.matters_map_tooltip_metricName {
+		display: inline-block;		
+		padding-left: 5px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		width: 210px;
+		text-align: right;
+	}
+	
+	.matters_map_tooltip_metricVal {
+		text-align: right;
+		width: 40px;
+		display: inline-block;
+	}
+	
+	#matters_map_tooltip_hide
+	{
+		float: right;
+		cursor: pointer;
+	}
+	
+	</style>
+	
 	<!-- Check for browser compatibility before we do anything else -->
 	<script src="js/modernizr.js"></script>
 	
@@ -123,6 +181,38 @@
 					<span style="margin-left: 5px;">Other State</span>
 				</div>
 			</div>
+			
+			<div id="matters_map_tooltip" style="display:none;">
+				<div id="matters_map_tooltip_title"><span id="matters_map_tooltip_name">State Name</span>
+					<a id="matters_map_tooltip_hide">X</a>
+				</div>
+				<div class="matters_map_tooltip_metricName">CNBC Top States for Business</div>
+				<span id="metric_cnbc" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Milken Science and Tech Index</div>
+				<span id="metric_milken" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Tax Foundation Business Tax Index</div>
+				<span id="metric_tax_found" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Tax Burden Per Capita Rank</div>
+				<span id="metric_tax_burden" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Tech Employment Rank</div>
+				<span id="metric_tech" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Unemployment Insurance Rank</div>
+				<span id="metric_unemp" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Bachelor's Degree Holder Rank</div>
+				<span id="metric_bach" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Key Tech Demand Hiring Rank</div>
+				<span id="metric_demand" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div id="matters_map_tooltip_stateProfile"><a id="matters_map_tooltip_learnMore">Learn More</a></div>
+			</div>
+			
 		</div>			
 		<!-- cxf -->
 		<div id="map-label">
@@ -260,6 +350,7 @@
 <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
 <script src="js/raphael.js"></script> <!-- Dependency for raphael.js -->
 <script src="js/jquery.usmap.js"></script>
+<script src="js/mesh/data/state_profile_data.js" type="text/javascript"></script>
 <script src="js/mesh/map.js" type="text/javascript"></script>
 <script src="js/mesh/scripts.js" type="text/javascript"></script>
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
