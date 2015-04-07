@@ -87,7 +87,7 @@ function refreshData(stateName)
 $(document).ready(function() {	
 	var stateName = window.location.search.replace("?name=", "").replace("%20", " ").trim(); 
 	
-	var stateNameHash = window.location.hash.replace("#profile/?name=", "");
+	var stateNameHash = window.location.hash.replace("#profile?name=", "");
 	
 	var andLocale = stateNameHash.indexOf('&');
 	stateNameHash = stateNameHash.substring(0, andLocale);
@@ -117,7 +117,7 @@ $(document).ready(function() {
 	
 	$(".stateChoice").click(function (e) {
 		var stateName = $(this).html();
-		History.pushState({ name : stateName }, "MATTERS State Profiles", "?name=" + stateName);
+		History.pushState({ name : stateName }, "MATTERS State Profiles", "profile?name=" + stateName);
 	});
 	
 	History.Adapter.bind(window,'statechange',function(){
