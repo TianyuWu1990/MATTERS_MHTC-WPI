@@ -106,33 +106,13 @@
 		<br/>
 		<br/>
 	</div>
-	<div class="container map-container" ng-app="map_application">
+	<div class="container map-container" style="width:80%">
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
 				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
 				</h2>
-		<div id="matters_map_canvas" class="map-area" ng-controller="map_canvas_controller as leaflet_map">
-		</div>	
-		<input type="hidden" ng-controller="map_tile_controller as map_tiles" id="map_tile" value="Tiles" storage="inline">
-		<input type="hidden" ng-controller="map_data_controller as map_data"  id="map_data" value="{'Features':'Visible_Features','Search':'Visible_Features'}" storage="inline">
-		<div id="html_static_templates" style="display: none;" ng-non-bindable>
-			<script id="popup_content" type="text/template">
-				<div class="popop-window">
-				  <table style="border-style: none !important;" class="table table-bordered table-hover table-condensed popup-table">
-					<tbody>
-					  {{#cells}}
-					  <tr>
-						<td class="cell-name string {{class}}" colspan="2">{{name}}</td>
-						<td class="cell-value {{class}}">{{format}}</td>
-					  </tr>
-					  {{/cells}}
-					</tbody>
-				  </table>
-				  <a class="view-more" href="profile?name={{cells.0.format}}">LEARN MORE</a>
-				</div>
-			</script>
-		</div>
-		
+		<div id="matters_map_canvas" class="map-area" style="padding-top: 10px;">
+		</div>			
 		<!-- cxf -->
 		<div id="map-label">
 		<a class="map-btn db-btn" href="explore">Explore the Data</a>
@@ -164,7 +144,7 @@
 				System to advance our mission to make Massachusetts the world's most attractive place in which to create 
 				and grow a high technology business.  MATTERS is designed to measure and evaluate Massachusetts' current competitive 
 				position, while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions 
-				that help attract and retain business to the state.<br/><br/></p>
+				that help attract and retain business to the state.<br/><br/><br/></p>
 				<a class="view-more" href="<c:url value="/about"/>">LEARN MORE</a>
 
 			</div>
@@ -189,7 +169,7 @@
 		   users can view 8 pre-selected key metrics and link to an individual state profile. The data explorer permits users to customize their 
 		   experience and retrieve data on one or more metrics from one or more states and across multiple years simultaneously. Data can be 
 		   displayed in a variety of visualizations including tables, line charts, bar charts, and heatmaps. 
-		   	<br/><br/></p>
+		   	<br/><br/><br/></p>
 			
 				<a class="view-more" href="<c:url value="/howto"/>">LEARN MORE</a>
 
@@ -267,6 +247,9 @@
 
 
 <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
+<script src="js/raphael.js"></script> <!-- Dependency for raphael.js -->
+<script src="js/jquery.usmap.js"></script>
+<script src="js/mesh/map.js" type="text/javascript"></script>
 <script src="js/mesh/scripts.js" type="text/javascript"></script>
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
