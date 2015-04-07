@@ -147,8 +147,8 @@
 			</div>
 			
 			<div class="index key">
-				<div class="state-strength"></div><span class="index-span">Strength</span>
-				<div class="state-weakness"></div><span class="index-span">Weakness</span>
+				<div class="state-strength" style="display: inline-block;"></div><span>Strength</span>
+				<div class="state-weakness" style="display: inline-block;"></div><span>Weakness</span>
 			</div>
 			<h2>National Ranking and Data</h2>
 			<hr class="state-ranking">
