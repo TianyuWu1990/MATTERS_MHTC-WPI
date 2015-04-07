@@ -18,7 +18,6 @@
 	
 	<title>MATTERS</title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
-	<link rel="stylesheet" href="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/css">
 	<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 	<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
@@ -80,11 +79,15 @@
 		compatible = compatible & Modernizr.bgpositionshorthand;
 		
 		if (!compatible)
-			window.location = "./unsupported";			
+			window.location = "./unsupported";		
+		
+		
+	</script>	
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).on("ready", function() { $("#noJSError").hide(); });
 	</script>
-	
-	
-	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/js"></script>
 </head>
 
 <body class="home" id="top">
@@ -264,20 +267,10 @@
 
 
 <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
-
-
-<script type="text/javascript" src="js/mesh/data/tiles/tiles.js" ></script>
-<script type="text/javascript" src="js/mesh/data/features.js" ></script>
-<script type="text/javascript" src="js/mesh/data/search.js" ></script>  
-<script src="js/mesh/modernizr.min.js"></script>
 <script src="js/mesh/scripts.js" type="text/javascript"></script>
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-$("#noJSError").hide();
-</script>
 	<script>
  			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
