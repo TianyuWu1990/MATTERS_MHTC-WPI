@@ -111,7 +111,18 @@
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
 				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
 				</h2>
-		<div id="matters_map_canvas" class="map-area" style="padding-top: 10px;">
+		<div id="matters_map_canvas" class="map-area" style="padding-top: 10px; position: relative;">
+			<div id="matters_map_legend" style="position: absolute; bottom: 150px; right: -50px;">
+				<div class="matters_map_legend_key" style="color: white;">
+					<div class="swatch" style="background-color: #ff4444; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
+					</div>
+					<span style="margin-left: 5px;">Peer State</span>
+					<br/>
+					<div class="swatch" style="background-color: #680017; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
+					</div>
+					<span style="margin-left: 5px;">Other State</span>
+				</div>
+			</div>
 		</div>			
 		<!-- cxf -->
 		<div id="map-label">
