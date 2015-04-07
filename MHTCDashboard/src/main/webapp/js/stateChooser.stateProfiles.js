@@ -15,25 +15,21 @@ function getStateProfile(stateName)
 function handleStatus(rank, obj)
 {
 	if (isNaN(rank)) {
-		$(obj).append('<img src="img/state-neutral.png" width="15px" height="15px" style="vertical-align:top;">');
+		$(obj).html('<img src="img/state-neutral.png" width="15px" height="15px" style="vertical-align:top;">');
 		return;
 	}
   if (rank<=10) {
-	  $(obj).append('<img src="img/state-strength.png" width="15px" height="15px" style="vertical-align:top;">');
+	  $(obj).html('<img src="img/state-strength.png" width="15px" height="15px" style="vertical-align:top;">');
     return;
   } else if (rank>=25) {
-	  $(obj).append('<img src="img/state-weakness.png" width="15px" height="15px" style="vertical-align:top;">');
+	  $(obj).html('<img src="img/state-weakness.png" width="15px" height="15px" style="vertical-align:top;">');
     return;
   }
-  $(obj).append('<img src="img/state-neutral.png" width="15px" height="15px" style="vertical-align:top;">');
+  $(obj).html('<img src="img/state-neutral.png" width="15px" height="15px" style="vertical-align:top;">');
 }
 
-$(document).ready(function() {	
-	var stateName = window.location.search.replace("?name=", "").trim(); 
-	
-	if (stateName.length == 0)
-		stateName = "Massachusetts";
-	
+function refreshData(stateName)
+{
 	var stateProfile = getStateProfile(stateName);
 
 	if (stateProfile == null)
@@ -86,7 +82,15 @@ $(document).ready(function() {
 		handleStatus(taxBurdenRank, "#tax-burden-status");
 		$("#tax-burden-data").html(taxBurdenData);
 	}
+}
+
+$(document).ready(function() {	
+	var stateName = window.location.search.replace("?name=", "").trim(); 
 	
+	if (stateName.length == 0)
+		stateName = "Massachusetts";
+	
+	refreshData(stateName);
 	
 	$("#stateChooserTitle").click(function() {
 		$("#stateChooser").slideToggle();
@@ -105,10 +109,11 @@ $(document).ready(function() {
 	
 	$(".stateChoice").click(function (e) {
 		var stateName = $(this).html();
-
-		window.location.search = "?name=" + stateName;
+		History.pushState({ name : stateName }, "MATTERS State Profiles", "?name=" + stateName);
 	});
 	
-	
-	
+	History.Adapter.bind(window,'statechange',function(){
+        var State = History.getState();     
+        refreshData(State.data.name);
+    });
 });

@@ -15,7 +15,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
 	
-	<title>MATTERS</title>
+	<title>MATTERS State Profiles</title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 	<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
@@ -257,6 +257,7 @@
 <script src="js/mesh/jquery.svgdom.min.js" type="text/javascript"></script>
 <script src="js/mesh/jquery.svg.min.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
+<script src="js/jquery.history.js" type="text/javascript"></script>
 <script src="js/mesh/data/state_profile_data.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/stateChooser.stateProfiles.js"></script>
 </body>
