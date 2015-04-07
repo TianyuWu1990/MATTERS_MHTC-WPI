@@ -85,10 +85,18 @@ function refreshData(stateName)
 }
 
 $(document).ready(function() {	
-	var stateName = window.location.search.replace("?name=", "").trim(); 
+	var stateName = window.location.search.replace("?name=", "").replace("%20", " ").trim(); 
 	
-	if (stateName.length == 0)
+	var stateNameHash = window.location.hash.replace("#profile/?name=", "");
+	
+	var andLocale = stateNameHash.indexOf('&');
+	stateNameHash = stateNameHash.substring(0, andLocale);
+	stateNameHash = stateNameHash.replace("%20", " ").trim();
+	
+	if (stateName.length == 0 && stateNameHash.length == 0)
 		stateName = "Massachusetts";
+	else if (stateName.length == 0)
+		stateName = stateNameHash;
 	
 	refreshData(stateName);
 	

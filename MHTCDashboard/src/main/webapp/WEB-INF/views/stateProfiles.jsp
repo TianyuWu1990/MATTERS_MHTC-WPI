@@ -154,79 +154,81 @@
 			<hr class="state-ranking">
 			<div style="width: 100%; overflow-x: scroll;">
 			
-			<div class="index ranking-header" style="min-width:500px;">
-				<div class="rank">Rank</div>
-				<div class="data">Data</div>
-				<div class="status">Status</div>
-				<div class="year">Year</div>
-				<div class="survey">Index / Survey</div>
-				<div class="source">Source</div>
-			</div>
-
-					<div class="index row" >
-						<div class="rank" id="milken"></div>
-						<div class="data">-</div>
-						<div class="status"><div id="milken-status"></div></div>
-						<div class="year">2014</div>
-						<div class="survey">Milken State Science and Technology Index</div>
-						<div class="source">Milken Institute</div>
-					</div>
-					<div class="index row" >
-						<div class="rank" id="tax-found"></div>
-						<div class="data">-</div>
-						<div class="status"><div id="tax-found-status"></div></div>
-						<div class="year">2015</div>
-						<div class="survey">State Business Tax Climate Index</div>
-						<div class="source">Tax Foundation</div>
-					</div>
-					<div class="index row" >
-						<div class="rank" id="cnbc"></div>
-						<div class="data">-</div>
-						<div class="status"><div id="cnbc-status"></div></div>
-						<div class="year">2014</div>
-						<div class="survey">CNBC Top States for Business</div>
-						<div class="source">CNBC</div>
-					</div>
-					<div class="index row" >
-						<div class="rank" id="tech-demand"></div>
-						<div class="data" id="tech-demand-data"></div>
-						<div class="status"><div id="tech-demand-status"></div></div>
-						<div class="year">2015</div>
-						<div class="survey">Tech Demand Hiring Difficulty</div>
-						<div class="source">Wanted Analytics and Monster Government Solutions</div>
-					</div>
-					<div class="index row" >
-						<div class="rank" id="tech-emp"></div>
-						<div class="data" id="tech-emp-data"></div>
-						<div class="status"><div id="tech-emp-status"></div></div>
-						<div class="year">2012</div>
-						<div class="survey">Tech Employment as a % of Workforce</div>
-						<div class="source">National Science Foundation and Bureau of Labor Statistics, Occupational Employment  Statistics Survey</div>
-					</div>
-					<div class="index row" >
-						<div class="rank" id="bach"></div>
-						<div class="data" id="bach-data"></div>
-						<div class="status"><div id="bach-status"></div></div>
-						<div class="year">2011</div>
-						<div class="survey">Bachelors degree holders as a % of Workforce</div>
-						<div class="source">US Census/Bureau of Labor Statistics</div>
-					</div>
-					<div class="index row" >
-						<div class="rank" id="unemp"></div>
-						<div class="data" id="unemp-data"></div>
-						<div class="status"><div id="unemp-status"></div></div>
-						<div class="year">2013</div>
-						<div class="survey">Unemployment Insurance Average Premium per Employee</div>
-						<div class="source">US Department of Labor - Employment and Training Administration, Bureau of Labor Statistics</div>
-					</div>
-					<div class="index row" >
-						<div class="rank" id="tax-burden"></div>
-						<div class="data" id="tax-burden-data"></div>
-						<div class="status"><div id="tax-burden-status"></div></div>
-						<div class="year">2011</div>
-						<div class="survey">State and Local Tax Burden per capita</div>
-						<div class="source">U.S. Census</div>
-					</div>
+			<table style="min-width: 750px;">
+			<tr class="ranking-header">
+				<td class="rank">Rank</td>
+				<td class="data">Data</td>
+				<td class="status">Status</td>
+				<td class="year">Year</td>
+				<td class="survey">Index / Survey</td>
+				<td class="source">Source</td>
+			</tr>
+			<tr class="row" >
+				<td class="rank" id="milken"></td>
+				<td class="data">-</td>
+				<td class="status"><div id="milken-status"></div></td>
+				<td class="year">2014</td>
+				<td class="survey">Milken State Science and Technology Index</td>
+				<td class="source">Milken Institute</td>
+			</tr>
+			<tr class="row" >
+				<td class="rank" id="tax-found"></td>
+				<td class="data">-</td>
+				<td class="status"><div id="tax-found-status"></div></td>
+				<td class="year">2015</td>
+				<td class="survey">State Business Tax Climate Index</td>
+				<td class="source">Tax Foundation</td>
+			</tr>
+			<tr class="row" >
+				<td class="rank" id="cnbc"></td>
+				<td class="data">-</td>
+				<td class="status"><div id="cnbc-status"></div></td>
+				<td class="year">2014</td>
+				<td class="survey">CNBC Top States for Business</td>
+				<td class="source">CNBC</td>
+			</tr>
+			<tr class="row" >
+				<td class="rank" id="tech-demand"></td>
+				<td class="data" id="tech-demand-data"></td>
+				<td class="status"><div id="tech-demand-status"></div></td>
+				<td class="year">2015</td>
+				<td class="survey">Tech Demand Hiring Difficulty</td>
+				<td class="source">Wanted Analytics and Monster Government Solutions</td>
+			</tr>
+			<tr class="row" >
+				<td class="rank" id="tech-emp"></td>
+				<td class="data" id="tech-emp-data"></td>
+				<td class="status"><div id="tech-emp-status"></div></td>
+				<td class="year">2012</td>
+				<td class="survey">Tech Employment as a % of Workforce</td>
+				<td class="source">National Science Foundation and Bureau of Labor Statistics, Occupational Employment  Statistics Survey</td>
+			</tr>
+			<tr class="row" >
+				<td class="rank" id="bach"></td>
+				<td class="data" id="bach-data"></td>
+				<td class="status"><div id="bach-status"></div></td>
+				<td class="year">2011</td>
+				<td class="survey">Bachelors degree holders as a % of Workforce</td>
+				<td class="source">US Census/Bureau of Labor Statistics</td>
+			</tr>
+			<tr class="row" >
+				<td class="rank" id="unemp"></td>
+				<td class="data" id="unemp-data"></td>
+				<td class="status"><div id="unemp-status"></div></td>
+				<td class="year">2013</td>
+				<td class="survey">Unemployment Insurance Average Premium per Employee</td>
+				<td class="source">US Department of Labor - Employment and Training Administration, Bureau of Labor Statistics</td>
+			</tr>
+			<tr class="row" >
+				<td class="rank" id="tax-burden"></td>
+				<td class="data" id="tax-burden-data"></td>
+				<td class="status"><div id="tax-burden-status"></div></td>
+				<td class="year">2011</td>
+				<td class="survey">State and Local Tax Burden per capita</td>
+				<td class="source">U.S. Census</td>
+			</tr>
+			
+			</table>
 			
 			</div>
 			<hr class="state-ranking">
