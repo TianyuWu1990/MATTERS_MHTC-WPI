@@ -395,20 +395,21 @@
 						<!-- End Error Reporting -->	
 						
 						<div id="startupMsg">
-							<div id="startupMsgAct">
-							<div id="noJSError" style="color: #680017; font-weight: bolder;">
-								WARNING: You must have JavaScript enabled to use this page.
-								<br/>
-								<br/>
-							</div>
-							
-							<b>
-							Welcome to MATTERS Data Explorer!</b><br/><br/><br/>
-							
-							To start, please select metrics and states from the menu to the left.<br/><br/><br/>
-				 			<div>
-				 			Use the buttons in the red bar above to view your selection in different ways.
-				 			</div>				 			
+							<div id="startupMsgWrapper">
+								<div id="startupMsgAct">
+								<div id="noJSError" style="color: #680017; font-weight: bolder;">
+									WARNING: You must have JavaScript enabled to use this page.
+									<br/>
+								</div>
+								
+								<b>
+								Welcome to MATTERS Data Explorer!</b><br/><br/>
+								
+								To start, please select metrics and states from the menu to the left.<br/>
+					 			<div>
+					 			Use the buttons in the red bar above to view your selection in different ways.
+					 			</div>				 			
+								</div>
 							</div>
 						</div>
 					</div>

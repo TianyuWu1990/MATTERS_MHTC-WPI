@@ -639,9 +639,13 @@ svg text {
 	display: block;
 }
 
-#startupMsgAct {	
-	width: 400px;
-	
+#startupMsgWrapper {
+	text-align: center;
+	display:block;
+	padding: 10px;
+}
+
+#startupMsgAct {		
 	line-height: 23px;
 	display: inline-block;	
 }
