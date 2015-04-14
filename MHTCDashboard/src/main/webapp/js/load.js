@@ -48,8 +48,10 @@ $(document).ready(function() {
 		$(".menu").slideUp();
 	});
 	
+	
 	loadFunction();
 });
+
 
 var mobileMode = false;
 
@@ -163,7 +165,7 @@ loadFunction = function() {
     	else if ($("#sidebar-left").hasClass("open")&& $("#metricSelectionCol").hasClass("open"))
     	{	
     		
-			$("#sidebar-left").animate({ marginLeft: -450}, 300);
+			$("#sidebar-left").animate({ marginLeft: -830}, 300);
     		
     		$("#viewWrapper").animate({ left: 0}, 300, function() { $(window).trigger('resize'); });
     		
@@ -212,7 +214,7 @@ loadFunction = function() {
     	else if ($("#sidebar-left").hasClass("open")&& $("#stateSelectionCol").hasClass("open"))
     	{	
     		
-			$("#sidebar-left").animate({ marginLeft: -450}, 300);
+			$("#sidebar-left").animate({ marginLeft: -830}, 300);
     		
     		$("#viewWrapper").animate({ left: 0}, 300, function() { $(window).trigger('resize'); });
     		

@@ -10,6 +10,9 @@
 	.pagination{
 		width:320px;
 	}
+	a#favorite{
+		display:none;
+	}
 }
 
 
@@ -106,8 +109,10 @@
 /* ============================== MAP SECT SECTION ======================= */
 .map-sect h1{
 	font-size:25px;
-	padding:0px;	
+	padding:0px;
+		
 }
+
 
 
 #matters_map_canvas{
@@ -232,6 +237,9 @@
 	padding:0px;
 }
 
+a#favorite{
+	display:none;
+}
 
 	
 }
@@ -244,7 +252,20 @@
 .menu{
 	right:0px;
 }
+
+.map-image{
+	display:none;
 }
+}
+
+@media only screen and (max-width: 12500px) and (min-width: 1250px){
+/* ======================== HEADER ================================= */
+
+.map-image{
+	display:none;
+}
+}
+
 
 
 
