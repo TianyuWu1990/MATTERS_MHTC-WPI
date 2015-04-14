@@ -103,6 +103,8 @@
 		<br/>
 		<br/>
 	</div>
+	
+	
 	<div class="container map-container" ng-app="map_application">
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
@@ -131,6 +133,9 @@
 		</div>
 		
 		<!-- cxf -->
+		
+		<img class="map-image" src="img/MHTC_Map-Image.jpg" style="width:100%;height:100%;">
+
 		<div id="map-label">
 		<a class="map-btn db-btn" href="explore">Explore the Data</a>
 		<a class="map-btn state" href="profile">View State Profiles</a>
@@ -257,7 +262,6 @@
 		<div class="site-info container">
 		  <p class="copy">2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
 		  Sponsored by Mass High Technology Council</p>
-
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
 </div><!-- #page -->
@@ -274,19 +278,9 @@
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
-
+<script src="js/jquery.history.js" type="text/javascript"></script>
 <script type="text/javascript">
 $("#noJSError").hide();
 </script>
-	<script>
- 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
- 	 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  			ga('create', 'UA-61279483-1', 'auto');
-  			ga('send', 'pageview');
-
-	</script>
 </body>
 </html>
