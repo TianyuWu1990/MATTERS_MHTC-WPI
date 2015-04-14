@@ -64,6 +64,15 @@ a:hover{
 	background-position: 135px center;
 }
 
+.x-close{
+	height: 20px;
+	width: 100%;
+	background-image: url(../img/x-out.png);
+	background-repeat: no-repeat;
+	background-position: 135px center;
+	cursor:pointer;
+}
+
 .menu-toggle{
 	width: 65px;
 	height: 65px;
