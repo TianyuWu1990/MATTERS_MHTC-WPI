@@ -16,7 +16,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import edu.wpi.mhtc.model.admin.Metric;
 import edu.wpi.mhtc.model.admin.Statistic;
@@ -123,8 +122,8 @@ public class UnifiedParser implements IParser {
 							state = stateCleaner.clean(stateCell.getStringCellValue());
 						} 
 						catch (Exception e) {
-							//	TODO: use this to report error to admin
-							e.printStackTrace();
+							throw new Exception("Problem with state name "+ stateCell.getStringCellValue());
+//							e.printStackTrace();
 						}
 					}
 
@@ -140,8 +139,8 @@ public class UnifiedParser implements IParser {
 							}
 						}
 						catch(Exception e){
-							//TODO: use this to report error to admin
-							e.printStackTrace();
+							throw new Exception("Problem with year "+ yearCell.getNumericCellValue());
+//							e.printStackTrace();
 						}
 					}
 
@@ -163,7 +162,7 @@ public class UnifiedParser implements IParser {
 						if(metricCell != null){
 
 
-							edu.wpi.mhtc.model.admin.Metric m = getMetric(name);
+							Metric m = getMetric(name);
 							String value = null;
 
 							switch (metricCell.getCellType()) {
@@ -185,7 +184,7 @@ public class UnifiedParser implements IParser {
 								break;
 
 							case Cell.CELL_TYPE_BOOLEAN:
-								//	TODO: not sure what values boolean metrics have in db, if they are ever stored
+								//	not sure what values boolean metrics have in db, if they are ever stored
 								break;
 
 							default:
@@ -210,8 +209,8 @@ public class UnifiedParser implements IParser {
 									}
 								}
 								catch(Exception e){
-									//	TODO: use this to report error to admin
-									e.printStackTrace();
+									throw new Exception("Could not insert into database.");
+//									e.printStackTrace();
 								}
 								
 							}

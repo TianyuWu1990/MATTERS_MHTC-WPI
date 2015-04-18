@@ -275,9 +275,10 @@ public class AdminController {
     	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
     	String zipFile = dir.toString() + "/" + script.getOriginalFilename();
     	
-    	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
+    	File pipelineFolder = new File(dir.toString());
+    	pipelineFolder.mkdirs();
     	
-    	if (!createFolderSuccess) {
+    	if (!pipelineFolder.exists() || !pipelineFolder.isDirectory()) {
     		System.out.println("Error! Can't create folder.");
     	}
     	
@@ -505,9 +506,10 @@ public class AdminController {
     	Path dir = Paths.get(servletContext.getRealPath(""), DATA_DIRECTORY, parentDir, childDir);
     	String dataFileLocation = dir.toString() + "/" + newFileName;
     	
-    	boolean createFolderSuccess = new File(dir.toString()).mkdirs();
-    	
-    	if (!createFolderSuccess) {
+    	File dataFolder = new File(dir.toString());
+    	dataFolder.mkdirs();
+
+    	if (!dataFolder.exists() || !dataFolder.isDirectory()) {
     		throw new IOException("Unable to create folder");
     	}
     	
