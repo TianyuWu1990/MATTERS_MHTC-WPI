@@ -25,6 +25,9 @@ update mhtc_sch.metrics set "TrendType" =  'reversed' where "Name" = 'Unemployme
 update mhtc_sch.metrics set "TrendType" =  'normal' where "Name" = 'Annual Gross State Product-Growth Rate';
 update mhtc_sch.metrics set "TrendType" =  'normal' where "Name" = 'Annual Gross State Product in Chained $';
 update mhtc_sch.metrics set "TrendType" =  'normal' where "Name" = 'Median Household Income';
+update mhtc_sch.metrics set "TrendType" =  'normal' where "Name" = 'Research and Development Tax Credit Rate';
+update mhtc_sch.metrics set "TrendType" =  'normal' where "Name" = 'Research and Development Tax Credit ASC Rate';
+update mhtc_sch.metrics set "TrendType" =  'normal' where "Name" = 'Research and Development Tax Credit Refundability Rate';
 
 
 
