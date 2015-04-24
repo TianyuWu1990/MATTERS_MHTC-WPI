@@ -18,8 +18,10 @@ public class Metric
     private final String type;
     private final String trendType;
     private final String desc;
+    
+    private final int displayOrder;
 	
-	public Metric(int id, String name, int binId, String binName, String type, String trendType, String urlFrom, String sourceName, String desc)
+	public Metric(int id, String name, int binId, String binName, String type, String trendType, String urlFrom, String sourceName, String desc, int displayOrder)
 	{
 	    this.id = id;
 		this.name = name;
@@ -30,6 +32,8 @@ public class Metric
 		this.type = type;
 		this.trendType = trendType;
 		this.desc = desc+"\n Source: "+urlFrom;
+		
+		this.displayOrder = displayOrder;
 		
 	}
 	
@@ -67,5 +71,9 @@ public class Metric
 
     public String getTrendType() {
         return trendType;
+    }
+    
+    public int getDisplayOrder() {
+    	return displayOrder;
     }
 }
