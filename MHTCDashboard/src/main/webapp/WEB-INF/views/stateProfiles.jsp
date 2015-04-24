@@ -80,7 +80,16 @@
 			<br/>
 		</div>
 		<div class="container" style="overflow-x:hidden; display:none;" id="mainContent">
+		<div id="msgView" style="margin-top: 50px; text-align: center; min-height: 450px; margin-left: auto; margin-right: auto;">
+			<div id="loading">
+				<i class="fa fa-spinner fa-spin fa-3x" style="font-size: 5em !important; display: inline-block;"></i>
+				<span style="font-size: 2em; padding-left: 10px; display: inline-block;">
+				Loading State Profiles...
+				</span>
+			</div>
+		</div>
 		
+		<div id="stateProfileView" style="display:none;">
 			<div class="state-profile-title">
 				<div id="stateChooserWrapper">
 					<div id="stateChooserTitle">
@@ -173,7 +182,7 @@
 			</p>
 			
 		</div>
-
+	</div>
 
     </div><!-- main-content-wrap -->
     </main><!-- #main -->

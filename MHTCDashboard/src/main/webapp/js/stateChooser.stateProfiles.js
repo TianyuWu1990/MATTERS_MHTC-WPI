@@ -39,6 +39,61 @@ function retrieveStateProfiles(rawData)
 	}
 }
 
+function getRank(stateName, metricIndex, metricYear)
+{
+	// Generate array of State, Value
+
+	var metricValues = [];
+	
+	var isRank = false;
+	var trendType = "normal";
+	
+	for(var key in stateProfiles) {
+	    if(stateProfiles.hasOwnProperty(key)) {
+	    	
+	    	if (metricIndex > stateProfiles[key].metrics.length)
+	    		continue;
+	    	
+	    	var metric = stateProfiles[key].metrics[metricIndex];
+	    	
+	    	isRank = metric.type == "rank";
+	    	trendType = metric.trendType;
+	    	
+	    	for (var i = 0; i < metric.data.length; i++)
+	    	{
+	    		var yearPair = metric.data[i];
+	    		if (yearPair.year == metricYear)
+	    		{
+	    			if (isRank && key == stateName)
+	    				return yearPair.value;
+	    			else
+	    				metricValues.push([key, yearPair.value]);
+	    		}
+	    	}	    	
+	    }
+	}
+	
+	metricValues.sort(function(a, b){
+		return b[1] - a[1];
+	});
+	
+	var targetStateIndex = -1;
+	
+	for (var i = 0; i < metricValues.length; i++)
+	{
+		if (metricValues[i][0] == stateName)
+		{
+			targetStateIndex = i;
+			break;
+		}			
+	}
+
+	if (trendType == "normal")
+		return targetStateIndex;
+	else
+		return metricValues.length - targetStateIndex;	
+}
+
 function formatData(metricType, value)
 {
 	var formattedValue = "";
@@ -76,7 +131,7 @@ function formatData(metricType, value)
 			}
 		}
 		
-		formattedValue = value.toFixed(0);
+		formattedValue = value.toFixed(0) + suffix;
 	}else if(metricType=="integer"){
 		formattedValue = value.toFixed(0);
 	}else{
@@ -102,20 +157,17 @@ function getTrend(trend)
 	}
 }
 
-function getStatus(rank, obj)
+function getStatus(rank)
 {
 	if (isNaN(rank)) {
-		$(obj).html('<img src="img/state-neutral.png" width="15px" height="15px" style="vertical-align:top;">');
-		return;
+		return '<img src="img/state-neutral.png" width="15px" height="15px" style="vertical-align:top;">';
 	}
   if (rank<=10) {
-	  $(obj).html('<img src="img/state-strength.png" width="15px" height="15px" style="vertical-align:top;">');
-    return;
+	  return '<img src="img/state-strength.png" width="15px" height="15px" style="vertical-align:top;">';
   } else if (rank>=25) {
-	  $(obj).html('<img src="img/state-weakness.png" width="15px" height="15px" style="vertical-align:top;">');
-    return;
+	  return '<img src="img/state-weakness.png" width="15px" height="15px" style="vertical-align:top;">';
   }
-  $(obj).html('<img src="img/state-neutral.png" width="15px" height="15px" style="vertical-align:top;">');
+  return '<img src="img/state-neutral.png" width="15px" height="15px" style="vertical-align:top;">';
 }
 	
 function populateData(stateName)
@@ -150,13 +202,14 @@ function populateData(stateName)
 		{
 			var metricObj = metricData[i];
 			
-			var rank = "-";
 			var data = formatData(metricObj.type, metricObj.mostRecent.value);
-			var status = "-";
 			var trend = getTrend(metricObj.actualTrend);
 			var year = metricObj.mostRecent.year;
 			var name = metricObj.name;
 			var source = metricObj.source;
+			var rank = getRank(stateName, i, year);
+			var status = getStatus(rank);
+			rank = formatData("rank", rank);
 			
 			tableContents +='<tr class="row">'
 					+ '<td class="rank">' + rank + '</td>'
@@ -171,72 +224,6 @@ function populateData(stateName)
 		
 		$("#stateProfileTable").html(tableContents);
 	}
-	
-	/*
-	<tr class="row" >
-	<td class="rank" id="milken"></td>
-	<td class="data">-</td>
-	<td class="status"><div id="milken-status"></div></td>
-	<td class="year">2014</td>
-	<td class="survey">Milken State Science and Technology Index</td>
-	<td class="source">Milken Institute</td>
-</tr>*/
-	
-	/*
-	var stateProfile = getStateProfile(stateName);
-
-	
-	
-	if (stateProfile == null)
-	{
-		// TODO: Error report
-	}
-	else
-	{
-		$("#stateTitleAct").html(stateProfile["Name"]);
-		
-		var milken = stateProfile["Milken Science and Tech Index"];
-		$("#milken").html(milken);
-		handleStatus(milken, "#milken-status");
-		
-		var tax_found = stateProfile["Tax Foundation Business Tax Index"];
-		$("#tax-found").html(tax_found);
-		handleStatus(tax_found, "#tax-found-status");
-		
-		var cnbc = stateProfile["CNBC Top States for Business"];
-		$("#cnbc").html(cnbc);
-		handleStatus(cnbc, "#cnbc-status");
-		
-		var techDemandData = stateProfile["Key tech demand hiring difficulty"];
-		var techDemandRank = stateProfile["Key tech demand hiring rank"];
-		$("#tech-demand").html(techDemandRank);
-		handleStatus(techDemandRank, "#tech-demand-status");
-		$("#tech-demand-data").html(techDemandData);
-		
-		var techEmpData = stateProfile["Percent tech employment"];
-		var techEmpRank = stateProfile["Tech employment rank"];
-		$("#tech-emp").html(techEmpRank);
-		handleStatus(techEmpRank, "#tech-emp-status");
-		$("#tech-emp-data").html(techEmpData + "%");
-		
-		var bachData = stateProfile["Percent bachelors degree holders"];
-		var bachRank = stateProfile["Bachelors degree holders rank"];
-		$("#bach").html(bachRank);
-		handleStatus(bachRank, "#bach-status");
-		$("#bach-data").html(bachData + "%");
-		
-		var unempData = stateProfile["Unempl insurance"];
-		var unempRank = stateProfile["Unempl insurance rank"];
-		$("#unemp").html(unempRank);
-		handleStatus(unempRank, "#unemp-status");
-		$("#unemp-data").html(unempData);
-		
-		var taxBurdenData = stateProfile["Tax burden per capita"];
-		var taxBurdenRank = stateProfile["Tax burden per capita rank"];
-		$("#tax-burden").html(taxBurdenRank);
-		handleStatus(taxBurdenRank, "#tax-burden-status");
-		$("#tax-burden-data").html(taxBurdenData);
-	}*/
 }
 
 $(document).ready(function() {	
@@ -285,6 +272,11 @@ $(document).ready(function() {
 			        var State = History.getState();     
 			        populateData(State.data.name);
 			    });
+				
+				setTimeout(function() {
+					$("#msgView").hide();
+					$("#stateProfileView").show();
+				}, 500);
 			}
 		);
 });
