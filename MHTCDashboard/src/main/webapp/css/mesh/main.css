@@ -441,15 +441,22 @@ ___________________________________
 	padding-right: 10px;
 }
 .rank {
-	width: 5%;
+	width: 7.5%;
 }
 
-.data, .status, .year {
+.data {
+	width: 15%;
+}
+.status, .year {
+	width: 10%;
+}
+
+.trend {
 	width: 10%;
 }
 
 .survey, .source {
-	width: 32.5%;
+	width: 25%;
 }
 
 .state-strength{
