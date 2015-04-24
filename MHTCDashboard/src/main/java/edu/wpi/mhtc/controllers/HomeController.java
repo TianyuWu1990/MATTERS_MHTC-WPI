@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -188,6 +189,20 @@ public class HomeController {
 		List<DataSeries> massTalent = statsService.getStateBinData(maId, 20);
 		List<DataSeries> massCost = statsService.getStateBinData(maId, 37);
 		List<DataSeries> massEconomy = statsService.getStateBinData(maId, 29);
+		
+		Comparator<DataSeries> dataSeriesComparator = new Comparator<DataSeries>(){
+			@Override
+			public int compare(DataSeries o1, DataSeries o2) 
+			{
+				return o1.getMetric().getDisplayOrder() - o2.getMetric().getDisplayOrder();
+			}
+		};
+		
+		massNational.sort(dataSeriesComparator);
+		massTalent.sort(dataSeriesComparator);
+		massCost.sort(dataSeriesComparator);
+		massEconomy.sort(dataSeriesComparator);
+		
 		List<State> peers = stateService.getAllPeers();
 		List<State> allstates= stateService.getAllStates(); 
 		
