@@ -164,13 +164,7 @@
 		<br/>
 		<br/>
 	</div>
-<<<<<<< HEAD
-	<div class="container map-container" style="width:80%">
-=======
-	
-	
-	<div class="container map-container" ng-app="map_application">
->>>>>>> dev-dashboard
+	<div class="container map-container" style="width:80%">	
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
 				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
@@ -364,22 +358,19 @@
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
-<<<<<<< HEAD
-	<script>
- 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
- 	 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ 			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  			ga('create', 'UA-61279483-1', 'auto');
-  			ga('send', 'pageview');
+ 			ga('create', 'UA-61279483-1', 'auto');
+ 			ga('send', 'pageview');
 
-	</script>
-=======
+</script>
 <script src="js/jquery.history.js" type="text/javascript"></script>
 <script type="text/javascript">
 $("#noJSError").hide();
 </script>
->>>>>>> dev-dashboard
 </body>
 </html>
