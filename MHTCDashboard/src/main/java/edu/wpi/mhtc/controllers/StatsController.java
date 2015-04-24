@@ -31,10 +31,11 @@ public class StatsController {
 	private StateService stateService;
 
 	@Autowired
-	public StatsController(StatsService service, MetricService mservice) {
+	public StatsController(StatsService service, MetricService mservice, StateService stateService) {
 
 		this.statsService = service;
 		this.metricService = mservice;
+		this.stateService = stateService;
 	}
 
 	@RequestMapping(value = "/data/stats/available", method = RequestMethod.GET)
@@ -53,11 +54,19 @@ public class StatsController {
 		return getDataForSpecificStates(splitStateNames(states), metrics);
 	}
 	
-	@RequestMapping(value = "/data/stats/stateprofile", method=RequestMethod.GET, params={ "state"})
+	@RequestMapping(value = "/data/stats/stateprofiles", method=RequestMethod.GET)
 	public @ResponseBody
-	List<DataSeries> stateProfileEndpoint(Model model, @RequestParam(value="state") String state)
+	List<List<DataSeries>> stateProfileEndpoint(Model model)
 	{
-		return statsService.getStateProfile(state);
+		return getDataForSpecificStates(splitStateNames("all"),
+						"State Technology and Science Index,"
+						+ "State Business Tax Climate Index,"
+						+ "Top States for Business,"
+						+ "Hiring Difficulty for Technology Industries,"
+						+ "Tech Employment as Percent of Total Employment,"
+						+ "Bachelors Degree Holders in Workforce,"
+						+ "UI Premium Per Employee,"
+						+ "State and Local Tax Burden Per Capita in $");
 	}
 
 	private List<String> splitStateNames(String states) {

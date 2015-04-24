@@ -31,10 +31,7 @@ function handleStatus(rank, obj)
 function refreshData(stateName)
 {
 	$.get(
-			"data/stats/stateprofile",
-			{ 
-				state: stateName 
-			},
+			"data/stats/stateprofiles",
 			function (data) 
 			{
 				console.log(data);

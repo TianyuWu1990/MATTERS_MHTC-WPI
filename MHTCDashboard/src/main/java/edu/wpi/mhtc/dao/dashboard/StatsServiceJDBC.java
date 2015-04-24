@@ -130,18 +130,4 @@ public class StatsServiceJDBC implements StatsService
 
 		return metrics;
 	}
-	
-	@Override
-	public List<DataSeries> getStateProfile(String state)
-	{
-		return getDataForStateByName(state,
-				"State Technology and Science Index,"
-				+ "State Business Tax Climate Index,"
-				+ "Top States for Business,"
-				+ "Hiring Difficulty for Technology Industries,"
-				+ "Tech Employment as Percent of Total Employment,"
-				+ "Bachelors Degree Holders in Workforce,"
-				+ "UI Premium Per Employee,"
-				+ "State and Local Tax Burden Per Capita in $");
-	}
 }
