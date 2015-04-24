@@ -42,13 +42,16 @@ $(document).on("ready", function() {
 			$("#matters_map_tooltip_learnMore").attr("href", "profile?name=" + stateProfile["Name"]);
 			$("#matters_map_tooltip").show();
 			
-			var tooltipX = event.originalEvent.clientX - 250;
-			var tooltipY = event.originalEvent.clientY - 220 + $("body").scrollTop();
+			var tooltipX = event.originalEvent.clientX;
+			var tooltipY = $("body").scrollTop();
 								
-			console.log(tooltipX);
-			console.log($("#matters_map_canvas").width());
-			if (tooltipX > $("#matters_map_canvas").width() - 150)
-				tooltipX = tooltipX - 400;
+			if (tooltipX < ($("body").width() / 2))
+				tooltipX = $("#matters_map_canvas").width() + $("#matters_map_canvas").get(0).getBoundingClientRect().left - 350;
+			else
+				tooltipX = $("#matters_map_canvas").get(0).getBoundingClientRect().left - 250;
+			
+			if (tooltipX < 10)
+				tooltipX = 10;
 			
 			$("#matters_map_tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
 		},
@@ -56,7 +59,9 @@ $(document).on("ready", function() {
 	
 	$(window).on("resize", function(){
 		var containerWidth = $("#matters_map_canvas").width();
-		$("#matters_map_canvas > svg").width(containerWidth);		
+		$("#matters_map_canvas > svg").width(containerWidth);	
+		
+		$("#matters_map_tooltip").hide();
 	});
 	
 	$("#matters_map_tooltip_hide").on("click", function() {

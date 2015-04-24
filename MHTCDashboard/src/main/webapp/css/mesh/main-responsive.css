@@ -245,6 +245,12 @@ a#favorite{
 .map-image{
 	display:none;
 }
+
+#matters_map_canvas
+{
+	padding-left: 0px !important;
+}
+
 }
 
 @media only screen and (max-width: 12500px) and (min-width: 1250px){

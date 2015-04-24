@@ -66,7 +66,7 @@
 		top: 0px; 
 		width: 280px; 
 		height: 325px; 
-		background-color: white; 
+		background-color: rgba(255,255,255,0.9); 
 		border-radius: 8px; 
 		border: 2px solid  rgba(158,158,158, 0.5); 
 		box-shadow: 0px 0px 2px rgba(158, 158, 158, 0.3);
@@ -114,6 +114,11 @@
 		cursor: pointer;
 	}
 	
+	#matters_map_canvas
+	{
+		padding-left: 60px;
+	}
+		
 	</style>
 	
 	<!-- Check for browser compatibility before we do anything else -->
@@ -178,7 +183,7 @@
 		<a class="map-btn state" href="profile">View State Profiles</a>
 		</div>
 		<!-- cxf -->
-		<div id="matters_map_canvas" class="map-area" style="padding-top: 60px; padding-left: 60px; position: relative;">
+		<div id="matters_map_canvas" class="map-area" style="padding-top: 60px; position: relative;">
 			<div id="matters_map_legend" style="position: absolute; bottom: 150px; right: 0px;">
 				<div class="matters_map_legend_key" style="color: white;">
 					<div class="swatch" style="background-color: #ff4444; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
