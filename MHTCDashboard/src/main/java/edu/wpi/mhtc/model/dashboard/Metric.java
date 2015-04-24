@@ -30,7 +30,12 @@ public class Metric
 		this.binName = binName;
 		this.binId = binId;
 		this.type = type;
-		this.trendType = trendType;
+
+		if (trendType == null)
+			this.trendType = "";
+		else
+			this.trendType = trendType;
+		
 		this.desc = desc+"\n Source: "+urlFrom;
 		
 		this.displayOrder = displayOrder;
