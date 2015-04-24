@@ -52,6 +52,13 @@ public class StatsController {
 
 		return getDataForSpecificStates(splitStateNames(states), metrics);
 	}
+	
+	@RequestMapping(value = "/data/stats/stateprofile", method=RequestMethod.GET, params={ "state"})
+	public @ResponseBody
+	List<DataSeries> stateProfileEndpoint(Model model, @RequestParam(value="state") String state)
+	{
+		return statsService.getStateProfile(state);
+	}
 
 	private List<String> splitStateNames(String states) {
 
@@ -85,5 +92,4 @@ public class StatsController {
 
 		return states;
 	}
-
 }

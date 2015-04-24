@@ -20,5 +20,6 @@ public interface StatsService
 	
     List<DataSeries> getStateBinData(String state, Integer binId);
 	List<DataSeries> getDataForStateByName(String state, String metrics);
+	List<DataSeries> getStateProfile(String state);
 	
 }

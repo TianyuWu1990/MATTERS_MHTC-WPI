@@ -30,8 +30,20 @@ function handleStatus(rank, obj)
 
 function refreshData(stateName)
 {
+	$.get(
+			"data/stats/stateprofile",
+			{ 
+				state: stateName 
+			},
+			function (data) 
+			{
+				console.log(data);
+			});
+	
 	var stateProfile = getStateProfile(stateName);
 
+	
+	
 	if (stateProfile == null)
 	{
 		// TODO: Error report
