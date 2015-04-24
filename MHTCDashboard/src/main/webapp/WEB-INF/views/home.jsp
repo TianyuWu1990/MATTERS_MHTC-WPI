@@ -368,10 +368,10 @@
 														
 														<div class="heatmap-detailTitle">Rank</div>
 														<span id="heatmap-specificDetails-rank" class="heatmap-detailVal"></span><br/>
-														
+														<span id="heatmap-value-block">
 														<div class="heatmap-detailTitle">Value</div>
 														<span id="heatmap-specificDetails-value" class="heatmap-detailVal"></span><br/>
-														
+														</span>
 														<div id="heatmap-specificDetails-peer" style="font-style:italic; padding-left: 10px; padding-top: 5px; color: #7b0020;">Peer State</div>
 													</div>
 												</div>

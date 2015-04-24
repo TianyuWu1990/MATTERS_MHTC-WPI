@@ -187,6 +187,9 @@ var CM = (function($) {
 		var query = DQ.create().addState(allStatesForQuery)
 			.addMetric(Metrics.getMetricByID(as.currentind).getName());
 		
+		var isReversed = Metrics.getMetricByID(as.currentind).trendType == "reversed";
+		var isRank = Metrics.getMetricByID(as.currentind).type == "rank";
+		
 		query.execute(function(multiData) {
 			var yearsForMetric = cm.getYearsMetricState(allStates, multiData); // Get the years that the metric exists for from the data
 		
@@ -269,7 +272,7 @@ var CM = (function($) {
 				
 				var ranking = i + 1;
 				
-				if (metricType == "rank")
+				if (isRank || isReversed)
 				{
 					ranking = stateValueInOrder.length - i;
 				}
@@ -321,7 +324,7 @@ var CM = (function($) {
 			}
 			
 			// What first rank is depends on the type of metric.
-			if (stateValueInOrder[0][2] == "rank")
+			if (isRank || isReversed)
 			{
 				$("#heatmap-generalinfo-first").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
 				$("#heatmap-generalinfo-last").html(stateValueInOrder[0][0]);
@@ -330,6 +333,15 @@ var CM = (function($) {
 			{
 				$("#heatmap-generalinfo-first").html(stateValueInOrder[0][0]);
 				$("#heatmap-generalinfo-last").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+			}
+			
+			if (isRank)
+			{
+				$("#heatmap-value-block").hide();
+			}
+			else
+			{
+				$("#heatmap-value-block").show();
 			}
 			
 			$("#heatmap-generalinfo-ma").html(cm.heatMapValuesMap["MA"].ranking);
