@@ -18,7 +18,6 @@
 	
 	<title>MATTERS</title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
-	<link rel="stylesheet" href="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/css">
 	<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 	<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
@@ -31,7 +30,7 @@
 	        #matters_map_canvas {
 	          background-color: black;
 	          max-width: 847px;
-	          height: 560px;
+	          height: 500px;
 	        }
 			td.cell-name.string.name {
 				column-span: none; /* W3C */
@@ -59,6 +58,69 @@
 			}
 	</style>
 	
+	<style>
+	#matters_map_tooltip
+	{
+		z-index: 9999;
+		position:absolute; 
+		top: 0px; 
+		width: 280px; 
+		height: 325px; 
+		background-color: rgba(255,255,255,0.9); 
+		border-radius: 8px; 
+		border: 2px solid  rgba(158,158,158, 0.5); 
+		box-shadow: 0px 0px 2px rgba(158, 158, 158, 0.3);
+	}
+	
+	#matters_map_tooltip_title
+	{
+		color: #7b0020;
+		font-size: 20px;
+		padding: 7px;
+		text-align: center;
+		
+		border-bottom: 2px solid rgba(158, 158, 158, 0.3);
+		
+		display: block;
+	}
+	
+	#matters_map_tooltip_stateProfile
+	{
+		margin-top: 5px;
+		color: #7b0020;
+		text-align: center;
+		border-top: 2px solid rgba(158, 158, 158, 0.3);
+		padding: 10px;
+	}
+	
+	.matters_map_tooltip_metricName {
+		display: inline-block;		
+		padding-left: 5px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		width: 210px;
+		text-align: right;
+	}
+	
+	.matters_map_tooltip_metricVal {
+		text-align: right;
+		width: 40px;
+		display: inline-block;
+	}
+	
+	#matters_map_tooltip_hide
+	{
+		float: right;
+		cursor: pointer;
+	}
+	
+	#matters_map_canvas
+	{
+		padding-left: 60px;
+	}
+		
+	</style>
+	
 	<!-- Check for browser compatibility before we do anything else -->
 	<script src="js/modernizr.js"></script>
 	
@@ -80,11 +142,15 @@
 		compatible = compatible & Modernizr.bgpositionshorthand;
 		
 		if (!compatible)
-			window.location = "./unsupported";			
+			window.location = "./unsupported";		
+		
+		
+	</script>	
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).on("ready", function() { $("#noJSError").hide(); });
 	</script>
-	
-	
-	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/js"></script>
 </head>
 
 <body class="home" id="top">
@@ -103,35 +169,11 @@
 		<br/>
 		<br/>
 	</div>
-	
-	
-	<div class="container map-container" ng-app="map_application">
+	<div class="container map-container" style="width:80%">	
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
 				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
 				</h2>
-		<div id="matters_map_canvas" class="map-area" ng-controller="map_canvas_controller as leaflet_map">
-		</div>	
-		<input type="hidden" ng-controller="map_tile_controller as map_tiles" id="map_tile" value="Tiles" storage="inline">
-		<input type="hidden" ng-controller="map_data_controller as map_data"  id="map_data" value="{'Features':'Visible_Features','Search':'Visible_Features'}" storage="inline">
-		<div id="html_static_templates" style="display: none;" ng-non-bindable>
-			<script id="popup_content" type="text/template">
-				<div class="popop-window">
-				  <table style="border-style: none !important;" class="table table-bordered table-hover table-condensed popup-table">
-					<tbody>
-					  {{#cells}}
-					  <tr>
-						<td class="cell-name string {{class}}" colspan="2">{{name}}</td>
-						<td class="cell-value {{class}}">{{format}}</td>
-					  </tr>
-					  {{/cells}}
-					</tbody>
-				  </table>
-				  <a class="view-more" href="profile?name={{cells.0.format}}">LEARN MORE</a>
-				</div>
-			</script>
-		</div>
-		
 		<!-- cxf -->
 		
 		<img class="map-image" src="img/MHTC_Map-Image.jpg" style="width:100%;height:100%;">
@@ -141,6 +183,51 @@
 		<a class="map-btn state" href="profile">View State Profiles</a>
 		</div>
 		<!-- cxf -->
+		<div id="matters_map_canvas" class="map-area" style="padding-top: 60px; position: relative;">
+			<div id="matters_map_legend" style="position: absolute; bottom: 150px; right: 0px;">
+				<div class="matters_map_legend_key" style="color: white;">
+					<div class="swatch" style="background-color: #ff4444; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
+					</div>
+					<span style="margin-left: 5px;">Peer State</span>
+					<br/>
+					<div class="swatch" style="background-color: #680017; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
+					</div>
+					<span style="margin-left: 5px;">Other State</span>
+				</div>
+			</div>
+			
+			<div id="matters_map_tooltip" style="display:none;">
+				<div id="matters_map_tooltip_title"><span id="matters_map_tooltip_name">State Name</span>
+					<a id="matters_map_tooltip_hide">X</a>
+				</div>
+				<div class="matters_map_tooltip_metricName">CNBC Top States for Business</div>
+				<span id="metric_cnbc" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Milken Science and Tech Index</div>
+				<span id="metric_milken" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Tax Foundation Business Tax Index</div>
+				<span id="metric_tax_found" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Tax Burden Per Capita Rank</div>
+				<span id="metric_tax_burden" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Tech Employment Rank</div>
+				<span id="metric_tech" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Unemployment Insurance Rank</div>
+				<span id="metric_unemp" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Bachelor's Degree Holder Rank</div>
+				<span id="metric_bach" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div class="matters_map_tooltip_metricName">Key Tech Demand Hiring Rank</div>
+				<span id="metric_demand" class="matters_map_tooltip_metricVal">VA</span><br/>
+				
+				<div id="matters_map_tooltip_stateProfile"><a id="matters_map_tooltip_learnMore">Learn More</a></div>
+			</div>
+			
+		</div>			
 	</div>
 </section>
 
@@ -166,7 +253,7 @@
 				System to advance our mission to make Massachusetts the world's most attractive place in which to create 
 				and grow a high technology business.  MATTERS is designed to measure and evaluate Massachusetts' current competitive 
 				position, while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions 
-				that help attract and retain business to the state.<br/><br/></p>
+				that help attract and retain business to the state.<br/><br/><br/></p>
 				<a class="view-more" href="<c:url value="/about"/>">LEARN MORE</a>
 
 			</div>
@@ -191,7 +278,7 @@
 		   users can view 8 pre-selected key metrics and link to an individual state profile. The data explorer permits users to customize their 
 		   experience and retrieve data on one or more metrics from one or more states and across multiple years simultaneously. Data can be 
 		   displayed in a variety of visualizations including tables, line charts, bar charts, and heatmaps. 
-		   	<br/><br/></p>
+		   	<br/><br/><br/></p>
 			
 				<a class="view-more" href="<c:url value="/howto"/>">LEARN MORE</a>
 
@@ -268,16 +355,24 @@
 
 
 <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
-
-
-<script type="text/javascript" src="js/mesh/data/tiles/tiles.js" ></script>
-<script type="text/javascript" src="js/mesh/data/features.js" ></script>
-<script type="text/javascript" src="js/mesh/data/search.js" ></script>  
-<script src="js/mesh/modernizr.min.js"></script>
+<script src="js/raphael.js"></script> <!-- Dependency for raphael.js -->
+<script src="js/jquery.usmap.js"></script>
+<script src="js/mesh/data/state_profile_data.js" type="text/javascript"></script>
+<script src="js/mesh/map.js" type="text/javascript"></script>
 <script src="js/mesh/scripts.js" type="text/javascript"></script>
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
+<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ 			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ 			ga('create', 'UA-61279483-1', 'auto');
+ 			ga('send', 'pageview');
+
+</script>
 <script src="js/jquery.history.js" type="text/javascript"></script>
 <script type="text/javascript">
 $("#noJSError").hide();

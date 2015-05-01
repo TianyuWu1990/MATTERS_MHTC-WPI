@@ -150,7 +150,7 @@ ___________________________________
 	border: 2px solid white;
 	border-radius: 3px;
 	position: absolute;
-	bottom: 20px;
+	top: 150px;
 	background-size: 25px;
 	background-repeat: no-repeat;
 	background-position: 10px center;
@@ -159,8 +159,6 @@ ___________________________________
 	-ms-transition: all .2s ease-in-out;
 	-o-transition: all .2s ease-in-out;
 	transition: all .2s ease-in-out;
-
-	
 }
 
 
@@ -393,22 +391,9 @@ ___________________________________
 
 }
 
-.rank, .data, .status{
-	width: 100%;
-}
-
-.year{
-	width: 110%;
-}
 
 .ranking-header .source{
 	margin-left: 15px !important;
-}
-
-
-
-.survey, .source{
-	width: 200%;
 }
 
 .index div{
@@ -451,8 +436,27 @@ ___________________________________
 	height: 15px;
 }
 
-.rank{
-	width: 22%;
+.row > td {
+	padding-bottom: 10px;
+	padding-right: 10px;
+}
+.rank {
+	width: 7.5%;
+}
+
+.data {
+	width: 15%;
+}
+.status, .year {
+	width: 10%;
+}
+
+.trend {
+	width: 10%;
+}
+
+.survey, .source {
+	width: 25%;
 }
 
 .state-strength{
@@ -480,10 +484,10 @@ h2{
 	margin: 15px 0;
 }
 
-.ranking-header > div{
+.ranking-header > td{
 	color: #e8002d;
 	font-size: 15px;
-	
+	padding-bottom: 20px;
 }
 
 .note{

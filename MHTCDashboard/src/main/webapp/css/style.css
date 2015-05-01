@@ -394,6 +394,14 @@ svg text {
 
 
 /** Heatmap **/
+#heatmap-error
+{
+	text-align:center;
+	padding-top: 50px;
+	font-weight: bold;
+	font-size:1.2em;
+}
+
 #heatmap-wrapper {
 	
 	margin-top: 0px !important;
@@ -631,9 +639,13 @@ svg text {
 	display: block;
 }
 
-#startupMsgAct {	
-	width: 400px;
-	
+#startupMsgWrapper {
+	text-align: center;
+	display:block;
+	padding: 10px;
+}
+
+#startupMsgAct {		
 	line-height: 23px;
 	display: inline-block;	
 }
@@ -1073,7 +1085,7 @@ i.fa.fa-info-circle {
 }
 
 #MultipleMetricTitle {
-	width: 300px;
+	width: 530px;
 	text-align: center;
 	font-size:20px;
 	font-weight: 400;
