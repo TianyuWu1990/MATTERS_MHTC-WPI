@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -198,10 +199,10 @@ public class HomeController {
 			}
 		};
 		
-		massNational.sort(dataSeriesComparator);
-		massTalent.sort(dataSeriesComparator);
-		massCost.sort(dataSeriesComparator);
-		massEconomy.sort(dataSeriesComparator);
+		Collections.sort(massNational, dataSeriesComparator);
+		Collections.sort(massTalent, dataSeriesComparator);
+		Collections.sort(massCost, dataSeriesComparator);
+		Collections.sort(massEconomy, dataSeriesComparator);
 		
 		List<State> peers = stateService.getAllPeers();
 		List<State> allstates= stateService.getAllStates(); 
