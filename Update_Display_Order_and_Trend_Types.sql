@@ -46,11 +46,11 @@ update mhtc_sch.metrics set "DisplayOrder" =  9	where "Name" = 	'UI Premium Per 
 update mhtc_sch.metrics set "DisplayOrder" =  7	where "Name" = 	'Capital Gains Tax Rate';
 update mhtc_sch.metrics set "DisplayOrder" =  3	where "Name" = 	'Corporate Income Tax-Sourcing Rules';
 update mhtc_sch.metrics set "DisplayOrder" =  2	where "Name" = 	'Corporate Income Tax-Apportionment Method';
-update mhtc_sch.metrics set "DisplayOrder" =  13 where "Name" = 	'Sales Tax Rate';
-update mhtc_sch.metrics set "DisplayOrder" =  1	where "Name" = 	'Corporate Income Tax Rate';
-update mhtc_sch.metrics set "DisplayOrder" =  12 where "Name" = 	'Personal Income Tax';
-update mhtc_sch.metrics set "DisplayOrder" =  10 where "Name" = 	'State and Local Tax Burden as Percent of Personal Income';
-update mhtc_sch.metrics set "DisplayOrder" =  11 where "Name" = 	'State and Local Tax Burden Per Capita in $';
+update mhtc_sch.metrics set "DisplayOrder" =  13 where "Name" = 'Sales Tax Rate';
+update mhtc_sch.metrics set "DisplayOrder" =  1	where "Name" = 'Corporate Income Tax Rate';
+update mhtc_sch.metrics set "DisplayOrder" =  12 where "Name" = 'Personal Income Tax';
+update mhtc_sch.metrics set "DisplayOrder" =  10 where "Name" = 'State and Local Tax Burden as Percent of Personal Income';
+update mhtc_sch.metrics set "DisplayOrder" =  11 where "Name" = 'State and Local Tax Burden Per Capita in $';
 update mhtc_sch.metrics set "DisplayOrder" =  3	where "Name" = 	'Total Tech Employment';
 update mhtc_sch.metrics set "DisplayOrder" =  2	where "Name" = 	'Total Employment';
 update mhtc_sch.metrics set "DisplayOrder" =  4	where "Name" = 	'Tech Employment as Percent of Total Employment';
@@ -59,5 +59,5 @@ update mhtc_sch.metrics set "DisplayOrder" =  6	where "Name" = 	'Annual Gross St
 update mhtc_sch.metrics set "DisplayOrder" =  5	where "Name" = 	'Annual Gross State Product in Chained $';
 update mhtc_sch.metrics set "DisplayOrder" =  4	where "Name" = 	'Research and Development Tax Credit Rate';
 update mhtc_sch.metrics set "DisplayOrder" =  6	where "Name" = 	'Research and Development Tax Credit ASC Rate';
-update mhtc_sch.metrics set "DisplayOrder" =  7	where "Name" = 	'Research and Development Tax Credit Refundability Rate';
+update mhtc_sch.metrics set "DisplayOrder" =  5	where "Name" = 	'Research and Development Tax Credit Refundability Rate';
 update mhtc_sch.metrics set "DisplayOrder" =  7	where "Name" = 	'Median Household Income';
