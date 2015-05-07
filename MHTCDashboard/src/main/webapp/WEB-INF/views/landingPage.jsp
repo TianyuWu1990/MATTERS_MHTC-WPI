@@ -265,7 +265,7 @@
 				<p>MATTERS is not a primary data source, but instead is an aggregation of published data and analysis from several sources 
 				including federal and state governmental agencies, non-profit organizations and media outlets.  Click "learn more" to access 
 				a listing of the sources for each metric or data point in MATTERS with links to the source where available.				
-				</p>
+				<br/><br/></p>
 				<a class="view-more" href="<c:url value="/methodology"/>">LEARN MORE</a>
 
 			</div>
