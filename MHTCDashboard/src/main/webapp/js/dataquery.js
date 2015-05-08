@@ -62,17 +62,20 @@ var DQ = (function($){
     Query.prototype.execute = function(callback) {
         var query = buildQuery(this);
         
-        $.get( query, function(data) {
-        	recentQueryData = data;
-            callback(data);
-            
-            if (data[0].length > 0) {
-            	$("#excelDownloadBtn").show();
-            } else {
-            	$("#excelDownloadBtn").hide();
-            }
-            
-        });
+        if (this.states.length != 0)
+        {
+        	$.get( query, function(data) {
+            	recentQueryData = data;
+                callback(data);
+                
+                if (data[0].length > 0) {
+                	$("#excelDownloadBtn").show();
+                } else {
+                	$("#excelDownloadBtn").hide();
+                }
+                
+            });
+        }
     }
 
     var DataQuery = {};

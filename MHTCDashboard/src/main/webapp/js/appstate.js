@@ -25,10 +25,12 @@ var AS = (function($) {
 		
 		this.currentind = 0;
 		this.stateAbbr = "MA";
-		this.selected = [ 'MA' ];
+		this.selected = [];
 
 		this.selected_multiple_metrics = [];
 		this.selected_multiple_years = [];
+		
+		this.saveState = true;
 
 		/**************************
 		 * Error Handling
@@ -62,8 +64,177 @@ var AS = (function($) {
 		// Initializes all tooltips on the page.
 		$(function() {
 			$("[rel='tooltip']").tooltip();
-		});				
+		});	
+		
+		
+		/**
+		 * history
+		 */
+		
+		this.restoreState();
+		
+		var appStateThis = this;
+		History.Adapter.bind(window,'statechange',function(){
+			appStateThis.restoreState();
+	    });
+		
+		/**
+		 * cxf
+		 */
 	};
+	
+	AppState.prototype.encodeState = function() {
+		// Visualization, Year, Metrics, States
+	
+		var appState = {};
+		appState["state"] = this.selected;
+		appState["metrics"] = this.selected_multiple_metrics;
+		appState["visualization"] = this.currentVisualizationType;
+		appState["year"] = this.selected_multiple_years;
+		appState["version"] = "1.0";
+		
+		var appStateString = JSON.stringify(appState);
+		var encodedAppState = window.btoa(appStateString);
+		
+		return encodedAppState;
+	};
+	
+	AppState.prototype.restoreState = function() {
+		
+		var stateName = window.location.search.replace("?state=", "").trim(); 
+		
+		var stateNameHash = window.location.hash.replace("#profile?state=", "");
+		
+		var andLocale = stateNameHash.indexOf('&');
+		stateNameHash = stateNameHash.substring(0, andLocale);
+		stateNameHash = stateNameHash.trim();
+		
+		if (stateName.length == 0 && stateNameHash.length == 0)
+		{
+			// Reset to initial home screen if we go all the way back to the original state.
+			this.selected_multiple_years = [];
+			this.selected = [];
+			this.selected_multiple_metrics = [];
+			this.currentVisualizationType = this.visualizations.TABLE;
+			this.selected_multiple_metrics = [];
+			this.currentind = 0;
+			
+			$(".metricOption").removeClass("selected");
+			$(".stateSelectionOption").removeClass("selected");
+			
+			restoreStateMetric_helper("nationalProfileList");
+			restoreStateMetric_helper("talentProfileList");
+			restoreStateMetric_helper("economyProfileList");
+			restoreStateMetric_helper("costProfileList");
+			this.handleError(this.errorCodes.NO_METRIC_SELECTED);
+			this.handleError(this.errorCodes.NO_STATE_SELECTED);
+			
+			return;
+		}
+		else if (stateName.length == 0)
+		{
+			stateName = stateNameHash;
+		}	
+		this.saveState = false;
+		var appStateString = window.atob(stateName);
+		var appState = JSON.parse(appStateString);
+				
+		this.selected_multiple_years = appState.years;
+		this.selected = appState.state;
+		this.currentVisualizationType = appState.visualization;
+		
+		this.selected_multiple_metrics = [];
+		this.currentind = 0;
+		$(".metricOption").removeClass("selected");
+		$(".stateSelectionOption").removeClass("selected");
+		
+		// Restore Metric Selection
+		this.SelectUnselectMultipleMetric(appState.metrics, 1);
+		for(var i = 0; i < appState.metrics.length; i++)
+		{
+			var metricID = appState.metrics[i];
+			
+			$("#" + metricID + ".metricOption").addClass("selected");
+		}
+		
+		restoreStateMetric_helper("nationalProfileList");
+		restoreStateMetric_helper("talentProfileList");
+		restoreStateMetric_helper("economyProfileList");
+		restoreStateMetric_helper("costProfileList");
+		
+		if (appState.metrics.length > 0)
+		{
+			$("#startupMsg").hide();
+			this.startupMsgVisible = false;
+			this.clearError(this.errorCodes.NO_METRIC_SELECTED);
+		}
+		
+		// Restore State Selection
+		for(var i = 0; i < appState.state.length; i++)
+		{
+			var stateAbbr = appState.state[i];
+			var stateID = States.getStateByAbbreviation(stateAbbr).getId();
+			$("#" + stateID + ".stateSelectionOption").addClass("selected");
+		}
+		
+		if (appState.state.length > 0)
+		{
+			$(".selectUnselectAllStates").attr("id", "deselect");
+			$(".selectUnselectAllStates > a").html("Deselect All");
+			
+			$("#startupMsg").hide();
+			this.startupMsgVisible = false;
+			this.clearError(this.errorCodes.NO_STATE_SELECTED);
+		}
+		
+		switch (this.currentVisualizationType)
+		{
+		case 0:
+			$("#table-tab > a").tab("show");
+			break;
+		case 1:
+			$("#line-tab > a").tab("show");
+			break;
+		case 2:
+			$("#bar-tab > a").tab("show");
+			break;
+		case 3:
+			$("#heatmap-tab > a").tab("show");
+			break;
+		};
+		
+		
+		this.visualizationDeployer(this.currentVisualizationType);
+		
+		$("body").click(); // Hacky workaround to fix display bug with tab icons staying highlighted
+		
+		this.saveState = true;
+	};
+	
+	function restoreStateMetric_helper(categoryID)
+	{
+		var catSelected = false;
+		$("#" + categoryID + " > li").each(function(e){
+			var link = $(this).find("a");
+			if (link.length > 0)
+			{
+				var targetLink = link[0];
+				
+				catSelected = catSelected || $(targetLink).hasClass("selected");
+			}			
+		});
+		
+		if (catSelected)
+		{
+			$("#" + categoryID + " > .selectUnselectAll").attr("id", "deselect");
+			$("#" + categoryID + " > .selectUnselectAll > a").html("Deselect All");
+		}
+		else
+		{
+			$("#" + categoryID + " > .selectUnselectAll").attr("id", "select");
+			$("#" + categoryID + " > .selectUnselectAll > a").html("Select All");
+		}
+	}
 	
 	/**
 	 * Returns the list of currently selected metrics.
@@ -190,7 +361,8 @@ var AS = (function($) {
 			sel.append(Metrics.getMetricByID(
 					this.selected_multiple_metrics[lastpos]).getName());
 	
-			this.refreshVisualization();
+			if(this.saveState) // Only refresh the visualization if not in the middle of restoring the state
+				this.refreshVisualization();
 
 		} else if (option_in == 2) {
 			/***DELETION **/
@@ -247,6 +419,8 @@ var AS = (function($) {
 
 			} else {
 				this.currentind = null;
+				if (this.saveState)
+					History.pushState(null, "MATTERS", "explore?state=" + this.encodeState());
 			}
 
 		} else if (option_in == 3) {/// BACK AND FORTH BUTTON
@@ -330,6 +504,10 @@ var AS = (function($) {
 
 		if (this.selected.length == 0) // If no states selected, go into error state
 		{
+			if (this.saveState)
+				History.pushState(null, "MATTERS", "explore?state=" + this.encodeState());
+			
+			
 			this.handleError(this.errorCodes.NO_STATE_SELECTED);
 		} 
 		else 
@@ -371,6 +549,9 @@ var AS = (function($) {
 			default:
 				return; // Do nothing if we don't get a match
 		}
+		
+		if (this.saveState)
+			History.pushState(null, "MATTERS", "explore?state=" + this.encodeState());
 	};
 
 	AppState.prototype.savePNG = function() {
@@ -440,6 +621,9 @@ var AS = (function($) {
 	AppState.prototype.refreshVisualization = function() {
 		cm.resetYear();
 		cm.refresh();
+		
+		if (this.saveState)
+			History.pushState(null, "MATTERS", "explore?state=" + this.encodeState());
 	};
 	
 	/**
@@ -576,7 +760,7 @@ var AS = (function($) {
 	AppState.prototype.inError = function() {
 		return this.errorCode != this.errorCodes.NO_ERROR;
 	};
-	
+
 	var publicInterface = {};
 
 	/*

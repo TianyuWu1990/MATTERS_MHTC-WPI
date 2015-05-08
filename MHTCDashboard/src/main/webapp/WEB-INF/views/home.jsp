@@ -72,7 +72,8 @@
 		
 		<script type="text/javascript" src="js/rgbcolor.js"></script> 
 		<script type="text/javascript" src="js/StackBlur.js"></script>
-		<script type="text/javascript" src="js/canvg.js"></script> 
+		<script type="text/javascript" src="js/canvg.js"></script>
+		<script type="text/javascript" src="js/jquery.history.js"></script> 
 		
 		<!-- Custom JS -->
 		<script src="js/dataquery.js"></script>

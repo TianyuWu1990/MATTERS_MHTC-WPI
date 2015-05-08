@@ -205,7 +205,9 @@ var CM = (function($) {
 				
 			yearsForMetric.sort(function(a,b) {return b - a;} ); 
 			
-			if (cm.yearSelected == -1)
+			// If there is no year selected or a year is selected that doesnt exist for the metric,
+			// select a year where the metric exists.
+			if (cm.yearSelected == -1 || yearsForMetric.indexOf(cm.yearSelected) == -1)
 				cm.selectYear(yearsForMetric[0]);
 				
 			// Show the years table		
@@ -647,10 +649,11 @@ var CM = (function($) {
 						
 						var yearsForMetrics = cm.getYearsWhereDataExistsForMultipleMetrics(multiData);
 						yearsForMetrics.sort(function(a,b) {return b - a;} ); 
-						
-					    // Set the selected year if its not already set.
-					    if(cm.yearSelected == -1)
-							cm.selectYear(yearsForMetrics[0]);
+					    
+					    // If there is no year selected or a year is selected that doesnt exist for the metric,
+						// select a year where the metric exists.
+						if (cm.yearSelected == -1 || yearsForMetric.indexOf(cm.yearSelected) == -1)
+							cm.selectYear(yearsForMetric[0]);
 						
 						// Show the years table		
 						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
