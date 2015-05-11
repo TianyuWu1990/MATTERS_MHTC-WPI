@@ -15,10 +15,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 	<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >
 	
-	<title>MATTERS</title>
+	<title>MATTERS State Profiles</title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/css">
 	<link href='http://fonts.googleapis.com/css?family=Muli:400,400italic' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600' rel='stylesheet' type='text/css'>
 	<link href="css/mesh/base.css" rel="stylesheet" type="text/css">
@@ -50,10 +49,13 @@
 		if (!compatible)
 			window.location = "./unsupported";			
 	</script>
-
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).on("ready", function() { 
+		$("#noJSError").hide(); 
+		$("#mainContent").show();});
+	</script>
 	
-	<script type="text/javascript" src="https://cdn.caliper.com/mapplications/MHTC/MATTERS/2015/2/12/libjs"></script>
-	<script type="text/javascript" src="js/mesh/caliper/profile-app.js"></script>
 </head>
 
 <body class="home" id="top">
@@ -63,7 +65,7 @@
 	<jsp:include page="unifiedHeader.jsp"/>
 <div class="content-area">
     <main class="site-main" role="main">
-       <div class="main-content-wrap" ng-app="map_application">
+       <div class="main-content-wrap">
        <!-- available state.properties:
 					   "ID", "Name", "Peer State Group", "Milken Science and Tech Index",
                        "Tax Foundation Business Tax Index", "CNBC Top States for Business",
@@ -77,12 +79,21 @@
 			<br/>
 			<br/>
 		</div>
-		<div class="container" ng-controller="profile_controller as state" initial="Massachusetts" style="overflow-x:hidden; display:none;" id="mainContent">
+		<div class="container" style="overflow-x:hidden; display:none;" id="mainContent">
+		<div id="msgView" style="margin-top: 50px; text-align: center; min-height: 450px; margin-left: auto; margin-right: auto;">
+			<div id="loading">
+				<i class="fa fa-spinner fa-spin fa-3x" style="font-size: 5em !important; display: inline-block;"></i>
+				<span style="font-size: 2em; padding-left: 10px; display: inline-block;">
+				Loading State Profiles...
+				</span>
+			</div>
+		</div>
 		
+		<div id="stateProfileView" style="display:none;">
 			<div class="state-profile-title">
 				<div id="stateChooserWrapper">
 					<div id="stateChooserTitle">
-					{{state.properties.Name}} <i class="fa fa-caret-down"></i> 
+					<span id="stateTitleAct"></span> <i class="fa fa-caret-down"></i> 
 					</div>
 					
 					<div id="stateChooser" style="display: none;">
@@ -145,86 +156,24 @@
 			</div>
 			
 			<div class="index key">
-				<div class="state-strength"></div><span class="index-span">Strength</span>
-				<div class="state-weakness"></div><span class="index-span">Weakness</span>
+				<div class="state-strength" style="display: inline-block;"></div><span>Strength</span>
+				<div class="state-weakness" style="display: inline-block;"></div><span>Weakness</span>
 			</div>
 			<h2>National Ranking and Data</h2>
 			<hr class="state-ranking">
 			<div style="width: 100%; overflow-x: scroll;">
 			
-			<div class="index ranking-header" style="min-width:500px;">
-				<div class="rank">Rank</div>
-				<div class="data">Data</div>
-				<div class="status">Status</div>
-				<div class="year">Year</div>
-				<div class="survey">Index / Survey</div>
-				<div class="source">Source</div>
-			</div>
-
-					<div class="index row" >
-						<div class="rank" >{{state.properties["Milken Science and Tech Index"]}}</div>
-						<div class="data">-</div>
-						<div class="status"><div class='{{ state.get_rank_class(state.properties["Milken Science and Tech Index"]) }}'></div></div>
-						<div class="year">2014</div>
-						<div class="survey">Milken State Science and Technology Index</div>
-						<div class="source">Milken Institute</div>
-					</div>
-					<div class="index row" >
-						<div class="rank" >{{state.properties["Tax Foundation Business Tax Index"]}}</div>
-						<div class="data">-</div>
-						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tax Foundation Business Tax Index"]) }}'></div></div>
-						<div class="year">2015</div>
-						<div class="survey">State Business Tax Climate Index</div>
-						<div class="source">Tax Foundation</div>
-					</div>
-					<div class="index row" >
-						<div class="rank">{{state.properties["CNBC Top States for Business"]}}</div>
-						<div class="data">-</div>
-						<div class="status"><div class='{{ state.get_rank_class(state.properties["CNBC Top States for Business"]) }}'></div></div>
-						<div class="year">2014</div>
-						<div class="survey">CNBC Top States for Business</div>
-						<div class="source">CNBC</div>
-					</div>
-					<div class="index row" >
-						<div class="rank">{{state.properties["Key tech demand hiring rank"]}}</div>
-						<div class="data">{{state.properties["Key tech demand hiring difficulty"]}}</div>
-						<div class="status"><div class='{{ state.get_rank_class(state.properties["Key tech demand hiring rank"]) }}'></div></div>
-						<div class="year">2015</div>
-						<div class="survey">Tech Demand Hiring Difficulty</div>
-						<div class="source">Wanted Analytics and Monster Government Solutions</div>
-					</div>
-					<div class="index row" >
-						<div class="rank">{{state.properties["Tech employment rank"]}}</div>
-						<div class="data">{{state.properties["Percent tech employment"]}}%</div>
-						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tech employment rank"]) }}'></div></div>
-						<div class="year">2012</div>
-						<div class="survey">Tech Employment as a % of Workforce</div>
-						<div class="source">National Science Foundation and Bureau of Labor Statistics, Occupational Employment  Statistics Survey</div>
-					</div>
-					<div class="index row" >
-						<div class="rank">{{state.properties["Bachelors degree holders rank"]}}</div>
-						<div class="data">{{state.properties["Percent bachelors degree holders"]}}%</div>
-						<div class="status"><div class='{{ state.get_rank_class(state.properties["Bachelors degree holders rank"]) }}'></div></div>
-						<div class="year">2011</div>
-						<div class="survey">Bachelors degree holders as a % of Workforce</div>
-						<div class="source">US Census/Bureau of Labor Statistics</div>
-					</div>
-					<div class="index row" >
-						<div class="rank">{{state.properties["Unempl insurance rank"]}}</div>
-						<div class="data">{{state.properties["Unempl insurance"]}}</div>
-						<div class="status"><div class='{{ state.get_rank_class(state.properties["Unempl insurance rank"]) }}'></div></div>
-						<div class="year">2013</div>
-						<div class="survey">Unemployment Insurance Average Premium per Employee</div>
-						<div class="source">US Department of Labor - Employment and Training Administration, Bureau of Labor Statistics</div>
-					</div>
-					<div class="index row" >
-						<div class="rank">{{state.properties["Tax burden per capita rank"]}}</div>
-						<div class="data">{{state.properties["Tax burden per capita"]}}</div>
-						<div class="status"><div class='{{ state.get_rank_class(state.properties["Tax burden per capita rank"]) }}'></div></div>
-						<div class="year">2011</div>
-						<div class="survey">State and Local Tax Burden per capita</div>
-						<div class="source">U.S. Census</div>
-					</div>
+			<table style="min-width: 750px;" id="stateProfileTable">
+			<tr class="ranking-header">
+				<td class="rank">Rank</td>
+				<td class="data">Data</td>
+				<td class="status">Status</td>
+				<td class="trend">Trend</td>
+				<td class="year">Year</td>
+				<td class="survey">Index / Survey</td>
+				<td class="source">Source</td>
+			</tr>
+			</table>
 			
 			</div>
 			<hr class="state-ranking">
@@ -233,7 +182,7 @@
 			</p>
 			
 		</div>
-
+	</div>
 
     </div><!-- main-content-wrap -->
     </main><!-- #main -->
@@ -249,19 +198,14 @@
 
 
 <!--[if lt IE 9]><script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script><![endif]-->
-<script src="js/mesh/modernizr.min.js"></script>
 <script src="js/mesh/scripts.js" type="text/javascript"></script>
 <script src="js/mesh/persistent.js" type="text/javascript"></script>
 <script src="js/mesh/responsive.js" type="text/javascript"></script>
 <script src="js/mesh/jquery.svgdom.min.js" type="text/javascript"></script>
 <script src="js/mesh/jquery.svg.min.js" type="text/javascript"></script>
 <script src="js/mesh/viewport.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/mesh/data/state-profiles.js"></script>
+<script src="js/jquery.history.js" type="text/javascript"></script>
+<script src="js/mesh/data/state_profile_data.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/stateChooser.stateProfiles.js"></script>
-
-<script type="text/javascript">
-	$("#mainContent").show();
-	$("#noJSError").hide();
-</script>
 </body>
 </html>
