@@ -113,7 +113,9 @@
 		
 }
 
-
+.map-container{
+	width:100%;
+}
 
 #matters_map_canvas{
 	display:none;
@@ -123,17 +125,19 @@
 	display:none;
 }
 .db-btn{
-	left:5px;
+	left:10px;
+	height:30px;
 	background-image:none;
 	
 }
 .state{
-	right:5px;
+	right:10px;
+	height:30px;
 	background-image:none;
 	
 }
 .map-btn{
-	top: 385px;
+	top: 90%;
 	padding:5px 5px 5px 5px;
 }
 #map-label{
@@ -151,7 +155,8 @@
 /* ============================== BUCKET SECTION ======================= */
 
 .bucket-contianer{
-	display: block;
+	
+	display:block;
 }
 
 .bucket-center{

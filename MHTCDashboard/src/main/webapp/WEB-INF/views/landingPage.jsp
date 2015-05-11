@@ -105,7 +105,7 @@
 	</div>
 	
 	
-	<div class="container map-container" ng-app="map_application">
+	<div class="map-container container" ng-app="map_application">
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
 				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
@@ -157,7 +157,7 @@
 <!-- ==================================== BUCKET SECTION ========= -->
 
 <section class="bucket-sect">
-	<div class="container bucket-contianer">
+	<div class="bucket-contianer container  ">
 		<div class="bucket bucket-left">
 			<h1 class="bucket-title">About</h1>
 			<div class="bucket-content">
@@ -178,7 +178,7 @@
 				<p>MATTERS is not a primary data source, but instead is an aggregation of published data and analysis from several sources 
 				including federal and state governmental agencies, non-profit organizations and media outlets.  Click "learn more" to access 
 				a listing of the sources for each metric or data point in MATTERS with links to the source where available.				
-				</p>
+				<br/></p>
 				<a class="view-more" href="<c:url value="/methodology"/>">LEARN MORE</a>
 
 			</div>

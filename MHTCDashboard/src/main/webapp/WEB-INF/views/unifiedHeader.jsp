@@ -71,10 +71,9 @@ $(function() {
 	  	  <div class="head-sponsors" ><a href="http://www.mhtc.org/"><img src="img/header-mhtc.png" alt="header-sponsors" width="" height="" /></a>
 	  									<a href="http://www.wpi.edu/"><img src="img/header-wpi.png" alt="header-sponsors" width="" height="" /></a>
 	  	  </div> 
-	  	 
+	  	  
 	  </div><!-- .header-inner -->	  
-  	  
-  		 <nav id="site-navigation" class="main-navigation" role="navigation">
+  	  <nav id="site-navigation" class="main-navigation" role="navigation">
   			<input type="checkbox" id="menuToggle" >
   			 <!-- <h1 for="menuToggle" class="menu-toggle">Menu</h1>-->
   			<label for="menuToggle" class="menu-icon">&#9776;</label>
@@ -103,7 +102,7 @@ $(function() {
 				</ul>
 			</nav>
   		</nav><!-- #site-navigation -->
-  	<!-- .header-inner -->
+  		 
 		
 	</header><!-- .site-header -->
 	<!-- google analytics for mhtc-vm1.cs.wpi.edu -->
