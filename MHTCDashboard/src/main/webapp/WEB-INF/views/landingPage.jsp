@@ -169,7 +169,7 @@
 		<br/>
 		<br/>
 	</div>
-	<div class="container map-container" style="width:80%">	
+	<div class="map-container container ">	
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
 				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>

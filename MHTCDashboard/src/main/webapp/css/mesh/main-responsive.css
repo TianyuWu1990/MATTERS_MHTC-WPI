@@ -16,7 +16,7 @@
 }
 
 
-@media only screen and (max-width: 830px){
+@media only screen and (max-width: 450px){
 /* ======================== HEADER ================================= */
 .container{
 	width: 92%;
@@ -113,7 +113,9 @@
 		
 }
 
-
+.map-container{
+	width:100%;
+}
 
 #matters_map_canvas{
 	display:none;
@@ -233,7 +235,7 @@ a#favorite{
 	
 }
 
-@media only screen and (max-width: 1250px) and (min-width: 830px){
+@media only screen and (max-width: 1250px) and (min-width: 450px){
 /* ======================== HEADER ================================= */
 .menu-icon{
 	right:100px;
