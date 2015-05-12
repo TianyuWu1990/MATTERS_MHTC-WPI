@@ -135,7 +135,7 @@
 	
 }
 .map-btn{
-	top: 75px;
+	top: 85%;
 	padding:5px 5px 5px 5px;
 }
 #map-label{
@@ -237,6 +237,53 @@ a#favorite{
 
 @media only screen and (max-width: 1250px) and (min-width: 450px){
 /* ======================== HEADER ================================= */
+.head-sponsors{
+	display:inline;
+	width:80%;
+	height:30px;
+	top:80px;
+	left:-5px;
+}
+
+.head-sponsors img{
+	
+	height:40px;
+	left:-30px;
+}
+
+.header-inner{
+	height: 120px;
+	z-index:99;
+}
+
+.quote-container{
+	width:90%;
+	
+}
+
+.main-logo{
+	width:200px;
+	height:60px;
+	background-size:200px 60px;
+	top:0px;
+}
+
+.menu-icon{
+	
+	width: 55px;
+	height: 55px;
+	border-radius: 4px;
+	background-image: url(../img/menu-toggle.jpg);
+	background-repeat: no-repeat;
+	background-position: center center;
+	border: 2px solid #9c9c9c;
+	font-size: 0px;
+	position: absolute;
+	right: 20px;
+	top: -88px;
+	cursor: pointer;
+}
+
 .menu-icon{
 	right:100px;
 }
@@ -248,9 +295,34 @@ a#favorite{
 	display:none;
 }
 
+.db-btn{
+	left:5px;
+	background-image:none;
+	
+}
+.state{
+	right:5px;
+	background-image:none;
+	
+}
+.map-btn{
+	top: 85%;
+	height:22px;
+	padding:5px 5px 5px 5px;
+}
+
 #matters_map_canvas
 {
 	padding-left: 0px !important;
+}
+
+
+.bucket-contianer{
+	display: block;
+}
+
+.bucket-center{
+	margin: 30px 0;
 }
 
 }
