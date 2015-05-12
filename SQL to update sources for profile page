@@ -1,4 +1,4 @@
-'Milken Institute' where where "Id" = 	76;
+update mhtc_sch.metrics set "Source"= 'Milken Institute' where where "Id" = 76;
 --Milken State Science and Technology Index
 
 
