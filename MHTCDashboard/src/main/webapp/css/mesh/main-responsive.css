@@ -113,9 +113,7 @@
 		
 }
 
-.map-container{
-	width:100%;
-}
+
 
 #matters_map_canvas{
 	display:none;
@@ -125,19 +123,17 @@
 	display:none;
 }
 .db-btn{
-	left:10px;
-	height:30px;
+	left:5px;
 	background-image:none;
 	
 }
 .state{
-	right:10px;
-	height:30px;
+	right:5px;
 	background-image:none;
 	
 }
 .map-btn{
-	top: 90%;
+	top: 75px;
 	padding:5px 5px 5px 5px;
 }
 #map-label{
@@ -155,8 +151,7 @@
 /* ============================== BUCKET SECTION ======================= */
 
 .bucket-contianer{
-	
-	display:block;
+	display: block;
 }
 
 .bucket-center{
@@ -167,18 +162,6 @@
 
 .survey{
 	margin-right: 15px !important;
-}
-
-.rank{
-	width: 38%;
-}
-
-.year{
-	width: 100%;
-}
-
-.status{
-	width: 50%;
 }
 
 
@@ -262,6 +245,12 @@ a#favorite{
 .map-image{
 	display:none;
 }
+
+#matters_map_canvas
+{
+	padding-left: 0px !important;
+}
+
 }
 
 @media only screen and (max-width: 12500px) and (min-width: 1250px){

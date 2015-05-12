@@ -266,8 +266,6 @@ ___________________________________
   display: -ms-flexbox;      /* TWEENER - IE 10 */
   display: -webkit-flex;     /* NEW - Chrome */
   display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
-  width: 85%;
-  max-width:1250px;
 }
 
 .bucket-center{
@@ -332,7 +330,7 @@ ___________________________________
 
 .logo-wrap{
 	display: inline-block;
-	width: 23%;	
+	width: 19%;	
 }
 
 .logo-contain{
