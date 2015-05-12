@@ -526,6 +526,7 @@ textarea{
 .header-inner {
   position: relative;
   height: 105px;
+  max-width:1140px;
 }
 .main-logo {
   position: absolute;
