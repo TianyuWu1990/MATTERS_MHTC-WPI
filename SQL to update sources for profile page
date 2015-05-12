@@ -1,0 +1,25 @@
+'Milken Institute' where where "Id" = 	76;
+--Milken State Science and Technology Index
+
+
+--State Business Tax Climate Index
+update mhtc_sch.metrics set "Source"= 'Tax Foundation' where "Id" = 83;
+
+
+--CNBC Top States for Business
+update mhtc_sch.metrics set "Source"= 'CNBC' where "Id" = 82;
+
+--Tech Demand Hiring Difficulty
+update mhtc_sch.metrics set "Source"= 'Wanted Analytics and Monster Government Solutions' where "Id" = 121;
+
+--Tech Employment as a % of Workforce
+update mhtc_sch.metrics set "Source"= 'National Science Foundation and Bureau of Labor Statistics, Occupational Employment Statistics Survey' where "Id" = 20;
+
+--Bachelors degree holders as a % of Workforce
+update mhtc_sch.metrics set "Source"= 'US Census/Bureau of Labor Statistics' where "Id" = 131;
+
+--Unemployment Insurance Average Premium per Employee
+update mhtc_sch.metrics set "Source"= 'US Department of Labor - Employment and Training Administration, Bureau of Labor Statistics' where "Id" = 112;
+
+--State and Local Tax Burden per capita
+update mhtc_sch.metrics set "Source"= 'U.S. Census' where "Id" = 133;
