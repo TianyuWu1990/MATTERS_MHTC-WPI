@@ -171,10 +171,6 @@
 	</div>
 	<div class="container map-container" style="width:80%">	
 		<h1><p>Learn what MATTERS in your state.</p></h1>
-			<h2><p>Click on any state below to display its current key performance metrics and view an individual state profile.</p>
-				<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
-				</h2>
-		<!-- cxf -->
 		
 		<img class="map-image" src="img/MHTC_Map-Image.jpg" style="width:100%;height:100%;">
 
@@ -182,8 +178,7 @@
 		<a class="map-btn db-btn" href="explore">Explore the Data</a>
 		<a class="map-btn state" href="profile">View State Profiles</a>
 		</div>
-		<!-- cxf -->
-		<div id="matters_map_canvas" class="map-area" style="padding-top: 60px; padding-right: 60px; position: relative;">
+		<div id="matters_map_canvas" class="map-area" style="padding-top: 40px; padding-right: 60px; position: relative;">
 			<div id="matters_map_legend" style="position: absolute; bottom: 150px; right: 0px;">
 				<div class="matters_map_legend_key" style="color: white;">
 					<div class="swatch" style="background-color: #AD3852; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
@@ -227,7 +222,11 @@
 				<div id="matters_map_tooltip_stateProfile"><a id="matters_map_tooltip_learnMore">Learn More</a></div>
 			</div>
 			
-		</div>			
+		</div>	
+		<h2><p>Click on any state above to display its current key performance metrics and view an individual state profile.</p>
+			<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
+			<br/>
+		</h2>		
 	</div>
 </section>
 

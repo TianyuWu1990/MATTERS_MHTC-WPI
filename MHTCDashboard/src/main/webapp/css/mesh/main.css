@@ -23,7 +23,6 @@ a:hover{
   right: 0;
   top: 0;
   margin-top: 2px;
-  max-width:1140px;
 }
 .super-header-inner > div {
   float: left;
@@ -119,8 +118,12 @@ ___________________________________
 /* 	height: 560px; */
 	border-top: solid 8px #413e3d;
 	position: relative;
+	
 }
-
+.map-container {
+	max-width: 1140px;
+	
+}
 .map-container h1{
 	font-size: 30px;
 	width: 100%;
@@ -151,7 +154,7 @@ ___________________________________
 	border: 2px solid white;
 	border-radius: 3px;
 	position: absolute;
-	bottom: 20px;
+	top: 45px;
 	background-size: 25px;
 	background-repeat: no-repeat;
 	background-position: 10px center;
