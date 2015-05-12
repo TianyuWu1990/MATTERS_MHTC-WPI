@@ -186,11 +186,11 @@
 		<div id="matters_map_canvas" class="map-area" style="padding-top: 60px; position: relative;">
 			<div id="matters_map_legend" style="position: absolute; bottom: 150px; right: 0px;">
 				<div class="matters_map_legend_key" style="color: white;">
-					<div class="swatch" style="background-color: #ff4444; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
+					<div class="swatch" style="background-color: #AD3852; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
 					</div>
 					<span style="margin-left: 5px;">Peer State</span>
 					<br/>
-					<div class="swatch" style="background-color: #680017; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
+					<div class="swatch" style="background-color: #631021; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
 					</div>
 					<span style="margin-left: 5px;">Other State</span>
 				</div>
