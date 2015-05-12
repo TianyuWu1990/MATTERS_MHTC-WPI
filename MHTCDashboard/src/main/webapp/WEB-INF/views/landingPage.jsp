@@ -30,7 +30,7 @@
 	        #matters_map_canvas {
 	          background-color: black;
 	          max-width: 847px;
-	          height: 560px;
+	          height: 500px;
 	        }
 			td.cell-name.string.name {
 				column-span: none; /* W3C */
@@ -178,7 +178,7 @@
 		<a class="map-btn db-btn" href="explore">Explore the Data</a>
 		<a class="map-btn state" href="profile">View State Profiles</a>
 		</div>
-		<div id="matters_map_canvas" class="map-area" style="padding-top: 40px; padding-right: 60px; position: relative;">
+		<div id="matters_map_canvas" class="map-area" style="padding-top: 40px; position: relative;">
 			<div id="matters_map_legend" style="position: absolute; bottom: 150px; right: 0px;">
 				<div class="matters_map_legend_key" style="color: white;">
 					<div class="swatch" style="background-color: #AD3852; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
