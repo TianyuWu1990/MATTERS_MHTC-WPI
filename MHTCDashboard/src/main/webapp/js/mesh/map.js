@@ -1,21 +1,21 @@
 $(document).on("ready", function() {
 	
 	var peerStateStyles = {
-			'WA': { 'fill' : "#AD3852" },
-			'CA': { 'fill' : "#AD3852" },
-			'UT': { 'fill' : "#AD3852" },
-			'CO': { 'fill' : "#AD3852" },
-			'TX': { 'fill' : "#AD3852" },
-			'MN': { 'fill' : "#AD3852" },
-			'IL': { 'fill' : "#AD3852" },
-			'OH': { 'fill' : "#AD3852" },
-			'VA': { 'fill' : "#AD3852" },
-			'PA': { 'fill' : "#AD3852" },
-			'MD': { 'fill' : "#AD3852" },
-			'NJ': { 'fill' : "#AD3852" },
-			'NY': { 'fill' : "#AD3852" },
-			'CT': { 'fill' : "#AD3852" },
-			'MA': { 'fill' : "#AD3852" },
+			'WA': { 'fill' : "#BD1C2E" },
+			'CA': { 'fill' : "#BD1C2E" },
+			'UT': { 'fill' : "#BD1C2E" },
+			'CO': { 'fill' : "#BD1C2E" },
+			'TX': { 'fill' : "#BD1C2E" },
+			'MN': { 'fill' : "#BD1C2E" },
+			'IL': { 'fill' : "#BD1C2E" },
+			'OH': { 'fill' : "#BD1C2E" },
+			'VA': { 'fill' : "#BD1C2E" },
+			'PA': { 'fill' : "#BD1C2E" },
+			'MD': { 'fill' : "#BD1C2E" },
+			'NJ': { 'fill' : "#BD1C2E" },
+			'NY': { 'fill' : "#BD1C2E" },
+			'CT': { 'fill' : "#BD1C2E" },
+			'MA': { 'fill' : "#BD1C2E" }, 
 	}
 	
 	$("#matters_map_canvas").usmap({
@@ -23,7 +23,7 @@ $(document).on("ready", function() {
 		showLabels: true,
 		stateHoverStyles: {'stroke-width': 3, 'stroke': '#fff'},
 		
-		stateStyles: { 'fill': "#631021", 'stroke-width': 1, 'stroke': '#000'},
+		stateStyles: { 'fill': "#5F0410", 'stroke-width': 1, 'stroke': '#000'},
 		stateSpecificStyles: peerStateStyles,
 		
 		click: function(event, data) {				

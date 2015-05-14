@@ -179,13 +179,13 @@ ___________________________________
 }
 
 .db-btn{
-	left: 25px;
+	left: 0px;
 	background-image: url(../img/db-btn.png);
 	
 }
 
 .state{
-	right: 25px;
+	right: 0px;
 	background-image: url(../img/state-btn.png);
 
 }

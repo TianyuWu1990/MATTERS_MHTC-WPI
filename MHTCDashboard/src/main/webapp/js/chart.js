@@ -14,8 +14,7 @@ var CM = (function($) {
 	 * Constructor
 	 */
 	function Chart() {
-		this.array_colors=["#F90101","#F2B50F","#00933B","#0266C8","#603CBA","#1E7145","#9F00A7",
-		                  "#7f7f7f","#bcbd22","#17becf","#F2F5A9","#FE2EF7","#6E6E6E","#F6CED8","#3B0B0B","#181907"];
+		this.array_colors=["#2E050C", "#470710", "#610915", "#7A0C19", "#940E1E", "#AE1023", "#C71327", "#E1152C", "#FB1831"];
 		
 		/**************************
 		 * Visualization Types
@@ -34,7 +33,7 @@ var CM = (function($) {
 		this.heatMapColorMap = {};
 		this.heatMapValuesMap = {};
 		
-		this.heatMapColorScheme = ["#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c","#bd0026","#800026"];
+		this.heatMapColorScheme = ["#2E050C", "#470710", "#610915", "#7A0C19", "#940E1E", "#AE1023", "#C71327", "#E1152C", "#FB1831"];
 		// Setup type processing for datatables to work with ranks.
 		jQuery.fn.dataTableExt.aTypes.push(
 			    function ( sData )

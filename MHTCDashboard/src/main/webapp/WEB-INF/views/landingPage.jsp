@@ -169,7 +169,7 @@
 		<br/>
 		<br/>
 	</div>
-	<div class="container map-container" style="width:80%">	
+	<div class="map-container container ">	
 		<h1><p>Learn what MATTERS in your state.</p></h1>
 		
 		<img class="map-image" src="img/MHTC_Map-Image.jpg" style="width:100%;height:100%;">
@@ -181,11 +181,11 @@
 		<div id="matters_map_canvas" class="map-area" style="padding-top: 40px; position: relative;">
 			<div id="matters_map_legend" style="position: absolute; bottom: 150px; right: 0px;">
 				<div class="matters_map_legend_key" style="color: white;">
-					<div class="swatch" style="background-color: #AD3852; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
+					<div class="swatch" style="background-color: #BD1C2E; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
 					</div>
 					<span style="margin-left: 5px;">Peer State</span>
 					<br/>
-					<div class="swatch" style="background-color: #631021; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
+					<div class="swatch" style="background-color: #5F0410; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
 					</div>
 					<span style="margin-left: 5px;">Other State</span>
 				</div>
