@@ -270,7 +270,10 @@ $(document).ready(function() {
 				
 				History.Adapter.bind(window,'statechange',function(){
 			        var State = History.getState();     
-			        populateData(State.data.name);
+			        if (State.data.name == null)
+			        	populateData("Massachusetts");
+			        else
+			        	populateData(State.data.name);
 			    });
 				
 				setTimeout(function() {

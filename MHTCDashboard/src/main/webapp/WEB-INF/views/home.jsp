@@ -286,12 +286,12 @@
 										<div id="mbody" style="margin-right: 5px;">
 											<svg style="height: 90%;"></svg>
 										</div>
-										<!--<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
+										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
 											<button title="Save the visualization as a PNG" class="btn btn-danger" type="button" onclick="as.savePNG();">
 												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
 											</button>
 											<span>Download as PNG</span>
-										</div>  --!>
+										</div> 
 									</div>
 								</div>
 								
@@ -321,12 +321,12 @@
 								<div class="tab-pane fade" id="bar">
 									<div class="box-content">
 										<div id="mbodyBar"></div>
-										<!--<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
+										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
 											<button title="Save the visualization as a PNG." class="btn btn-danger" type="button" onclick="as.savePNG();">
 												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
 											</button>
 											<span>Download as PNG</span>
-										</div>--!>
+										</div>
 									</div>
 								</div>
 								
