@@ -290,7 +290,7 @@
 											<button title="Save the visualization as a PNG" class="btn btn-danger" type="button" onclick="as.savePNG();">
 												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
 											</button>
-											<span>Download as PNG</span>
+											<span>Export as PNG</span>
 										</div> 
 									</div>
 								</div>
@@ -312,7 +312,7 @@
 											<button title="Save selected data as an Excel file." class="btn btn-danger" type="button" onclick="as.exportExcelData();">
 												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
 											</button>
-											<span>Download as Excel Spreadsheet</span>
+											<span>Export as Excel Spreadsheet</span>
 										</div> 
 									</div>
 								</div>
@@ -325,7 +325,7 @@
 											<button title="Save the visualization as a PNG." class="btn btn-danger" type="button" onclick="as.savePNG();">
 												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
 											</button>
-											<span>Download as PNG</span>
+											<span>Export as PNG</span>
 										</div>
 									</div>
 								</div>
@@ -379,6 +379,14 @@
 											<div id="heatmap-error" style="display:none;">
 												No data available for the selected metric.
 											</div>
+											
+											<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
+											<button title="Save the visualization as a PDF." class="btn btn-danger" type="button" onclick="as.printPDF();">
+												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
+											</button>
+											<span>Export as PDF</span>
+										</div>
+										
 										</div>
 									</div>
 								</div>

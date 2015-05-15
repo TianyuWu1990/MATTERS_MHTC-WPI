@@ -90,4 +90,8 @@
 	{
 		-webkit-print-color-adjust: exact;
 	}
+	
+	.download{
+		display: none;
+	}
 }

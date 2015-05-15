@@ -434,6 +434,16 @@ var AS = (function($) {
 		}});
 	};
 	
+	
+	
+	
+	
+	AppState.prototype.printPDF = function() {
+
+	     window.print();
+	}
+	
+	
 	/**
 	 * Refreshes all of the visualizations.
 	 */
