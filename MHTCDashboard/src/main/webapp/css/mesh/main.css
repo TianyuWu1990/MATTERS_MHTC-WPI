@@ -179,13 +179,13 @@ ___________________________________
 }
 
 .db-btn{
-	left: 0px;
+	left: 200px;
 	background-image: url(../img/db-btn.png);
 	
 }
 
 .state{
-	right: 0px;
+	right: 200px;
 	background-image: url(../img/state-btn.png);
 
 }
@@ -556,13 +556,32 @@ h2{
 	margin-bottom: 30px;
 }
 
+/****************************************printing**********************************/
 @media print{
+	
+ html, body {
+       height:100%;    
+    }
+    
 .main-content-wrap, .site-main{
 	border: none;
 }
 	
+h2{
+	display: none;
+}
+
+.state-profile-title {
+  line-height: 100%;
+  padding-bottom: 10px;
+}
+
+.key {
+  margin-bottom: 10px;
+}
 .container{
 	width: 900px;
+	overflow-x: hidden !important;
 }
 	
 .menu-toggle, .site-header{
@@ -570,19 +589,22 @@ h2{
 }
 	
 .state-profile-title{
-	padding-top: 15px;
+	padding-top: 10px;
 }
 	
 .site-footer{
+	font-size: 4pt;
 	position: fixed !important;
-	bottom: 0px !important;
+	bottom: 80px !important;
 }
 	
 .state-strength, .state-weakness, .state-medium {
 	-webkit-print-color-adjust: exact;
 }
+
 }
 
+/*************************************************************************************/
 .feedback_label .gfield_required {
 	color: red;
 }
