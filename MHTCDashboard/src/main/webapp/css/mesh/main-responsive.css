@@ -16,11 +16,14 @@
 }
 
 
+
+
+/**********************************Phone Display*********************/
+
 @media only screen and (max-width: 450px){
 /* ======================== HEADER ================================= */
 .container{
 	width: 92%;
-	
 	margin: 0 auto;
 	padding-left: 0px;
 	padding-right: 0px;
@@ -235,6 +238,14 @@ a#favorite{
 	
 }
 
+
+
+/********************** End Phone Display ******************************/
+
+
+
+/********************** Tablet Display ******************************/
+
 @media only screen and (max-width: 1250px) and (min-width: 450px){
 /* ======================== HEADER ================================= */
 .head-sponsors{
@@ -295,22 +306,6 @@ a#favorite{
 	display:none;
 }
 
-.db-btn{
-	left:5px;
-	background-image:none;
-	
-}
-.state{
-	right:5px;
-	background-image:none;
-	
-}
-.map-btn{
-	top: 85%;
-	height:22px;
-	padding:5px 5px 5px 5px;
-}
-
 #matters_map_canvas
 {
 	padding-left: 0px !important;
@@ -326,6 +321,33 @@ a#favorite{
 }
 
 }
+/********************* End Tablet Display ***************************/
+
+
+/**********Fix transition of buttons on screen resize ***************/
+
+@media only screen and (max-width: 725px) and (min-width: 451px){
+	.map-btn{
+	height:22px;
+	padding:5px 5px 5px 5px;
+	top: 90px;
+}
+
+.db-btn{
+	left:5px;
+	background-image:none;
+	
+	
+}
+.state{
+	right:5px;
+	background-image:none;
+	
+}
+}
+
+/***************** Hide map image from larger screens ***************/
+
 
 @media only screen and (max-width: 12500px) and (min-width: 1250px){
 /* ======================== HEADER ================================= */
