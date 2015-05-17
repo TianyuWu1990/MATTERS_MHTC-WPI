@@ -556,7 +556,7 @@ h2{
 	margin-bottom: 30px;
 }
 
-/****************************************printing**********************************/
+/****************************************printing state profile **************/
 @media print{
 	
  html, body {
@@ -595,11 +595,15 @@ h2{
 .site-footer{
 	font-size: 4pt;
 	position: fixed !important;
-	bottom: 80px !important;
+	bottom: 60px !important;
 }
 	
 .state-strength, .state-weakness, .state-medium {
 	-webkit-print-color-adjust: exact;
+}
+
+.note {
+	display: none;
 }
 
 }
