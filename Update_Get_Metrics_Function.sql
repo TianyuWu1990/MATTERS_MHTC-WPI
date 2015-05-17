@@ -33,3 +33,5 @@ $BODY$
   ROWS 1000;
 ALTER FUNCTION mhtc_sch.getmetricsbyparent(integer[])
   OWNER TO postgres;
+  --ALTER FUNCTION mhtc_sch.getmetricsbyparent(integer[])
+  --OWNER TO postgres;
