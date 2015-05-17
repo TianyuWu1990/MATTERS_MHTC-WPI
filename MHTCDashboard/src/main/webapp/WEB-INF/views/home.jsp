@@ -374,21 +374,24 @@
 														</span>
 														<div id="heatmap-specificDetails-peer" style="font-style:italic; padding-left: 10px; padding-top: 5px; color: #7b0020;">Peer State</div>
 													</div>
+													
+													
 												</div>
 											</div>
 											<div id="heatmap-error" style="display:none;">
 												No data available for the selected metric.
 											</div>
-											
-											<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
-											<button title="Save the visualization as a PDF." class="btn btn-danger" type="button" onclick="as.printPDF();">
-												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
-											</button>
-											<span>Export as PDF</span>
 										</div>
-										
+										<div class = "download-wrapper">
+										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
+														<button title="Save the visualization as a PDF." class="btn btn-danger" type="button" onclick="as.printPDF();">
+														<i class="fa fa-file-image-o" style="color: white !important;"></i> 
+														</button>
+														<span>Export as PDF</span>
+										</div>
 										</div>
 									</div>
+									
 								</div>
 							</div>
 						</div>
