@@ -109,6 +109,10 @@
 	color:#FFF;
 	border-radius:1px;
 }
+
+.download {
+	display: none;
+}
 /* ============================== MAP SECT SECTION ======================= */
 .map-sect h1{
 	font-size:25px;
