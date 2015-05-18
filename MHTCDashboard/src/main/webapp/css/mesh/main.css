@@ -592,10 +592,14 @@ h2{
 	padding-top: 10px;
 }
 	
-.site-footer{
+.site-info{
 	font-size: 4pt;
 	position: fixed !important;
-	bottom: 60px !important;
+	bottom: 150px !important;
+}
+
+.stateProfileWindow{
+	overflow-x:hidden !important;
 }
 	
 .state-strength, .state-weakness, .state-medium {

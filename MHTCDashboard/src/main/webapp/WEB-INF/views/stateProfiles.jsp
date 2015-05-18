@@ -79,7 +79,7 @@
 			<br/>
 			<br/>
 		</div>
-		<div class="container" style="overflow-x:hidden; display:none;" id="mainContent">
+		<div class="container" style="overflow-x:hidden !important; display:none;" id="mainContent">
 		<div id="msgView" style="margin-top: 50px; text-align: center; min-height: 450px; margin-left: auto; margin-right: auto;">
 			<div id="loading">
 				<i class="fa fa-spinner fa-spin fa-3x" style="font-size: 5em !important; display: inline-block;"></i>
@@ -161,7 +161,7 @@
 			</div>
 			<h2>National Ranking and Data</h2>
 			<hr class="state-ranking">
-			<div style="width: 100%; overflow-x: scroll;">
+			<div class= "stateProfileWindow" style="width: 100%; overflow-x: scroll;">
 			
 			<table style="min-width: 750px;" id="stateProfileTable">
 			<tr class="ranking-header">
