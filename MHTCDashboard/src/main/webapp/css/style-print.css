@@ -94,4 +94,16 @@
 	.download{
 		display: none;
 	}
+	
+	.printCanvasLogo{
+	display: inline !important;
+	}
+	
+	.site-info{
+	font-size: 4pt;
+	position: fixed !important;
+	bottom: 60px !important;
+	display: inline !important;
+}
+	
 }

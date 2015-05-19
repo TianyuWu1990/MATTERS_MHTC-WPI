@@ -21,7 +21,7 @@
 /**********************************Phone Display*********************/
 
 @media only screen and (max-width: 450px){
-/* ======================== HEADER ================================= */
+/* ======================== MENU ================================= */
 .container{
 	width: 92%;
 	margin: 0 auto;
@@ -68,32 +68,6 @@
 	-ms-transition: all .3s ease-in-out;
 	-o-transition: all .3s ease-in-out;
 	z-index: -1;
-}
-
-.head-sponsors{
-	display:inline;
-	width:80%;
-	height:30px;
-	top:80px;
-	left:-5px;
-}
-
-.head-sponsors img{
-	
-	height:40px;
-	left:-30px;
-}
-
-.header-inner{
-	height: 120px;
-	z-index:99;
-}
-
-.main-logo{
-	width:200px;
-	height:60px;
-	background-size:200px 60px;
-	top:0px;
 }
 
 .menu{
@@ -155,16 +129,6 @@
 	width: 100%;
 	padding: 10px 0;
 	
-}
-
-/* ============================== BUCKET SECTION ======================= */
-
-.bucket-contianer{
-	display: block;
-}
-
-.bucket-center{
-	margin: 30px 0;
 }
 
 /* =============================== STATES ============================== */
@@ -242,16 +206,10 @@ a#favorite{
 	
 }
 
+/* ========================= HEADER ========================== */
 
+@media only screen and (max-width: 820px){
 
-/********************** End Phone Display ******************************/
-
-
-
-/********************** Tablet Display ******************************/
-
-@media only screen and (max-width: 1250px) and (min-width: 450px){
-/* ======================== HEADER ================================= */
 .head-sponsors{
 	display:inline;
 	width:80%;
@@ -270,6 +228,32 @@ a#favorite{
 	height: 120px;
 	z-index:99;
 }
+
+.main-logo{
+	width:200px;
+	height:60px;
+	background-size:200px 60px;
+	top:0px;
+}
+}
+
+@media only screen and (max-width: 1100px){
+/* ============================== BUCKET SECTION ======================= */
+
+.bucket-contianer{
+	display: block;
+}
+
+.bucket-center{
+	margin: 30px 0;
+}
+}
+
+/********************** Tablet Display ******************************/
+
+@media only screen and (max-width: 1250px) and (min-width: 450px){
+/* ======================== HEADER ================================= */
+
 
 .quote-container{
 	width:90%;
@@ -313,15 +297,6 @@ a#favorite{
 #matters_map_canvas
 {
 	padding-left: 0px !important;
-}
-
-
-.bucket-contianer{
-	display: block;
-}
-
-.bucket-center{
-	margin: 30px 0;
 }
 
 }

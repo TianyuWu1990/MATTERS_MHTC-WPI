@@ -595,7 +595,7 @@ h2{
 .site-info{
 	font-size: 4pt;
 	position: fixed !important;
-	bottom: 150px !important;
+	bottom: 0px !important;
 }
 
 .stateProfileWindow{

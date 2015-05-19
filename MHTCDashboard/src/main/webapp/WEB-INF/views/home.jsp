@@ -308,12 +308,12 @@
 											</tr>
 										</table>
 										
-									<div class="download" style="padding-bottom: 20px;">
+									<!-- <div class="download" style="padding-bottom: 20px;">
 											<button title="Save selected data as an Excel file." class="btn btn-danger" type="button" onclick="as.exportExcelData();">
 												<i class="fa fa-file-excel-o" style="color: white !important;"></i> 
 											</button>
 											<span>Export as Excel Spreadsheet</span>
-										</div> 
+										</div> -->
 									</div>
 								</div>
 								

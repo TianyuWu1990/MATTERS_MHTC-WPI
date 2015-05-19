@@ -224,7 +224,7 @@
 			
 		</div>	
 		<h2><p>Click on any state above to display its current key performance metrics and view an individual state profile.</p>
-			<p>Click the "Explore the Data" button below to access all of MATTERS multi-year comparative data from one or more states.</p>
+			<p>Click the "Explore the Data" button above to access all of MATTERS multi-year comparative data from one or more states.</p>
 			<br/>
 		</h2>		
 	</div>
