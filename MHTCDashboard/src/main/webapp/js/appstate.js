@@ -31,6 +31,7 @@ var AS = (function($) {
 		this.selected_multiple_years = [];
 		
 		this.saveState = true;
+		this.canRestoreState = true;
 
 		/**************************
 		 * Error Handling
@@ -91,15 +92,20 @@ var AS = (function($) {
 		appState["metrics"] = this.selected_multiple_metrics;
 		appState["visualization"] = this.currentVisualizationType;
 		appState["year"] = this.selected_multiple_years;
+		appState["selected"] = this.currentind;
 		appState["version"] = "1.0";
 		
 		var appStateString = JSON.stringify(appState);
-		var encodedAppState = window.btoa(appStateString);
 		
+		var encodedAppState = window.btoa(appStateString);
+
 		return encodedAppState;
 	};
 	
 	AppState.prototype.restoreState = function() {
+		
+		if (!this.canRestoreState)
+			return;
 		
 		var stateName = window.location.search.replace("?state=", "").trim(); 
 		
@@ -135,7 +141,9 @@ var AS = (function($) {
 		{
 			stateName = stateNameHash;
 		}	
+
 		this.saveState = false;
+		
 		var appStateString = window.atob(stateName);
 		var appState = JSON.parse(appStateString);
 				
@@ -147,9 +155,8 @@ var AS = (function($) {
 		this.currentind = 0;
 		$(".metricOption").removeClass("selected");
 		$(".stateSelectionOption").removeClass("selected");
-		
-		// Restore Metric Selection
-		this.SelectUnselectMultipleMetric(appState.metrics, 1);
+				
+		// Restore Metric Selection			
 		for(var i = 0; i < appState.metrics.length; i++)
 		{
 			var metricID = appState.metrics[i];
@@ -164,11 +171,16 @@ var AS = (function($) {
 		
 		if (appState.metrics.length > 0)
 		{
+			this.SelectUnselectMultipleMetric(appState.metrics, 1);
+
+			if (appState.selected != null && appState.metrics.length > 1)
+				this.SelectUnselectMultipleMetric(appState.selected, 3);
+			
 			$("#startupMsg").hide();
 			this.startupMsgVisible = false;
 			this.clearError(this.errorCodes.NO_METRIC_SELECTED);
 		}
-		
+				
 		// Restore State Selection
 		for(var i = 0; i < appState.state.length; i++)
 		{
@@ -186,25 +198,53 @@ var AS = (function($) {
 			this.startupMsgVisible = false;
 			this.clearError(this.errorCodes.NO_STATE_SELECTED);
 		}
+				
+		cm.resetYear();
+		this.refreshErrorView();
 		
 		switch (this.currentVisualizationType)
 		{
 		case 0:
 			$("#table-tab > a").tab("show");
+			
+			if (appState.metrics.length > 0 && appState.state.length > 0)
+			{
+				this.showGraphTitle();
+				cm.displayTable();
+			}
+			
 			break;
 		case 1:
 			$("#line-tab > a").tab("show");
+			
+			if (appState.metrics.length > 0 && appState.state.length > 0)
+			{
+				this.showGraphTitle();
+				cm.displayLineGraph();
+			}
+			
 			break;
 		case 2:
 			$("#bar-tab > a").tab("show");
+			
+			if (appState.metrics.length > 0 && appState.state.length > 0)
+			{
+				this.showGraphTitle();
+				cm.displayBarGraph();
+			}
+			
 			break;
 		case 3:
 			$("#heatmap-tab > a").tab("show");
+			
+			if (appState.metrics.length > 0)
+			{
+				this.showGraphTitle();
+				cm.displayHeatMap();
+			}
+			
 			break;
 		};
-		
-		
-		this.visualizationDeployer(this.currentVisualizationType);
 		
 		$("body").click(); // Hacky workaround to fix display bug with tab icons staying highlighted
 		
@@ -420,7 +460,11 @@ var AS = (function($) {
 			} else {
 				this.currentind = null;
 				if (this.saveState)
+				{	
+					this.canRestoreState = false;
 					History.pushState(null, "MATTERS", "explore?state=" + this.encodeState());
+					this.canRestoreState = true;
+				}					
 			}
 
 		} else if (option_in == 3) {/// BACK AND FORTH BUTTON
@@ -505,8 +549,11 @@ var AS = (function($) {
 		if (this.selected.length == 0) // If no states selected, go into error state
 		{
 			if (this.saveState)
+			{
+				this.canRestoreState = false;
 				History.pushState(null, "MATTERS", "explore?state=" + this.encodeState());
-			
+				this.canRestoreState = true;
+			}
 			
 			this.handleError(this.errorCodes.NO_STATE_SELECTED);
 		} 
@@ -551,7 +598,11 @@ var AS = (function($) {
 		}
 		
 		if (this.saveState)
+		{
+			this.canRestoreState = false;
 			History.pushState(null, "MATTERS", "explore?state=" + this.encodeState());
+			this.canRestoreState = true;
+		}
 	};
 
 	AppState.prototype.savePNG = function() {
@@ -623,7 +674,11 @@ var AS = (function($) {
 		cm.refresh();
 		
 		if (this.saveState)
+		{
+			this.canRestoreState = false;
 			History.pushState(null, "MATTERS", "explore?state=" + this.encodeState());
+			this.canRestoreState = true;
+		}
 	};
 	
 	/**

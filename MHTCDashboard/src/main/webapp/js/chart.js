@@ -652,8 +652,8 @@ var CM = (function($) {
 					    
 					    // If there is no year selected or a year is selected that doesnt exist for the metric,
 						// select a year where the metric exists.
-						if (cm.yearSelected == -1 || yearsForMetric.indexOf(cm.yearSelected) == -1)
-							cm.selectYear(yearsForMetric[0]);
+						if (cm.yearSelected == -1 || yearsForMetrics.indexOf(cm.yearSelected) == -1)
+							cm.selectYear(yearsForMetrics[0]);
 						
 						// Show the years table		
 						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
