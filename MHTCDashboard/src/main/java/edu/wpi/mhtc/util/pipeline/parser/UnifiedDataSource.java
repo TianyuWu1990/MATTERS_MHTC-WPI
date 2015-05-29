@@ -16,8 +16,7 @@ import edu.wpi.mhtc.model.admin.Category;
  */
 public class UnifiedDataSource extends DataSource {
 	
-	FileType fileType;
-	ParserType parserType;
+	ParserType parserType = ParserType.excel;
 	
 	public UnifiedDataSource(File file, Category category) throws UnifiedFormatException {
 		super(file, category);
