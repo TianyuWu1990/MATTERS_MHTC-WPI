@@ -106,6 +106,7 @@
 							<li><a class="stateChoice">Colorado</a></li>
 							<li><a class="stateChoice">Connecticut</a></li>
 							<li><a class="stateChoice">Delaware</a></li>
+							<li><a class="stateChoice">District of Columbia</a></li>
 							<li><a class="stateChoice">Florida</a></li>
 							<li><a class="stateChoice">Georgia</a></li>
 							<li><a class="stateChoice">Hawaii</a></li>
