@@ -110,7 +110,7 @@ var CM = (function($) {
 	 */
 	Chart.prototype.displayBarGraph = function() {
 		this.currentVisualization = this.visualizationTypes.BAR;
-		
+
 		this.refresh();
 	};
 	
