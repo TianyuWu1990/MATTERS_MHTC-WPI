@@ -97,7 +97,7 @@
 				<span class="form-error"></span> 
 				<br/><br/>
 				
-				<label class="feedback_label">Affiliation</label><br/>
+				<label class="feedback_label">Affiliation <span class="gfield_required">*</span></label><br/>
 				<input name="affiliation" id="affiliation" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text"> 
 				<span class="form-error"></span> 
 				<br/><br/>
