@@ -216,7 +216,7 @@ function populateData(stateName)
 			if(year == undefined ){
 			tableContents +='<tr class="row">'
 					+ '<td class="rank">' + dash+ '</td>'
-					+ '<td class="data">' + dash + '</td>'
+					+ '<td class="data">' + "N/A" + '</td>'
 					+ '<td class="status">' +  dash + '</td>'
 					+ '<td class="trend">' +  dash + '</td>'
 					+ '<td class="year">' +  dash + '</td>'
