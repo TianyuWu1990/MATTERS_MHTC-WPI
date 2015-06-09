@@ -69,6 +69,7 @@
 		
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
+		<script> src = "js/dataTables.fixedColumns.js"</script>
 		
 		<script type="text/javascript" src="js/rgbcolor.js"></script> 
 		<script type="text/javascript" src="js/StackBlur.js"></script>
