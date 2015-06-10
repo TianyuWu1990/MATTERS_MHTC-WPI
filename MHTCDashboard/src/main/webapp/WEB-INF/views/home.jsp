@@ -21,8 +21,11 @@
 		<link href="css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet">
 		<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 		<link href="css/dataTables.css" rel="stylesheet">
+		<link href="css/plugins/dataTables.fixedColumns.css" rel="stylesheet">
+		<link href="css/plugins/jquery.dataTables.css" rel="stylesheet">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext'
 			rel='stylesheet' type='text/css'>
+			
 			
 		<!-- Custom CSS -->
 		<link href="css/mesh/base.css" rel="stylesheet">
@@ -69,7 +72,11 @@
 		
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
-		<script> src = "js/dataTables.fixedColumns.js"</script>
+		<script src = "js/dataTables.fixedColumns.js"> </script>
+		<script src = "js/jquery.js"> </script>
+		<script src = "js/jquery.dataTables.js"> </script>
+		
+		
 		
 		<script type="text/javascript" src="js/rgbcolor.js"></script> 
 		<script type="text/javascript" src="js/StackBlur.js"></script>

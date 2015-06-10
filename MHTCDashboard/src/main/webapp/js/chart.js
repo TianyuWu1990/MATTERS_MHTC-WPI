@@ -737,12 +737,17 @@ var CM = (function($) {
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable(
 						{
+							"scrollY":        "300px",
+							" scrollX":        true,
+					        "scrollCollapse": true,
+					        "paging":         true,
 							"iDisplayLength": 15,
 							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
 							"bSort": enableSort,
 							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
 						
 						});
+				new $.fn.dataTable.FixedColumns( oTable );
 				dt = oTable;
 			}
 			else
@@ -750,12 +755,17 @@ var CM = (function($) {
 				$('#myTable').dataTable().fnDestroy();
 				var oTable = $('#myTable').dataTable(
 						{
-							"iDisplayLength": 20,
+							"scrollY":        "300px",
+							" scrollX":        true,
+					        "scrollCollapse": true,
+					        "paging":         true,
+							"iDisplayLength": 15,
 							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
 							"bSort": enableSort,
 							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
-							
+						
 						});
+				new $.fn.dataTable.FixedColumns( oTable );
 				dt = oTable;
 			}
 
