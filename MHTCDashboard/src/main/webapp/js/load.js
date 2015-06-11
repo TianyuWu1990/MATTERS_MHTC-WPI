@@ -147,8 +147,9 @@ loadFunction = function() {
 	$("#metrics-trigger").click(
 			function() {
 
-				$("#metricSelectionCol").attr("style", "width: 100%");
-				$("#stateSelectionCol").attr("style", "width: 0%");
+				$("#metricSelectionCol").attr("style", "width: 60%");
+				$("#stateSelectionCol").attr("style", "width: 40%");
+			
 
 				if ($("#sidebar-left").hasClass("open")
 						&& !$("#metricSelectionCol").hasClass("open")) {
@@ -221,8 +222,9 @@ loadFunction = function() {
 
 	$("#states-trigger").click(
 			function() {
-				$("#metricSelectionCol").attr("style", "width: 0%");
-				$("#stateSelectionCol").attr("style", "width: 100%");
+				$("#stateSelectionCol").attr("style", "width: 60%");
+				$("#metricSelectionCol").attr("style", "width: 40%");
+				
 
 				if ($("#sidebar-left").hasClass("open")
 						&& !$("#stateSelectionCol").hasClass("open")) {
