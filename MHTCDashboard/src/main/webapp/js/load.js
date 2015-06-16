@@ -63,7 +63,7 @@ loadFunction = function() {
 	$(window).on('resize', function() {
 		cm.refreshSizing(this);
 
-		if ($(window).width() > 830) {
+		if ($(window).width() > 510){
 			mobileMode = false;
 			var sidebarOpen = $("#sidebar-left").hasClass("open");
 
@@ -82,7 +82,34 @@ loadFunction = function() {
 				$(icon).removeClass("fa-caret-left");
 				$(icon).addClass("fa-caret-right");
 			}
-		} else {
+		} else { 
+			
+			// in the size of Iphone 4 (in order to show the toggle up)
+			
+			if ($(window).width() > 450 && $(window).width()< 510){
+				var statecolumnwidth = (($(window).width() - 60)/9*4);
+				console.log(statecolumnwidth);
+				var metriccolumnwidth = (($(window).width() - 60)/9*5);
+				mobileMode = false;
+				var sidebarOpen = $("#sidebar-left").hasClass("open");
+
+				var icon = $("#toggle-sidebar").find("i")[0];
+
+				$("#metrics-trigger").removeClass("open");
+				$("#states-trigger").removeClass("open");
+
+				$("#metricSelectionCol").attr("style", "width:" + metriccolumnwidth + "px");
+				$("#stateSelectionCol").attr("style", "width:" + statecolumnwidth + "px");
+
+				if (sidebarOpen) {
+					$(icon).removeClass("fa-caret-right");
+					$(icon).addClass("fa-caret-left");
+				} else {
+					$(icon).removeClass("fa-caret-left");
+					$(icon).addClass("fa-caret-right");
+				}
+			}
+			else{
 			if (mobileMode == false) {
 				$("#sidebar-left").removeClass("open");
 				$("#stateSelectionCol").removeClass("open");
@@ -92,9 +119,11 @@ loadFunction = function() {
 				mobileMode = true;
 			}
 		}
+		}
 
 	});
 
+	
 	if ($(window).width() < 830) {
 		$("#sidebar-left").removeClass("open");
 		$("#stateSelectionCol").removeClass("open");
@@ -103,6 +132,8 @@ loadFunction = function() {
 		$("#viewWrapper").attr("style", "left: 0px");
 		mobileMode = true;
 	}
+	
+	
 
 	// Initializes button that toggles the sidebar
 
@@ -147,8 +178,8 @@ loadFunction = function() {
 	$("#metrics-trigger").click(
 			function() {
 
-				$("#metricSelectionCol").attr("style", "width: 60%");
-				$("#stateSelectionCol").attr("style", "width: 40%");
+				$("#metricSelectionCol").attr("style", "width: 100%");
+				$("#stateSelectionCol").attr("style", "width: 0%");
 			
 
 				if ($("#sidebar-left").hasClass("open")
@@ -215,6 +246,9 @@ loadFunction = function() {
 					$("#metricSelectionCol").addClass("open");
 					$("#sidebar-left").addClass("open");
 				}
+				/*if(window.innerHeight > window.innerWidth){
+				    alert("Please use Landscape!");
+				}*/
 
 				$("#states-trigger").removeClass("open");
 				$("#stateSelectionCol").removeClass("open");
@@ -222,8 +256,8 @@ loadFunction = function() {
 
 	$("#states-trigger").click(
 			function() {
-				$("#stateSelectionCol").attr("style", "width: 60%");
-				$("#metricSelectionCol").attr("style", "width: 40%");
+				$("#stateSelectionCol").attr("style", "width: 100%");
+				$("#metricSelectionCol").attr("style", "width: 0%");
 				
 
 				if ($("#sidebar-left").hasClass("open")
