@@ -35,6 +35,7 @@
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
 		<link href="css/style-print.css" id="base-style-print" rel="stylesheet">
+		<link href= "css/jquery-ui-slider-pips.css" rel="stylesheet">
 			
 		<!-- Check for browser compatibility before we do anything else -->
 		<script src="js/modernizr.js"></script>
@@ -75,7 +76,7 @@
 		<script src = "js/dataTables.fixedColumns.js"> </script>
 		<script src = "js/jquery.js"> </script>
 		<script src = "js/jquery.dataTables.js"> </script>
-		
+		<script src = "jquery-ui-slider-pips.js"></script>		
 		
 		
 		<script type="text/javascript" src="js/rgbcolor.js"></script> 
