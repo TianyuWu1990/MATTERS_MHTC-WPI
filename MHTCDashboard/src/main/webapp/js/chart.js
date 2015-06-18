@@ -478,6 +478,7 @@ var CM = (function($) {
 		$("#mbodyMultipleQuery > *").remove();
 		
 		// Add new table
+
 		$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='font-size: 13px; background-color:#fff'></table>");
 		
 		// Select the new table for future manipulation
@@ -509,15 +510,16 @@ var CM = (function($) {
 					if(yearsForMetrics.length==0) { // If theres no data for the metric...
 		        		 table.append("<tr><td>No data available for your current selection.</td></tr>");
 		        	} else {
+		        		//Table builder
 		        		// Build header
 		        		
-		        		var row ="<th>Metric</th>";
+		        		var row ="<th><div style=\"width: 180px;\">Metric</div></th>";
 		        		
 		        		for (var r = 0; r < yearsForMetrics.length; r++)
 		        		{
 		        			var yearName = yearsForMetrics[r];
 		        			
-		        			row = row + "<th>" + yearName + "</th>";
+		        			row = row + "<th><div style=\"width: 180px;\">" + yearName + "</div></th>";
 		        		}
 		        		
 		        		row = "<thead>" + row + "</thead>";
@@ -540,7 +542,7 @@ var CM = (function($) {
 		        				
 		        				while (year !== yearsForMetrics[yearIndex])
 		        				{
-		        					row = row + "<td>N/A</td>";
+		        					row = row + "<td> N/A </td>";
 		        					yearIndex++;
 		        				}
 		        				
@@ -550,7 +552,7 @@ var CM = (function($) {
 		        			
 		        			while (yearIndex < yearsForMetrics.length)
 		        			{
-		        				row = row + "<td>N/A</td>";
+		        				row = row + "<td> N/A </td>";
 		        				yearIndex++;
 		        			}
 		        			
@@ -734,11 +736,15 @@ var CM = (function($) {
 				
 			} );
 			
+			
+			//scrollCollapse when vertical y scrolling is enabled, DataTables will force the height of the table's viewport to the given height at all times.
+			//Alength allows us to readily specify the entries in the length drop down menu that dataTables shows when pagination is enabled
+			
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable(
 						{
 							"scrollY":        "300px",
-							" scrollX":        true,
+							"scrollX":        "100%",
 					        "scrollCollapse": true,
 					        "paging":         true,
 							"iDisplayLength": 15,
@@ -756,7 +762,7 @@ var CM = (function($) {
 				var oTable = $('#myTable').dataTable(
 						{
 							"scrollY":        "300px",
-							" scrollX":        true,
+							"scrollX":        "100%",
 					        "scrollCollapse": true,
 					        "paging":         true,
 							"iDisplayLength": 15,
