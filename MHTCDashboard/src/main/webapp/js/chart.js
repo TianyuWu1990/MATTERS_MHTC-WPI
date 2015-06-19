@@ -581,12 +581,9 @@ var CM = (function($) {
 						// ONE METRIC THAT HAS NO DATA IN IT
 						// multidata[0][0] will be undefined.
 						var metricFromQuery = multiData[0][0].metric;
-						
-						$("#optionalTableTitle").html('<span id="info" title="' + metricFromQuery.desc 
-								+ '"><span>' + " " + metricFromQuery.name);
-						
+						$("#optionalTableTitle").html('<div id="tableTitle">'+metricFromQuery.name+'</div>');
+						cm.setPopover("#tableTitle", metricFromQuery);
 						$("#optionalTableTitle").show();
-					
 					
 			        	var yearsForMetric = cm.getYearsMetricState(selectedStates, multiData); // Get the years that the metric exists for from the data
 			        	yearsForMetric.sort(function(a,b) {return a - b;} ); 
@@ -717,7 +714,21 @@ var CM = (function($) {
 					
 					});
 				}		
-			}	
+			}
+	};
+	
+	/**
+	 * Constructs popover with clickable link to metric source
+	 * @param id of element to add popover
+	 */
+	Chart.prototype.setPopover = function(id, metric) {	
+		$(id).popover({
+	        placement : 'bottom',
+	        trigger : 'click',
+	        title 	: metric.desc,
+	        html	: true,
+	        content : "<a href='http://"+metric.urlFrom+"' target='_blank'>Source: "+metric.urlFrom+"</a>",
+	    });
 	};
 		
 	/**
@@ -976,6 +987,8 @@ var CM = (function($) {
 		
 		return timeLineHTML;
 	};
+	
+	
 	
 	/**
 	 * Returns the years where any of the metrics within the query have data.

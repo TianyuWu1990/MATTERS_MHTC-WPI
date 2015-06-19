@@ -36,8 +36,7 @@ public class Metric
 		else
 			this.trendType = trendType;
 		
-		this.desc = desc+"\n Source: "+urlFrom;
-		
+		this.desc = desc;
 		this.displayOrder = displayOrder;
 		
 	}
