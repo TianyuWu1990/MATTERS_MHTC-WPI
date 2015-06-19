@@ -349,7 +349,22 @@ var AS = (function($) {
 		
 		this.currentVisualizationType = visualizationType;
 		this.refreshErrorView(); // Make sure we are displaying the correct error if there is one
-		
+	//set the format for the mobile mode
+	if(mobileMode == true){
+		$("#metricSelectionCol").attr("style", "width: 0%");
+		$("#stateSelectionCol").attr("style", "width: 0%");
+		$("#viewWrapper").animate({
+			left : 0
+		}, 300, function() {
+			$(window).trigger('resize');
+		});
+		$("#states-trigger").removeClass("open");
+		$("#stateSelectionCol").removeClass("open");
+		$("#metrics-trigger").removeClass("open");
+		$("#metricSelectionCol").removeClass("open");
+	}
+						
+
 		switch(this.currentVisualizationType)
 		{
 			case this.visualizations.TABLE:				
