@@ -16,7 +16,7 @@
  var Metrics = (function() {
 
 	/**
-	* Prototype definition for a single matric
+	* Prototype definition for a single metric
 	*/
 	 Metric = function(id, binId, binName, name, urlFrom, sourceName, 
 							type, trendType, tabbed) {

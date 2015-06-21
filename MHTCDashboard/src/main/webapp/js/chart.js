@@ -182,7 +182,7 @@ var CM = (function($) {
 			$("#heatmap-error").show();
 			return;
 		}
-			
+		$("#MultipleMetricTitle").popover('hide');	
 		this.refreshHeatMapSizing(); // Make sure sizing is right
 		
 		// Get data from server on the currently selected metric
@@ -789,6 +789,8 @@ var CM = (function($) {
 			return;
 		   
 		var states = as.getSelectedStates();
+
+		$("#MultipleMetricTitle").popover('hide');
 		
     	if(this.currentVisualization == this.visualizationTypes.LINE){
     		$("#mbody > *").remove();
@@ -807,6 +809,7 @@ var CM = (function($) {
 			    d3.selectAll("#mbodyBar svg > *").remove();
 			        
 	    	}
+    		
     	}
 	    
     	// Query for data
