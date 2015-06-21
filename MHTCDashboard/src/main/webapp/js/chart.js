@@ -175,6 +175,14 @@ var CM = (function($) {
 	 * Refreshes the heat map based on the currently selected metric in the App State.
 	 */
 	Chart.prototype.refreshHeatMap = function() {
+		
+		//if no metrics selected
+		if(Metrics.getMetricByID(as.currentind) == null){
+			$("#heatmap-content-wrapper").hide();
+			$("#heatmap-error").show();
+			return;
+		}
+			
 		this.refreshHeatMapSizing(); // Make sure sizing is right
 		
 		// Get data from server on the currently selected metric
