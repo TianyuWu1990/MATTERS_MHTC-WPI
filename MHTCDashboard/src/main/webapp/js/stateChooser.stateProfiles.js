@@ -1,4 +1,5 @@
 var stateProfiles = {};
+var dash = "-";
 
 function retrieveStateProfiles(rawData)
 {
@@ -31,7 +32,10 @@ function retrieveStateProfiles(rawData)
 			metricObj.actualTrend = dataObj.trend;
 			metricObj.type = dataObj.metric.type;
 			metricObj.url = dataObj.metric.urlFrom;
-			metricObj.mostRecent = dataObj.recent;
+			 if(dataObj.recent == null)
+				metricObj.mostRecent = Object;
+				else 
+					metricObj.mostRecent = dataObj.recent;	
 			metricObj.data = dataObj.dataPoints;
 			
 			stateProfilesObject.metrics.push(metricObj);
@@ -179,9 +183,8 @@ function populateData(stateName)
 	
 	$("#stateTitleAct").html(stateName);
 	
-	if (specificProfile == null)
-	{
-		// TODO: Say no profile available.
+	if (specificProfile == null || specificProfile == undefined )
+	{  specificProfile = Object;
 	}
 	else
 	{
@@ -201,7 +204,6 @@ function populateData(stateName)
 		for (var i = 0; i < metricData.length; i++)
 		{
 			var metricObj = metricData[i];
-			
 			var data = formatData(metricObj.type, metricObj.mostRecent.value);
 			var trend = getTrend(metricObj.actualTrend);
 			var year = metricObj.mostRecent.year;
@@ -211,7 +213,19 @@ function populateData(stateName)
 			var status = getStatus(rank);
 			rank = formatData("rank", rank);
 			
+			if(year == undefined ){
 			tableContents +='<tr class="row">'
+					+ '<td class="rank">' + dash+ '</td>'
+					+ '<td class="data">' + "N/A" + '</td>'
+					+ '<td class="status">' +  dash + '</td>'
+					+ '<td class="trend">' +  dash + '</td>'
+					+ '<td class="year">' +  dash + '</td>'
+					+ '<td class="survey">' + name + '</td>'
+					+ '<td class="source">' + source + '</td>'
+					+ '</tr>';
+			}
+			else {
+				tableContents +='<tr class="row">'
 					+ '<td class="rank">' + rank + '</td>'
 					+ '<td class="data">' + data + '</td>'
 					+ '<td class="status">' + status + '</td>'
@@ -220,11 +234,14 @@ function populateData(stateName)
 					+ '<td class="survey">' + name + '</td>'
 					+ '<td class="source">' + source + '</td>'
 					+ '</tr>';
+				
+			}
+			}
 		}		
 		
 		$("#stateProfileTable").html(tableContents);
 	}
-}
+
 
 $(document).ready(function() {	
 	$.get(
@@ -233,7 +250,7 @@ $(document).ready(function() {
 			{
 				retrieveStateProfiles(data);
 				
-				var stateName = window.location.search.replace("?name=", "").replace("%20", " ").trim(); 
+				var stateName = window.location.search.replace("?name=", "").replace(/%20/g, " ").trim(); 
 				
 				var stateNameHash = window.location.hash.replace("#profile?name=", "");
 				
