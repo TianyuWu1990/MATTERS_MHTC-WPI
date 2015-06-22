@@ -108,7 +108,9 @@
 										</li>
 										<c:forEach items="${jv_stats_national}" var="stat2">
 											<li>
-												<a class="metricOption" id="${stat2.metric.id}"> 
+												<a class="metricOption" id="${stat2.metric.id}" title="${stat2.metric.desc}"
+												data-toggle="popover"  
+												data-content="<a href='http://${stat2.metric.urlFrom}' target='_blank'>Source: ${stat2.metric.urlFrom}</a>"> 
 													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
 													${stat2.metric.name} 
 												</a>
@@ -126,7 +128,9 @@
 										</li>
 										<c:forEach items="${jv_stats_talent}" var="stat3">
 											<li>
-												<a class="metricOption" id="${stat3.metric.id}"> 
+												<a class="metricOption" id="${stat3.metric.id}" title="${stat3.metric.desc}"
+												data-toggle="popover"  
+												data-content="<a href='http://${stat3.metric.urlFrom}' target='_blank'>Source: ${stat3.metric.urlFrom}</a>"> 
 													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
 													${stat3.metric.name}
 												</a>
@@ -144,7 +148,9 @@
 										</li>
 										<c:forEach items="${jv_stats_cost}" var="stat4">
 											<li>
-												<a class="metricOption" id="${stat4.metric.id}"> 
+												<a class="metricOption" id="${stat4.metric.id}" title="${stat4.metric.desc}"
+												data-toggle="popover"  
+												data-content="<a href='http://${stat4.metric.urlFrom}' target='_blank'>Source: ${stat4.metric.urlFrom}</a>">
 													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
 													${stat4.metric.name}
 												</a>
@@ -162,7 +168,9 @@
 										</li>
 										<c:forEach items="${jv_stats_economy}" var="stat5">
 											<li>
-												<a class="metricOption" id="${stat5.metric.id}"> 
+												<a class="metricOption" id="${stat5.metric.id}" title="${stat5.metric.desc}"
+												data-toggle="popover"  
+												data-content="<a href='http://${stat5.metric.urlFrom}' target='_blank'>Source: ${stat5.metric.urlFrom}</a>"> 
 													<i class="fa fa-check"></i> <!-- This tag displays a check when selected -->
 													${stat5.metric.name}
 												</a>
@@ -439,7 +447,7 @@
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="site-info container">
 			<p class="copy">
-				2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
+				&copy; 2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
 				Sponsored by Mass High Technology Council
 				
 			</p>
@@ -450,5 +458,8 @@
 		<script src="js/load.js"></script>
 		<script src="js/jquery.history.js" type="text/javascript"></script>
 	</body>
+	
+	<!-- Initialize popovers -->
+	<script></script>
 </html>
 

@@ -121,8 +121,8 @@ var AS = (function($) {
 	};
 	
 	/**
-	 * Selects or unselects the given list of metric IDs, based on the option input
-	 * @param metric_id_in The metric ID lsit
+	 * Selects or deselects the given list of metric IDs, based on the option input
+	 * @param metric_id_in The metric ID list
 	 * @param option_in The option input
 	 */
 	AppState.prototype.SelectUnselectMultipleMetric = function(metric_id_in,
@@ -155,8 +155,8 @@ var AS = (function($) {
 			var lastpos = this.selected_multiple_metrics.length - 1;
 
 			/*******************************************************/
-			/***ALWAYS SHOW WHATEVER IS ON THE FIRST POSITION AND LATER LOOP THROUFGG THE METRICS IF
-			 * MOR than one metric was selected
+			/***ALWAYS SHOW WHATEVER IS ON THE FIRST POSITION AND LATER LOOP THROUGH THE METRICS IF
+			 * MORE than one metric was selected
 			 */
 			this.currentind = this.selected_multiple_metrics[lastpos];
 
@@ -185,11 +185,13 @@ var AS = (function($) {
 				$(".nextButton").attr("id",
 						'clickMultipleMetric' + array_next_back[1]);
 			}
-
+			sel.popover('destroy');
 			sel.append(Metrics.getMetricByID(
 					this.selected_multiple_metrics[lastpos]).getName());
-	
+			cm.setPopover("#MultipleMetricTitle", Metrics.getMetricByID(
+					this.selected_multiple_metrics[lastpos]));
 			this.refreshVisualization();
+			
 
 		} else if (option_in == 2) {
 			/***DELETION **/
@@ -241,7 +243,9 @@ var AS = (function($) {
 
 				sel.append(Metrics.getMetricByID(
 						this.selected_multiple_metrics[lastpos]).getName());
-				
+				sel.popover('destroy');
+				cm.setPopover("#MultipleMetricTitle", Metrics.getMetricByID(
+						this.selected_multiple_metrics[lastpos]));
 				this.refreshVisualization();
 
 			} else {
@@ -285,18 +289,19 @@ var AS = (function($) {
 				$(".nextButton").attr("id",
 						'clickMultipleMetric' + array_next_back[1]);
 			}
-			sel.append(Metrics.getMetricByID(this.selected_multiple_metrics[i])
-					.getName());
-
+			sel.popover('destroy');
+			sel.append(Metrics.getMetricByID(
+					this.selected_multiple_metrics[i]).getName());
+			cm.setPopover("#MultipleMetricTitle", Metrics.getMetricByID(
+					this.selected_multiple_metrics[i]) );
 			this.refreshVisualization();
 		}
-
+		
 		if (this.selected_multiple_metrics.length > 0) {
 			this.clearError(this.errorCodes.NO_METRIC_SELECTED);
 		} else {
 			this.handleError(this.errorCodes.NO_METRIC_SELECTED);
 		}
-
 	};
 
 	/**
@@ -348,6 +353,7 @@ var AS = (function($) {
 		
 		this.currentVisualizationType = visualizationType;
 		this.refreshErrorView(); // Make sure we are displaying the correct error if there is one
+
 		if(mobileMode == true){
 			$("#metricSelectionCol").attr("style", "width: 0%");
 			$("#stateSelectionCol").attr("style", "width: 0%");
@@ -365,17 +371,6 @@ var AS = (function($) {
 			$("#metricSelectionCol").removeClass("open");
 		}
 		
-		if(mobileMode == true){
-			$("#metricSelectionCol").attr("style", "width: 0%");
-			$("#stateSelectionCol").attr("style", "width: 0%");
-		
-			$("#viewWrapper").animate({ left: 0}, 300, function() { $(window).trigger('resize'); });
-			$("#states-trigger").removeClass("open");
-	    	$("#stateSelectionCol").removeClass("open");
-	    	
-	    	$("#metrics-trigger").removeClass("open");
-	    	$("#metricSelectionCol").removeClass("open");
-		}
 		switch(this.currentVisualizationType)
 		{
 			case this.visualizations.TABLE:				

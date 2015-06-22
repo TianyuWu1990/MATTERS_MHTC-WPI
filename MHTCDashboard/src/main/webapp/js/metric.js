@@ -16,10 +16,10 @@
  var Metrics = (function() {
 
 	/**
-	* Prototype definition for a single matric
+	* Prototype definition for a single metric
 	*/
 	 Metric = function(id, binId, binName, name, urlFrom, sourceName, 
-							type, trendType, tabbed) {
+							type, trendType, tabbed, desc) {
 	    this.id=id;
 	    this.binId=binId;
 	    this.binName=binName;
@@ -31,6 +31,7 @@
 	    this.type=type;
 	    this.trendType=trendType;
 	    this.tabbed=tabbed;
+	    this.desc=desc;
 			
 	};
 
@@ -56,6 +57,10 @@
 	
 	Metric.prototype.getTabbed=function() {
 	    return this.tabbed;
+	}
+	
+	Metric.prototype.getDesc=function() {
+	    return this.desc;
 	}
 	
 	Metric.prototype.getTabString=function() {
@@ -101,7 +106,7 @@
 	metrics = metrics.map(function(metric) {
 		return new Metric(metric.id, metric.binId, metric.binName, 
 				metric.name, metric.urlFrom, metric.sourceName, 
-				metric.type, metric.trendType, metric.tabbed); 
+				metric.type, metric.trendType, metric.tabbed, metric.desc); 
 	});
 	
 
@@ -272,7 +277,7 @@
 	}).responseText);
 	
 	/**
-	* each matric is converted to a Metric object
+	* each metric is converted to a Metric object
 	*/
 	metrics = metrics.map(function(metric) {
 		return new Metric(metric.id, metric.binId, metric.binName, 

@@ -346,7 +346,7 @@
 	</div><!-- #content -->
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="site-info container">
-		  <p class="copy">2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
+		  <p class="copy">&copy; 2015. Worcester Polytechnic Institute. All Rights Reserved.<br />
 		  Sponsored by Mass High Technology Council</p>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
