@@ -58,6 +58,7 @@ table.dataTable tbody tr:nth-child(even) {
 .sidebar {
 	padding-left: 0px !important;
 	border-left: none !important;
+	z-index: 1000;
 }
 
 .backButton:focus, .nextButton:focus {
@@ -134,6 +135,10 @@ table.dataTable tbody tr:nth-child(even) {
 
 
 /* Metric Selection Specific Styling */
+.metricOption
+{
+	position: relative;
+}
 .metricOption.selected
 {
 	font-weight: bold !important;

@@ -540,7 +540,7 @@ var CM = (function($) {
 
 		        			row = "<th>"+ '<span id="info" title="' + metric.desc 
 							+ '"><span>' + " " + metric.name + "</th>";
-		        			
+//		        			setPopover("#info", metric);
 		        			var yearIndex = 0;
 		        			for (var k = 0; k < data.length; k++)
 		        			{
