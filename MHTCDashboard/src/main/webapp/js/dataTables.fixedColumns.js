@@ -659,7 +659,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 		this.dom.header.parentNode.parentNode.style.position = "relative";
 
 		var nSWrapper =
-			$('<div class="DTFC_ScrollWrapper" id="mtianTest" style="position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:auto; width:1120px;">'+
+			$('<div class="DTFC_ScrollWrapper" id="scrollTest" style="position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:auto; width:1120px;">'+
 				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;">'+
 					'<div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0;">'+

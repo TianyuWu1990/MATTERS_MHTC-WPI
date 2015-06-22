@@ -513,13 +513,13 @@ var CM = (function($) {
 		        		//Table builder
 		        		// Build header
 		        		
-		        		var row ="<th><div style=\"width: 180px;\">Metric</div></th>";
+		        		var row ="<th><div style=\"width: 150px;\">Metric</div></th>";
 		        		
 		        		for (var r = 0; r < yearsForMetrics.length; r++)
 		        		{
 		        			var yearName = yearsForMetrics[r];
 		        			
-		        			row = row + "<th><div style=\"width: 180px;\">" + yearName + "</div></th>";
+		        			row = row + "<th><div style=\"width: 100px;\">" + yearName + "</div></th>";
 		        		}
 		        		
 		        		row = "<thead>" + row + "</thead>";

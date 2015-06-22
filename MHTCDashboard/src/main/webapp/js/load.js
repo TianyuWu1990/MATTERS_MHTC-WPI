@@ -62,15 +62,16 @@ loadFunction = function() {
 	
 	as.loadFunction();
 	
-	//var tableWidth = ($(window).width() )*0.8;
-	// Perform resize functions on resize.
+	
 	$(window).on('resize', function() {
 //		if ($("#sidebar-left").hasClass("open")){
 //			$(".DTFC_ScrollWrapper").attr("style", "width:"+ tableWidth +"px");
 //		}
+			// Perform resize functions on resize.
+		var tableLengthSidebarOpen = $(window).width() *0.7;
+		var tableLengthSidebarClose = $(window).width() *0.9;
 		
 		cm.refreshSizing(this);
-		
 		if ($(window).width() > 830)
 		{
 			mobileMode = false;
@@ -83,24 +84,35 @@ loadFunction = function() {
 			
 			$("#metricSelectionCol").attr("style", "width: 250px;");
 			$("#stateSelectionCol").attr("style", "width: 200px;");
-			
+				
 			if (sidebarOpen)
 			{
 				$(icon).removeClass("fa-caret-right");
 				$(icon).addClass("fa-caret-left");
-				$("#mtianTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:auto; width:1120px;");
+				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");
 			}
 			else
 			{
 				$(icon).removeClass("fa-caret-left");
 				$(icon).addClass("fa-caret-right");
-				$("#mtianTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:auto; width:1500px;");
+				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow: hidden; width:" + tableLengthSidebarClose.toString() + "px");
 			}
-		}
-		else
-		{
-			if (mobileMode == false)
+		}else {
+			if (sidebarOpen)
 			{
+				$(icon).removeClass("fa-caret-right");
+				$(icon).addClass("fa-caret-left");
+				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");
+			}
+			else
+			{
+				$(icon).removeClass("fa-caret-left");
+				$(icon).addClass("fa-caret-right");
+				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow: hidden; width:" + tableLengthSidebarClose.toString() + "px");
+			}
+			
+			if (mobileMode == false){
+				
 				$("#sidebar-left").removeClass("open");
 				$("#stateSelectionCol").removeClass("open");
 				$("#metricSelectionCol").removeClass("open");
@@ -129,7 +141,9 @@ loadFunction = function() {
     	var icon = $(this).find("i")[0];
     	
     	if ($("#sidebar-left").hasClass("open"))
-    	{    				
+    	{    		
+    		$("#viewWrapper").attr("style","left: 0px;");
+    		
     		$("#sidebar-left").animate({ marginLeft: -$("#sidebar-left").width()}, 300);
     		
     		$("#viewWrapper").animate({ left: 0 }, 300, function() { $(window).trigger('resize'); });
@@ -138,27 +152,13 @@ loadFunction = function() {
     		
     		$(icon).removeClass("fa-caret-left");
     		$(icon).addClass("fa-caret-right");
-    		
-    		//TODO:
-    		//$("#mtianTest").attr("style", "width: 1500px");
-    		/*var tableLength = $('windows').width() - 550;
-    		//console.log(tablelength);
-    		//?????????????????????????????????????????????????????????????????????????????
-    		$("myTable").attr("style", "width:" + tableLength + "px");*/
     	}
     	else
     	{	
+    		$("#viewWrapper").attr("style","left:450px;");
     		$("#sidebar-left").animate({ marginLeft: 0}, 300);
     		
     		$("#viewWrapper").animate({ left: $("#sidebar-left").width()}, 300, function() { $(window).trigger('resize'); });
-    		//TODO:
-    		//$("myTable").attr("style", "width:2000px;");
-    		//var tableLength = $('viewWrapper').width() - 40;
-    		
-    		//?????????????????????????????????????????????????????????????????????????????
-    		//$("#mtianTest").attr("style", "width: 1120px");
-    		//$("mtiantest").setwidth($("myTable_wrapper").width());
-    		///////$("#viewWrapper").width()
     		
     		$("#sidebar-left").addClass("open");
     		

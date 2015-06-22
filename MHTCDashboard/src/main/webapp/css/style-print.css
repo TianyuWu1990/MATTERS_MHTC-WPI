@@ -53,14 +53,18 @@
 	{
 		overflow: visible !important;
 	}
-	/* #mtianTest
-	{
 	
-	} */
+	#scrollTest
+	{
+		min-width: 1120px;
+		max-width: 1500px;
+	}
 	
 	
 	#viewWrapper
 	{
+	 	min-width: 1120px;
+		max-width: 1500px;
 		left: 0px !important;
 		top: 5px !important;
 		overflow: visible !important;
