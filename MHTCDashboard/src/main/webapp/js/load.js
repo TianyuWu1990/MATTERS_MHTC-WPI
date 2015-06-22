@@ -48,6 +48,32 @@ $(document).ready(function() {
 		$(".menu").slideUp();
 	});
 	
+//	initialize popovers
+	$(function () {
+		$('[data-toggle="popover"]').popover({
+			html: true,
+			animate: false,
+			placement: 'right',
+			container: 'body',
+			trigger: 'manual',
+			template: '<div class="popover" onmouseover="$(this).mouseleave(function() {$(this).hide(); });"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>'
+		}).click(function(e) {
+            e.preventDefault() ;
+        }).on("mouseenter", function() {
+        	  var _this = this;
+        	  $(this).popover("show");
+        	  $(this).siblings(".popover").on("mouseleave", function() {
+        	    $(_this).popover('hide');
+        	  });
+        	}).on("mouseleave", function() {
+        	  var _this = this;
+        	  setTimeout(function() {
+        	    if (!$(".popover:hover").length) {
+        	      $(_this).popover("hide")
+        	    }
+        	  }, 50);
+        	});
+	})
 	
 	loadFunction();
 });
