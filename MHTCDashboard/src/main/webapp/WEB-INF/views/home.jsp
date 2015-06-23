@@ -35,8 +35,8 @@
 		<link href="css/style.css" id="base-style" rel="stylesheet">
 		<link href="css/style-responsive.css" id="base-style-responsive" rel="stylesheet">
 		<link href="css/style-print.css" id="base-style-print" rel="stylesheet">
-		<link href= "css/jquery-ui-slider-pips.css" rel="stylesheet">
-			
+		<link href="css/jquery-ui-slider-pips.css" rel="stylesheet">
+		
 		<!-- Check for browser compatibility before we do anything else -->
 		<script src="js/modernizr.js"></script>
 		
@@ -66,7 +66,11 @@
 		<!-- Library JS -->
 		<script src="js/d3.v3.min.js"></script>
 		<script src="js/nv.d3.min.js"></script>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+		<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> -->
+		<script src="https://code.jquery.com/jquery-2.1.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+		<!-- <script src="js/jquery-ui.js"></script> -->
 		
 		<script src="js/raphael.js"></script> <!-- Dependency for raphael.js -->
 		<script src="js/jquery.usmap.js"></script>
@@ -74,9 +78,10 @@
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/dataTables.js"></script>
 		<script src = "js/dataTables.fixedColumns.js"> </script>
-		<script src = "js/jquery.js"> </script>
-		<script src = "js/jquery.dataTables.js"> </script>
-		<script src = "jquery-ui-slider-pips.js"></script>		
+
+		
+	
+		<script src = "js/jquery-ui-slider-pips.js"></script>		
 		
 		
 		<script type="text/javascript" src="js/rgbcolor.js"></script> 
@@ -344,7 +349,10 @@
 									<div class="box-content">			
 										<div id="heatmap-wrapper">
 											<div id="heatmap-content-wrapper">
-												<div id="heatmap-timeline"></div>
+											<br>
+												<div class="slider"></div>
+												<br>
+												<br>
 												<div id="heatmap-inner-wrapper">
 												
 													<div id="heatmap-info" class="heatmap-infobox">

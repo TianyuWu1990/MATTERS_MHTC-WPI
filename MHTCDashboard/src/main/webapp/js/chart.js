@@ -212,10 +212,14 @@ var CM = (function($) {
 				cm.selectYear(yearsForMetric[0]);
 				
 			// Show the years table		
-			var timelineTableHTML = cm.buildTimeline(yearsForMetric);
+			//var timelineTableHTML = cm.buildTimeline(yearsForMetric);
 				
-			$("#heatmap-timeline").empty();
-			$("#heatmap-timeline").append(timelineTableHTML);
+			$(".slider").empty();
+			
+			cm.buildSlider();
+			
+			$(".slider").show();
+			//$("#heatmap-timeline").append(timelineTableHTML);
 			
 			
 			// Create coloring map for all states.
@@ -667,8 +671,8 @@ var CM = (function($) {
 						// Show the years table		
 						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
 						
-						$("#timelinetable").empty();
-						$("#timelinetable").append(timelineTableHTML);
+					    $("#timelinetable").empty();
+					    $("#timelinetable").append(timelineTableHTML);
 						$("#timelinetable").show();
 						
 						// Build Header
@@ -985,6 +989,28 @@ var CM = (function($) {
 		timeLineHTML += '</ul ></td></tr></table>';
 		
 		return timeLineHTML;
+	};
+	/**
+	 * makes the slider
+	 */
+	Chart.prototype.buildSlider = function() {		
+		
+		$(".slider")
+		                    
+		    // activate the slider with options
+		    .slider({ 
+		        min: 0, 
+		        max: 10, 
+		    })
+		                    
+		    // add pips with the labels set to "months"
+		    .slider("pips", {
+		        rest: "label",
+		        
+		    })
+		                    
+
+	
 	};
 	
 	/**
