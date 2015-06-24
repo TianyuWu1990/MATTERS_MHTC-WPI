@@ -729,12 +729,19 @@ var CM = (function($) {
 	 * @param id of element to add popover
 	 */
 	Chart.prototype.setPopover = function(id, metric) {
+		var url;
+		if(metric.urlFrom != null && metric.urlFrom.indexOf("www") === 0){
+			url = "<a href='http://"+metric.urlFrom+"' target='_blank'>Source: "+metric.urlFrom+"</a>";
+		}
+		else{
+			url = metric.urlFrom;
+		}
 		$(id).popover({
 			html: true,
 			animate: false,
 			placement : 'bottom',
 			title 	: metric.desc,
-			content : "<a href='http://"+metric.urlFrom+"' target='_blank'>Source: "+metric.urlFrom+"</a>",
+			content : url.toString(),
 			container: 'body',
 			trigger: 'manual',
 			template: '<div class="popover" onmouseover="$(this).mouseleave(function() {$(this).hide(); });"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>'
