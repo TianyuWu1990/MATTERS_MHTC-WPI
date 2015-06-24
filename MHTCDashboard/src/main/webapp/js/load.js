@@ -86,9 +86,9 @@ loadFunction = function() {
 
 	as.loadFunction();
 
-	// Perform resize functions on resize.
-	$(window).on('resize', function() {
-		cm.refreshSizing(this);
+ 	// Perform resize functions on resize.
+ 	$(window).on('resize', function() {
+ 		cm.refreshSizing(this);
 		if ($(window).width() < 800){
 			if ($("#sidebar-left").hasClass("open")){
 			
@@ -100,9 +100,8 @@ loadFunction = function() {
 				$("#viz-tabs").attr("style", "float:right;");
 			}
 		
-		
-
-		if ($(window).width() > 510){
+ 
+ 		if ($(window).width() > 510){
 			mobileMode = false;
 			var sidebarOpen = $("#sidebar-left").hasClass("open");
 

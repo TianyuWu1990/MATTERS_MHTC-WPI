@@ -538,8 +538,7 @@ var CM = (function($) {
 		        			var metric = metricData.metric;
 		        			var data = metricData.dataPoints;
 
-		        			row = '<th><span id="info"></span> </th>';
-		        			cm.setPopover("#info", metric);
+		        			row = '<th><span id="rowMetric">'+metric.name+'</span> </th>';
 		        			var yearIndex = 0;
 		        			for (var k = 0; k < data.length; k++)
 		        			{
@@ -564,6 +563,8 @@ var CM = (function($) {
 		        			row = "<tr>" + row + "</tr>";
 		        			
 		        			table.append(row);
+
+//		        			cm.setPopover("#rowMetric", metric);
 		        		}
 		        			
 		        	}
@@ -680,10 +681,10 @@ var CM = (function($) {
 						
 						for(var r = 0; r < multiData[0].length; r++)
 						{
-							var metricName = multiData[0][r].metric.name;
+							var metric = multiData[0][r].metric;
 							
-							row = row + "<th>"+ '<span id="info" title="' + multiData[0][r].metric.desc 
-							+ '"><span>' + " " + metricName + "</th>";
+							row = row + "<th>"+ '<span id="colMetric">' + metric.name + "</th>";
+//							cm.setPopover("#colMetric", metric);
 						}
 						
 						row = "<thead>" + row +"</thead>"; 
@@ -730,8 +731,8 @@ var CM = (function($) {
 	 */
 	Chart.prototype.setPopover = function(id, metric) {
 		var url;
-		if(metric.urlFrom != null && metric.urlFrom.indexOf("www") === 0){
-			url = "<a href='http://"+metric.urlFrom+"' target='_blank'>Source: "+metric.urlFrom+"</a>";
+		if(metric.urlFrom != null && metric.urlFrom.indexOf("http") === 0){
+			url = "<a href='"+metric.urlFrom+"' target='_blank'>Source: "+metric.sourceName+"</a>";
 		}
 		else{
 			url = metric.urlFrom;
@@ -741,7 +742,7 @@ var CM = (function($) {
 			animate: false,
 			placement : 'bottom',
 			title 	: metric.desc,
-			content : url.toString(),
+			content : url,
 			container: 'body',
 			trigger: 'manual',
 			template: '<div class="popover" onmouseover="$(this).mouseleave(function() {$(this).hide(); });"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>'
