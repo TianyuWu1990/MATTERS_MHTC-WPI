@@ -200,7 +200,7 @@
 	* Prototype definition for a single matric
 	*/
 	 Metric = function(id, binId, binName, name, urlFrom, sourceName, 
-							type, trendType, tabbed) {
+							type, trendType, tabbed, desc) {
 	    this.id=id;
 	    this.binId=binId;
 	    this.binName=binName;
@@ -212,6 +212,7 @@
 	    this.type=type;
 	    this.trendType=trendType;
 	    this.tabbed=tabbed;
+	    this.desc=desc;
 			
 	};
 
@@ -257,6 +258,9 @@
 	Metric.prototype.getTrendType=function() {
         return this.trendType;
     }
+	Metric.prototype.getDesc=function() {
+        return this.desc;
+    }
 	
 	Metric.prototype.toString=function() {
         return JSON.stringify(this);
@@ -282,7 +286,7 @@
 	metrics = metrics.map(function(metric) {
 		return new Metric(metric.id, metric.binId, metric.binName, 
 				metric.name, metric.urlFrom, metric.sourceName, 
-				metric.type, metric.trendType, metric.tabbed); 
+				metric.type, metric.trendType, metric.tabbed, metric.desc); 
 	});
 	
 	
