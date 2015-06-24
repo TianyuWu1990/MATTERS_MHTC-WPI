@@ -12,7 +12,7 @@ update mhtc_sch.metrics set "URL" = 'KPMG/CCH'	 where "Name" = 'Corporate Income
 update mhtc_sch.metrics set "URL" = 'Wanted Analytics and Monster Government Solutions' where "Name" = 'Hiring Difficulty for Technology Industries';
 update mhtc_sch.metrics set "URL" = 'http://www.census.gov/hhes/www/income/data/statemedian' where "Name" = 'Median Household Income';
 update mhtc_sch.metrics set "URL" = 'CCH State Tax Handbook/Tax Foundation/KPMG' where "Name" = 'Personal Income Tax';
-update mhtc_sch.metrics set "URL" = 'http://factfinder.census.gov' where "Name" = 'Quality of Life: Average Commute Time';
+update mhtc_sch.metrics set "URL" = 'http://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_13_5YR_GCT0801.US01PR&prodType=table' where "Name" = 'Quality of Life: Average Commute Time';
 update mhtc_sch.metrics set "URL" = 'E&Y' where "Name" = 'Research and Development Tax Credit ASC Rate';
 update mhtc_sch.metrics set "URL" = 'E&Y' where "Name" = 'Research and Development Tax Credit Rate';
 update mhtc_sch.metrics set "URL" = 'E&Y' where "Name" = 'Research and Development Tax Credit Refundability Rate';
