@@ -323,6 +323,15 @@
 											<td>2009-2013</td>
 											<td>Annual</td>
 										<tr>
+										<tr>
+											<td>Tech Economy</td>
+											<td>Quality of Life: Average Commute Time</td>
+											<td><a
+												href="http://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_13_5YR_GCT0801.US01PR&prodType=table">
+													US Census Bureau </a></td>
+											<td>2009-2013</td>
+											<td>Annual</td>
+										<tr>
 									</tbody>
 								</table>
 							</div>
