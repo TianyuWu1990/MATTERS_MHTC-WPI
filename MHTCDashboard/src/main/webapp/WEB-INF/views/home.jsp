@@ -308,7 +308,7 @@
 									<div class="box-content">
 										<table>
 											<tr>
-												<td id="optionalTableTitle"></td>
+												<td id="optionalTableTitle" data-toggle="popover"></td>
 												<td id="timelinetable"></td>
 											</tr>
 											<tr>

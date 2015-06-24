@@ -538,9 +538,8 @@ var CM = (function($) {
 		        			var metric = metricData.metric;
 		        			var data = metricData.dataPoints;
 
-		        			row = "<th>"+ '<span id="info" title="' + metric.desc 
-							+ '"><span>' + " " + metric.name + "</th>";
-//		        			setPopover("#info", metric);
+		        			row = '<th><span id="info"></span> </th>';
+		        			cm.setPopover("#info", metric);
 		        			var yearIndex = 0;
 		        			for (var k = 0; k < data.length; k++)
 		        			{
@@ -729,14 +728,32 @@ var CM = (function($) {
 	 * Constructs popover with clickable link to metric source
 	 * @param id of element to add popover
 	 */
-	Chart.prototype.setPopover = function(id, metric) {	
+	Chart.prototype.setPopover = function(id, metric) {
 		$(id).popover({
-	        placement : 'bottom',
-	        trigger : 'click',
-	        title 	: metric.desc,
-	        html	: true,
-	        content : "<a href='http://"+metric.urlFrom+"' target='_blank'>Source: "+metric.urlFrom+"</a>",
-	    });
+			html: true,
+			animate: false,
+			placement : 'bottom',
+			title 	: metric.desc,
+			content : "<a href='http://"+metric.urlFrom+"' target='_blank'>Source: "+metric.urlFrom+"</a>",
+			container: 'body',
+			trigger: 'manual',
+			template: '<div class="popover" onmouseover="$(this).mouseleave(function() {$(this).hide(); });"><div class="arrow"></div><div class="popover-inner"><h3 class="popover-title"></h3><div class="popover-content"><p></p></div></div></div>'
+		}).click(function(e) {
+            e.preventDefault() ;
+        }).on("mouseenter", function() {
+        	  var _this = this;
+        	  $(this).popover("show");
+        	  $(this).siblings(".popover").on("mouseleave", function() {
+        	    $(_this).popover('hide');
+        	  });
+        	}).on("mouseleave", function() {
+        	  var _this = this;
+        	  setTimeout(function() {
+        	    if (!$(".popover:hover").length) {
+        	      $(_this).popover("hide")
+        	    }
+        	  }, 50);
+        	});
 	};
 		
 	/**
