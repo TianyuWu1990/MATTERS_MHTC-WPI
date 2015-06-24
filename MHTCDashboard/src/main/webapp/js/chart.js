@@ -513,13 +513,13 @@ var CM = (function($) {
 		        		//Table builder
 		        		// Build header
 		        		
-		        		var row ="<th><div style=\"width: 150px;\">Metric</div></th>";
+		        		var row ="<th>Metric</th>";
 		        		
 		        		for (var r = 0; r < yearsForMetrics.length; r++)
 		        		{
 		        			var yearName = yearsForMetrics[r];
 		        			
-		        			row = row + "<th><div style=\"width: 100px;\">" + yearName + "</div></th>";
+		        			row = row + "<th>" + yearName + "</th>";
 		        		}
 		        		
 		        		row = "<thead>" + row + "</thead>";
@@ -567,7 +567,7 @@ var CM = (function($) {
 				});
 				
 				
-			} 
+			} // multiple states and one metrics 
 			else if(selectedMetrics.length == 1) { // If we only have one metric to load
 				
 				$("#timelinetable").hide();
