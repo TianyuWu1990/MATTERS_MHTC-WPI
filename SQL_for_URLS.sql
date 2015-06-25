@@ -24,7 +24,7 @@ update mhtc_sch.metrics set "URL" = 'http://taxfoundation.org/article/2015-state
 update mhtc_sch.metrics set "URL" = 'http://statetechandscience.org/stateTech.html' where "Name" = 'State Technology and Science Index';
 update mhtc_sch.metrics set "URL" = 'http://nces.ed.gov/ipeds/datacenter' where "Name" = 'STEM-related Bachelors Degrees Awarded';                   	;
 update mhtc_sch.metrics set "URL" = 'http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=55' where "Name" = 'Tech Employment as Percent of Total Employment';
-update mhtc_sch.metrics set "URL" = 'http://www.cnbc.com/id/101758236' where "Name" = 'Top States for Business';
+update mhtc_sch.metrics set "URL" = 'http://www.cnbc.com/id/102570433' where "Name" = 'Top States for Business';
 update mhtc_sch.metrics set "URL" = 'http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=55' where "Name" = 'Total Employment';
 update mhtc_sch.metrics set "URL" = 'http://www.nsf.gov/statistics/seind14/index.cfm/state-data/table.htm?table=55' where "Name" = 'Total Tech Employment';
 update mhtc_sch.metrics set "URL" = 'http://workforcesecurity.doleta.gov/unemploy/avg_employ.asp' where "Name" = 'UI Premium Per Employee';
