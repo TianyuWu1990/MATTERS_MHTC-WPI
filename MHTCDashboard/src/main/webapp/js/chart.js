@@ -214,7 +214,7 @@ var CM = (function($) {
 			// Show the years table		
 			//var timelineTableHTML = cm.buildTimeline(yearsForMetric);
 				
-			$(".slider").empty();
+			//$(".slider").empty();
 			
 			cm.buildSlider(yearsForMetric);
 			
