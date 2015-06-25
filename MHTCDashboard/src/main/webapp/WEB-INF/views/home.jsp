@@ -28,6 +28,7 @@
 			
 			
 		<!-- Custom CSS -->
+	    <link rel="stylesheet" href = "js/jquery-ui.css">	
 		<link href="css/mesh/base.css" rel="stylesheet">
 		<link href="css/mesh/main.css" rel="stylesheet">
 		<link href="css/mesh/main-responsive.css" rel="stylesheet">
@@ -69,7 +70,8 @@
 		<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> -->
 		<script src="https://code.jquery.com/jquery-2.1.1.js"></script>
         <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">
+       <!--  <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/flick/jquery-ui.css">  -->
+  	    
 		<!-- <script src="js/jquery-ui.js"></script> -->
 		
 		<script src="js/raphael.js"></script> <!-- Dependency for raphael.js -->
