@@ -1211,4 +1211,6 @@ ul.timelineListStyle > li
 	padding:15px;
 	font-size:15px;
 }
-
+.slider{
+  height: 10px;
+  margin: 2em 10em 10em; }

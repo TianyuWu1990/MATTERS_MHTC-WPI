@@ -211,15 +211,12 @@ var CM = (function($) {
 			if (cm.yearSelected == -1)
 				cm.selectYear(yearsForMetric[0]);
 				
-			// Show the years table		
-			//var timelineTableHTML = cm.buildTimeline(yearsForMetric);
-				
-			$(".slider").empty();
+			// Show the slider
+			//$(".slider").empty();
 			
 			cm.buildSlider(yearsForMetric);
-			
 			$(".slider").show();
-			//$("#heatmap-timeline").append(timelineTableHTML);
+	
 			
 			
 			// Create coloring map for all states.
@@ -671,7 +668,7 @@ var CM = (function($) {
 						// Show the years table		
 						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
 						
-					    $("#timelinetable").empty();
+					  $("#timelinetable").empty();
 					    $("#timelinetable").append(timelineTableHTML);
 						$("#timelinetable").show();
 						
@@ -997,7 +994,8 @@ var CM = (function($) {
 		
 		// lets be fancy for the demo and select the current month.
 		yearList.sort();
-		var activeYear = new Date().getYear();
+		var d = new Date();
+	    var activeYear = d.getFullYear();
 		var current;
 		if(yearList.contains(activeYear)){
     		current= activeYear;
@@ -1017,14 +1015,8 @@ var CM = (function($) {
 		                    
 		    // add pips with the labels set to "years"
 		    .slider("pips", {
-		        rest: "label",
-		        labels: yearList
-		    })
-		       
-		    // and whenever the slider changes, lets echo out the month
-		    .on("slidechange", function(e,ui) {
-		        $("#labels-yearList-output").text( "You selected "  + " (" + ui.value + ")");
-		    });   
+		        rest: "pip",   
+		    }).slider("float"); 
 		
 	};
 	
