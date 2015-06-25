@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en-US" style="">
 
@@ -19,6 +20,7 @@
 <link href="css/mesh/base.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/main.css" rel="stylesheet" type="text/css">
 <link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
+<link href="img/MHTC_Favicon.jpg" rel="shortcut icon" >  
 
 </head>
 
@@ -43,10 +45,10 @@
 			previously disaggregated and static.  We encourage users to "dive in" and explore the data and to utilize MATTERS as one of many 
 			tools that comprise their research and analysis and inform their decision making.</p>
 			<br></br>
-		   <p>The <a href= "/">MATTERS overview map</a> highlights the 15 states that make up the MATTERS peer group. By selecting any individual state, 
+		   <p>The <a href="<c:url value="/"/>">MATTERS overview map</a> highlights the 15 states that make up the MATTERS peer group. By selecting any individual state, 
 		   users can view 8 pre-selected key metrics and link to an individual state profile.</p>
 			<br></br>  
-		   <p>The <a href= "/explore">MATTERS data explorer</a> permits users to customize their experience and retrieve data on one or more metrics from one or more states and across 
+		   <p>The <a href="<c:url value="/explore"/>">MATTERS data explorer</a> permits users to customize their experience and retrieve data on one or more metrics from one or more states and across 
 		   multiple years simultaneously.  Data can be displayed in a variety of visualizations including tables, line charts, bar 
 		   charts, and heatmaps. </p>  
 			
