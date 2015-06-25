@@ -210,9 +210,7 @@ var CM = (function($) {
 			
 			if (cm.yearSelected == -1)
 				cm.selectYear(yearsForMetric[0]);
-				
-			// Show the slider
-			//$(".slider").empty();
+
 			
 			cm.buildSlider(yearsForMetric);
 			$(".slider").show();
