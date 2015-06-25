@@ -350,8 +350,11 @@
 										<div id="heatmap-wrapper">
 											<div id="heatmap-content-wrapper">
 											<br>
-												<div class="slider"></div>
-												<br>
+											<div>
+											<div id="labels-yearList-output"> </div>
+											<br>
+											<div class="slider"></div>
+												<div>
 												<br>
 												<div id="heatmap-inner-wrapper">
 												

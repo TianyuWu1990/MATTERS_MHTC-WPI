@@ -216,7 +216,7 @@ var CM = (function($) {
 				
 			$(".slider").empty();
 			
-			cm.buildSlider();
+			cm.buildSlider(yearsForMetric);
 			
 			$(".slider").show();
 			//$("#heatmap-timeline").append(timelineTableHTML);
@@ -993,25 +993,49 @@ var CM = (function($) {
 	/**
 	 * makes the slider
 	 */
-	Chart.prototype.buildSlider = function() {		
+	Chart.prototype.buildSlider = function(yearList) {		
 		
-		$(".slider")
-		                    
+		// lets be fancy for the demo and select the current month.
+		yearList.sort();
+		var activeYear = new Date().getYear();
+		var current;
+		if(yearList.contains(activeYear)){
+    		current= activeYear;
+    	}
+    	else {
+    		current = yearList[yearList.length-1];
+    	}
+
+		$(".slider")		                    
 		    // activate the slider with options
 		    .slider({ 
-		        min: 0, 
-		        max: 10, 
+		        min: yearList[0], 
+		        max: yearList[yearList.length-1], 
+		        value: activeYear
+		        	 
 		    })
 		                    
-		    // add pips with the labels set to "months"
+		    // add pips with the labels set to "years"
 		    .slider("pips", {
 		        rest: "label",
-		        
+		        labels: yearList
 		    })
-		                    
-
-	
+		       
+		    // and whenever the slider changes, lets echo out the month
+		    .on("slidechange", function(e,ui) {
+		        $("#labels-yearList-output").text( "You selected "  + " (" + ui.value + ")");
+		    });   
+		
 	};
+	
+	Array.prototype.contains = function(k) {
+		  for(var i=0; i < this.length; i++){
+		    if(this[i] === k){
+		      return true;
+		    }
+		  }
+		  return false;
+		}
 	
 	/**
 	 * Returns the years where any of the metrics within the query have data.
