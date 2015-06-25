@@ -89,7 +89,7 @@ loadFunction = function() {
  	// Perform resize functions on resize.
  	$(window).on('resize', function() {
  		cm.refreshSizing(this);
-		if ($(window).width() < 800){
+		if ($(window).width() > 450 && $(window).width() < 800){
 			if ($("#sidebar-left").hasClass("open")){
 			
 			$("#viz-tabs").attr("style", "display: none;");
