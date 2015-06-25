@@ -563,8 +563,6 @@ var CM = (function($) {
 		        			row = "<tr>" + row + "</tr>";
 		        			
 		        			table.append(row);
-
-//		        			cm.setPopover("#rowMetric", metric);
 		        		}
 		        			
 		        	}
@@ -590,7 +588,7 @@ var CM = (function($) {
 						// multidata[0][0] will be undefined.
 						var metricFromQuery = multiData[0][0].metric;
 						$("#optionalTableTitle").html('<div id="tableTitle">'+metricFromQuery.name+'</div>');
-						cm.setPopover("#tableTitle", metricFromQuery);
+						cm.setPopover("#tableTitle", metricFromQuery, "bottom");
 						$("#optionalTableTitle").show();
 					
 			        	var yearsForMetric = cm.getYearsMetricState(selectedStates, multiData); // Get the years that the metric exists for from the data
@@ -684,7 +682,6 @@ var CM = (function($) {
 							var metric = multiData[0][r].metric;
 							
 							row = row + "<th>"+ '<span id="colMetric">' + metric.name + "</th>";
-//							cm.setPopover("#colMetric", metric);
 						}
 						
 						row = "<thead>" + row +"</thead>"; 
@@ -729,7 +726,7 @@ var CM = (function($) {
 	 * Constructs popover with clickable link to metric source
 	 * @param id of element to add popover
 	 */
-	Chart.prototype.setPopover = function(id, metric) {
+	Chart.prototype.setPopover = function(id, metric, position) {
 		var url;
 		if(metric.urlFrom != null && metric.urlFrom.indexOf("http") === 0){
 			url = "<a href='"+metric.urlFrom+"' target='_blank'>Source: "+metric.sourceName+"</a>";
@@ -740,7 +737,7 @@ var CM = (function($) {
 		$(id).popover({
 			html: true,
 			animate: false,
-			placement : 'bottom',
+			placement : position,
 			title 	: metric.desc,
 			content : url,
 			container: 'body',

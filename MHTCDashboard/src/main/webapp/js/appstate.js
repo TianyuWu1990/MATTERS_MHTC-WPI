@@ -189,7 +189,7 @@ var AS = (function($) {
 			sel.append(Metrics.getMetricByID(
 					this.selected_multiple_metrics[lastpos]).getName());
 			cm.setPopover("#MultipleMetricTitle", Metrics.getMetricByID(
-					this.selected_multiple_metrics[lastpos]));
+					this.selected_multiple_metrics[lastpos]), "bottom");
 			this.refreshVisualization();
 			
 
@@ -245,7 +245,7 @@ var AS = (function($) {
 						this.selected_multiple_metrics[lastpos]).getName());
 				sel.popover('destroy');
 				cm.setPopover("#MultipleMetricTitle", Metrics.getMetricByID(
-						this.selected_multiple_metrics[lastpos]));
+						this.selected_multiple_metrics[lastpos]), "bottom");
 				this.refreshVisualization();
 
 			} else {
@@ -293,7 +293,7 @@ var AS = (function($) {
 			sel.append(Metrics.getMetricByID(
 					this.selected_multiple_metrics[i]).getName());
 			cm.setPopover("#MultipleMetricTitle", Metrics.getMetricByID(
-					this.selected_multiple_metrics[i]) );
+					this.selected_multiple_metrics[i]), "bottom" );
 			this.refreshVisualization();
 		}
 		
