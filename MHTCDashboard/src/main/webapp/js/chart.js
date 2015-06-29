@@ -986,7 +986,8 @@ var CM = (function($) {
 		return timeLineHTML;
 	};
 	/**
-	 * makes the slider
+	 * Builds the timeline slider for yearselection
+	 * @param yearList, the years to show in the timeline
 	 */
 	Chart.prototype.buildSlider = function(yearList) {		
 		
@@ -1013,12 +1014,14 @@ var CM = (function($) {
 		                    
 		    // add pips with the labels set to "years"
 		    .slider("pips", {
-		        rest: "pip",   
+		    	step: yearList[1]- yearList[0], // sets the steps to be the difference in year 
+		        rest: "label",
+		         
 		    }).slider("float"); 
 		
 	};
 	
-	Array.prototype.contains = function(k) {
+	Chart.prototype.contains = function(k) {
 		  for(var i=0; i < this.length; i++){
 		    if(this[i] === k){
 		      return true;
