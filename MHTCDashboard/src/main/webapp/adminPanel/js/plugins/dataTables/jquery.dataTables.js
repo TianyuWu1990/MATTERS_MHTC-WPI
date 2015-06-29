@@ -3661,8 +3661,8 @@
 				$(_div, { 'class': classes.sScrollBody } )
 					.css( {
 						overflow: 'auto',
-						height: size( scrollY ),
-						width: size( scrollX )
+						height: size( scrollY ),  
+						width: size( scrollX ),
 					} )
 					.append( table )
 			);

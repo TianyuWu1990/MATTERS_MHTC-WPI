@@ -13946,13 +13946,13 @@
 		"sProcessing": "dataTables_processing",
 	
 		/* Sorting */
-		"sSortAsc": "sorting_asc",
-		"sSortDesc": "sorting_desc",
+		"sSortAsc": "sorting_asc_disabled",
+		"sSortDesc": "sorting_desc-disabled",
 		"sSortable": "sorting", /* Sortable in both directions */
 		"sSortableAsc": "sorting_asc_disabled",
 		"sSortableDesc": "sorting_desc_disabled",
 		"sSortableNone": "sorting_disabled",
-		"sSortColumn": "sorting_", /* Note that an int is postfixed for the sorting order */
+		"sSortColumn": "sorting_disabled", /* Note that an int is postfixed for the sorting order */
 	
 		/* Filtering */
 		"sFilterInput": "",

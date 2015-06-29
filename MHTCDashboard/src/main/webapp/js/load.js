@@ -8,6 +8,8 @@ var year_global=-1;
 
 var globalcounter=0;
 
+setTableWidth = function(window){}
+
 animateHeatMap=function(){
 	var limit=array_years_global.length;
 	if(year_global==-1)
@@ -23,10 +25,8 @@ animateHeatMap=function(){
 		}else{
 			year_global=array_years_global[globalcounter];
 		}
-		
-		
-
 }; 
+
 stopHeatMapAnimation=function() {
 	if (!global_timer) return false;
 	  	clearInterval(global_timer);
@@ -47,8 +47,6 @@ $(document).ready(function() {
 	$(".menu-close").click(function(){
 		$(".menu").slideUp();
 	});
-	
-	
 	loadFunction();
 });
 
@@ -68,9 +66,10 @@ loadFunction = function() {
 //			$(".DTFC_ScrollWrapper").attr("style", "width:"+ tableWidth +"px");
 //		}
 			// Perform resize functions on resize.
-		var tableLengthSidebarOpen = $(window).width() *0.7;
-		var tableLengthSidebarClose = $(window).width() *0.9;
-		
+//		var tableLengthSidebarOpen = $(window).width() *0.7;
+//		var tableLengthSidebarClose = $(window).width() *0.9;
+		setTableWidth(window);
+/*
 		cm.refreshSizing(this);
 		if ($(window).width() > 830)
 		{
@@ -89,7 +88,7 @@ loadFunction = function() {
 			{
 				$(icon).removeClass("fa-caret-right");
 				$(icon).addClass("fa-caret-left");
-				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");
+				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");	
 			}
 			else
 			{
@@ -120,9 +119,66 @@ loadFunction = function() {
 				$("#viewWrapper").attr("style", "left: 0px");
 				mobileMode = true;
 			}
-		}
+		}*/
 		
 	});	
+	
+	
+	setTableWidth = function(window){
+		cm.refreshSizing(this);
+		var tableLengthSidebarOpen = $(window).width() *0.7;
+		var tableLengthSidebarClose = $(window).width() *0.9;
+		
+		if ($(window).width() > 830)
+		{
+			mobileMode = false;
+			var sidebarOpen = $("#sidebar-left").hasClass("open");
+					
+			var icon = $("#toggle-sidebar").find("i")[0];
+			
+			$("#metrics-trigger").removeClass("open");
+			$("#states-trigger").removeClass("open");
+			
+			$("#metricSelectionCol").attr("style", "width: 250px;");
+			$("#stateSelectionCol").attr("style", "width: 200px;");
+				
+			if (sidebarOpen)
+			{
+				$(icon).removeClass("fa-caret-right");
+				$(icon).addClass("fa-caret-left");
+				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");	
+			}
+			else
+			{
+				$(icon).removeClass("fa-caret-left");
+				$(icon).addClass("fa-caret-right");
+				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow: hidden; width:" + tableLengthSidebarClose.toString() + "px");
+			}
+		}else {
+			if (sidebarOpen)
+			{
+				$(icon).removeClass("fa-caret-right");
+				$(icon).addClass("fa-caret-left");
+				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");
+			}
+			else
+			{
+				$(icon).removeClass("fa-caret-left");
+				$(icon).addClass("fa-caret-right");
+				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow: hidden; width:" + tableLengthSidebarClose.toString() + "px");
+			}
+			
+			if (mobileMode == false){
+				
+				$("#sidebar-left").removeClass("open");
+				$("#stateSelectionCol").removeClass("open");
+				$("#metricSelectionCol").removeClass("open");
+				$("#sidebar-left").attr("style", "margin-left:-450px;");
+				$("#viewWrapper").attr("style", "left: 0px");
+				mobileMode = true;
+			}
+		}
+	}
 	
 	if ($(window).width() < 830)
 	{
@@ -491,8 +547,7 @@ loadFunction = function() {
     		metricList[i] = curNodeID;
     		
     		targetFunction(curNodeID);
-    	}    	
-    	
+    	}    		
 		as.SelectUnselectMultipleMetric(metricList, actionID);
 	});
 	

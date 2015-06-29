@@ -470,15 +470,13 @@ var CM = (function($) {
 	 * Refreshes the table view based on the currently selected states and metrics in the App State.
 	 */
 	Chart.prototype.refreshTable = function() {
-		
 		var selectedStates = as.getSelectedStates();
 		var selectedMetrics = as.getSelectedMetrics();
-				
+		//bool isNeedScrollbar =false;	
 		// Clear table
 		$("#mbodyMultipleQuery > *").remove();
 		
 		// Add new table
-
 		$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='font-size: 13px; background-color:#fff'></table>");
 		
 		// Select the new table for future manipulation
@@ -499,7 +497,7 @@ var CM = (function($) {
 				query = DQ.create().addState(selectedStates).addMultipleMetrics(processedMetrics);
 				
 				query.execute(function(multiData) {
-					
+					 //bool isNeedScrollbar = false;
 					if(multiData.length == 0)
 						return; // Do nothing if we got no data back.
 					
@@ -512,13 +510,12 @@ var CM = (function($) {
 		        	} else {
 		        		//Table builder
 		        		// Build header
-		        		
+		        		//setTableWidth(window);
 		        		var row ="<th>Metric</th>";
-		        		
+		        	
 		        		for (var r = 0; r < yearsForMetrics.length; r++)
 		        		{
 		        			var yearName = yearsForMetrics[r];
-		        			
 		        			row = row + "<th>" + yearName + "</th>";
 		        		}
 		        		
@@ -562,14 +559,19 @@ var CM = (function($) {
 		        		}
 		        			
 		        	}
-					cm.setDataTable(false);
-				
+//		            if($(window).width() > 830 && sidebarOpen && yearsForMetrics,length >7 ){
+//		            	isNeedScrollbar = true;
+//		            }else{
+//		            	isNeedScrollbar = false;
+//		            }
+		            cm.setDataTable(false);
+		            $(window).trigger('resize'); 
+		            
 				});
 				
 				
 			} // multiple states and one metrics 
 			else if(selectedMetrics.length == 1) { // If we only have one metric to load
-				
 				$("#timelinetable").hide();
 				
 				var fullMetric = Metrics.getMetricByID(selectedMetrics[0]);
@@ -644,10 +646,11 @@ var CM = (function($) {
 			                }
 			        	}
 			        	cm.setDataTable(true);
+			        	$(window).trigger('resize');      	
 				});
 			}
 			else	// Multiple metrics
-			{					
+			{		
 					$("#optionalTableTitle").hide();
 				
 					var processedMetrics = selectedMetrics.map(function(e) { return Metrics.getMetricByID(e).getName(); });
@@ -716,7 +719,7 @@ var CM = (function($) {
 							table.append(row);
 						}
 						cm.setDataTable(true);
-					
+						$(window).trigger('resize'); 					
 					});
 				}		
 			}	
@@ -765,7 +768,7 @@ var CM = (function($) {
 							"scrollX":        "100%",
 					        "scrollCollapse": true,
 					        "paging":         true,
-							"iDisplayLength": 15,
+							"iDisplayLength": 20,
 							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
 							"bSort": enableSort,
 							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
