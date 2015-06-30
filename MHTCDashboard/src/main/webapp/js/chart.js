@@ -1021,7 +1021,7 @@ var CM = (function($) {
 		
 	};
 	
-	Chart.prototype.contains = function(k) {
+	Array.prototype.contains = function(k) {
 		  for(var i=0; i < this.length; i++){
 		    if(this[i] === k){
 		      return true;
