@@ -842,6 +842,7 @@ var CM = (function($) {
 	    query.execute(function(multiData) {
             nv.addGraph(function() {
               
+            	var type_var = Metrics.getMetricByID(as.currentind).getType();
                 var data = [];
                 
                 var years = [];
@@ -863,7 +864,12 @@ var CM = (function($) {
                 		if (years.indexOf(yearForPoint) == -1)
                 			years.push(yearForPoint);
                 		
-                		return { "x" : yearForPoint, "y" : (d["value"].toFixed(2)) * 1 };
+                		if (type_var == "percentage"){
+                			return { "x" : yearForPoint, "y" : (d["value"].toFixed(4)) * 1 };
+                		}
+                		else{
+                			return { "x" : yearForPoint, "y" : (d["value"].toFixed(2)) * 1 };
+                		}
                 	});
                 }
                 
@@ -913,7 +919,6 @@ var CM = (function($) {
                                 
                 chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
 
-                var type_var = Metrics.getMetricByID(as.currentind).getType();
                 if (type_var == "integer") 
                 {
 			        chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
