@@ -918,13 +918,12 @@ var CM = (function($) {
                 	}
                 	
                 	var newMin = maxY - newRange;
-                	newMin = (newMin.toFixed(2)) * 1;
                 
                 	if (newMin < 0)
                 		newMin = 0;
                 	
                 	//extra space for smallest bar in chart
-                	(cm.currentVisualization == cm.visualizationTypes.BAR){
+                	if (cm.currentVisualization == cm.visualizationTypes.BAR){
                 		chart.forceY(newMin);
                 	} 
                 	
