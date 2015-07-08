@@ -819,15 +819,15 @@ body .ui-tooltip {
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default {
-	border: 1px solid #dddddd;
-	background: #f6f6f6 url(images/ui-bg_highlight-soft_100_f6f6f6_1x100.png) 50% 50% repeat-x;
+	border: 1px solid #680017;
+	background: #680017 url(images/ui-bg_highlight-soft_100_f6f6f6_1x100.png) 50% 50% repeat-x;
 	font-weight: bold;
-	color: #0073ea;
+	color: #680017;
 }
 .ui-state-default a,
 .ui-state-default a:link,
 .ui-state-default a:visited {
-	color: #0073ea;
+	color: #680017;
 	text-decoration: none;
 }
 .ui-state-hover,
@@ -839,7 +839,7 @@ body .ui-tooltip {
 	border: 1px solid #680017;
 	background: #680017 url(images/ui-bg_highlight-soft_25_0073ea_1x100.png) 50% 50% repeat-x;
 	font-weight: bold;
-	color: #ffffff;
+	color: #680017;
 }
 .ui-state-hover a,
 .ui-state-hover a:hover,
@@ -849,21 +849,21 @@ body .ui-tooltip {
 .ui-state-focus a:hover,
 .ui-state-focus a:link,
 .ui-state-focus a:visited {
-	color: #ffffff;
+	color: #680017;
 	text-decoration: none;
 }
 .ui-state-active,
 .ui-widget-content .ui-state-active,
 .ui-widget-header .ui-state-active {
-	border: 1px solid #dddddd;
-	background: #ffffff url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+	border: 1px solid #680017;
+	background: #680017 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
 	font-weight: bold;
-	color: #ff0084;
+	color: #680017;
 }
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {
-	color: #ff0084;
+	color: #680017;
 	text-decoration: none;
 }
 

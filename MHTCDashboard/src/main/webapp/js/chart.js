@@ -211,7 +211,7 @@ var CM = (function($) {
 			if (cm.yearSelected == -1)
 				cm.selectYear(yearsForMetric[0]);
 
-			
+			// builds the slider
 			cm.buildSlider(yearsForMetric);
 			$(".slider").show();
 	
@@ -985,50 +985,66 @@ var CM = (function($) {
 		
 		return timeLineHTML;
 	};
+	
 	/**
 	 * Builds the timeline slider for yearselection
 	 * @param yearList, the years to show in the timeline
 	 */
-	Chart.prototype.buildSlider = function(yearList) {		
-		
-		// lets be fancy for the demo and select the current month.
-		yearList.sort();
-		var d = new Date();
-	    var activeYear = d.getFullYear();
-		var current;
-		if(yearList.contains(activeYear)){
-    		current= activeYear;
-    	}
-    	else {
-    		current = yearList[yearList.length-1];
-    	}
-
-		$(".slider")		                    
-		    // activate the slider with options
-		    .slider({ 
-		        min: yearList[0], 
-		        max: yearList[yearList.length-1], 
-		        value: activeYear
-		        	 
-		    })
-		                    
-		    // add pips with the labels set to "years"
-		    .slider("pips", {
-		    	step: yearList[1]- yearList[0], // sets the steps to be the difference in year 
-		        rest: "label",
-		         
-		    }).slider("float"); 
-		
-	};
 	
-	Chart.prototype.contains = function(k) {
-		  for(var i=0; i < this.length; i++){
-		    if(this[i] === k){
-		      return true;
-		    }
-		  }
-		  return false;
+	Chart.prototype.buildSlider = function(yearList) {
+		var values = yearList.sort(); 
+		var range= values[values.length-1] - values[0];
+		var distance = 1; // steps for slider
+		var initialValue = values[values.length-1]; // start at the latest year
+		
+		if(range > 10){ 
+			distance = range/ 5;
+			
 		}
+		// creates the tooltip
+		var sliderTooltip = function(event, ui) {
+	     var curValue = ui.value || initialValue;
+	     var tooltip = '<div class="tooltip237"><div class="tooltip237-inner">' + curValue + '</div><div class="tooltip237-arrow"></div></div>';
+
+	      $('.ui-slider-handle').html(tooltip);
+
+	  }		
+		// creates the slider	
+	    var slider = $(".slider").slider({
+	    	value: values[values.length-1],
+	    	min: values[0], 
+	        max: values[values.length-1], 
+	        create: sliderTooltip,
+	    	slide: function(event, ui) {// function to find nearest value
+	    		var includeLeft = event.keyCode != $.ui.keyCode.RIGHT;
+	    		var includeRight = event.keyCode != $.ui.keyCode.LEFT;
+	    		var nearest = findNearest(includeLeft, includeRight, ui.value);
+	    		slider.slider('option', 'value', nearest);
+	    		$(".tooltip237-inner").text(nearest);
+	    		return false;
+	    	}
+	   
+	    })
+	    .slider("pips", { 
+	        step: distance, 
+	        rest: "pip" });
+	    //finds the nearest value
+	    function findNearest(includeLeft, includeRight, value) {
+	    	var nearest = null;
+	    	var diff = null;
+	    	for (var i = 0; i < values.length; i++) {
+	    		if ((includeLeft && values[i] <= value) || (includeRight && values[i] >= value)) {
+	    			var newDiff = Math.abs(value - values[i]);
+	    			if (diff == null || newDiff < diff) {
+	    				nearest = values[i];
+	    				diff = newDiff;
+	    			}
+	    		}
+	    	}
+	    	return nearest;
+	    }
+	} 
+	
 	
 	/**
 	 * Returns the years where any of the metrics within the query have data.

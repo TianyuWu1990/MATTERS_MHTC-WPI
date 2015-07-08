@@ -351,13 +351,11 @@
 									<div class="box-content">			
 										<div id="heatmap-wrapper">
 											<div id="heatmap-content-wrapper">
-											<br>
 											<div>
-											<div id="labels-yearList-output"> </div>
 											<br>
-											<div class="slider"></div>
+											<div class="slider"> </div>
+											<br>							
 												<div>
-												<br>
 												<div id="heatmap-inner-wrapper">
 												
 													<div id="heatmap-info" class="heatmap-infobox">
