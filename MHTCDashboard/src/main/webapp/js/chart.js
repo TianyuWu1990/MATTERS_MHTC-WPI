@@ -991,6 +991,7 @@ var CM = (function($) {
 	 * @param yearList, the years to show in the timeline
 	 */
 	
+
 	Chart.prototype.buildSlider = function(yearList) {
 		var values = yearList.sort(); 
 		var range= values[values.length-1] - values[0];
@@ -999,7 +1000,6 @@ var CM = (function($) {
 		
 		if(range > 10){ 
 			distance = range/ 5;
-			
 		}
 		// creates the tooltip
 		var sliderTooltip = function(event, ui) {
