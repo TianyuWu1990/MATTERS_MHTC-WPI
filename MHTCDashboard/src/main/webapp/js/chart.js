@@ -908,6 +908,7 @@ var CM = (function($) {
                     var range = maxY - minY;
                     
                     var newRange = range + (range / 10);
+                    
                     var newMin = maxY - newRange;
                     newMin = (newMin.toFixed(2)) * 1;
                     
@@ -919,7 +920,7 @@ var CM = (function($) {
                                 
                 chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
 
-                if (type_var == "integer") 
+                if (type_var == "integer" && maxY < 10) 
                 {
                 	chart.forceY(0);
                 	var ticks = [];
