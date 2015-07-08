@@ -921,6 +921,14 @@ var CM = (function($) {
 
                 if (type_var == "integer") 
                 {
+                	chart.forceY(0);
+                	var ticks = [];
+                	data.forEach(function(d) {
+    					d["values"].forEach( function(e) {
+    						ticks.push(e["y"]);
+    						});
+    					});
+                	chart.yAxis.tickValues(ticks);
 			        chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
 	            } 
                 else if (type_var == "rank") 
