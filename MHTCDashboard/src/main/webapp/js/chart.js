@@ -906,16 +906,23 @@ var CM = (function($) {
                     });
                     	
                     var range = maxY - minY;
+                  //only one value
+                    if(range == 0){
+                    	chart.yAxis.tickValues([0, maxY]);
+                    }
+                    else 
+                    {
                     
-                    var newRange = range + (range / 10);
+                    	var newRange = range + (range / 10);
                     
-                    var newMin = maxY - newRange;
-                    newMin = (newMin.toFixed(2)) * 1;
+                    	var newMin = maxY - newRange;
+                    	newMin = (newMin.toFixed(2)) * 1;
                     
-                    if (newMin < 0)
-                    	newMin = 0;
+                    	if (newMin < 0)
+                    		newMin = 0;
                     
-                    chart.forceY(newMin);
+                    	chart.forceY(newMin);
+                    }
                 }
                                 
                 chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
