@@ -52,8 +52,10 @@ public class EIADownload implements IWrapper {
 			String url = apiUrl + String.format("&series_id=ELEC.PRICE.%s-COM.A", state);
 			
 			String jsonStr = URLDownload.getText(url);
+			jsonStr = jsonStr.substring(jsonStr.indexOf("{"));
 
 			processJsonToFile(state, jsonStr, writerRate);
+			
 		}
 		System.out.println("Completed.");
 		writerRate.close();
