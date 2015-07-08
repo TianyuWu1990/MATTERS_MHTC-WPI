@@ -920,16 +920,20 @@ var CM = (function($) {
                                 
                 chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
 
-                if (type_var == "integer" && maxY < 10) 
+                //categorical data
+                if (type_var == "integer")
                 {
-                	chart.forceY(0);
-                	var ticks = [];
-                	data.forEach(function(d) {
-    					d["values"].forEach( function(e) {
-    						ticks.push(e["y"]);
+                	if(maxY < 10) 
+                	{
+                		chart.forceY(0);
+                		var ticks = [];
+                		data.forEach(function(d) {
+                			d["values"].forEach( function(e) {
+                				ticks.push(e["y"]);
+    							});
     						});
-    					});
-                	chart.yAxis.tickValues(ticks);
+                		chart.yAxis.tickValues(ticks);
+                	}
 			        chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
 	            } 
                 else if (type_var == "rank") 
@@ -938,15 +942,15 @@ var CM = (function($) {
 	            } 
                 else if (type_var == "percentage") 
                 {
-	                chart.yAxis.axisLabel("%").tickFormat(d3.format(',.2%'));
+	                chart.yAxis.axisLabel("Rate").tickFormat(d3.format(',.2%'));
 	            } 
                 else if (type_var == "numeric") 
                 {
-	                chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
+	                chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.0f'));
 	            } 
                 else if (type_var == "currency") 
                 {
-	            	chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
+                	chart.yAxis.tickFormat(d3.format('$,.2f'));
 	            }
                 
                 
