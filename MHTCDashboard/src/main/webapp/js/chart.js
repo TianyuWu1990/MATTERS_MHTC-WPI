@@ -1015,7 +1015,7 @@ var CM = (function($) {
 			
 			formattedValue = value.toFixed(0);
 		}else if(metricType=="integer"){
-			formattedValue = value.toFixed(0);
+			formattedValue = value.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");;
 		}else{
 			formattedValue = value;
 		}	
