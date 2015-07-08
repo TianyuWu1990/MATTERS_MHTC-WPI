@@ -844,8 +844,8 @@ var CM = (function($) {
               
             	var type_var = Metrics.getMetricByID(as.currentind).getType();
                 var data = [];
-                
                 var years = [];
+                var vals = [];
                 
                 // Get collection of all data
                 for (var i = 0; i < multiData.length; i++)
@@ -860,9 +860,14 @@ var CM = (function($) {
                 	
                 	data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
                 		var yearForPoint = d["year"];
+                		var valForPoint = d["value"];
                 		
-                		if (years.indexOf(yearForPoint) == -1)
+                		if (years.indexOf(yearForPoint) == -1){
                 			years.push(yearForPoint);
+                		}
+                		if (vals.indexOf(valForPoint) == -1){
+        					vals.push(valForPoint);
+        				}
                 		
                 		if (type_var == "percentage"){
                 			return { "x" : yearForPoint, "y" : (d["value"].toFixed(4)) * 1 };
@@ -874,6 +879,7 @@ var CM = (function($) {
                 }
                 
                 years.sort(function(a,b) { return a - b; });
+                vals.sort(function(a,b) { return a - b; });
                             	
                 // Build the chart for the data.
             	var chart;
@@ -891,49 +897,43 @@ var CM = (function($) {
                     	.transitionDuration(350)
                     	.showControls(false)
                     	.margin({ left : 150, right : 50 });
-                    
-                 // Calculate new min y for the bar charts
-                   
-                    var vals = [];
-                    data.forEach(function(d) {
-            			d["values"].forEach( function(e) {
-            				if(vals.indexOf(e["y"]) == -1)
-            					vals.push(e["y"]);
-							});
-						});
-                    vals.sort();
-                    var minY = vals[0];
-                    var maxY = vals[vals.length -1];
-                    
-                    var range = maxY - minY;
-                  //only one value
-                    if(range == 0){
-                    	chart.yAxis.tickValues([0, maxY]);
-                    }
-                    else 
-                    {
-                    	if(range > 1){
-                    		var newRange = Math.ceil(range + (range / vals.length));
-                    	}
-                    	else{ //percentage
-                    		var newRange = range + (range / vals.length);
-                    	}
-                    	
-                    
-                    	var newMin = maxY - newRange;
-                    	newMin = (newMin.toFixed(2)) * 1;
-                    
-                    	if (newMin < 0)
-                    		newMin = 0;
-                    	
-                    	chart.forceY(newMin);
-                    	
-                    	//avoid duplicated values
-                    	if (newRange > 1 && newRange < 10){
-                    		vals.push(newMin);
-                    		chart.yAxis.tickValues(vals);
-                    	}
-                    }
+                }
+                
+                // Calculate values for y axis
+                var minY = vals[0];
+                var maxY = vals[vals.length -1];
+                var range = maxY - minY;
+                
+                //only one value
+                if(range == 0){
+                	chart.yAxis.tickValues([0, maxY]);
+                }
+                else 
+                {
+                	if(range > 1){
+                		var newRange = Math.ceil(range + (range / vals.length));
+                	}
+                	else{ //percentage
+                		var newRange = range + (range / vals.length);
+                	}
+                	
+                	var newMin = maxY - newRange;
+                	newMin = (newMin.toFixed(2)) * 1;
+                
+                	if (newMin < 0)
+                		newMin = 0;
+                	
+                	//extra space for smallest bar in chart
+                	(cm.currentVisualization == cm.visualizationTypes.BAR){
+                		chart.forceY(newMin);
+                	} 
+                	
+                	
+                	//avoid duplicated values
+                	if (newRange > 1 && newRange < 10){
+                		vals.push(newMin);
+                		chart.yAxis.tickValues(vals);
+                	}
                 }
                                 
                 chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
