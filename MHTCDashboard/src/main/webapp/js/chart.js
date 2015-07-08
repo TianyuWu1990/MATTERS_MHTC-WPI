@@ -447,7 +447,7 @@ var CM = (function($) {
 			
 			var bucketRange = currLowerBound + " - " + currUpperBound;
 	
-			if (bucketRange.length > 22)
+			if (bucketRange.length > 21)
 			{
 				bucketRange = bucketRange.substr(0, 19) + "...";
 			}
