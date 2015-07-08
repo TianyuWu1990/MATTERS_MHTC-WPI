@@ -892,19 +892,19 @@ var CM = (function($) {
                     	.showControls(false)
                     	.margin({ left : 150, right : 50 });
                     
-                    // Calculate new min y for the bar charts
-                    var minY = d3.min(data, function(d) { 
-                    	return d3.min(d["values"], function(e) {
-                    		return e["y"];
-                    	});
-                    });
-                    	
-                    var maxY = d3.max(data, function(d) { 
-                    	return d3.max(d["values"], function(e) {
-                    		return e["y"];
-                    	});
-                    });
-                    	
+                 // Calculate new min y for the bar charts
+                   
+                    var vals = [];
+                    data.forEach(function(d) {
+            			d["values"].forEach( function(e) {
+            				if(vals.indexOf(e["y"]) == -1)
+            					vals.push(e["y"]);
+							});
+						});
+                    vals.sort();
+                    var minY = vals[0];
+                    var maxY = vals[vals.length -1];
+                    
                     var range = maxY - minY;
                   //only one value
                     if(range == 0){
@@ -912,16 +912,27 @@ var CM = (function($) {
                     }
                     else 
                     {
-                    
-                    	var newRange = range + (range / 10);
+                    	if(range > 1){
+                    		var newRange = Math.ceil(range + (range / vals.length));
+                    	}
+                    	else{ //percentage
+                    		var newRange = range + (range / vals.length);
+                    	}
+                    	
                     
                     	var newMin = maxY - newRange;
                     	newMin = (newMin.toFixed(2)) * 1;
                     
                     	if (newMin < 0)
                     		newMin = 0;
-                    
+                    	
                     	chart.forceY(newMin);
+                    	
+                    	//avoid duplicated values
+                    	if (newRange > 1 && newRange < 10){
+                    		vals.push(newMin);
+                    		chart.yAxis.tickValues(vals);
+                    	}
                     }
                 }
                                 
@@ -933,16 +944,11 @@ var CM = (function($) {
                 	if(maxY < 10) 
                 	{
                 		chart.forceY(0);
-                		var ticks = [];
-                		data.forEach(function(d) {
-                			d["values"].forEach( function(e) {
-                				ticks.push(e["y"]);
-    							});
-    						});
-                		chart.yAxis.tickValues(ticks);
+                		chart.yAxis.tickValues(vals);
                 	}
 			        chart.yAxis.axisLabel("Count").tickFormat(d3.format(',.0f'));
 	            } 
+                
                 else if (type_var == "rank") 
                 {
 	                chart.yAxis.axisLabel("Ranking out of 50 States").tickFormat(d3.format('.0f'));
@@ -953,7 +959,7 @@ var CM = (function($) {
 	            } 
                 else if (type_var == "numeric") 
                 {
-	                chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.0f'));
+	                chart.yAxis.axisLabel("Value").tickFormat(d3.format(',.2f'));
 	            } 
                 else if (type_var == "currency") 
                 {
