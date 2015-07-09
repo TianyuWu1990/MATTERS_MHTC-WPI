@@ -990,8 +990,6 @@ var CM = (function($) {
 	 * Builds the timeline slider for yearselection
 	 * @param yearList, the years to show in the timeline
 	 */
-	
-
 	Chart.prototype.buildSlider = function(yearList) {
 		var values = yearList.sort(); 
 		var range= values[values.length-1] - values[0];
@@ -1003,7 +1001,7 @@ var CM = (function($) {
 		}
 		// creates the tooltip
 		var sliderTooltip = function(event, ui) {
-	     var curValue = ui.value || initialValue;
+	     var curValue = initialValue;
 	     var tooltip = '<div class="tooltip237"><div class="tooltip237-inner">' + curValue + '</div><div class="tooltip237-arrow"></div></div>';
 
 	      $('.ui-slider-handle').html(tooltip);
@@ -1028,6 +1026,9 @@ var CM = (function($) {
 	    .slider("pips", { 
 	        step: distance, 
 	        rest: "pip" });
+	    
+	    $(".tooltip237-inner").text(initialValue); // makes the latest year 
+	    
 	    //finds the nearest value
 	    function findNearest(includeLeft, includeRight, value) {
 	    	var nearest = null;
