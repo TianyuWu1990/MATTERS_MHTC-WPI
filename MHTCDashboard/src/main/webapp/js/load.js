@@ -484,6 +484,10 @@ loadFunction = function() {
 		// Reflect updated state selection within data.
 		updateStateSelection();
 	});
+	
+	String.prototype.capitalize = function() {
+			    return this.charAt(0).toUpperCase() + this.slice(1);
+			}
 
 	var filterStates = function() {
 		// First, show all options
@@ -493,8 +497,9 @@ loadFunction = function() {
 		}
 
 		var inputVal = $(".stateFilter > input").val().trim();
+		var InputVal = inputVal.capitalize();
 
-		var nonMatchingStates = States.filterStates(inputVal);
+		var nonMatchingStates = States.filterStates(InputVal);
 
 		for (i = 0; i < nonMatchingStates.length; i++) {
 			var matchingText = "#" + nonMatchingStates[i].id
