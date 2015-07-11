@@ -62,83 +62,28 @@ loadFunction = function() {
 	
 	
 	$(window).on('resize', function() {
-//		if ($("#sidebar-left").hasClass("open")){
-//			$(".DTFC_ScrollWrapper").attr("style", "width:"+ tableWidth +"px");
-//		}
-			// Perform resize functions on resize.
-//		var tableLengthSidebarOpen = $(window).width() *0.7;
-//		var tableLengthSidebarClose = $(window).width() *0.9;
 		setTableWidth(window);
-/*
-		cm.refreshSizing(this);
-		if ($(window).width() > 830)
-		{
-			mobileMode = false;
-			var sidebarOpen = $("#sidebar-left").hasClass("open");
-					
-			var icon = $("#toggle-sidebar").find("i")[0];
-			
-			$("#metrics-trigger").removeClass("open");
-			$("#states-trigger").removeClass("open");
-			
-			$("#metricSelectionCol").attr("style", "width: 250px;");
-			$("#stateSelectionCol").attr("style", "width: 200px;");
-				
-			if (sidebarOpen)
-			{
-				$(icon).removeClass("fa-caret-right");
-				$(icon).addClass("fa-caret-left");
-				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");	
-			}
-			else
-			{
-				$(icon).removeClass("fa-caret-left");
-				$(icon).addClass("fa-caret-right");
-				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow: hidden; width:" + tableLengthSidebarClose.toString() + "px");
-			}
-		}else {
-			if (sidebarOpen)
-			{
-				$(icon).removeClass("fa-caret-right");
-				$(icon).addClass("fa-caret-left");
-				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");
-			}
-			else
-			{
-				$(icon).removeClass("fa-caret-left");
-				$(icon).addClass("fa-caret-right");
-				$("#scrollTest").attr("style", "position:relative; clear:both; height: 343px; top: 0px; left: 0px; overflow: hidden; width:" + tableLengthSidebarClose.toString() + "px");
-			}
-			
-			if (mobileMode == false){
-				
-				$("#sidebar-left").removeClass("open");
-				$("#stateSelectionCol").removeClass("open");
-				$("#metricSelectionCol").removeClass("open");
-				$("#sidebar-left").attr("style", "margin-left:-450px;");
-				$("#viewWrapper").attr("style", "left: 0px");
-				mobileMode = true;
-			}
-		}*/
-		
 	});	
 	
 	
 	setTableWidth = function(window){
 		cm.refreshSizing(this);
-		var tableLengthSidebarOpen = $(window).width() *0.7;
-		var tableLengthSidebarClose = $(window).width() *0.9;
+		var tableWidthSidebarOpen = $(window).width() *0.7;
+		var tableWidthSidebarClose = $(window).width() *0.9;
+		
+		$(".dataTables_scrollHead").attr("style", "width: 100%;");
+		$(".dataTables_scrollHeadInner").attr("style", "width: 100%;");
+		$(".table  dataTable no-footer").attr("style", "width: 100%;");
+		$(".dataTables_scrollBody").attr("style", "overflow: auto; width: 100%; height: 100%;");
+		$("#myTable").attr("style", "width: 100%;");
 		
 		if ($(window).width() > 830)
 		{
 			mobileMode = false;
-			var sidebarOpen = $("#sidebar-left").hasClass("open");
-					
+			var sidebarOpen = $("#sidebar-left").hasClass("open");		
 			var icon = $("#toggle-sidebar").find("i")[0];
-			
 			$("#metrics-trigger").removeClass("open");
 			$("#states-trigger").removeClass("open");
-			
 			$("#metricSelectionCol").attr("style", "width: 250px;");
 			$("#stateSelectionCol").attr("style", "width: 200px;");
 				
@@ -146,26 +91,58 @@ loadFunction = function() {
 			{
 				$(icon).removeClass("fa-caret-right");
 				$(icon).addClass("fa-caret-left");
-				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");	
+				//$("#mbodyMultipleQuery").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
+						//tableWidthSidebarOpen.toString() + "px");
+				$("#myTable_wrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
+						tableWidthSidebarOpen.toString() + "px");
+				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
+						tableWidthSidebarOpen.toString() + "px; height:100%");
+			//	$(".dataTables_scrollHead").attr("style", "width:" +
+				//tableWidthSidebarOpen.toString() + "px");
+//				$(".dataTables_scrollHeadInner").attr("style", "width:" +
+//						tableWidthSidebarOpen.toString() + "px");
+//				$(".table  dataTable no-footer").attr("style", "width:" +
+//						tableWidthSidebarOpen.toString() + "px");
+//				$(".dataTables_scrollBody").attr("style", "overflow: auto; width:" +
+//					tableWidthSidebarOpen.toString() + "px; height: 100%;");
+//				$("#myTable").attr("style", "width:" +
+//						tableWidthSidebarOpen.toString() + "px");
 			}
 			else
 			{
 				$(icon).removeClass("fa-caret-left");
 				$(icon).addClass("fa-caret-right");
-				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow: hidden; width:" + tableLengthSidebarClose.toString() + "px");
+				//$("#mbodyMultipleQuery").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
+						//tableWidthSidebarClose.toString() + "px");
+				$("#myTable_wrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
+						tableWidthSidebarClose.toString() + "px; height:100%");
+				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
+						tableWidthSidebarClose.toString() + "px; height:100%");
+			//	$(".dataTables_scrollHead").attr("style", "width:" +
+				//	tableWidthSidebarClose.toString() + "px");
+//				$(".dataTables_scrollHeadInner").attr("style", "width:" +
+//						tableWidthSidebarClose.toString() + "px");
+//				$(".table  dataTable no-footer").attr("style", "width:" +
+//						tableWidthSidebarClose.toString() + "px");
+//				$(".dataTables_scrollBody").attr("style", "overflow: auto; width:" +
+//					tableWidthSidebarClose.toString() + "px; height: 100%;");
+//				$("#myTable").attr("style", "width:" +
+//						tableWidthSidebarClose.toString() + "px");
 			}
 		}else {
 			if (sidebarOpen)
 			{
 				$(icon).removeClass("fa-caret-right");
 				$(icon).addClass("fa-caret-left");
-				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden;width:" + tableLengthSidebarOpen.toString() + "px");
+				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
+						tableWidthSidebarOpen.toString() + "px; height:100%");
 			}
 			else
 			{
 				$(icon).removeClass("fa-caret-left");
 				$(icon).addClass("fa-caret-right");
-				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow: hidden; width:" + tableLengthSidebarClose.toString() + "px");
+				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
+						tableWidthSidebarClose.toString() + "px; height:100%");
 			}
 			
 			if (mobileMode == false){
@@ -187,6 +164,7 @@ loadFunction = function() {
 		$("#metricSelectionCol").removeClass("open");
 		$("#sidebar-left").attr("style", "margin-left:-450px;");
 		$("#viewWrapper").attr("style", "left: 0px");
+		//$(".dataTables_scrollBody").attr("style","height:"+ tableHeight.toString()+"px");
 		mobileMode = true;
 	}
 	
