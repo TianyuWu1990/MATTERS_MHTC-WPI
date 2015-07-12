@@ -63,7 +63,7 @@
 		<script src="js/d3.v3.min.js"></script>
 		<script src="js/nv.d3.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-		
+		<script src="js/jquery.cookie.js"></script>
 		<script src="js/raphael.js"></script> <!-- Dependency for raphael.js -->
 		<script src="js/jquery.usmap.js"></script>
 		
@@ -93,6 +93,7 @@
 				<!-- start: left sidebar -->
 				<div id="sidebar-left" class="sidebar open">
 					<div class="column" id="metricSelectionCol">
+						<div class="column-cover" id="metricColCover" style="display:none;"></div>
 						<div class="title" >
 							<span>Select Metrics</span>
 						</div>
@@ -183,6 +184,7 @@
 						</div>
 					</div>
 					<div class="column" id="stateSelectionCol">
+						<div class="column-cover" id="stateColCover" style="display:none;"></div>
 						<div class="title">
 							<span>Select States</span>
 						</div>
@@ -220,8 +222,10 @@
 		    
 				<!-- start: Content -->
 			
-				<div id="content">
-					<div class="pagination pagination-right">
+				<div id="content">		
+					<div class="column-cover" id="contentColCover" style="display:none;"></div>
+
+					<div class="pagination pagination-right" id="navigationTabs">
 						<div id="metrics-trigger-wrapper">
 							<label id="metrics-trigger" class="side-icon trigger-button">Metrics</label>
 						</div>
@@ -261,7 +265,7 @@
 						
 					</div>
 					
-					<div id="viewWrapper">
+					<div id="viewWrapper">					
 						<div id="vizView" style="display: none;">
 	
 							<!--  Start Back/Forward Buttons -->
@@ -417,21 +421,50 @@
 						<div id="startupMsg">
 							<div id="startupMsgWrapper">
 								<div id="startupMsgAct">
-								<div id="noJSError" style="color: #680017; font-weight: bolder;">
-									WARNING: You must have JavaScript enabled to use this page.
-									<br/>
-								</div>
+									<div id="noJSError" style="font-weight: bolder;">
+										WARNING: You must have JavaScript enabled to use this page.
+										<br/>
+									</div>
+									
+									<b>
+									Welcome to MATTERS Data Explorer!</b><br/><br/>
 								
-								<b>
-								Welcome to MATTERS Data Explorer!</b><br/><br/>
-								
-								To start, please select metrics and states from the menu to the left.<br/>
-					 			<div>
-					 			Use the buttons in the red bar above to view your selection in different ways.
-					 			</div>				 			
+									To start, please select metrics and states from the menu to the left.<br/>
+						 			<div>
+						 			Use the buttons in the red bar above to view your selection in different ways.
+						 			</div>	
 								</div>
 							</div>
 						</div>
+						
+						
+						<div id="tutorialMsg" style="display:none;">
+							<div id="tutorialMsgWrapper">
+								<div id="tutorialMsgAct">
+									<div id="noJSError_tutorial" style="font-weight: bolder;">
+										WARNING: You must have JavaScript enabled to use this page.
+										<br/>
+									</div>
+									
+									<div id="tutorial_1">
+									<b>
+									Welcome to MATTERS Data Explorer!</b><br/><br/>
+									To start, first select a metric from the options in the left-hand pane.	
+									</div>
+									
+									<div id="tutorial_2" style="display:none;">
+									Next, choose a state from the list of states in the left-hand pane.	
+									</div>
+									
+									<div id="tutorial_3" style="display:none;color:black !important;">
+									Finally, you can use the tabs in the upper right to change the way the data is displayed.
+									<br/><br/><br/>
+									<button id="closeTutorial">Got it! Show Visualization</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						
 					</div>
 				</div>	
 				

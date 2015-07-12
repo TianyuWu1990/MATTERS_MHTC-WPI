@@ -33,8 +33,8 @@ stopHeatMapAnimation = function() {
 };
 
 $(document).ready(function() {
-
 	$("#noJSError").hide();
+	$("#noJSError_tutorial").hide();
 
 	// Init menu
 	$(".menu-close").prependTo(".menu > ul");

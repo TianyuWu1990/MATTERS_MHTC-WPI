@@ -52,6 +52,7 @@ var AS = (function($) {
 
 		this.errorCode = this.errorCodes.NO_METRIC_OR_STATE_SELECTED;
 		this.startupMsgVisible = true;
+		this.inTutorial = false;
 	}
 
 	/**
@@ -61,8 +62,105 @@ var AS = (function($) {
 		// Initializes all tooltips on the page.
 		$(function() {
 			$("[rel='tooltip']").tooltip();
-		});				
+		});		
+		
+		// If first run, show tutorial. Otherwise, hide tutorial and
+		// display normal text.
+		var firstRun = !$.cookie("visitedPreviously");
+		
+		if (firstRun)
+		{
+			this.runTutorial();
+		}
 	};
+	
+	/**
+	 * Runs the first-run tutorial explaining how to use MATTERS.
+	 */
+	AppState.prototype.runTutorial = function ()
+	{
+		// For now, we only show the tutorial on non-mobile views
+		if($(window).width() >= 830)
+		{
+			this.inTutorial = true;
+			
+			$("#startupMsg").hide();
+			$("#tutorialMsg").show();
+			$("#contentColCover").show();
+			$("#stateColCover").show();		
+			
+			var outerThis = this;
+			
+			$(".metricOption").click(function(){
+				if (outerThis.inTutorial)
+				{
+					$("#metricColCover").fadeIn();
+					$("#stateColCover").fadeOut();
+					
+					$("#tutorial_1").hide();
+					$("#tutorial_2").show();
+				}
+			});
+			
+			$(".selectUnselectAll").click(function(){
+				if (outerThis.inTutorial)
+				{
+					$("#metricColCover").fadeIn();
+					$("#stateColCover").fadeOut();
+					
+					$("#tutorial_1").hide();
+					$("#tutorial_2").show();
+				}
+			});
+			
+			$(".stateSelectionOption").click(function(){
+				if (outerThis.inTutorial)
+				{
+					$("#stateColCover").fadeIn();
+					$("#contentColCover").fadeOut();
+					
+					$("#tutorial_2").hide();
+					$("#tutorial_3").show();
+				}
+			});
+			
+			$(".selectPeerStates").click(function(){
+				if (outerThis.inTutorial)
+				{
+					$("#stateColCover").fadeIn();
+					$("#contentColCover").fadeOut();
+					
+					$("#tutorial_2").hide();
+					$("#tutorial_3").show();
+				}
+			});
+		
+			$(".selectUnselectAllStates").click(function(){
+				if (outerThis.inTutorial)
+				{
+					$("#stateColCover").fadeIn();
+					$("#contentColCover").fadeOut();
+					
+					$("#tutorial_2").hide();
+					$("#tutorial_3").show();				
+				}
+			});
+
+			$("#closeTutorial").click(function(){
+				if (outerThis.inTutorial)
+				{
+					$("#stateColCover").fadeOut();
+					$("#metricColCover").fadeOut();
+					
+					$("#tutorialMsg").hide();
+					outerThis.inTutorial = false;				
+					outerThis.refreshErrorView();
+					
+					$.cookie("visitedPreviously", true);
+				}			
+			});
+		}	
+	}
 	
 	/**
 	 * Returns the list of currently selected metrics.
@@ -565,7 +663,7 @@ var AS = (function($) {
 		
 		$("#errorMsg").empty();
 
-		if (this.startupMsgVisible)
+		if (this.startupMsgVisible || this.inTutorial)
 			return;
 		
 		if (this.inError()) 
