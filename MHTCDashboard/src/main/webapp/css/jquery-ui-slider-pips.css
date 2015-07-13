@@ -359,7 +359,7 @@
     /* SELECTED STATES */
     /* Comment out this chuck of code if you don't want to have
         the new label colours shown */
-
+/*
     .ui-slider-pips [class*=ui-slider-pip-initial] {
 
         font-weight: bold;        
@@ -406,5 +406,5 @@
 
     }
 
-
+*/
 

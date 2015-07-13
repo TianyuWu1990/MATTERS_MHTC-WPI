@@ -1213,10 +1213,11 @@ ul.timelineListStyle > li
 }
 .slider{
   height: 10px;
-  margin: 2em 10em 10em; }
-  
-  
-  .tooltip237 {
+  margin: 2em 10em 10em;
+  font-size:130%;
+   }
+   
+.tooltip237 {
     position: absolute;
     z-index: 1020;
     display: block;
@@ -1229,8 +1230,8 @@ ul.timelineListStyle > li
 
 .tooltip237 .tooltip237-arrow {
     bottom: 0;
-    left: 50%;
-    margin-left: -5px;
+    left: 35%;
+    margin-left: -4px;
     border-top: 5px solid #000000;
     border-right: 5px solid transparent;
     border-left: 5px solid transparent;
@@ -1244,6 +1245,7 @@ ul.timelineListStyle > li
     padding: 3px 8px;
     color: #fff;
     text-align: center;
+    font-size:110%;
     text-decoration: none;
     background-color: #680017;
     -webkit-border-radius: 4px;
