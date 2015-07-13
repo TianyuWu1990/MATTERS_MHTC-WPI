@@ -751,7 +751,7 @@ var CM = (function($) {
 				var oTable = $('#myTable').dataTable(
 						{
 							//"scrollY":        "300px",
-							"scrollY": 		  false,
+							"scrollY": 		  "true",
 							"scrollX":        "100%",
 					        "scrollCollapse": true,
 					        "paging":         true,
@@ -769,8 +769,8 @@ var CM = (function($) {
 				$('#myTable').dataTable().fnDestroy();
 				var oTable = $('#myTable').dataTable(
 						{
-							//"scrollY":        "300px",
-							"scrollY":        false,
+							"scrollY":        "true",
+							//"scrollY":        "true",
 							"scrollX":        "100%",
 					        "scrollCollapse": true,
 					        "paging":         true,
