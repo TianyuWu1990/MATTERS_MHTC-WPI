@@ -71,8 +71,13 @@ loadFunction = function() {
 		var tableWidthSidebarOpen = $(window).width() *0.7;
 		var tableWidthSidebarClose = $(window).width() *0.9;
 		var tableHeight = $(window).height() * 0.6;
-		
+		// this part of code remove the sorting sign of the first line of table boday and 
+		//move the context of table to the left
 		$("#myTable thead th").removeClass('sorting');
+		$("#myTable tbody td").css("padding-left","15px");
+		
+		
+		//change the single attribute
 		$(".dataTables_scrollHead").css("width", "100%;");
 		$(".dataTables_scrollHeadInner").css("width", "100%;");
 		$(".dataTable").css("width", "100%");
@@ -132,6 +137,8 @@ loadFunction = function() {
 				mobileMode = true;
 			}
 		}
+		
+		// control the height of table base on the height of window
 		if($(".DTFC_ScrollWrapper").height() > tableHeight) 
 		{
 			$(".DTFC_ScrollWrapper").css("height", tableHeight + "px");

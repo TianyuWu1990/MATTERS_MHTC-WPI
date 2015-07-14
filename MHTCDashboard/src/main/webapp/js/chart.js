@@ -477,10 +477,11 @@ var CM = (function($) {
 		$("#mbodyMultipleQuery > *").remove();
 		
 		// Add new table
+		// try to move the margin-left
 		if(selectedMetrics.length == 1 || selectedStates.length ==1){
-			$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='margin-left: -10px; width:100%; font-size: 13px; background-color:#fff'></table>");
+			$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='margin-left: 0px; width:100%; font-size: 13px; background-color:#fff'></table>");
 		}else{
-			$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='margin-left: -10px; width:100%; font-size: 13px; background-color:#fff'></table>");
+			$("#mbodyMultipleQuery").append("<table id='myTable' class='table '  style='margin-left: 0px; width:100%; font-size: 13px; background-color:#fff'></table>");
 		}
 		
 		// Select the new table for future manipulation
@@ -750,7 +751,6 @@ var CM = (function($) {
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable(
 						{
-							//"scrollY":        "300px",
 							"scrollY": 		  "true",
 							"scrollX":        "100%",
 					        "scrollCollapse": true,
@@ -770,7 +770,6 @@ var CM = (function($) {
 				var oTable = $('#myTable').dataTable(
 						{
 							"scrollY":        "true",
-							//"scrollY":        "true",
 							"scrollX":        "100%",
 					        "scrollCollapse": true,
 					        "paging":         true,
