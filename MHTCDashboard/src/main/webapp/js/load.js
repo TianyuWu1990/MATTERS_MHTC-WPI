@@ -70,13 +70,22 @@ loadFunction = function() {
 		cm.refreshSizing(this);
 		var tableWidthSidebarOpen = $(window).width() *0.7;
 		var tableWidthSidebarClose = $(window).width() *0.9;
+		var tableHeight = $(window).height() * 0.6;
+		// this part of code remove the sorting sign of the first line of table boday and 
+		//move the context of table to the left
+		$("#myTable thead th").removeClass('sorting');
+		$("#myTable tbody td").css("padding-left","15px");
 		
-		$(".dataTables_scrollHead").attr("style", "width: 100%;");
-		$(".dataTables_scrollHeadInner").attr("style", "width: 100%;");
-		$(".table  dataTable no-footer").attr("style", "width: 100%;");
-		$(".dataTables_scrollBody").attr("style", "overflow: auto; width: 100%; height: 100%;");
-		$("#myTable").attr("style", "width: 100%;");
 		
+		//change the single attribute
+		$(".dataTables_scrollHead").css("width", "100%;");
+		$(".dataTables_scrollHeadInner").css("width", "100%;");
+		$(".dataTable").css("width", "100%");
+		$(".no-footer").css("width", "100%");
+		$(".dataTables_scrollBody").css("width", "100%");
+		$(".dataTables_scrollBody").css("overflow", "auto");
+		$(".dataTables_scrollBody").css("height", "100%");
+			
 		if ($(window).width() > 830)
 		{
 			mobileMode = false;
@@ -91,43 +100,16 @@ loadFunction = function() {
 			{
 				$(icon).removeClass("fa-caret-right");
 				$(icon).addClass("fa-caret-left");
-				//$("#mbodyMultipleQuery").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
-						//tableWidthSidebarOpen.toString() + "px");
-				$("#myTable_wrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
-						tableWidthSidebarOpen.toString() + "px");
 				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
 						tableWidthSidebarOpen.toString() + "px; height:100%");
-			//	$(".dataTables_scrollHead").attr("style", "width:" +
-				//tableWidthSidebarOpen.toString() + "px");
-//				$(".dataTables_scrollHeadInner").attr("style", "width:" +
-//						tableWidthSidebarOpen.toString() + "px");
-//				$(".table  dataTable no-footer").attr("style", "width:" +
-//						tableWidthSidebarOpen.toString() + "px");
-//				$(".dataTables_scrollBody").attr("style", "overflow: auto; width:" +
-//					tableWidthSidebarOpen.toString() + "px; height: 100%;");
-//				$("#myTable").attr("style", "width:" +
-//						tableWidthSidebarOpen.toString() + "px");
 			}
 			else
 			{
 				$(icon).removeClass("fa-caret-left");
 				$(icon).addClass("fa-caret-right");
-				//$("#mbodyMultipleQuery").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
-						//tableWidthSidebarClose.toString() + "px");
-				$("#myTable_wrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
-						tableWidthSidebarClose.toString() + "px; height:100%");
 				$(".DTFC_ScrollWrapper").attr("style", "position:relative; clear:both; top: 0px; left: 0px; overflow:hidden; width:" +
 						tableWidthSidebarClose.toString() + "px; height:100%");
-			//	$(".dataTables_scrollHead").attr("style", "width:" +
-				//	tableWidthSidebarClose.toString() + "px");
-//				$(".dataTables_scrollHeadInner").attr("style", "width:" +
-//						tableWidthSidebarClose.toString() + "px");
-//				$(".table  dataTable no-footer").attr("style", "width:" +
-//						tableWidthSidebarClose.toString() + "px");
-//				$(".dataTables_scrollBody").attr("style", "overflow: auto; width:" +
-//					tableWidthSidebarClose.toString() + "px; height: 100%;");
-//				$("#myTable").attr("style", "width:" +
-//						tableWidthSidebarClose.toString() + "px");
+
 			}
 		}else {
 			if (sidebarOpen)
@@ -155,6 +137,15 @@ loadFunction = function() {
 				mobileMode = true;
 			}
 		}
+		
+		// control the height of table base on the height of window
+		if($(".DTFC_ScrollWrapper").height() > tableHeight) 
+		{
+			$(".DTFC_ScrollWrapper").css("height", tableHeight + "px");
+			$(".DTFC_LeftBodyWrapper").css("height", tableHeight + "px");
+			$(".DTFC_LeftBodyLiner").css("height", tableHeight + "px");
+			$(".dataTables_scrollBody").css("height", tableHeight + "px");
+		}	
 	}
 	
 	if ($(window).width() < 830)

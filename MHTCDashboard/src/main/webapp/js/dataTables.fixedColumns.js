@@ -662,7 +662,7 @@ FixedColumns.prototype = /** @lends FixedColumns.prototype */{
 				'<div class="DTFC_LeftWrapper" style="position:absolute; top:0; left:0;">'+
 					'<div class="DTFC_LeftHeadWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 					'<div class="DTFC_LeftBodyWrapper" style="position:relative; top:0; left:0; overflow:hidden">'+
-						'<div class="DTFC_LeftBodyLiner" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
+						'<div class="DTFC_LeftBodyLiner" style="position:relative; top:0; left:-10px; overflow:hidden;"></div>'+
 					'</div>'+
 					'<div class="DTFC_LeftFootWrapper" style="position:relative; top:0; left:0; overflow:hidden;"></div>'+
 				'</div>'+
