@@ -162,7 +162,7 @@
 			</div>
 			<h2>National Ranking and Data</h2>
 			<hr class="state-ranking">
-			<div class= "stateProfileWindow" style="width: 100%; overflow-x: scroll;">
+			<div class= "stateProfileWindow" style="width: 100%; overflow-x: hidden;">
 			
 			<table style="min-width: 750px;" id="stateProfileTable">
 			<tr class="ranking-header">
