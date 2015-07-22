@@ -82,7 +82,7 @@
 
 
 		   <div class="copy-block">
-		   <h1 class="int-title">Feedback</h1>
+		   <h1 class="int-title"> Contact Us </h1>
 		   <h2 class="int-sub-title">Please provide your suggestions about MATTERS. Thank you!</h2>
 		   <c:if test="${'' eq param.error}">
 				<div style="color: red">
