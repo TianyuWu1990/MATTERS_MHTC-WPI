@@ -234,7 +234,7 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<a id="toggle-sidebar"> 
+							<a id="toggle-sidebar" data-toggle="tooltip" title="Click to collapse menus"> 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
