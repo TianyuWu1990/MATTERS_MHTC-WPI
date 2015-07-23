@@ -75,17 +75,22 @@
 			<p>MATTERS consolidates a set of key cost, economic, and talent metrics along with independent national rankings into a single source 
 			for use by all parties.  MATTERS has been developed by faculty and students of Worcester Polytechnic Institute in collaboration with 
 			a team of subject matter experts from Mass. High Tech Council members and partner organizations. </p>
+			
+	<br>
+    <a class="view-more-about" href="http://www.mhtc.org/"> MHTC Home Page</a> 
+	<a class="view-more-about" href="/mhtc/howto"/> How To Use MATTERS</a>
+    <a class="view-more-about" href="/mhtc/methodology"/>  Methodology </a> 
+
  
 
 		   </div> <!-- copy block -->
 <!-- ====================================== SIDEBAR START ============== -->    
-    
-		
-
-
-
 
 		</div><!-- container -->
+	
+	
+  
+	
     
     
       </div><!-- main-content-wrap -->

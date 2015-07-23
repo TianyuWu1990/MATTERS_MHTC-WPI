@@ -87,7 +87,7 @@ $(function() {
 					<li class="menu-item"><a href="<c:url value="/profile"/>">States</a></li>
 					<li class="menu-item"><a href="<c:url value="/about"/>">About</a></li>
 
-					<li class="menu-item"><a href="<c:url value="/feedback"/>">Feedback</a></li>
+					<li class="menu-item"><a href="<c:url value="/feedback"/>">Contact Us</a></li>
 
 					
 					<sec:authorize access="hasRole('ADMIN')">

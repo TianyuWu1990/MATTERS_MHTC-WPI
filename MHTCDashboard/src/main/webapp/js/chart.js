@@ -1,5 +1,5 @@
  /*
-  * Copyright (C) 2013 Worcester Polytechnic Institute
+setPopover  * Copyright (C) 2013 Worcester Polytechnic Institute
   * All Rights Reserved. 
   *  
  */  
@@ -728,6 +728,8 @@ var CM = (function($) {
 	/**
 	 * Constructs popover with clickable link to metric source
 	 * @param id of element to add popover
+	 * @param metric 
+	 * @param position of the popover top, bottom, left, right
 	 */
 	Chart.prototype.setPopover = function(id, metric, position) {
 		var url;

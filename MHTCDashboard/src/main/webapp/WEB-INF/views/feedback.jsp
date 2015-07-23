@@ -82,8 +82,8 @@
 
 
 		   <div class="copy-block">
-		   <h1 class="int-title">Feedback</h1>
-		   <h2 class="int-sub-title">Please provide your suggestions about MATTERS. Thank you!</h2>
+		   <h1 class="int-title"> Contact Us </h1>
+		   <h2 class="int-sub-title">Please use the form below to contact us with any comments or questions about MATTERS. Thank you!</h2>
 		   <c:if test="${'' eq param.error}">
 				<div style="color: red">
 					Authentication failed!<br /> Reason :
@@ -111,12 +111,15 @@
 				<input name="subject" id="subject" style="width: 100%; max-width: 530px; height: 30px; margin-top: 5px;" type="text">
 				<span class="form-error"></span>  
 				<br/><br/>
-
-				<label class="feedback_label">Comments <span class="gfield_required">*</span></label><br/>
+				
+				<label class="feedback_label"> Message <span class="gfield_required">*</span></label><br/>
 				<textarea name="comments" style="width: 100%; max-width: 530px; height: 180px; margin-top: 5px;"></textarea>
 				<span class="form-error"></span> 
 
-				<br/><br/>
+			<!--	<br/><br/>
+				<label class="feedback_label"> Questions <span class="gfield_required">*</span></label><br/>
+				<textarea name="Questions" style="width: 100%; max-width: 530px; height: 180px; margin-top: 5px;"></textarea>
+				<span class="form-error"></span>  -->
 				
                    <%
 		                ReCaptcha c = ReCaptchaFactory.newReCaptcha("6LfXmgATAAAAABM7oYTbs6-XZyU29ozVca5taJIb",

@@ -242,6 +242,11 @@
 									<i></i>
 								</a>
 							</li>
+							<li class="graph-tab" id="heatmap-tab">
+								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+									<i></i>
+								</a>
+							</li>
 							<li class=" graph-tab " id="line-tab">
 								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
 									<i></i>
@@ -252,11 +257,7 @@
 									<i></i>
 								</a>
 							</li>
-							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
-									<i></i>
-								</a>
-							</li>
+							
 						</ul>
 						
 					</div>

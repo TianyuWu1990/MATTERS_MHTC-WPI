@@ -311,6 +311,14 @@ ___________________________________
 	font-size: 15px;
 	
 }
+.view-more-about{
+	color: #e8002d;
+	margin-top: 15px;
+	display: block;
+	font-size: 15px;
+	
+}
+
 
 .view-more:hover{
 	color: #e8002d;
