@@ -194,7 +194,10 @@
 									</a>
 								</li>
 								<li>
-									<a class="selectPeerStates" id="${row.id}">
+								
+									<a class="selectPeerStates" id="${row.id}" title="The 15 MATTERS Peer States "
+									data-toggle= "popover"
+									data-content= "<a href= '${"/mhtc/about"}' target= '_blank'> Learn More </a>" >
 										<i class="fa fa-circle"></i>
 										Peer States
 									</a>
