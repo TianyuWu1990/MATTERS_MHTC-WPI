@@ -388,6 +388,13 @@ loadFunction = function() {
 		$(metricList).removeClass("open");
 	};
 
+	
+	
+	//click metric list to change the arrow up and down
+	
+	
+	
+	
 	// Make sure to resize the list when the window resizes
 	$(window).on('resize', function() {
 		var listHeight = getSizeOfMetricList();
@@ -402,10 +409,15 @@ loadFunction = function() {
 
 		if (list.hasClass("open")) {
 			closeMetricList(list);
+			
+			  $("i",this).toggleClass("fa fa-chevron-down fa fa-chevron-up");
 		} else {
 			openMetricList(list);
+			$("i",this).toggleClass("fa fa-chevron-up fa fa-chevron-down");
 		}
 	});
+	
+	
 
 	/***************************************************************************
 	 * End Sidebar Metric Menus logic
