@@ -437,14 +437,21 @@ var AS = (function($) {
 		var xCoord = $(visualizationKey).width() / 2;
 		var metricIndex = this.currentind;
 		
+		
 		canvg(canvas, serialized, { offsetY: 150, ignoreMouse: true, ignoreClear: true, 
 			ignoreAnimation: true, renderCallback: function() {
 			
 			ctx.drawImage(document.getElementById('printCanvasLogo'), canvas.width / 2 - 95, 0, 330, 100);
-			ctx.font = "22px sans-serif";
+			ctx.font = "20px sans-serif";
 			ctx.textAlign = "center";
 			ctx.fillText(Metrics.getMetricByID(metricIndex)
-					.getName(), xCoord + 70, 130)
+					.getName(), xCoord + 65, 130);
+			
+			
+			ctx.fillText(Metrics.getMetricByID(metricIndex)
+					.getUrlFrom(), xCoord + 65, 150);
+	
+					
 			
 			var image = document.getElementById('printCanvas').toDataURL("image/png");
 			
