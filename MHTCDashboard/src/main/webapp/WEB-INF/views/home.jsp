@@ -204,7 +204,10 @@
 									</a>
 								</li>
 								<li>
-									<a class="selectPeerStates" id="${row.id}">
+								
+									<a class="selectPeerStates" id="${row.id}" title="The 15 MATTERS Peer States "
+									data-toggle= "popover"
+									data-content= "<a href= '${"/mhtc/about"}' target= '_blank'> Learn More </a>" >
 										<i class="fa fa-circle"></i>
 										Peer States
 									</a>
@@ -248,22 +251,22 @@
 
 						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+								<a href="#table" data-toggle="tab" title="Table View" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+								<a href="#heatmaptab" data-toggle="tab" title="Heap Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i></i>
 								</a>
 							</li>
 							<li class=" graph-tab " id="line-tab">
-								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
+								<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+								<a href="#bar" data-toggle="tab" title="Bar Graph" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
 									<i></i>
 								</a>
 							</li>

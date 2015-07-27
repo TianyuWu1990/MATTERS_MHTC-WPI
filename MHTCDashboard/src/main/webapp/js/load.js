@@ -54,6 +54,8 @@ $(document).ready(function() {
 			if(metric != null){
 				cm.setPopover("#"+this.id+".metricOption", metric, "right");
 			}
+			else
+				cm.setPopoverNonMetrics(this.id+".selectPeerStates", "right"); //initializes popover for peerStates
 		});
 	});
 	
