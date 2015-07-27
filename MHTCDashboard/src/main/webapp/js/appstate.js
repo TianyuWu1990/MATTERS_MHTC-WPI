@@ -538,10 +538,14 @@ var AS = (function($) {
 			data.title = "Metric:" + data.title;
 			data.metricTitle = true;
 		}
+		
 		 
 		var url = "excel?data=" + encodeURIComponent(JSON.stringify(data));
 		window.location = url;
 	};
+	
+	
+	
 	
 	/**
 	 * Handles the given error code

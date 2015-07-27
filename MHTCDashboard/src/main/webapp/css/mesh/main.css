@@ -124,6 +124,9 @@ ___________________________________
 	max-width: 1140px;
 	
 }
+
+
+
 .map-container h1{
 	font-size: 30px;
 	width: 100%;
@@ -687,3 +690,17 @@ span#recaptcha_privacy a {
 	min-width:500px;
 }
 /*-----------------cxf------------------------*/
+
+
+/*-----------------show/hide arrow in sidebar------------------------*/
+#hoverstyle {
+  display:none;
+  float:right;
+ 
+}
+li :hover  #hoverstyle{
+ display:block;
+ float:right;
+}
+
+
