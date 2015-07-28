@@ -94,7 +94,7 @@ window.location = "./unsupported";
                        </div> 
                       </c:otherwise>
                    </c:choose>
-                   <p>Click <a href="<c:url value="/" />">here</a> to return to the dashboard.</p>
+                   <p>Click <a class="view-more-about" href="<c:url value="/" />">here</a> to return to the dashboard.</p>
                                        
              
         
