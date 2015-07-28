@@ -207,8 +207,9 @@
 								
 									<a class="selectPeerStates" id="${row.id}" title="The 15 MATTERS Peer States "
 									data-toggle= "popover"
-									data-content= "<a href= '${"/mhtc/about"}' target= '_blank'> Learn More </a>" >
+									data-content= "<a href= '<c:url value="/methodology"/>' target= '_blank'> Learn More </a>" >
 										<i class="fa fa-circle"></i>
+										
 										Peer States
 									</a>
 								</li>
