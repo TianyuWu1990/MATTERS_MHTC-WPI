@@ -85,6 +85,7 @@
 	
 	</head>
 
+
 	<body>
 	
 	<jsp:include page="unifiedHeader.jsp"/>
@@ -99,9 +100,12 @@
 						<div class="sidebar-content accordion-menu" id="metricListWrapper">
 							<ul>
 								<li>
-									<a class="metricHeader">
-										National Ranking 
+									<a class="metricHeader" >
+									National Ranking 
+										<i class="fa fa-chevron-down" id="hoverstyle">
+										</i>
 									</a>
+								
 									<ul id="nationalProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
@@ -121,6 +125,8 @@
 								<li>
 									<a class="metricHeader">
 										Talent Metrics 
+										<i class="fa fa-chevron-down" id="hoverstyle">
+										</i>
 									</a>
 									<ul id="talentProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
@@ -141,6 +147,8 @@
 								<li>
 									<a class="metricHeader">
 										Cost Metrics
+										<i class="fa fa-chevron-down" id="hoverstyle">
+										</i>
 									</a>
 									<ul id= "costProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
@@ -161,6 +169,8 @@
 								<li>
 									<a class="metricHeader">
 										Economy Metrics
+										<i class="fa fa-chevron-down" id="hoverstyle">
+										</i>
 									</a>
 									<ul id="economyProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
@@ -194,7 +204,10 @@
 									</a>
 								</li>
 								<li>
-									<a class="selectPeerStates" id="${row.id}">
+								
+									<a class="selectPeerStates" id="${row.id}" title="The 15 MATTERS Peer States "
+									data-toggle= "popover"
+									data-content= "<a href= '${"/mhtc/about"}' target= '_blank'> Learn More </a>" >
 										<i class="fa fa-circle"></i>
 										Peer States
 									</a>
@@ -231,29 +244,29 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<a id="toggle-sidebar"> 
+							<a id="toggle-sidebar" data-toggle="tooltip" title="Click to collapse menus"> 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
 
 						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Explore the metrics/states you've selected in table format." onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+								<a href="#table" data-toggle="tab" title="Table View" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Explore a heatmap of the United States to see how each state performs with the metrics you've selected." onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+								<a href="#heatmaptab" data-toggle="tab" title="Heap Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i></i>
 								</a>
 							</li>
 							<li class=" graph-tab " id="line-tab">
-								<a href="#line" data-toggle="tab" title="Explore the metrics/states you've selected in a line chart." onclick="as.visualizationDeployer(as.visualizations.LINE);">
+								<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a href="#bar" data-toggle="tab" title="Explore the metrics/states you've selected in a bar chart." onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+								<a href="#bar" data-toggle="tab" title="Bar Graph" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
 									<i></i>
 								</a>
 							</li>
