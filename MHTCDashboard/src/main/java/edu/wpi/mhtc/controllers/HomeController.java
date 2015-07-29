@@ -57,7 +57,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import edu.wpi.mhtc.model.admin.User;
+import edu.wpi.mhtc.model.dashboard.Data;
 import edu.wpi.mhtc.model.dashboard.DataSeries;
+import edu.wpi.mhtc.model.dashboard.Metric;
 import edu.wpi.mhtc.model.dashboard.PeerStates;
 import edu.wpi.mhtc.model.dashboard.State;
 import edu.wpi.mhtc.service.admin.UserService;
@@ -397,10 +399,12 @@ public class HomeController {
     public @ResponseBody String excel_exporter(Locale locale, Model model, @RequestParam("data") String data, HttpServletResponse response) throws IOException {	
     	/***************** JSON Preprocessor ***************************/
     	JSONObject json = new JSONObject(data);
+    	int tableType =json.getInt("tableType");
+    	JSONArray header =  json.getJSONArray("header");
     	String title = json.getString("title");
     	boolean metricTitle = json.getBoolean("metricTitle");
-		JSONArray jsonTable =  json.getJSONArray("rows");
-		JSONArray jsonMetrics =  json.getJSONArray("metrics");
+    	JSONArray jsonMetrics =  json.getJSONArray("metrics");
+    	JSONArray jsonStates =  json.getJSONArray("states");
 		
 		/***************** Excel Data Preparation ***************************/
     	Workbook wb;
@@ -458,30 +462,49 @@ public class HomeController {
 		}
 		
 		titleCell.setCellStyle(boldStyle);
-		
-		/* We can now put the rows from the table in, the table header row should be in bold font.
-		 * This will go from row 4 to row [4 + (table_length) - 1]
-		 */
-		for (int i = 0; i < jsonTable.length(); i++) {
-			JSONArray jsonDataRow = jsonTable.getJSONArray(i);
-			Row dataRow = sheet.createRow(i+4);
-			for (int j = 0; j < jsonDataRow.length(); j++) {
-				Cell cell = dataRow.createCell(j);
-				cell.setCellValue(jsonDataRow.getString(j));
-				
-				if (i == 0) {
-					cell.setCellStyle(boldStyle);
-				}
-			}
-			
-			if (i > 0) {
-				sheet.autoSizeColumn(i);
-			}
+//		get years
+		int[] yearList = new int[header.length()-1];
+		for (int i = 1; i < header.length(); i++) {
+			yearList[i-1]=Integer.parseInt(header.getString(i));
+		}
+//		create header
+		Row dataRow = sheet.createRow(4);
+		for (int i = 0; i < header.length(); i++) {
+			Cell cell = dataRow.createCell(i);
+			cell.setCellStyle(boldStyle);
+			cell.setCellValue(header.getString(i));
+			sheet.autoSizeColumn(i);
 		}
 		sheet.setColumnWidth(0, 3000);
 	    
+		/* We can now put the rows from the table in, the table header row should be in bold font.
+		 * This will go from row 5 to row [5 + (table_length) - 1]
+		 */
+		int currentPtr = 5;
+		switch(tableType){
+		//one state
+		case 0:
+			String stateName = jsonStates.getString(0);
+			
+			for (int i = 0; i < jsonMetrics.length(); i++){
+				Row dsTextRow = sheet.createRow(currentPtr); //row for each metric
+				String metricName = jsonMetrics.getString(i);
+				DataSeries series = statsService.getDataForStateByName(stateName, metricName).get(0);
+				List<Data> dataList = series.getDataPoints();
+				for(int j=0 ; j<dataList.size(); j++){
+					Cell dsCell = dsTextRow.createCell(j);
+					dsCell.setCellValue(dataList.get(i).getValue());
+				}
+				currentPtr ++;
+			}
+			
+//			multiple states one metric
+		case 1:
+//			multiple states multiple metrics
+		case 2:
+		}
+		
 		/* "Original Data Sources" row: */
-		int currentPtr = 4 + jsonTable.length() + 1;
 		Row dsTextRow = sheet.createRow(currentPtr);
 		Cell dsCell = dsTextRow.createCell(0);
 		dsCell.setCellValue("Original Data Sources");

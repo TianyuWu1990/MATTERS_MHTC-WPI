@@ -499,46 +499,47 @@ var AS = (function($) {
 	 */
 	AppState.prototype.exportExcelData = function() {
 		var data = {
-			rows : [],
+			tableType : 0,
+			header : [],
 			title : "",
+			metricTitle : false,
 			metrics: [],
-			metricTitle : false
+			states : []
 		};
 		
-		// Decide which title to put into the excel file
-		var year  = "Year: " + $("ul.timelineListStyle button#tableTimeLineButton.active").text();
-		var tableHeader = $(".box-content #optionalTableTitle").text();
-		
-		data.title = $(".box-content #optionalTableTitle").is(":visible") ? tableHeader: year;
-		
-
+		if(cm.selectedStates.length == 1) { // If we only have 1 state to load data for, single or mult metrics handled same
+			data.tableType = 0;
+			data.title = $(".box-content #optionalTableTitle").text();
+		}
+		else if(cm.selectedMetrics.length == 1) { // We have multiple states, one metric to load
+			data.tableType = 1;
+			data.title = "Metric:" + data.title;
+			data.metricTitle = true;
+			data.title = $(".box-content #optionalTableTitle").text();
+		}
+		else{	// We have multiple states, multiple metrics
+			data.tableType = 2;
+			data.title = "Year: " + $("ul.timelineListStyle button#tableTimeLineButton.active").text();
+		}
 		// Column heads
 		var header = [];
 		dt.find("thead th").each(function(index) {
-			header.push($(this).text());
+			data.header.push($(this).text());
 		});
-		data.rows.push(header);
-		
-		// Table data
-		$.each(dt.fnGetData(), function(key, value) {
-			value[0] = $('<div>' + value[0] + '<div>').text();
-			data.rows.push(value);	
-		});
-		
-		var firstStateQuery = recentQueryData[0];
-		
-		for (var i = 0; i < firstStateQuery.length; i++) {
-			var name = firstStateQuery[i].metric.name;
-			var url = firstStateQuery[i].metric.urlFrom == null ? "N/A" : firstStateQuery[i].metric.urlFrom;
-			data.metrics.push([name, url]);
+		//States
+		for(var i=0; i < cm.selectedStates.length ; i++){
+			data.states.push(cm.selectedStates[i]);
 		}
 		
-		// Only one metric but multiple states, add "Metric" to the title
-		if ((firstStateQuery.length == 1) && (recentQueryData.length > 1)) {
-			data.title = "Metric:" + data.title;
-			data.metricTitle = true;
-		}
 		
+		
+//		var firstStateQuery = recentQueryData[0];
+//		
+//		for (var i = 0; i < firstStateQuery.length; i++) {
+//			var name = firstStateQuery[i].metric.name;
+//			var url = firstStateQuery[i].metric.urlFrom == null ? "N/A" : firstStateQuery[i].metric.urlFrom;
+//			data.metrics.push([name, url]);
+//		}
 		 
 		var url = "excel?data=" + encodeURIComponent(JSON.stringify(data));
 		window.location = url;
