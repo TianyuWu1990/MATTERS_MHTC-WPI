@@ -74,27 +74,20 @@ window.location = "./unsupported";
 
 
   <div class="copy-block">
-  <h1 class="int-title"></h1>
+  <h1 class="int-title"> Thank You for Contacting Us</h1>
   
-  <h2 class="int-sub-title">Users Feedback</h2>
-  
-      
-                          
-          
-                        
-
-                  
+                    
                    <c:choose>
                       <c:when test="${completed}">
-                      Thank you for your feedback. Please allow 24-48 hours to receive our reply.
+                        <h2 class="int-sub-title">Please allow 24-48 hours to receive our reply. </h2>
                       </c:when>  
                       <c:otherwise>
                        <div id="login-alert" class="alert alert-danger">
-                        Error while sending feedback form. Please try again
+                        <h2 class="int-sub-title">  Error while sending feedback form. Please try again </h2>
                        </div> 
                       </c:otherwise>
                    </c:choose>
-                   <p>Click <a href="<c:url value="/" />">here</a> to return to the dashboard.</p>
+                   <a class="view-more-about" href="<c:url value="/" />"> Return to the Dashboard</a>
                                        
              
         
