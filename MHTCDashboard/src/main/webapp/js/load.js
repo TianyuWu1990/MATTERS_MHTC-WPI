@@ -596,3 +596,9 @@ function tableButtonClicked(obj, year_in)
 	cm.selectYear(year_in);
 	cm.refresh();
 }
+
+function yearSelectedSlider(year_in){
+	cm.selectYear(year_in);
+	cm.refresh();
+	
+}
