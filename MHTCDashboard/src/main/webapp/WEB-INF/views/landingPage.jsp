@@ -287,17 +287,37 @@
 </section>
 
 <!-- ==================================== PARTNERS SECTION ========= -->
-
 	<div class="container partner-container">
-		<h2>Program Partners</h2>
-
-			<div class="logo-wrap">
+	<h2>Sponsors</h2>
+		<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.emdmillipore.com/">
 					<img src="img/EMD_Blue_RGB.jpg" alt="header-sponsors" width="50" height="50" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
+			 <div class="logo-wrap">
+				<div class="logo-contain">
+				<a href = "http://www.massdevelopment.com/">
+					<img src="img/massdevelopment_logo_HIRES.jpg" alt="header-sponsors" height="50"/>
+					</a>
+				 </div> <!-- .logo-contain -->
+			 </div> <!-- .logo-wrap -->
+			  <div class="logo-wrap">
+				<div class="logo-contain">
+				<a href = "http://www.mass.gov/portal/">
+					<img src="img/state seal hi res.jpg" alt="header-sponsors" height="75"/>
+					</a>
+				 </div> <!-- .logo-contain -->
+			 </div> <!-- .logo-wrap -->
+	</div>
+
+
+
+	<div class="container partner-container">
+		<h2>Program Partners</h2>
+
+			
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.wpi.edu/">
