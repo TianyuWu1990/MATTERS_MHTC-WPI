@@ -205,11 +205,10 @@
 								</li>
 								<li>
 								
-									<a class="selectPeerStates" id="${row.id}" title="The 15 MATTERS Key Technology States"
+									<a class="selectPeerStates" id="${row.id}" title="The 15 MATTERS Peer States "
 									data-toggle= "popover"
-									data-content= "<a href= '<c:url value="/methodology"/>' target= '_blank'> Learn More </a>" >
+									data-content= "<a href= '${"/mhtc/about"}' target= '_blank'> Learn More </a>" >
 										<i class="fa fa-circle"></i>
-										
 										Peer States
 									</a>
 								</li>
@@ -437,8 +436,8 @@
 									<br/>
 								</div>
 								
-								<b>
-								Welcome to MATTERS Data Explorer!</b><br/><br/>
+								<div style="font-weight:bold;">
+								Welcome to MATTERS Data Explorer!</div><br/><br/>
 								
 								To start, please select metrics and states from the menu to the left.<br/>
 					 			<div>
