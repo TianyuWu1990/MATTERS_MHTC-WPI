@@ -408,18 +408,31 @@ loadFunction = function() {
 	$('.metricHeader').click(function(e) {
 
 		var list = $(this).parent().find('.metricList').first();
-
+        
 		if (list.hasClass("open")) {
 			closeMetricList(list);
-			
-			  $("i",this).toggleClass("fa fa-chevron-down fa fa-chevron-up");
+			 
 		} else {
 			openMetricList(list);
-			$("i",this).toggleClass("fa fa-chevron-up fa fa-chevron-down");
 		}
 	});
 	
 	
+	$(document).ready(function () {
+	    $('.metricHeader').on('click', function(){
+	    	$("b").removeClass("fa fa-chevron-down fa fa-chevron-up");
+	    	$("b").addClass("fa fa-chevron-down");
+	    	var list = $(this).parent().find('.metricList').first();
+	        
+			if (list.hasClass("open")) {
+	    	$("b",this).removeClass( 'fa fa-chevron-down');
+	    	$("b",this).addClass( 'fa fa-chevron-up');
+			}else{
+				$("b",this).removeClass( 'fa fa-chevron-up');
+		    	$("b",this).addClass( 'fa fa-chevron-down');
+			}
+	    });
+	});
 
 	/***************************************************************************
 	 * End Sidebar Metric Menus logic
