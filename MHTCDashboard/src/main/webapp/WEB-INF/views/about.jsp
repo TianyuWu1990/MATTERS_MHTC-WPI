@@ -1,3 +1,4 @@
+<%@ taglib uri='http://java.sun.com/jsp/jstl/core' prefix='c'%>
 <!DOCTYPE html>
 <html class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients no-cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths" lang="en-US" style="">
 
@@ -78,10 +79,9 @@
 			
 	<br>
     <a class="view-more-about" href="http://www.mhtc.org/"> MHTC Home Page</a> 
-	<a class="view-more-about" href="/mhtc/howto"/> How To Use MATTERS</a>
-    <a class="view-more-about" href="/mhtc/methodology"/>  Methodology </a> 
+	<a class="view-more-about" href="<c:url value="/howto"/>"> How To Use MATTERS</a>
+    <a class="view-more-about" href="<c:url value="/methodology"/>">  Methodology </a> 
 
- 
 
 		   </div> <!-- copy block -->
 <!-- ====================================== SIDEBAR START ============== -->    
