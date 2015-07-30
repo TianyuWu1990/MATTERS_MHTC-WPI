@@ -102,8 +102,8 @@
 								<li>
 									<a class="metricHeader" >
 									National Ranking 
-										<i class="fa fa-chevron-down" id="hoverstyle">
-										</i>
+										<b class="fa fa-chevron-down" id="hoverstyle">
+										</b>
 									</a>
 								
 									<ul id="nationalProfileList" class="metricList">
@@ -125,8 +125,8 @@
 								<li>
 									<a class="metricHeader">
 										Talent Metrics 
-										<i class="fa fa-chevron-down" id="hoverstyle">
-										</i>
+										<b class="fa fa-chevron-down" id="hoverstyle">
+										</b>
 									</a>
 									<ul id="talentProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
@@ -147,8 +147,8 @@
 								<li>
 									<a class="metricHeader">
 										Cost Metrics
-										<i class="fa fa-chevron-down" id="hoverstyle">
-										</i>
+										<b class="fa fa-chevron-down" id="hoverstyle">
+										</b>
 									</a>
 									<ul id= "costProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
@@ -169,8 +169,8 @@
 								<li>
 									<a class="metricHeader">
 										Economy Metrics
-										<i class="fa fa-chevron-down" id="hoverstyle">
-										</i>
+										<b class="fa fa-chevron-down" id="hoverstyle">
+										</b>
 									</a>
 									<ul id="economyProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
@@ -205,11 +205,10 @@
 								</li>
 								<li>
 								
-									<a class="selectPeerStates" id="${row.id}" title="The 15 MATTERS Key Technology States"
+									<a class="selectPeerStates" id="${row.id}" title="The 15 MATTERS Peer States "
 									data-toggle= "popover"
-									data-content= "<a href= '<c:url value="/methodology"/>' target= '_blank'> Learn More </a>" >
+									data-content= "<a href= '${"/mhtc/about"}' target= '_blank'> Learn More </a>" >
 										<i class="fa fa-circle"></i>
-										
 										Peer States
 									</a>
 								</li>
@@ -437,8 +436,8 @@
 									<br/>
 								</div>
 								
-								<b>
-								Welcome to MATTERS Data Explorer!</b><br/><br/>
+								<div style="font-weight:bold;">
+								Welcome to MATTERS Data Explorer!</div><br/><br/>
 								
 								To start, please select metrics and states from the menu to the left.<br/>
 					 			<div>
