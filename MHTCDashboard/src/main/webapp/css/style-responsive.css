@@ -5,6 +5,20 @@
 	.pagination{
 		width:320px;
 	}
+	.stateProfileWindowScroll{
+	overflow-x: scroll !important;
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	vertical-align: baseline;
+	font-family: 'Muli', sans-serif;
+	
+}
 }
 
 @media only screen and (max-width: 450px){
@@ -72,6 +86,22 @@
 	.side-icon{
 		padding:15px 10px;
 	}
+	
+
+	.stateProfileWindow1{
+	overflow-x: scroll !important;
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	vertical-align: baseline;
+	font-family: 'Muli', sans-serif;
+	
+}
 
 }
 
@@ -90,4 +120,33 @@
 	{
 		height: 100%;
 	}
+	.stateProfileWindowScroll{
+	overflow-x: scroll !important;
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	vertical-align: baseline;
+	font-family: 'Muli', sans-serif;
 }
+}
+@media only screen and (min-width: 1000px){
+	.stateProfileWindowScroll{
+	overflow-x: hidden !important;
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	vertical-align: baseline;
+	font-family: 'Muli', sans-serif;
+}
+
+	}
