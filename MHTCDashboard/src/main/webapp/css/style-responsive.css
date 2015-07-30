@@ -5,20 +5,7 @@
 	.pagination{
 		width:320px;
 	}
-	.stateProfileWindowScroll{
-	overflow-x: scroll !important;
-	border: 0;
-	font-family: inherit;
-	font-size: 100%;
-	font-style: inherit;
-	font-weight: inherit;
-	margin: 0;
-	outline: 0;
-	padding: 0;
-	vertical-align: baseline;
-	font-family: 'Muli', sans-serif;
 	
-}
 }
 
 @media only screen and (max-width: 450px){
@@ -91,20 +78,7 @@
 	}
 	
 
-	.stateProfileWindow1{
-	overflow-x: scroll !important;
-	border: 0;
-	font-family: inherit;
-	font-size: 100%;
-	font-style: inherit;
-	font-weight: inherit;
-	margin: 0;
-	outline: 0;
-	padding: 0;
-	vertical-align: baseline;
-	font-family: 'Muli', sans-serif;
 	
-}
 
 }
 
@@ -123,20 +97,12 @@
 	{
 		height: 100%;
 	}
-	.stateProfileWindowScroll{
-	overflow-x: scroll !important;
-	border: 0;
-	font-family: inherit;
-	font-size: 100%;
-	font-style: inherit;
-	font-weight: inherit;
-	margin: 0;
-	outline: 0;
-	padding: 0;
-	vertical-align: baseline;
-	font-family: 'Muli', sans-serif;
+	
 }
-}
+
+/*hides the scroll bar in the state profiles page if the window is bigger than 1000px,
+this means that the table is big enough to see without a scroll bar
+*/
 @media only screen and (min-width: 1000px){
 	.stateProfileWindowScroll{
 	overflow-x: hidden !important;
@@ -153,3 +119,22 @@
 }
 
 	}
+	/* shows the scroll bar in state profile when the window size is smaller than the table 
+	*/
+	@media only screen and (max-width: 999px){
+	.stateProfileWindowScroll{
+	overflow-x: scroll !important;
+	border: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-style: inherit;
+	font-weight: inherit;
+	margin: 0;
+	outline: 0;
+	padding: 0;
+	vertical-align: baseline;
+	font-family: 'Muli', sans-serif;
+}
+
+	}
+	
