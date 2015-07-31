@@ -202,8 +202,15 @@
 a#favorite{
 	display:none;
 }
-
+/********************* disable the arrows in metric column ***************************/
+b#hoverstyle{
+	display:none;
+	}
 	
+li :hover  #hoverstyle{
+ display:none;
+
+}
 }
 
 /* ========================= HEADER ========================== */
@@ -322,6 +329,15 @@ a#favorite{
 	right:5px;
 	background-image:none;
 	
+}
+/********************* disable the arrows in metric column ***************************/
+b#hoverstyle{
+	display:none;
+	}
+	
+li :hover  #hoverstyle{
+ display:none;
+
 }
 }
 

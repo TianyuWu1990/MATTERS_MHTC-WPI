@@ -128,7 +128,7 @@
 		            %> 
 				
 				<button type="submit" style="margin-top: 20px; margin-bottom: 40px;">
-					Send Feedback
+					Send 
 				</button>
 				
 			</form>

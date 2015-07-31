@@ -25,6 +25,7 @@
 	<link href="css/mesh/main-responsive.css" rel="stylesheet" type="text/css">
 	<link href="css/mesh/animate.css" rel="stylesheet" type="text/css">
 	<link href="css/stateProfiles.css" rel="stylesheet" type="text/css">
+	<link href="css/style-responsive.css" rel="stylesheet" type="text/css">
 	
 	<!-- Check for browser compatibility before we do anything else -->
 	<script src="js/modernizr.js"></script>
@@ -162,8 +163,9 @@
 			</div>
 			<h2>National Ranking and Data</h2>
 			<hr class="state-ranking">
-			<div class= "stateProfileWindow" style="width: 100%; overflow-x: hidden;">
 			
+			<div class= "stateProfileWindowScroll" style="width: 100%; "> <!-- this is the slider  -->
+	
 			<table style="min-width: 750px;" id="stateProfileTable">
 			<tr class="ranking-header">
 				<td class="rank">Rank</td>
