@@ -71,6 +71,20 @@
 		display: inline-block;
 	}
 	
+	
+	
+	/* #ui-slider-line
+	{
+		display: none;
+	}
+	
+	#ui-slider-line.active
+	{
+		display: inline-block;
+	} */
+	
+	
+	
 	#myTable_filter
 	{
 		display: none;
