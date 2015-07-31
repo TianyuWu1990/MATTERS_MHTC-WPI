@@ -436,12 +436,13 @@
 									<br/>
 								</div>
 								
-								<div style="font-weight:bold;">
+								<div style="font-weight:bold; text-align: center;">
 								Welcome to MATTERS Data Explorer!</div><br/><br/>
 								
 								To start, please select metrics and states from the menu to the left.<br/>
 					 			<div>
 					 			Use the buttons in the red bar above to view your selection in different ways.
+					 			
 					 			</div>				 			
 								</div>
 							</div>
