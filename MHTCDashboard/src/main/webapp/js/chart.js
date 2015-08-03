@@ -130,7 +130,7 @@ var CM = (function($) {
 		switch (this.currentVisualization) 
 		{
 			case this.visualizationTypes.TABLE:
-				this.refreshTable();
+				this.refreshTable(true);
 				break;
 			case this.visualizationTypes.LINE:
 				this.refreshGraphs();
@@ -139,7 +139,7 @@ var CM = (function($) {
 				this.refreshGraphs();
 				break;
 			case this.visualizationTypes.HEATMAP:
-				this.refreshHeatMap();
+				this.refreshHeatMap(true);
 				break;
 		}
 	};
@@ -174,7 +174,7 @@ var CM = (function($) {
 	/**
 	 * Refreshes the heat map based on the currently selected metric in the App State.
 	 */
-	Chart.prototype.refreshHeatMap = function() {
+	Chart.prototype.refreshHeatMap = function(isRefreshSlider) {
 		this.refreshHeatMapSizing(); // Make sure sizing is right
 		
 		// Get data from server on the currently selected metric
@@ -212,10 +212,12 @@ var CM = (function($) {
 				cm.selectYear(yearsForMetric[0]);
 
 			// builds the slider
-			cm.buildSlider(yearsForMetric);
-			$(".slider").show();
-	
 			
+			if(isRefreshSlider)
+			{
+				cm.buildSlider(yearsForMetric);
+				$(".slider").show();
+			}
 			
 			// Create coloring map for all states.
 					
@@ -468,7 +470,7 @@ var CM = (function($) {
 	/**
 	 * Refreshes the table view based on the currently selected states and metrics in the App State.
 	 */
-	Chart.prototype.refreshTable = function() {
+	Chart.prototype.refreshTable = function(isRefreshSlider) {
 		
 		var selectedStates = as.getSelectedStates();
 		var selectedMetrics = as.getSelectedMetrics();
@@ -662,13 +664,21 @@ var CM = (function($) {
 					    // Set the selected year if its not already set.
 					    if(cm.yearSelected == -1)
 							cm.selectYear(yearsForMetrics[0]);
+					    
+					   //  Refresh the table when we slide the slider
+					    if(isRefreshSlider)
+						{
+							cm.buildSlider(yearsForMetrics);
+							$(".slider").show();
+						}
+				
 						
 						// Show the years table		
-						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
-						
-					  $("#timelinetable").empty();
-					    $("#timelinetable").append(timelineTableHTML);
-						$("#timelinetable").show();
+//						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
+//						
+//						$("#timelinetable").empty();
+//					    $("#timelinetable").append(timelineTableHTML);
+//						$("#timelinetable").show();
 						
 						// Build Header
 						var row = "<th>State</th>";
@@ -775,6 +785,7 @@ var CM = (function($) {
 	 * Refreshes the bar and line graphs
 	 */
 	Chart.prototype.refreshGraphs = function() {
+		
 		if(as.currentind == null || as.currentind == undefined)
 			return;
 		   
@@ -1020,9 +1031,41 @@ var CM = (function($) {
 	    		slider.slider('option', 'value', nearest);
 	    		$(".tooltip237-inner").text(nearest);
 	    		return false;
-	    	}
-	   
+	    	},
+	    	change: function( event, ui ) {
+	    		cm.selectYear(ui.value);
+		    	cm.refreshHeatMap(false);
+		    	cm.refreshTable(false);
+		   		$(".tooltip237-inner").text(ui.value);   		
+	    	}   
 	    })
+	    /*
+	    var timeRangeSlider = $(".slider").slider({
+	    	value: values[values.length-1],
+	    	min: values[0], 
+	        max: values[values.length-1], 
+	        range:true,
+	    	values: [includeLeft.ui.value, includeRight.ui.value],
+	        
+	        create: sliderTooltip,
+	    	slide: function(event, ui) {// function to find nearest value
+	    		var includeLeft = event.keyCode != $.ui.keyCode.RIGHT;
+	    		var includeRight = event.keyCode != $.ui.keyCode.LEFT;
+	    		var nearest = findNearest(includeLeft, includeRight, ui.value);
+	    		slider.slider('option', 'value', nearest);
+	    		$(".tooltip237-inner").text(nearest);
+	    		return false;
+	    	},
+	    	change: function( event, ui ) {
+	    		cm.selectYear(ui.value);
+		    	cm.refreshHeatMap(false);
+		    	cm.refreshTable(false);
+		   		$(".tooltip237-inner").text(ui.value);   		
+	    	}   
+	    })*/
+	    
+	    
+	    
 	    .slider("pips", { 
 	        step: distance, 
 	        rest: "pip" });
@@ -1105,5 +1148,7 @@ var CM = (function($) {
 	return publicInterface;
 	
 }($));
+
+
 
 

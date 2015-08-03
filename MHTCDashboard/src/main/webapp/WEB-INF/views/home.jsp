@@ -313,6 +313,7 @@
 								
 								<!-- Table -->
 								<div class="tab-pane active" id="table">
+								 <div class="slider"> </div>
 									<div class="box-content">
 										<table>
 											<tr>
@@ -353,7 +354,7 @@
 											<div id="heatmap-content-wrapper">
 											<div>
 											<br>
-											<div class="slider"> </div>
+										  <div class="slider"> </div>
 											<br>							
 												<div>
 												<div id="heatmap-inner-wrapper">
