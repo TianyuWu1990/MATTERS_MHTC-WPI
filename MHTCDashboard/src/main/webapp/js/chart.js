@@ -211,7 +211,235 @@ var CM = (function($) {
 			if (cm.yearSelected == -1)
 				cm.selectYear(yearsForMetric[0]);
 
-			// builds the slider
+			// Refresh the heatmap when we slide the slider
+			if(isRefreshSlider){
+				cm.buildSlider(yearsForMetric);
+		  		$(".slider").show();
+			}
+			
+			
+			// Create coloring map for all states.
+					
+			// First, separate out the info we care about (ABBR, VALUE, TYPE)
+			var stateValueInOrder = multiData.map(function(e) { 
+				var dataPointForYear = e[0].dataPoints.filter(function(f){
+					return f.year == cm.yearSelected;
+				});
+				
+				dataPointForYear = dataPointForYear.length == 0 ? null : dataPointForYear[0].value;
+				
+				return [e[0].state.abbr, dataPointForYear, e[0].metric.type];
+			});
+			
+			// Remove any without real data, but keep track of them for later.
+			// Also remove US average
+			var missingData = [];
+			stateValueInOrder = stateValueInOrder.filter(function(e) {
+				
+				if (e[1] == null)
+				{
+					missingData.push(e);
+					return false;
+				}
+				
+				if (e[0] == "US")
+				{
+					return false;
+				}
+				
+				return true;				
+			});
+			
+			// Then we sort so that the highest value is at the 0th position
+			stateValueInOrder.sort(function (a,b) {
+				return b[1] - a[1];
+			});
+					
+			
+			// Create the stored data structure for each state
+			cm.heatMapValuesMap = {};
+			cm.heatMapColorMap = {};
+			
+			var maxValue = stateValueInOrder[0][1];
+			var minValue = stateValueInOrder[stateValueInOrder.length - 1][1];
+			
+			// Add records for every state we have data for
+			for (var i = 0; i < stateValueInOrder.length; i++)
+			{
+				var value = stateValueInOrder[i][1];
+				var stateAbbr = stateValueInOrder[i][0];
+				var metricType = stateValueInOrder[i][2];
+				
+				var ranking = i + 1;
+				
+				if (isRank || isReversed)
+				{
+					ranking = stateValueInOrder.length - i;
+				}
+				
+				var stateColor = cm.getHeatmapColor(cm.heatMapColorScheme, value, minValue, maxValue);
+				
+				var actualState = States.getStateByAbbreviation(stateAbbr);
+				
+				cm.heatMapValuesMap[stateAbbr] = { 
+						ranking	:	cm.getFormattedMetricValue("rank", ranking),
+						value			:	cm.getFormattedMetricValue(metricType, value),
+						state			:	actualState,
+						metricType		:	metricType,
+						color			:	stateColor,
+				};
+				
+				cm.heatMapColorMap[stateAbbr] = { 
+						'fill' : stateColor, 
+						'stroke' : '#000',
+						'stroke-width' : 1
+						};
+			}
+			
+			// Add record for the states where we are missing data.
+			for (var i = 0; i < missingData.length; i++)
+			{
+				var stateAbbr = missingData[i][0];
+				var metricType = missingData[i][2];
+				
+				var ranking = missingData.length + 1 + i;
+				
+				var stateColor = "#fff";
+				
+				var actualState = States.getStateByAbbreviation(stateAbbr);
+				
+				cm.heatMapValuesMap[stateAbbr] = { 
+						ranking	:	cm.getFormattedMetricValue("rank", ranking),
+						value			:	null,
+						state			:	actualState,
+						metricType		:	metricType,
+						color			:	stateColor,
+				};
+				
+				cm.heatMapColorMap[stateAbbr] = { 
+						'fill' : stateColor, 
+						'stroke' : '#000',
+						'stroke-width' : 1
+						};
+			}
+			
+			// What first rank is depends on the type of metric.
+			if (isRank || isReversed)
+			{
+				$("#heatmap-generalinfo-first").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+				$("#heatmap-generalinfo-last").html(stateValueInOrder[0][0]);
+			}
+			else
+			{
+				$("#heatmap-generalinfo-first").html(stateValueInOrder[0][0]);
+				$("#heatmap-generalinfo-last").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
+			}
+			
+			if (isRank)
+			{
+				$("#heatmap-value-block").hide();
+			}
+			else
+			{
+				$("#heatmap-value-block").show();
+			}
+			
+			$("#heatmap-generalinfo-ma").html(cm.heatMapValuesMap["MA"].ranking);
+			
+			
+			cm.buildHeatMapLegend(minValue, maxValue, stateValueInOrder[0][2]);
+			
+			
+			$("#heatmap-actual").empty();
+			$("#heatmap-actual").removeData("pluginUsmap");
+			$("#heatmap-actual").usmap({
+				stateHoverAnimation: 100,
+				showLabels: true,
+				stateHoverStyles: {'stroke-width': 3},
+				
+				mouseover: function(event, data) {					
+					var infoForState = cm.heatMapValuesMap[data.name];
+					
+					$("#heatmap-specificDetails-name").html(infoForState.state.getName() + " (" + infoForState.state.getAbbr() + ")" );
+					
+					if (infoForState.value == null)
+					{
+						$("#heatmap-specificDetails-rank").html("No Data");
+						$("#heatmap-specificDetails-value").html("No Data");
+					}
+					else
+					{
+						$("#heatmap-specificDetails-rank").html(infoForState.ranking);
+						$("#heatmap-specificDetails-value").html(infoForState.value);
+					}
+				
+					if (infoForState.state.isPeerState())
+					{
+						$("#heatmap-specificDetails-peer").show();
+					}
+					else
+					{
+						$("#heatmap-specificDetails-peer").hide();
+					}
+					
+					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 220;
+					var tooltipY = event.originalEvent.clientY + $("body").scrollTop() - $("#heatmap-actual").offset().top;
+										
+					if (tooltipX > $("#heatmap-actual").width())
+						tooltipX = tooltipX - 220;
+					
+					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
+					
+					$("#heatmap-tooltip").show();
+				},
+				
+				mouseout: function(event, data) {
+					$("#heatmap-tooltip").hide();
+				},
+				
+				stateSpecificStyles: cm.heatMapColorMap,
+			});
+		});
+	};
+	
+	Chart.prototype.refreshHeatMapForSlider = function() {
+		this.refreshHeatMapSizing(); // Make sure sizing is right
+		
+		// Get data from server on the currently selected metric
+		var allStates = States.getAllstates();
+		
+		var allStatesForQuery = allStates.map(function(s) {
+			return s.abbr;
+		});
+
+		var query = DQ.create().addState(allStatesForQuery)
+			.addMetric(Metrics.getMetricByID(as.currentind).getName());
+		
+		var isReversed = Metrics.getMetricByID(as.currentind).trendType == "reversed";
+		var isRank = Metrics.getMetricByID(as.currentind).type == "rank";
+		
+		query.execute(function(multiData) {
+			var yearsForMetric = cm.getYearsMetricState(allStates, multiData); // Get the years that the metric exists for from the data
+		
+			// If no data, say so.
+			if (yearsForMetric.length == 0)
+			{
+				$("#heatmap-content-wrapper").hide();
+				$("#heatmap-error").show();
+				return;
+			}
+			else
+			{
+				$("#heatmap-content-wrapper").show();
+				$("#heatmap-error").hide();
+			}
+				
+			yearsForMetric.sort(function(a,b) {return b - a;} ); 
+			
+			if (cm.yearSelected == -1)
+				cm.selectYear(yearsForMetric[0]);
+
+
 			
 			if(isRefreshSlider)
 			{
@@ -599,7 +827,7 @@ var CM = (function($) {
 			        		// Create single metric header
 			        		var row = "<thead><th>State</th>";
 			        		
-			        		for(var i = 0; i < yearsForMetric.length; i++) {			        			
+			        		for(var i = 0; i < yearsForMetric.length; i++) {		        			
 			        			 row = row + "<th>" + yearsForMetric[i] + "</th>";
 			        		}
 			        		
@@ -671,14 +899,7 @@ var CM = (function($) {
 							cm.buildSlider(yearsForMetrics);
 							$(".slider").show();
 						}
-				
-						
-						// Show the years table		
-//						var timelineTableHTML = cm.buildTimeline(yearsForMetrics);
-//						
-//						$("#timelinetable").empty();
-//					    $("#timelinetable").append(timelineTableHTML);
-//						$("#timelinetable").show();
+			
 						
 						// Build Header
 						var row = "<th>State</th>";
@@ -722,8 +943,9 @@ var CM = (function($) {
 							row = "<tr>" + row + "</tr>";
 							table.append(row);
 						}
-						cm.setDataTable(true);
-					
+						cm.setDataTable(true);	
+//					    cm.buildSlider(yearsForMetric);
+//				  		$(".slider").show();
 					});
 				}		
 			}	
@@ -1002,10 +1224,18 @@ var CM = (function($) {
 	 * @param yearList, the years to show in the timeline
 	 */
 	Chart.prototype.buildSlider = function(yearList) {
+	
 		var values = yearList.sort(); 
 		var range= values[values.length-1] - values[0];
 		var distance = 1; // steps for slider
 		var initialValue = values[values.length-1]; // start at the latest year
+		//?????????????
+//		if(cm.yearSelected != yearsList[k]){
+//			timeLineHTML += '<li ><span id="ui-slider-line" onClick="return yearSelectedSlider(this,'+yearsList[k]+')" >'+yearsList[k]+'</span></li>';
+//		}else{
+//			timeLineHTML += '<li id="clicktable'+cm.yearSelected+'"><button class="active"  id="tableTimeLineButton" >'+cm.yearSelected+'</button></li>';
+//		}
+		//?????????????
 		
 		if(range > 10){ 
 			distance = range/ 5;

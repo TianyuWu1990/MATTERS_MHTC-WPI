@@ -318,7 +318,7 @@
 										<table>
 											<tr>
 												<td id="optionalTableTitle"></td>
-												<td id="timelinetable"></td>
+												<td id="timeSlidertable"></td>
 											</tr>
 											<tr>
 												<td id="mbodyMultipleQuery"></td>
