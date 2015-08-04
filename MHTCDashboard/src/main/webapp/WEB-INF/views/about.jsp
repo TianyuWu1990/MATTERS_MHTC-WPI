@@ -70,7 +70,9 @@
 		   to advance our mission to make Massachusetts the world's most attractive place in which to create and grow a high technology business.  
 		   MATTERS is designed to measure and evaluate Massachusetts' current competitive position, particularly among peer group technology states, 
 		   while providing policy makers and advocates with dynamic, searchable data to inform public policy decisions that help attract and retain 
-		   business to the state. The 15 MATTERS Peer States include the 10 "Leading Technology  States" from the Mass. Technology Collaborative's 
+		   business to the state. </p>
+	<br></br>	   
+		   <p><b>The 15 MATTERS Peer States</b> include the 10 "Leading Technology  States" from the Mass. Technology Collaborative's 
 		   annual "Innovation Index" plus the top 5 states in Milken Institute's "State Tech and Science Index", excluding any duplicate states.</p>   
 	<br></br>
 			<p>MATTERS consolidates a set of key cost, economic, and talent metrics along with independent national rankings into a single source 

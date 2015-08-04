@@ -31,14 +31,18 @@ $(document).on("ready", function() {
 			
 			$("#matters_map_tooltip_name").html(stateProfile["Name"]);
 			
-			$("#metric_cnbc").html(stateProfile["CNBC Top States for Business"]);
-			$("#metric_milken").html(stateProfile["Milken Science and Tech Index"]);
+			$("#metric_milken").html(stateProfile["Milken Tech and Science Index"]);
 			$("#metric_tax_found").html(stateProfile["Tax Foundation Business Tax Index"]);
-			$("#metric_tax_burden").html(stateProfile["Tax burden per capita rank"]);
+			$("#metric_cnbc").html(stateProfile["CNBC Top States for Business"]);
+			$("#metric_demand").html(stateProfile["Hiring difficulty for tech rank"]);
 			$("#metric_tech").html(stateProfile["Tech employment rank"]);
-			$("#metric_unemp").html(stateProfile["Unempl insurance rank"]);
 			$("#metric_bach").html(stateProfile["Bachelors degree holders rank"]);
-			$("#metric_demand").html(stateProfile["Key tech demand hiring rank"]);
+			$("#metric_unemp").html(stateProfile["UI Premium rank"]);
+			$("#metric_tax_burden").html(stateProfile["Tax burden per capita rank"]);
+			
+			
+			
+			
 			$("#matters_map_tooltip_learnMore").attr("href", "profile?name=" + stateProfile["Name"]);
 			$("#matters_map_tooltip").show();
 			

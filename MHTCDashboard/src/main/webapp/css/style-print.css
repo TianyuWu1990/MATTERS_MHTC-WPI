@@ -97,6 +97,7 @@
 	
 	.printCanvasLogo{
 	display: inline !important;
+	height: 50 !important;
 	}
 	
 	.site-info{
