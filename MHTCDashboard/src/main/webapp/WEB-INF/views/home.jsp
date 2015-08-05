@@ -82,7 +82,7 @@
 		<script src="js/appstate.js"></script>
 		
 		<title>MATTERS</title>
-	
+
 	</head>
 
 
@@ -105,9 +105,10 @@
 										<b class="fa fa-chevron-down" id="hoverstyle">
 										</b>
 									</a>
+
 								
 									<ul id="nationalProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" data-toggle="popover" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_national}" var="stat2">
@@ -129,7 +130,7 @@
 										</b>
 									</a>
 									<ul id="talentProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" data-toggle="popover" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_talent}" var="stat3">
@@ -151,7 +152,7 @@
 										</b>
 									</a>
 									<ul id= "costProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" data-toggle="popover" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_cost}" var="stat4">
@@ -173,7 +174,7 @@
 										</b>
 									</a>
 									<ul id="economyProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" data-toggle="popover" title="Click to select/deselect all" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_economy}" var="stat5">
@@ -198,7 +199,7 @@
 						</div>
 						<div class="sidebar-content single-section">
 							<ul id="stateSelection">
-								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+								<li class="selectUnselectAllStates" data-toggle="popover" title="Click to select/deselect all" id="select">
 									<a style="text-align:right;">
 										Select All
 									</a>
@@ -244,7 +245,7 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<a id="toggle-sidebar" data-toggle="tooltip" title="Click to collapse menus"> 
+							<a id="toggle-sidebar" data-toggle="popover" title="Click to collapse menus"> 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
@@ -428,15 +429,15 @@
 						</div>
 						<!-- End Error Reporting -->	
 						
-						<div id="startupMsg">
-							<div id="startupMsgWrapper">
-								<div id="startupMsgAct">
+						<div id="startupMsg" style="text-align: center; margin: 0 auto;">
+							<div id="startupMsgWrapper" style="text-align: center; margin: 0 auto;">
+								<div id="startupMsgAct" style="text-align: center; margin: 0 auto;">
 								<div id="noJSError" style="color: #680017; font-weight: bolder;">
 									WARNING: You must have JavaScript enabled to use this page.
 									<br/>
 								</div>
 								
-								<div style="font-weight:bold; text-align: center;">
+								<div style="font-weight:bold; text-align: center; margin: 0 auto;">
 								Welcome to MATTERS Data Explorer!</div><br/><br/>
 								
 								To start, please select metrics and states from the menu to the left.<br/>
@@ -476,6 +477,8 @@
 	</body>
 	
 	<!-- Initialize popovers -->
-	<script></script>
+	<script>
+
+		</script>
 </html>
 
