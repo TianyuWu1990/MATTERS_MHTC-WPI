@@ -102,8 +102,8 @@
 								<li>
 									<a class="metricHeader" >
 									National Ranking 
-										<b class="fa fa-chevron-down" id="hoverstyle">
-										</b>
+										<r class="fa fa-chevron-down" id="hoverstyle">
+										</r>
 									</a>
 								
 									<ul id="nationalProfileList" class="metricList">
@@ -125,8 +125,8 @@
 								<li>
 									<a class="metricHeader">
 										Talent Metrics 
-										<b class="fa fa-chevron-down" id="hoverstyle">
-										</b>
+										<r class="fa fa-chevron-down" id="hoverstyle">
+										</r>
 									</a>
 									<ul id="talentProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
@@ -147,8 +147,8 @@
 								<li>
 									<a class="metricHeader">
 										Cost Metrics
-										<b class="fa fa-chevron-down" id="hoverstyle">
-										</b>
+										<r class="fa fa-chevron-down" id="hoverstyle">
+										</r>
 									</a>
 									<ul id= "costProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
@@ -169,8 +169,8 @@
 								<li>
 									<a class="metricHeader">
 										Economy Metrics
-										<b class="fa fa-chevron-down" id="hoverstyle">
-										</b>
+										<r class="fa fa-chevron-down" id="hoverstyle">
+										</r>
 									</a>
 									<ul id="economyProfileList" class="metricList">
 										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">

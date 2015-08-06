@@ -420,16 +420,16 @@ loadFunction = function() {
 	
 	$(document).ready(function () {
 	    $('.metricHeader').on('click', function(){
-	    	$("b").removeClass("fa fa-chevron-down fa fa-chevron-up");
-	    	$("b").addClass("fa fa-chevron-down");
+	    	$("r").removeClass("fa fa-chevron-down fa fa-chevron-up");
+	    	$("r").addClass("fa fa-chevron-down");
 	    	var list = $(this).parent().find('.metricList').first();
 	        
 			if (list.hasClass("open")) {
-	    	$("b",this).removeClass( 'fa fa-chevron-down');
-	    	$("b",this).addClass( 'fa fa-chevron-up');
+	    	$("r",this).removeClass( 'fa fa-chevron-down');
+	    	$("r",this).addClass( 'fa fa-chevron-up');
 			}else{
-				$("b",this).removeClass( 'fa fa-chevron-up');
-		    	$("b",this).addClass( 'fa fa-chevron-down');
+				$("r",this).removeClass( 'fa fa-chevron-up');
+		    	$("r",this).addClass( 'fa fa-chevron-down');
 			}
 	    });
 	});
