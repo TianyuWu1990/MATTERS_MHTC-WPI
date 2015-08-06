@@ -253,22 +253,22 @@
 
 						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
-								<a id= "popTable" href="#table" data-toggle="popover" title="Table View" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+								<a id= "popTable" href="#table" data-toggle="tab" title="Table View" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a id= "popHeapMap" href="#heatmaptab" data-toggle="popover" title="Heap Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+								<a id= "popHeapMap" href="#heatmaptab" data-toggle="tab" title="Heap Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="line-tab">
-								<a id= "popLineChart" href="#line" data-toggle="popover" title="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
+								<a id= "popLineChart" href="#line" data-toggle="tab" title="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a id= "popBarGraph" href="#bar" data-toggle="popover" title="Bar Graph" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+								<a id= "popBarGraph" href="#bar" data-toggle="tab" title="Bar Graph" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
 									<i></i>
 								</a>
 							</li>
