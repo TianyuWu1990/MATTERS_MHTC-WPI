@@ -108,7 +108,7 @@
 
 								
 									<ul id="nationalProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="popover" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_national}" var="stat2">
@@ -130,7 +130,7 @@
 										</r>
 									</a>
 									<ul id="talentProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="popover" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll"  id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_talent}" var="stat3">
@@ -152,7 +152,7 @@
 										</r>
 									</a>
 									<ul id= "costProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="popover" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_cost}" var="stat4">
@@ -174,7 +174,7 @@
 										</r>
 									</a>
 									<ul id="economyProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="popover" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_economy}" var="stat5">
@@ -199,7 +199,7 @@
 						</div>
 						<div class="sidebar-content single-section">
 							<ul id="stateSelection">
-								<li class="selectUnselectAllStates" data-toggle="popover" title="Click to select/deselect all" id="select">
+								<li class="selectUnselectAllStates" id="select">
 									<a style="text-align:right;">
 										Select All
 									</a>
