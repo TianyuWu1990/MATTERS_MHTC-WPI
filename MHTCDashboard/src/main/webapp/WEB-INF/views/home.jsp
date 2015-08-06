@@ -82,7 +82,7 @@
 		<script src="js/appstate.js"></script>
 		
 		<title>MATTERS</title>
-	
+
 	</head>
 
 
@@ -102,12 +102,13 @@
 								<li>
 									<a class="metricHeader" >
 									National Ranking 
-										<i class="fa fa-chevron-down" id="hoverstyle">
-										</i>
+										<r class="fa fa-chevron-down" id="hoverstyle">
+										</r>
 									</a>
+
 								
 									<ul id="nationalProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_national}" var="stat2">
@@ -125,11 +126,11 @@
 								<li>
 									<a class="metricHeader">
 										Talent Metrics 
-										<i class="fa fa-chevron-down" id="hoverstyle">
-										</i>
+										<r class="fa fa-chevron-down" id="hoverstyle">
+										</r>
 									</a>
 									<ul id="talentProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll"  id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_talent}" var="stat3">
@@ -147,11 +148,11 @@
 								<li>
 									<a class="metricHeader">
 										Cost Metrics
-										<i class="fa fa-chevron-down" id="hoverstyle">
-										</i>
+										<r class="fa fa-chevron-down" id="hoverstyle">
+										</r>
 									</a>
 									<ul id= "costProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_cost}" var="stat4">
@@ -169,11 +170,11 @@
 								<li>
 									<a class="metricHeader">
 										Economy Metrics
-										<i class="fa fa-chevron-down" id="hoverstyle">
-										</i>
+										<r class="fa fa-chevron-down" id="hoverstyle">
+										</r>
 									</a>
 									<ul id="economyProfileList" class="metricList">
-										<li  class="selectUnselectAll" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+										<li  class="selectUnselectAll" id="select">
 											<a style="text-align:right;">Select All</a>
 										</li>
 										<c:forEach items="${jv_stats_economy}" var="stat5">
@@ -198,7 +199,7 @@
 						</div>
 						<div class="sidebar-content single-section">
 							<ul id="stateSelection">
-								<li class="selectUnselectAllStates" data-toggle="tooltip" title="Click to select/deselect all" id="select">
+								<li class="selectUnselectAllStates" id="select">
 									<a style="text-align:right;">
 										Select All
 									</a>
@@ -245,29 +246,29 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<a id="toggle-sidebar" data-toggle="tooltip" title="Click to collapse menus"> 
+							<a id="toggle-sidebar" data-toggle="popover" data-content="Click to collapse menus"> 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
 
 						<ul id="viz-tabs">					
 							<li class="graph-tab active" id="table-tab" >
-								<a href="#table" data-toggle="tab" title="Table View" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
+								<a id= "popTable" href="#table" data-toggle="tab" data-content="Table View" onclick="as.visualizationDeployer(as.visualizations.TABLE);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a href="#heatmaptab" data-toggle="tab" title="Heap Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+								<a id= "popHeapMap" href="#heatmaptab" data-toggle="tab" data-content="Heap Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i></i>
 								</a>
 							</li>
-							<li class=" graph-tab " id="line-tab">
-								<a href="#line" data-toggle="tab" title="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
+							<li class="graph-tab" id="line-tab">
+								<a id= "popLineChart" href="#line" data-toggle="tab" data-content="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">
 									<i></i>
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a href="#bar" data-toggle="tab" title="Bar Graph" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+								<a id= "popBarGraph" href="#bar" data-toggle="tab" data-content="Bar Graph" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
 									<i></i>
 								</a>
 							</li>
@@ -429,20 +430,21 @@
 						</div>
 						<!-- End Error Reporting -->	
 						
-						<div id="startupMsg">
-							<div id="startupMsgWrapper">
-								<div id="startupMsgAct">
+						<div id="startupMsg" style="text-align: center; margin: 0 auto;">
+							<div id="startupMsgWrapper" style="text-align: center; margin: 0 auto;">
+								<div id="startupMsgAct" style="text-align: center; margin: 0 auto;">
 								<div id="noJSError" style="color: #680017; font-weight: bolder;">
 									WARNING: You must have JavaScript enabled to use this page.
 									<br/>
 								</div>
 								
-								<b>
-								Welcome to MATTERS Data Explorer!</b><br/><br/>
+								<div style="font-weight:bold; text-align: center; margin: 0 auto;">
+								Welcome to MATTERS Data Explorer!</div><br/><br/>
 								
 								To start, please select metrics and states from the menu to the left.<br/>
 					 			<div>
 					 			Use the buttons in the red bar above to view your selection in different ways.
+					 			
 					 			</div>				 			
 								</div>
 							</div>
@@ -476,6 +478,8 @@
 	</body>
 	
 	<!-- Initialize popovers -->
-	<script></script>
+	<script>
+
+		</script>
 </html>
 

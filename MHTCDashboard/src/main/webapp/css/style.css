@@ -10,6 +10,23 @@ body
 	cursor: pointer;
 }
 
+#popTable
+{
+	cursor: pointer;
+}
+
+#popHeapMap
+{
+	cursor: pointer;
+}
+#popLineChart
+{
+	cursor: pointer;
+}
+#popBarGraph
+{
+	cursor: pointer;
+}
 /*
    Modifications to Mesh's Stylesheet to allow for our stuff to work
 */
@@ -638,7 +655,7 @@ svg text {
 
 #startupMsg {
 	padding-top: 60px;
-	padding-left: 60px;
+	padding-left: 0px;
 	
 	text-align: left;
 	font-size: 20px !important;

@@ -73,7 +73,8 @@
 		   business to the state. </p>
 	<br></br>	   
 		   <p><b>The 15 MATTERS Peer States</b> include the 10 "Leading Technology  States" from the Mass. Technology Collaborative's 
-		   annual "Innovation Index" plus the top 5 states in Milken Institute's "State Tech and Science Index", excluding any duplicate states.</p>   
+		   annual <a href="http://masstech.org/research-and-analysis/innovation-index">"Innovation Index"</a> plus the top 5 states in Milken Institute's 
+		   <a href="http://statetechandscience.org/stateTech.html">"State Tech and Science Index"</a>, excluding any duplicate states.</p>   
 	<br></br>
 			<p>MATTERS consolidates a set of key cost, economic, and talent metrics along with independent national rankings into a single source 
 			for use by all parties.  MATTERS has been developed by faculty and students of Worcester Polytechnic Institute in collaboration with 

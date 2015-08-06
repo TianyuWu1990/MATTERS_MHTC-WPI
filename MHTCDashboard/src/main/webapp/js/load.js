@@ -54,8 +54,16 @@ $(document).ready(function() {
 			if(metric != null){
 				cm.setPopover("#"+this.id+".metricOption", metric, "right");
 			}
-			else
-				cm.setPopoverNonMetrics(this.id+".selectPeerStates", "right"); //initializes popover for peerStates
+			else{
+		    cm.setPopoverNonMetrics(this.id+".selectPeerStates", "right"); //initializes popover for peerStates
+			cm.setPopoverNonMetrics(this.id+"#toggle-sidebar", "right");// popover for sidebar
+			//set popovers for viz
+			cm.setPopoverNonMetrics(this.id+"#popTable", "bottom")
+			cm.setPopoverNonMetrics(this.id+"#popHeapMap", "bottom")
+			cm.setPopoverNonMetrics(this.id+"#popLineChart", "bottom")
+			cm.setPopoverNonMetrics(this.id+"#popBarGraph", "bottom")
+			
+			}
 		});
 	});
 	
@@ -408,18 +416,31 @@ loadFunction = function() {
 	$('.metricHeader').click(function(e) {
 
 		var list = $(this).parent().find('.metricList').first();
-
+        
 		if (list.hasClass("open")) {
 			closeMetricList(list);
-			
-			  $("i",this).toggleClass("fa fa-chevron-down fa fa-chevron-up");
+			 
 		} else {
 			openMetricList(list);
-			$("i",this).toggleClass("fa fa-chevron-up fa fa-chevron-down");
 		}
 	});
 	
 	
+	$(document).ready(function () {
+	    $('.metricHeader').on('click', function(){
+	    	$("r").removeClass("fa fa-chevron-down fa fa-chevron-up");
+	    	$("r").addClass("fa fa-chevron-down");
+	    	var list = $(this).parent().find('.metricList').first();
+	        
+			if (list.hasClass("open")) {
+	    	$("r",this).removeClass( 'fa fa-chevron-down');
+	    	$("r",this).addClass( 'fa fa-chevron-up');
+			}else{
+				$("r",this).removeClass( 'fa fa-chevron-up');
+		    	$("r",this).addClass( 'fa fa-chevron-down');
+			}
+	    });
+	});
 
 	/***************************************************************************
 	 * End Sidebar Metric Menus logic

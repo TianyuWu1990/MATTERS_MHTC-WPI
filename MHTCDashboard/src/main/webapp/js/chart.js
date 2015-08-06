@@ -767,7 +767,7 @@ var CM = (function($) {
 	};
 	
 	/**
-	 * Constructs popover with clickable link for nonmetrics bottoms
+	 * Constructs popover with clickable link for non-metric buttons
 	 * @param id of element to add popover
 	 * @param position of the popover top, bottom, left, right
 	 */
