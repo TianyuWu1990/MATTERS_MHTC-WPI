@@ -54,8 +54,17 @@ $(document).ready(function() {
 			if(metric != null){
 				cm.setPopover("#"+this.id+".metricOption", metric, "right");
 			}
-			else
-				cm.setPopoverNonMetrics(this.id+".selectPeerStates", "right"); //initializes popover for peerStates
+			else{
+		    cm.setPopoverNonMetrics(this.id+".selectPeerStates", "right"); //initializes popover for peerStates
+			cm.setPopoverNonMetrics(this.id+".selectUnselectAllStates", "right");// popover for selec/ unselect all states
+			cm.setPopoverNonMetrics(this.id+"#toggle-sidebar", "right");// popover for sidebar
+			//set popovers for viz
+			cm.setPopoverNonMetrics(this.id+"#popTable", "bottom")
+			cm.setPopoverNonMetrics(this.id+"#popHeapMap", "bottom")
+			cm.setPopoverNonMetrics(this.id+"#popLineChart", "bottom")
+			cm.setPopoverNonMetrics(this.id+"#popBarGraph", "bottom")
+			
+			}
 		});
 	});
 	
