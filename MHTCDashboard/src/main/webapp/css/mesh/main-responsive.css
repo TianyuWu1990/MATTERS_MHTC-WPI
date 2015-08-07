@@ -203,7 +203,7 @@ a#favorite{
 	display:none;
 }
 /********************* disable the arrows in metric column ***************************/
-b#hoverstyle{
+r#hoverstyle{
 	display:none;
 	}
 	
@@ -331,7 +331,7 @@ li :hover  #hoverstyle{
 	
 }
 /********************* disable the arrows in metric column ***************************/
-b#hoverstyle{
+r#hoverstyle{
 	display:none;
 	}
 	
