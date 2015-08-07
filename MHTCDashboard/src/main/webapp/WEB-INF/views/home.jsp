@@ -258,7 +258,7 @@
 								</a>
 							</li>
 							<li class="graph-tab" id="heatmap-tab">
-								<a id= "popHeapMap" href="#heatmaptab" data-toggle="tab" data-content="Heap Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
+								<a id= "popHeapMap" href="#heatmaptab" data-toggle="tab" data-content="Heat Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i></i>
 								</a>
 							</li>
@@ -268,7 +268,7 @@
 								</a>
 							</li>
 							<li class="graph-tab" id="bar-tab">
-								<a id= "popBarGraph" href="#bar" data-toggle="tab" data-content="Bar Graph" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
+								<a id= "popBarGraph" href="#bar" data-toggle="tab" data-content="Bar Chart" onclick="as.visualizationDeployer(as.visualizations.BAR);"> 
 									<i></i>
 								</a>
 							</li>
