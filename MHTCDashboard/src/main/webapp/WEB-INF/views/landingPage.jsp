@@ -292,7 +292,7 @@
 		<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.emdmillipore.com/">
-					<img src="img/EMD_Blue_RGB.jpg" alt="header-sponsors" width="50" height="50" />
+					<img src="img/EMD_Blue_RGB.jpg" alt="header-sponsors"  height="90" />
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
@@ -306,7 +306,7 @@
 			  <div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://www.mass.gov/portal/">
-					<img src="img/state seal hi res.jpg" alt="header-sponsors" height="75"/>
+					<img src="img/state seal hi res.jpg" alt="header-sponsors" height="100"/>
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
@@ -346,13 +346,7 @@
 					</a>
 				 </div> <!-- .logo-contain -->
 			 </div> <!-- .logo-wrap -->
-			 <div class="logo-wrap">
-				<div class="logo-contain">
-				<a href = "http://www.caliper.com/">
-					<img src="img/caliper-mapping-software.png" alt="header-sponsors" height="30" />
-					</a>
-				 </div> <!-- .logo-contain -->
-			 </div> <!-- .logo-wrap -->
+			 
 			<div class="logo-wrap">
 				<div class="logo-contain">
 				<a href = "http://meshagency.com/">
