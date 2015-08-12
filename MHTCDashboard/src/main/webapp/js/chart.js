@@ -133,10 +133,10 @@ var CM = (function($) {
 				this.refreshTable(true);
 				break;
 			case this.visualizationTypes.LINE:
-				this.refreshGraphs();
+				this.refreshGraphs(true);
 				break;
 			case this.visualizationTypes.BAR:
-				this.refreshGraphs();
+				this.refreshGraphs(false);
 				break;
 			case this.visualizationTypes.HEATMAP:
 				this.refreshHeatMap(true);
@@ -402,234 +402,6 @@ var CM = (function($) {
 		});
 	};
 	
-	Chart.prototype.refreshHeatMapForSlider = function() {
-		this.refreshHeatMapSizing(); // Make sure sizing is right
-		
-		// Get data from server on the currently selected metric
-		var allStates = States.getAllstates();
-		
-		var allStatesForQuery = allStates.map(function(s) {
-			return s.abbr;
-		});
-
-		var query = DQ.create().addState(allStatesForQuery)
-			.addMetric(Metrics.getMetricByID(as.currentind).getName());
-		
-		var isReversed = Metrics.getMetricByID(as.currentind).trendType == "reversed";
-		var isRank = Metrics.getMetricByID(as.currentind).type == "rank";
-		
-		query.execute(function(multiData) {
-			var yearsForMetric = cm.getYearsMetricState(allStates, multiData); // Get the years that the metric exists for from the data
-		
-			// If no data, say so.
-			if (yearsForMetric.length == 0)
-			{
-				$("#heatmap-content-wrapper").hide();
-				$("#heatmap-error").show();
-				return;
-			}
-			else
-			{
-				$("#heatmap-content-wrapper").show();
-				$("#heatmap-error").hide();
-			}
-				
-			yearsForMetric.sort(function(a,b) {return b - a;} ); 
-			
-			if (cm.yearSelected == -1)
-				cm.selectYear(yearsForMetric[0]);
-
-
-			
-			if(isRefreshSlider)
-			{
-				cm.buildSlider(yearsForMetric);
-				$(".slider").show();
-			}
-			
-			// Create coloring map for all states.
-					
-			// First, separate out the info we care about (ABBR, VALUE, TYPE)
-			var stateValueInOrder = multiData.map(function(e) { 
-				var dataPointForYear = e[0].dataPoints.filter(function(f){
-					return f.year == cm.yearSelected;
-				});
-				
-				dataPointForYear = dataPointForYear.length == 0 ? null : dataPointForYear[0].value;
-				
-				return [e[0].state.abbr, dataPointForYear, e[0].metric.type];
-			});
-			
-			// Remove any without real data, but keep track of them for later.
-			// Also remove US average
-			var missingData = [];
-			stateValueInOrder = stateValueInOrder.filter(function(e) {
-				
-				if (e[1] == null)
-				{
-					missingData.push(e);
-					return false;
-				}
-				
-				if (e[0] == "US")
-				{
-					return false;
-				}
-				
-				return true;				
-			});
-			
-			// Then we sort so that the highest value is at the 0th position
-			stateValueInOrder.sort(function (a,b) {
-				return b[1] - a[1];
-			});
-					
-			
-			// Create the stored data structure for each state
-			cm.heatMapValuesMap = {};
-			cm.heatMapColorMap = {};
-			
-			var maxValue = stateValueInOrder[0][1];
-			var minValue = stateValueInOrder[stateValueInOrder.length - 1][1];
-			
-			// Add records for every state we have data for
-			for (var i = 0; i < stateValueInOrder.length; i++)
-			{
-				var value = stateValueInOrder[i][1];
-				var stateAbbr = stateValueInOrder[i][0];
-				var metricType = stateValueInOrder[i][2];
-				
-				var ranking = i + 1;
-				
-				if (isRank || isReversed)
-				{
-					ranking = stateValueInOrder.length - i;
-				}
-				
-				var stateColor = cm.getHeatmapColor(cm.heatMapColorScheme, value, minValue, maxValue);
-				
-				var actualState = States.getStateByAbbreviation(stateAbbr);
-				
-				cm.heatMapValuesMap[stateAbbr] = { 
-						ranking	:	cm.getFormattedMetricValue("rank", ranking),
-						value			:	cm.getFormattedMetricValue(metricType, value),
-						state			:	actualState,
-						metricType		:	metricType,
-						color			:	stateColor,
-				};
-				
-				cm.heatMapColorMap[stateAbbr] = { 
-						'fill' : stateColor, 
-						'stroke' : '#000',
-						'stroke-width' : 1
-						};
-			}
-			
-			// Add record for the states where we are missing data.
-			for (var i = 0; i < missingData.length; i++)
-			{
-				var stateAbbr = missingData[i][0];
-				var metricType = missingData[i][2];
-				
-				var ranking = missingData.length + 1 + i;
-				
-				var stateColor = "#fff";
-				
-				var actualState = States.getStateByAbbreviation(stateAbbr);
-				
-				cm.heatMapValuesMap[stateAbbr] = { 
-						ranking	:	cm.getFormattedMetricValue("rank", ranking),
-						value			:	null,
-						state			:	actualState,
-						metricType		:	metricType,
-						color			:	stateColor,
-				};
-				
-				cm.heatMapColorMap[stateAbbr] = { 
-						'fill' : stateColor, 
-						'stroke' : '#000',
-						'stroke-width' : 1
-						};
-			}
-			
-			// What first rank is depends on the type of metric.
-			if (isRank || isReversed)
-			{
-				$("#heatmap-generalinfo-first").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
-				$("#heatmap-generalinfo-last").html(stateValueInOrder[0][0]);
-			}
-			else
-			{
-				$("#heatmap-generalinfo-first").html(stateValueInOrder[0][0]);
-				$("#heatmap-generalinfo-last").html(stateValueInOrder[stateValueInOrder.length - 1][0]);
-			}
-			
-			if (isRank)
-			{
-				$("#heatmap-value-block").hide();
-			}
-			else
-			{
-				$("#heatmap-value-block").show();
-			}
-			
-			$("#heatmap-generalinfo-ma").html(cm.heatMapValuesMap["MA"].ranking);
-			
-			
-			cm.buildHeatMapLegend(minValue, maxValue, stateValueInOrder[0][2]);
-			
-			
-			$("#heatmap-actual").empty();
-			$("#heatmap-actual").removeData("pluginUsmap");
-			$("#heatmap-actual").usmap({
-				stateHoverAnimation: 100,
-				showLabels: true,
-				stateHoverStyles: {'stroke-width': 3},
-				
-				mouseover: function(event, data) {					
-					var infoForState = cm.heatMapValuesMap[data.name];
-					
-					$("#heatmap-specificDetails-name").html(infoForState.state.getName() + " (" + infoForState.state.getAbbr() + ")" );
-					
-					if (infoForState.value == null)
-					{
-						$("#heatmap-specificDetails-rank").html("No Data");
-						$("#heatmap-specificDetails-value").html("No Data");
-					}
-					else
-					{
-						$("#heatmap-specificDetails-rank").html(infoForState.ranking);
-						$("#heatmap-specificDetails-value").html(infoForState.value);
-					}
-				
-					if (infoForState.state.isPeerState())
-					{
-						$("#heatmap-specificDetails-peer").show();
-					}
-					else
-					{
-						$("#heatmap-specificDetails-peer").hide();
-					}
-					
-					var tooltipX = event.originalEvent.clientX - $("#heatmap-actual").offset().left + 220;
-					var tooltipY = event.originalEvent.clientY + $("body").scrollTop() - $("#heatmap-actual").offset().top;
-										
-					if (tooltipX > $("#heatmap-actual").width())
-						tooltipX = tooltipX - 220;
-					
-					$("#heatmap-tooltip").attr("style", "left: " + tooltipX + "px; top: " + tooltipY +"px;");
-					
-					$("#heatmap-tooltip").show();
-				},
-				
-				mouseout: function(event, data) {
-					$("#heatmap-tooltip").hide();
-				},
-				
-				stateSpecificStyles: cm.heatMapColorMap,
-			});
-		});
-	};
 	
 	Chart.prototype.getHeatmapColor = function(colorMap, value, highest, lowest)
 	{	
@@ -943,9 +715,7 @@ var CM = (function($) {
 							row = "<tr>" + row + "</tr>";
 							table.append(row);
 						}
-						cm.setDataTable(true);	
-//					    cm.buildSlider(yearsForMetric);
-//				  		$(".slider").show();
+						cm.setDataTable(true);
 					});
 				}		
 			}	
@@ -968,9 +738,9 @@ var CM = (function($) {
 			if( !$.fn.DataTable.isDataTable( '#myTable' ) ){
 				var oTable = $('#myTable').dataTable(
 						{
-							"scrollY":        "300px",
-							" scrollX":        true,
-					        "scrollCollapse": true,
+							//"scrollY":        "300px",
+							//" scrollX":        true,
+					        //"scrollCollapse": true,
 					        "paging":         true,
 							"iDisplayLength": 15,
 							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
@@ -978,7 +748,7 @@ var CM = (function($) {
 							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
 						
 						});
-				new $.fn.dataTable.FixedColumns( oTable );
+				//new $.fn.dataTable.FixedColumns( oTable );
 				dt = oTable;
 			}
 			else
@@ -986,9 +756,9 @@ var CM = (function($) {
 				$('#myTable').dataTable().fnDestroy();
 				var oTable = $('#myTable').dataTable(
 						{
-							"scrollY":        "300px",
-							" scrollX":        true,
-					        "scrollCollapse": true,
+							//"scrollY":        "300px",
+							//" scrollX":        true,
+					        //"scrollCollapse": true,
 					        "paging":         true,
 							"iDisplayLength": 15,
 							"aLengthMenu": [[15, 25, 50, -1], [15, 25, 50, "All"]],
@@ -996,7 +766,7 @@ var CM = (function($) {
 							"columnDefs": [{ "type": "num-fmt", "targets": "_all"}]
 						
 						});
-				new $.fn.dataTable.FixedColumns( oTable );
+				//new $.fn.dataTable.FixedColumns( oTable );
 				dt = oTable;
 			}
 
@@ -1006,13 +776,12 @@ var CM = (function($) {
 	/**
 	 * Refreshes the bar and line graphs
 	 */
-	Chart.prototype.refreshGraphs = function() {
+	Chart.prototype.refreshGraphs = function(isRefreshSlider) {
 		
 		if(as.currentind == null || as.currentind == undefined)
-			return;
-		   
+			return;   
 		var states = as.getSelectedStates();
-		
+	
     	if(this.currentVisualization == this.visualizationTypes.LINE){
     		$("#mbody > *").remove();
 	    	
@@ -1022,6 +791,8 @@ var CM = (function($) {
 
 			    d3.selectAll("#mbody svg > *").remove();
 	    	}
+	    	
+	    	
     	}else{
     		$("#mbodyBar > *").remove();
     		if($("#mbodyBar svg").length==0){
@@ -1036,7 +807,7 @@ var CM = (function($) {
 	    var query = DQ.create().addState(states).addMetric(Metrics.getMetricByID(as.currentind).getName());
 	    query.execute(function(multiData) {
             nv.addGraph(function() {
-              
+   
                 var data = [];
                 
                 var years = [];
@@ -1060,9 +831,17 @@ var CM = (function($) {
                 		
                 		return { "x" : yearForPoint, "y" : (d["value"].toFixed(2)) * 1 };
                 	});
+                	
                 }
-                
+     
                 years.sort(function(a,b) { return a - b; });
+                
+            	if(isRefreshSlider )
+            			
+            	{
+        			cm.buildTimeRangeSlider(years);
+        			$(".rangeslider").show();
+            	}
                             	
                 // Build the chart for the data.
             	var chart;
@@ -1072,8 +851,8 @@ var CM = (function($) {
                     chart = nv.models.lineChart()
                     	.transitionDuration(350)
                     	.useInteractiveGuideline(true)
-                    	.margin({ left : 150, right : 50 });     
-                } 
+                    	.margin({ left : 150, right : 50 });  
+                } 	
                 else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
                 {
                     chart = nv.models.multiBarChart()
@@ -1105,7 +884,8 @@ var CM = (function($) {
                     
                     chart.forceY(newMin);
                 }
-                                
+                
+                
                 chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
 
                 var type_var = Metrics.getMetricByID(as.currentind).getType();
@@ -1129,7 +909,6 @@ var CM = (function($) {
                 {
 	            	chart.yAxis.axisLabel("$").tickFormat(d3.format('$,.2'));
 	            }
-                
                 
                 if (cm.currentVisualization == cm.visualizationTypes.LINE) 
                 {
@@ -1224,30 +1003,32 @@ var CM = (function($) {
 	 * @param yearList, the years to show in the timeline
 	 */
 	Chart.prototype.buildSlider = function(yearList) {
-	
+
 		var values = yearList.sort(); 
 		var range= values[values.length-1] - values[0];
 		var distance = 1; // steps for slider
-		var initialValue = values[values.length-1]; // start at the latest year
-		//?????????????
-//		if(cm.yearSelected != yearsList[k]){
-//			timeLineHTML += '<li ><span id="ui-slider-line" onClick="return yearSelectedSlider(this,'+yearsList[k]+')" >'+yearsList[k]+'</span></li>';
-//		}else{
-//			timeLineHTML += '<li id="clicktable'+cm.yearSelected+'"><button class="active"  id="tableTimeLineButton" >'+cm.yearSelected+'</button></li>';
-//		}
-		//?????????????
+		var initialValue = values[values.length-1];
 		
+		// start at the latest year
 		if(range > 10){ 
 			distance = range/ 5;
 		}
+		
 		// creates the tooltip
-		var sliderTooltip = function(event, ui) {
-	     var curValue = initialValue;
-	     var tooltip = '<div class="tooltip237"><div class="tooltip237-inner">' + curValue + '</div><div class="tooltip237-arrow"></div></div>';
-
-	      $('.ui-slider-handle').html(tooltip);
-
-	  }		
+		
+		//????
+		// I guess: removing this function would not matter
+		// because it doesn't do anything, you can try it.
+		// nothing in Create helps
+		// because the handle is not ready yet
+//		
+		var sliderTooltip = function(event, ui) 
+		{
+		    var curValue = initialValue;
+		    var tooltip = '<div class="tooltip237"><div class="tooltip237-inner">' + curValue + '</div><div class="tooltip237-arrow"></div></div>';
+		    $('.ui-slider-handle').html(tooltip);
+		}	
+		
 		// creates the slider	
 	    var slider = $(".slider").slider({
 	    	value: values[values.length-1],
@@ -1255,6 +1036,8 @@ var CM = (function($) {
 	        max: values[values.length-1], 
 	        create: sliderTooltip,
 	    	slide: function(event, ui) {// function to find nearest value
+				$(".slider").slider("option", "range", false);// set the range
+	    		
 	    		var includeLeft = event.keyCode != $.ui.keyCode.RIGHT;
 	    		var includeRight = event.keyCode != $.ui.keyCode.LEFT;
 	    		var nearest = findNearest(includeLeft, includeRight, ui.value);
@@ -1263,39 +1046,16 @@ var CM = (function($) {
 	    		return false;
 	    	},
 	    	change: function( event, ui ) {
+	    		$(".slider").slider("option", "range", false);// set the range
+	    		
 	    		cm.selectYear(ui.value);
-		    	cm.refreshHeatMap(false);
+	    		cm.refreshHeatMap(false);
 		    	cm.refreshTable(false);
 		   		$(".tooltip237-inner").text(ui.value);   		
 	    	}   
-	    })
-	    /*
-	    var timeRangeSlider = $(".slider").slider({
-	    	value: values[values.length-1],
-	    	min: values[0], 
-	        max: values[values.length-1], 
-	        range:true,
-	    	values: [includeLeft.ui.value, includeRight.ui.value],
-	        
-	        create: sliderTooltip,
-	    	slide: function(event, ui) {// function to find nearest value
-	    		var includeLeft = event.keyCode != $.ui.keyCode.RIGHT;
-	    		var includeRight = event.keyCode != $.ui.keyCode.LEFT;
-	    		var nearest = findNearest(includeLeft, includeRight, ui.value);
-	    		slider.slider('option', 'value', nearest);
-	    		$(".tooltip237-inner").text(nearest);
-	    		return false;
-	    	},
-	    	change: function( event, ui ) {
-	    		cm.selectYear(ui.value);
-		    	cm.refreshHeatMap(false);
-		    	cm.refreshTable(false);
-		   		$(".tooltip237-inner").text(ui.value);   		
-	    	}   
-	    })*/
+	    })   
 	    
-	    
-	    
+	
 	    .slider("pips", { 
 	        step: distance, 
 	        rest: "pip" });
@@ -1319,6 +1079,51 @@ var CM = (function($) {
 	    }
 	} 
 	
+	
+	Chart.prototype.buildTimeRangeSlider = function(yearList) {
+		
+		var values = yearList.sort(); 
+		var distance = 1; // steps for slider
+		// There is bug when there is one year available
+		var valueLeft = values[0];  
+		var valueRight = values[values.length-1];
+
+		var onChange = function(event, ui){
+			console.log("change made to rangeslider...");
+			
+			var range = $(".rangeslider").slider("option", "range");
+			$(".rangeslider").slider("option", "range", true);// set the range
+
+	    	var handleIndex = $(ui.handle).index();	
+	    	if(handleIndex == 1) {
+	    		// left slider
+		    	var tooltip1 = '<div class="tooltip237"><div class="tooltip237-inner">' + ui.value + '</div><div class="tooltip237-arrow"></div></div>';
+		    	$(this).children('.ui-slider-handle').first().html(tooltip1);  		
+	    	}else if(handleIndex == 2){ 
+	    		// set the right handle value
+	 		    var tooltip2 = '<div class="tooltip237"><div class="tooltip237-inner">' + ui.value + '</div><div class="tooltip237-arrow"></div></div>';	
+	 	 		$(this).children('.ui-slider-handle').last().html(tooltip2);
+	    	}
+	    	
+	    	//TODO: select year probably is not enough...
+	    	cm.selectYear(ui.value);
+    		cm.refreshGraphs(false);
+		}
+		
+		// creates the slider
+	    var timeRangeSlider = $(".rangeslider").slider({
+	    	min: values[0], 
+	        max: values[values.length-1], 
+	        range: true,  
+	        values:[valueLeft, valueRight], 
+	        slide:onChange,
+	        change:onChange,
+	})
+	    .slider("pips", { 
+	        step: distance, 
+	        rest: "pip" });	    
+	}
+
 	
 	/**
 	 * Returns the years where any of the metrics within the query have data.

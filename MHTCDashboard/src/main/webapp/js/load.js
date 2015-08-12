@@ -24,8 +24,6 @@ animateHeatMap=function(){
 			year_global=array_years_global[globalcounter];
 		}
 		
-		
-
 }; 
 stopHeatMapAnimation=function() {
 	if (!global_timer) return false;

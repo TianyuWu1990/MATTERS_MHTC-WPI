@@ -298,8 +298,9 @@
 							<div class="tab-content">
 								<!-- Line Graph -->
 								<div class="tab-pane fade" id="line">
+								<div class="rangeslider" style="width:75%;margin-left:150px;margin-top:20px"> </div>
 									<div class="box-content">
-										<div id="mbody" style="margin-right: 5px;">
+										<div id="mbody" style="margin-right: 5px; margin-top: 65px;">
 											<svg style="height: 90%;"></svg>
 										</div>
 										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
@@ -318,7 +319,7 @@
 										<table>
 											<tr>
 												<td id="optionalTableTitle"></td>
-												<td id="timeSlidertable"></td>
+												<td id="timelinetable"></td>
 											</tr>
 											<tr>
 												<td id="mbodyMultipleQuery"></td>
