@@ -198,7 +198,7 @@
 				<div class="matters_map_tooltip_metricName">CNBC Top States for Business</div>
 				<span id="metric_cnbc" class="matters_map_tooltip_metricVal">VA</span><br/>
 				
-				<div class="matters_map_tooltip_metricName">Milken Science and Tech Index</div>
+				<div class="matters_map_tooltip_metricName">Milken Tech and Science Index</div>
 				<span id="metric_milken" class="matters_map_tooltip_metricVal">VA</span><br/>
 				
 				<div class="matters_map_tooltip_metricName">Tax Foundation Business Tax Index</div>
