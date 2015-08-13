@@ -811,6 +811,10 @@ var CM = (function($) {
                 var data = [];
                 
                 var years = [];
+             
+                var valueofRangeSlider = [];
+                
+                console.log("multiData", multiData.length);
                 
                 // Get collection of all data
                 for (var i = 0; i < multiData.length; i++)
@@ -826,15 +830,17 @@ var CM = (function($) {
                 	data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
                 		var yearForPoint = d["year"];
                 		
+                		console.log("yearForPoint", yearForPoint);
+                		
                 		if (years.indexOf(yearForPoint) == -1)
                 			years.push(yearForPoint);
                 		
                 		return { "x" : yearForPoint, "y" : (d["value"].toFixed(2)) * 1 };
                 	});
                 	
-                }
-     
-                years.sort(function(a,b) { return a - b; });
+                }          
+               // years.sort(function(valueofLeftSlider,valueofRightSlider) { return valueofRightSlider - valueofLeftSlider; });
+                years.sort(function(a,b) { return b - a; }) 
                 
             	if(isRefreshSlider )
             			
@@ -885,8 +891,17 @@ var CM = (function($) {
                     chart.forceY(newMin);
                 }
                 
-                
-                chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
+              // var valueofLeftSlider = $('.ui-slider-handle').slider("values", 0 );
+//               var valueofLeftSlider = $('.rangeslider').first().slider("values", 0 );
+//               console.log("valueofRightSlider:", valueofLeftSlider);
+//               var valueofRightSlider = $('.rangeslider').last().slider("values", 1);
+//               console.log("valueofRightSlider:", valueofRightSlider);
+//               valueofRangeSlider.push(valueofLeftSlider);
+//               valueofRangeSlider.push(valueofRightSlider);
+//               console.log(valueofRangeSlider);
+               
+              chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
+              //chart.xAxis.axisLabel("Year").tickValues(valueofRangeSlider).tickFormat(d3.format('.0f'));
 
                 var type_var = Metrics.getMetricByID(as.currentind).getType();
                 if (type_var == "integer") 
@@ -1087,6 +1102,7 @@ var CM = (function($) {
 		// There is bug when there is one year available
 		var valueLeft = values[0];  
 		var valueRight = values[values.length-1];
+           
 
 		var onChange = function(event, ui){
 			console.log("change made to rangeslider...");
@@ -1110,6 +1126,7 @@ var CM = (function($) {
     		cm.refreshGraphs(false);
 		}
 		
+		
 		// creates the slider
 	    var timeRangeSlider = $(".rangeslider").slider({
 	    	min: values[0], 
@@ -1119,6 +1136,7 @@ var CM = (function($) {
 	        slide:onChange,
 	        change:onChange,
 	})
+
 	    .slider("pips", { 
 	        step: distance, 
 	        rest: "pip" });	    
