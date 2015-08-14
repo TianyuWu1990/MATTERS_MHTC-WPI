@@ -337,6 +337,7 @@
 								
 								<!-- Bar Chart -->
 								<div class="tab-pane fade" id="bar">
+								<div class="rangesliderforbar" style="width:75%;margin-left:150px;margin-top:20px"> </div>
 									<div class="box-content">
 										<div id="mbodyBar"></div>
 										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">

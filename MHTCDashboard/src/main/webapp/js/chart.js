@@ -136,7 +136,7 @@ var CM = (function($) {
 				this.refreshGraphs(true);
 				break;
 			case this.visualizationTypes.BAR:
-				this.refreshGraphs(false);
+				this.refreshGraphs(true);
 				break;
 			case this.visualizationTypes.HEATMAP:
 				this.refreshHeatMap(true);
@@ -830,8 +830,6 @@ var CM = (function($) {
                 	data[i]["values"] = multiData[i][0].dataPoints.map(function(d) {
                 		var yearForPoint = d["year"];
                 		
-                		console.log("yearForPoint", yearForPoint);
-                		
                 		if (years.indexOf(yearForPoint) == -1)
                 			years.push(yearForPoint);
                 		
@@ -842,29 +840,51 @@ var CM = (function($) {
                // years.sort(function(valueofLeftSlider,valueofRightSlider) { return valueofRightSlider - valueofLeftSlider; });
                 years.sort(function(a,b) { return b - a; }) 
                 
-            	if(isRefreshSlider )
-            			
-            	{
-        			cm.buildTimeRangeSlider(years);
-        			$(".rangeslider").show();
-            	}
                             	
                 // Build the chart for the data.
             	var chart;
     
                 if (cm.currentVisualization == cm.visualizationTypes.LINE) 
                 {
+                	if(isRefreshSlider)	
+                	{
+            			cm.buildTimeRangeSlider(years);
+            			$(".rangeslider").show();
+                	}
+                                
+                	var minX = $('.rangeslider').slider("values", 0 );
+                    var maxX = $('.rangeslider').slider("values", 1 );
+                    	
                     chart = nv.models.lineChart()
                     	.transitionDuration(350)
                     	.useInteractiveGuideline(true)
-                    	.margin({ left : 150, right : 50 });  
+                    	.xDomain([minX,maxX])
+                    	.margin({ left : 150, right : 50 })
+                    	.clipEdge(true);
+                    	
                 } 	
                 else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
                 {
+                	
+                	if(isRefreshSlider)	
+                	{
+            			cm.buildTimeRangeSliderforBarChart(years);
+            			$(".rangesliderforbar").show();
+                	}
+                                
+                	
+                	
                     chart = nv.models.multiBarChart()
                     	.transitionDuration(350)
                     	.showControls(false)
-                    	.margin({ left : 150, right : 50 });
+                    	.margin({ left : 150, right : 50 })
+	                    .clipEdge(true);
+	                    
+	                	var minX = $('.rangeslider').slider("values", 0 );
+	                	console.log("minX:", minX);
+	                	var maxX = $('.rangeslider').slider("values", 1 );
+	                	console.log("maxX:", maxX);
+	                	chart.xDomain([minX,maxX]);
                     
                     // Calculate new min y for the bar charts
                     var minY = d3.min(data, function(d) { 
@@ -1029,14 +1049,6 @@ var CM = (function($) {
 			distance = range/ 5;
 		}
 		
-		// creates the tooltip
-		
-		//????
-		// I guess: removing this function would not matter
-		// because it doesn't do anything, you can try it.
-		// nothing in Create helps
-		// because the handle is not ready yet
-//		
 		var sliderTooltip = function(event, ui) 
 		{
 		    var curValue = initialValue;
@@ -1106,10 +1118,10 @@ var CM = (function($) {
 
 		var onChange = function(event, ui){
 			console.log("change made to rangeslider...");
-			
+		
 			var range = $(".rangeslider").slider("option", "range");
 			$(".rangeslider").slider("option", "range", true);// set the range
-
+		
 	    	var handleIndex = $(ui.handle).index();	
 	    	if(handleIndex == 1) {
 	    		// left slider
@@ -1129,6 +1141,55 @@ var CM = (function($) {
 		
 		// creates the slider
 	    var timeRangeSlider = $(".rangeslider").slider({
+	    	
+	    	min: values[0], 
+	        max: values[values.length-1], 
+	        range: true,  
+	        values:[valueLeft, valueRight], 
+	        slide:onChange,
+	        change:onChange,
+	})
+
+	    .slider("pips", { 
+	        step: distance, 
+	        rest: "pip" });	    
+	}
+	
+Chart.prototype.buildTimeRangeSliderforBarChart = function(yearList) {
+		
+		var values = yearList.sort(); 
+		var distance = 1; // steps for slider
+		// There is bug when there is one year available
+		var valueLeft = values[0];  
+		var valueRight = values[values.length-1];
+           
+
+		var onChange = function(event, ui){
+			console.log("change made to rangeslider...");
+		
+			var range = $(".rangesliderforbar").slider("option", "range");
+			$(".rangesliderforbar").slider("option", "range", true);// set the range
+		
+	    	var handleIndex = $(ui.handle).index();	
+	    	if(handleIndex == 1) {
+	    		// left slider
+		    	var tooltip1 = '<div class="tooltip237"><div class="tooltip237-inner">' + ui.value + '</div><div class="tooltip237-arrow"></div></div>';
+		    	$(this).children('.ui-slider-handle').first().html(tooltip1);  		
+	    	}else if(handleIndex == 2){ 
+	    		// set the right handle value
+	 		    var tooltip2 = '<div class="tooltip237"><div class="tooltip237-inner">' + ui.value + '</div><div class="tooltip237-arrow"></div></div>';	
+	 	 		$(this).children('.ui-slider-handle').last().html(tooltip2);
+	    	}
+	    	
+	    	//TODO: select year probably is not enough...
+	    	cm.selectYear(ui.value);
+    		cm.refreshGraphs(false);
+		}
+		
+		
+		// creates the slider
+	    var timeRangeSlider = $(".rangeslider").slider({
+	    	
 	    	min: values[0], 
 	        max: values[values.length-1], 
 	        range: true,  
