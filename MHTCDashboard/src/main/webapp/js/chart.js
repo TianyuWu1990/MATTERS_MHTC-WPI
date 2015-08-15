@@ -813,9 +813,7 @@ var CM = (function($) {
                 var years = [];
              
                 var valueofRangeSlider = [];
-                
-                console.log("multiData", multiData.length);
-                
+                                
                 // Get collection of all data
                 for (var i = 0; i < multiData.length; i++)
                 {
@@ -861,6 +859,8 @@ var CM = (function($) {
                     	.xDomain([minX,maxX])
                     	.margin({ left : 150, right : 50 })
                     	.clipEdge(true);
+                    
+                    chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
                     	
                 } 	
                 else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
@@ -868,23 +868,18 @@ var CM = (function($) {
                 	
                 	if(isRefreshSlider)	
                 	{
-            			cm.buildTimeRangeSliderforBarChart(years);
-            			$(".rangesliderforbar").show();
+            			cm.buildTimeRangeSliderForBar(years);
+            			$(".rangesliderbar").show();
                 	}
-                                
                 	
+                	var minX = $('.rangesliderbar').slider("values", 0 );
+                    var maxX = $('.rangesliderbar').slider("values", 1 );
                 	
                     chart = nv.models.multiBarChart()
                     	.transitionDuration(350)
                     	.showControls(false)
                     	.margin({ left : 150, right : 50 })
-	                    .clipEdge(true);
-	                    
-	                	var minX = $('.rangeslider').slider("values", 0 );
-	                	console.log("minX:", minX);
-	                	var maxX = $('.rangeslider').slider("values", 1 );
-	                	console.log("maxX:", maxX);
-	                	chart.xDomain([minX,maxX]);
+	                 
                     
                     // Calculate new min y for the bar charts
                     var minY = d3.min(data, function(d) { 
@@ -909,20 +904,43 @@ var CM = (function($) {
                     	newMin = 0;
                     
                     chart.forceY(newMin);
-                }
-                
-              // var valueofLeftSlider = $('.ui-slider-handle').slider("values", 0 );
-//               var valueofLeftSlider = $('.rangeslider').first().slider("values", 0 );
-//               console.log("valueofRightSlider:", valueofLeftSlider);
-//               var valueofRightSlider = $('.rangeslider').last().slider("values", 1);
-//               console.log("valueofRightSlider:", valueofRightSlider);
-//               valueofRangeSlider.push(valueofLeftSlider);
-//               valueofRangeSlider.push(valueofRightSlider);
-//               console.log(valueofRangeSlider);
-               
-              chart.xAxis.axisLabel("Year").tickValues(years).tickFormat(d3.format('.0f'));
-              //chart.xAxis.axisLabel("Year").tickValues(valueofRangeSlider).tickFormat(d3.format('.0f'));
+                    
+                    var tickInterval = [];
 
+                    // TODO: need to change here, because minX to maxX may not have all year data continuously
+                    for(i=0; i<= maxX - minX; i++){
+                      tickInterval[i] = i + minX;
+                    }
+
+                    //tickInterval already contains the values you want to pass to the tickValues function
+                    chart.xDomain(tickInterval);
+                    chart.xAxis.axisLabel("Year").tickValues(tickInterval).tickFormat(d3.format('.0f'));
+                    
+                    var reducedData = [];
+                              
+                    var leftIndexOffset;
+                    if(years[0] > years[years.length - 1]) {
+                    	leftIndexOffset = minX - years[years.length - 1];
+ 
+                    }else {
+                    	leftIndexOffset = minX - years[0];
+                    }
+                    
+                    for (var i = 0; i < data.length; i++)
+                    {         
+                    	reducedData[i] = {
+                    			key : data[i].key,
+                    			color : data[i].color
+                    	};
+                    	
+                    	reducedData[i]["values"] = [];
+                    	for(var j = 0; j <= maxX - minX; ++j) {
+                    		reducedData[i]["values"][j] = data[i]["values"][j + leftIndexOffset];
+                    	}
+                    }         
+                    d3.select('#mbodyBar svg').datum(reducedData).transition().duration(500).call(chart);
+                }
+               
                 var type_var = Metrics.getMetricByID(as.currentind).getType();
                 if (type_var == "integer") 
                 {
@@ -951,7 +969,7 @@ var CM = (function($) {
                 }
                 else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
                 {
-                	d3.select('#mbodyBar svg').datum(data).transition().duration(500).call(chart);
+                	//d3.select('#mbodyBar svg').datum(data).transition().duration(500).call(chart);
                 }
                 
                 nv.utils.windowResize(chart.update);
@@ -1113,12 +1131,9 @@ var CM = (function($) {
 		var distance = 1; // steps for slider
 		// There is bug when there is one year available
 		var valueLeft = values[0];  
-		var valueRight = values[values.length-1];
-           
+		var valueRight = values[values.length-1];      
 
 		var onChange = function(event, ui){
-			console.log("change made to rangeslider...");
-		
 			var range = $(".rangeslider").slider("option", "range");
 			$(".rangeslider").slider("option", "range", true);// set the range
 		
@@ -1126,11 +1141,11 @@ var CM = (function($) {
 	    	if(handleIndex == 1) {
 	    		// left slider
 		    	var tooltip1 = '<div class="tooltip237"><div class="tooltip237-inner">' + ui.value + '</div><div class="tooltip237-arrow"></div></div>';
-		    	$(this).children('.ui-slider-handle').first().html(tooltip1);  		
+		    	$(".rangeslider").children('.ui-slider-handle').first().html(tooltip1);  		
 	    	}else if(handleIndex == 2){ 
 	    		// set the right handle value
 	 		    var tooltip2 = '<div class="tooltip237"><div class="tooltip237-inner">' + ui.value + '</div><div class="tooltip237-arrow"></div></div>';	
-	 	 		$(this).children('.ui-slider-handle').last().html(tooltip2);
+	 	 		$(".rangeslider").children('.ui-slider-handle').last().html(tooltip2);
 	    	}
 	    	
 	    	//TODO: select year probably is not enough...
@@ -1141,7 +1156,6 @@ var CM = (function($) {
 		
 		// creates the slider
 	    var timeRangeSlider = $(".rangeslider").slider({
-	    	
 	    	min: values[0], 
 	        max: values[values.length-1], 
 	        range: true,  
@@ -1155,7 +1169,7 @@ var CM = (function($) {
 	        rest: "pip" });	    
 	}
 	
-Chart.prototype.buildTimeRangeSliderforBarChart = function(yearList) {
+Chart.prototype.buildTimeRangeSliderForBar = function(yearList) {
 		
 		var values = yearList.sort(); 
 		var distance = 1; // steps for slider
@@ -1165,20 +1179,20 @@ Chart.prototype.buildTimeRangeSliderforBarChart = function(yearList) {
            
 
 		var onChange = function(event, ui){
-			console.log("change made to rangeslider...");
+			console.log("change made to rangeslider bar...");
 		
-			var range = $(".rangesliderforbar").slider("option", "range");
-			$(".rangesliderforbar").slider("option", "range", true);// set the range
+			var range = $(".rangesliderbar").slider("option", "range");
+			$(".rangesliderbar").slider("option", "range", true);// set the range
 		
 	    	var handleIndex = $(ui.handle).index();	
 	    	if(handleIndex == 1) {
 	    		// left slider
 		    	var tooltip1 = '<div class="tooltip237"><div class="tooltip237-inner">' + ui.value + '</div><div class="tooltip237-arrow"></div></div>';
-		    	$(this).children('.ui-slider-handle').first().html(tooltip1);  		
+		    	$(".rangesliderbar").children('.ui-slider-handle').first().html(tooltip1);  		
 	    	}else if(handleIndex == 2){ 
 	    		// set the right handle value
 	 		    var tooltip2 = '<div class="tooltip237"><div class="tooltip237-inner">' + ui.value + '</div><div class="tooltip237-arrow"></div></div>';	
-	 	 		$(this).children('.ui-slider-handle').last().html(tooltip2);
+	 	 		$(".rangesliderbar").children('.ui-slider-handle').last().html(tooltip2);
 	    	}
 	    	
 	    	//TODO: select year probably is not enough...
@@ -1188,7 +1202,7 @@ Chart.prototype.buildTimeRangeSliderforBarChart = function(yearList) {
 		
 		
 		// creates the slider
-	    var timeRangeSlider = $(".rangeslider").slider({
+	    var timeRangeSlider = $(".rangesliderbar").slider({
 	    	
 	    	min: values[0], 
 	        max: values[values.length-1], 

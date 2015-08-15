@@ -337,9 +337,9 @@
 								
 								<!-- Bar Chart -->
 								<div class="tab-pane fade" id="bar">
-								<div class="rangesliderforbar" style="width:75%;margin-left:150px;margin-top:20px"> </div>
+									<div class="rangesliderbar" style="width:75%;margin-left:150px;margin-top:20px"> </div>
 									<div class="box-content">
-										<div id="mbodyBar"></div>
+										<div id="mbodyBar" style = "margin-top:65px"></div>
 										<div class="download" style="position: absolute; bottom: 0px; left: 50px; padding-bottom: 20px;">
 											<button title="Save the visualization as a PNG." class="btn btn-danger" type="button" onclick="as.savePNG();">
 												<i class="fa fa-file-image-o" style="color: white !important;"></i> 
