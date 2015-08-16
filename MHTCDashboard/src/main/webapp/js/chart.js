@@ -904,28 +904,56 @@ var CM = (function($) {
                     	newMin = 0;
                     
                     chart.forceY(newMin);
+                  
+
                     
-                    var tickInterval = [];
-
-                    // TODO: need to change here, because minX to maxX may not have all year data continuously
-                    for(i=0; i<= maxX - minX; i++){
-                      tickInterval[i] = i + minX;
+                    // make sure years are in increasing order
+                    if(years[0] > years[years.length - 1]) {
+                    	var start = 0, end = years.length - 1;
+                    	while(start < end) {
+                    		var temp = years[start];
+                    		years[start] = years[end];
+                    		years[end] = temp;
+                    		start++;
+                    		end--;
+                    	}
                     }
+                    
+                    // ticks stores the years within the range. 
+                    // e.g: the "ticks" of [2009, 2011, 2012, 2014] for minX = 2011 and maxX = 2014, is [2011, 2012, 2014]
+             
+                    var ticks = [];
+                    var tickIndex = 0;
+                    
+                    // leftIndexOffset is the index of the first tick in the original "years" array
+                    // aka: the index of the first valid year within the (minX, maxX) range
 
-                    //tickInterval already contains the values you want to pass to the tickValues function
-                    chart.xDomain(tickInterval);
-                    chart.xAxis.axisLabel("Year").tickValues(tickInterval).tickFormat(d3.format('.0f'));
+                    var leftIndexOffset;
+                    var foundFirstTick = false;
+                    
+                    for (i=0; i< years.length; i++)
+                    {
+                    	if(years[i] >= minX && years[i] <= maxX) 
+                    	{
+                    		ticks[tickIndex] = years[i];
+                    		tickIndex++;
+                    		
+                    		if(!foundFirstTick) {
+                    			// when first get a tick, note down its distance to the first index
+                    			leftIndexOffset = i;
+                    			
+                    			// set the bool to true so that this block of code is never entered again
+                    			foundFirstTick = true;
+                    		}
+                    	}
+                    };
+
+                    chart.xDomain(ticks);
+                    chart.xAxis.axisLabel("Year").tickValues(ticks).tickFormat(d3.format('.0f'));
                     
                     var reducedData = [];
-                              
-                    var leftIndexOffset;
-                    if(years[0] > years[years.length - 1]) {
-                    	leftIndexOffset = minX - years[years.length - 1];
- 
-                    }else {
-                    	leftIndexOffset = minX - years[0];
-                    }
-                    
+
+                    // The available values for each state
                     for (var i = 0; i < data.length; i++)
                     {         
                     	reducedData[i] = {
@@ -933,9 +961,28 @@ var CM = (function($) {
                     			color : data[i].color
                     	};
                     	
+                    	//copy the year between the slider forward by the number of index offsets
                     	reducedData[i]["values"] = [];
-                    	for(var j = 0; j <= maxX - minX; ++j) {
-                    		reducedData[i]["values"][j] = data[i]["values"][j + leftIndexOffset];
+                    	
+                    	var correctedLeftOffset = leftIndexOffset;
+                    	
+                    	if(data[i]["values"].length != years.length) {
+                    		// sometimes, some state does not have all the years
+                    		// this is tricky...let me think
+                    	}
+                    	
+                    	var sourceIndex = leftIndexOffset;
+                    	var targetIndex = 0;
+                    	for(var sourceIndex = leftIndexOffset; 
+                    		sourceIndex < leftIndexOffset + ticks.length;
+                    		++sourceIndex) 
+                    	{
+                    		reducedData[i]["values"][targetIndex] = data[i]["values"][sourceIndex];
+                    		targetIndex++;
+
+                    		if(data[i]["values"][sourceIndex].series + 1 >= leftIndexOffset + ticks.length) {
+                    			break;
+                    		}
                     	}
                     }         
                     d3.select('#mbodyBar svg').datum(reducedData).transition().duration(500).call(chart);
