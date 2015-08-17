@@ -838,10 +838,7 @@ var CM = (function($) {
                // years.sort(function(valueofLeftSlider,valueofRightSlider) { return valueofRightSlider - valueofLeftSlider; });
                 years.sort(function(a,b) { return b - a; }) 
                 
-                            	
-                // Build the chart for the data.
-            	var chart;
-    
+                var minX, maxX;
                 if (cm.currentVisualization == cm.visualizationTypes.LINE) 
                 {
                 	if(isRefreshSlider)	
@@ -849,14 +846,100 @@ var CM = (function($) {
             			cm.buildTimeRangeSlider(years);
             			$(".rangeslider").show();
                 	}
-                                
-                	var minX = $('.rangeslider').slider("values", 0 );
-                    var maxX = $('.rangeslider').slider("values", 1 );
-                    	
+                	minX = $('.rangeslider').slider("values", 0 );
+                    maxX = $('.rangeslider').slider("values", 1 );
+                }else if(cm.currentVisualization == cm.visualizationTypes.BAR) 
+                {
+
+                	if(isRefreshSlider)	
+                	{
+            			cm.buildTimeRangeSliderForBar(years);
+            			$(".rangesliderbar").show();
+                	}
+                	minX = $('.rangesliderbar').slider("values", 0 );
+                    maxX = $('.rangesliderbar').slider("values", 1 );
+                }
+                
+                // make sure years are in increasing order
+                if(years[0] > years[years.length - 1]) {
+                	var start = 0, end = years.length - 1;
+                	while(start < end) {
+                		var temp = years[start];
+                		years[start] = years[end];
+                		years[end] = temp;
+                		start++;
+                		end--;
+                	}
+                }
+                
+                // ticks stores the years within the range. 
+                // e.g: the "ticks" of [2009, 2011, 2012, 2014] for minX = 2011 and maxX = 2014, is [2011, 2012, 2014]
+         
+                var ticks = [];
+                var tickIndex = 0;
+                
+                // leftIndexOffset is the index of the first tick in the original "years" array
+                //  the index of the first valid year within the (minX, maxX) range
+
+                var leftIndexOffset;
+                var foundFirstTick = false;
+                
+                for (i=0; i< years.length; i++)
+                {
+                	if(years[i] >= minX && years[i] <= maxX) 
+                	{
+                		ticks[tickIndex] = years[i];
+                		tickIndex++;
+                		
+                		if(!foundFirstTick) {
+                			// when first get a tick, note down its distance to the first index
+                			leftIndexOffset = i;
+                			
+                			// set the bool to true so that this block of code is never entered again
+                			foundFirstTick = true;
+                		}
+                	}
+                };
+                
+                var reducedData = [];
+
+                // The available values for each state
+                for (var i = 0; i < data.length; i++)
+                {         
+                	reducedData[i] = {
+                			key : data[i].key,
+                			color : data[i].color
+                	};
+                	
+                	//copy the year between the slider forward by the number of index offsets
+                	reducedData[i]["values"] = [];
+                
+                	var sourceIndex = leftIndexOffset;
+                	var targetIndex = 0;
+                	for(var sourceIndex = leftIndexOffset; 
+                		sourceIndex < leftIndexOffset + ticks.length;
+                		++sourceIndex) 
+                	{
+                		reducedData[i]["values"][targetIndex] = data[i]["values"][sourceIndex];
+                		targetIndex++;
+
+                		if(data[i]["values"][sourceIndex].series + 1 >= leftIndexOffset + ticks.length) {
+                			// sometimes, a state will miss a year, and the 2nd year data will have series == 3 to keep the bars aligned
+                			// this is the case when we break it out to avoid array out of range error
+                			break;
+                		}
+                	}
+                }
+                            	
+                // Build the chart for the data.
+            	var chart;
+    
+                if (cm.currentVisualization == cm.visualizationTypes.LINE) 
+                {  
                     chart = nv.models.lineChart()
                     	.transitionDuration(350)
                     	.useInteractiveGuideline(true)
-                    	.xDomain([minX,maxX])
+                    	.xDomain([minX, maxX])
                     	.margin({ left : 150, right : 50 })
                     	.clipEdge(true);
                     
@@ -864,14 +947,7 @@ var CM = (function($) {
                     	
                 } 	
                 else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
-                {
-                	
-                	if(isRefreshSlider)	
-                	{
-            			cm.buildTimeRangeSliderForBar(years);
-            			$(".rangesliderbar").show();
-                	}
-                	
+                {	
                 	var minX = $('.rangesliderbar').slider("values", 0 );
                     var maxX = $('.rangesliderbar').slider("values", 1 );
                 	
@@ -904,88 +980,9 @@ var CM = (function($) {
                     	newMin = 0;
                     
                     chart.forceY(newMin);
-                  
-
                     
-                    // make sure years are in increasing order
-                    if(years[0] > years[years.length - 1]) {
-                    	var start = 0, end = years.length - 1;
-                    	while(start < end) {
-                    		var temp = years[start];
-                    		years[start] = years[end];
-                    		years[end] = temp;
-                    		start++;
-                    		end--;
-                    	}
-                    }
-                    
-                    // ticks stores the years within the range. 
-                    // e.g: the "ticks" of [2009, 2011, 2012, 2014] for minX = 2011 and maxX = 2014, is [2011, 2012, 2014]
-             
-                    var ticks = [];
-                    var tickIndex = 0;
-                    
-                    // leftIndexOffset is the index of the first tick in the original "years" array
-                    // aka: the index of the first valid year within the (minX, maxX) range
-
-                    var leftIndexOffset;
-                    var foundFirstTick = false;
-                    
-                    for (i=0; i< years.length; i++)
-                    {
-                    	if(years[i] >= minX && years[i] <= maxX) 
-                    	{
-                    		ticks[tickIndex] = years[i];
-                    		tickIndex++;
-                    		
-                    		if(!foundFirstTick) {
-                    			// when first get a tick, note down its distance to the first index
-                    			leftIndexOffset = i;
-                    			
-                    			// set the bool to true so that this block of code is never entered again
-                    			foundFirstTick = true;
-                    		}
-                    	}
-                    };
-
                     chart.xDomain(ticks);
                     chart.xAxis.axisLabel("Year").tickValues(ticks).tickFormat(d3.format('.0f'));
-                    
-                    var reducedData = [];
-
-                    // The available values for each state
-                    for (var i = 0; i < data.length; i++)
-                    {         
-                    	reducedData[i] = {
-                    			key : data[i].key,
-                    			color : data[i].color
-                    	};
-                    	
-                    	//copy the year between the slider forward by the number of index offsets
-                    	reducedData[i]["values"] = [];
-                    	
-                    	var correctedLeftOffset = leftIndexOffset;
-                    	
-                    	if(data[i]["values"].length != years.length) {
-                    		// sometimes, some state does not have all the years
-                    		// this is tricky...let me think
-                    	}
-                    	
-                    	var sourceIndex = leftIndexOffset;
-                    	var targetIndex = 0;
-                    	for(var sourceIndex = leftIndexOffset; 
-                    		sourceIndex < leftIndexOffset + ticks.length;
-                    		++sourceIndex) 
-                    	{
-                    		reducedData[i]["values"][targetIndex] = data[i]["values"][sourceIndex];
-                    		targetIndex++;
-
-                    		if(data[i]["values"][sourceIndex].series + 1 >= leftIndexOffset + ticks.length) {
-                    			break;
-                    		}
-                    	}
-                    }         
-                    d3.select('#mbodyBar svg').datum(reducedData).transition().duration(500).call(chart);
                 }
                
                 var type_var = Metrics.getMetricByID(as.currentind).getType();
@@ -1016,7 +1013,7 @@ var CM = (function($) {
                 }
                 else if (cm.currentVisualization == cm.visualizationTypes.BAR) 
                 {
-                	//d3.select('#mbodyBar svg').datum(data).transition().duration(500).call(chart);
+                	d3.select('#mbodyBar svg').datum(reducedData).transition().duration(500).call(chart);
                 }
                 
                 nv.utils.windowResize(chart.update);
@@ -1171,7 +1168,7 @@ var CM = (function($) {
 	    }
 	} 
 	
-	
+	// This Range slider use for line chart
 	Chart.prototype.buildTimeRangeSlider = function(yearList) {
 		
 		var values = yearList.sort(); 
@@ -1199,8 +1196,7 @@ var CM = (function($) {
 	    	cm.selectYear(ui.value);
     		cm.refreshGraphs(false);
 		}
-		
-		
+	
 		// creates the slider
 	    var timeRangeSlider = $(".rangeslider").slider({
 	    	min: values[0], 
@@ -1215,7 +1211,8 @@ var CM = (function($) {
 	        step: distance, 
 	        rest: "pip" });	    
 	}
-	
+
+// This Range slider use for bar chart
 Chart.prototype.buildTimeRangeSliderForBar = function(yearList) {
 		
 		var values = yearList.sort(); 
