@@ -183,7 +183,7 @@
 				<div class="matters_map_legend_key" style="color: white;">
 					<div class="swatch" style="background-color: #BD1C2E; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
 					</div>
-					<span style="margin-left: 5px;">Peer State</span>
+					<span style="margin-left: 5px;"><a href="<c:url value="/about"/>">Peer State</a></span>
 					<br/>
 					<div class="swatch" style="background-color: #5F0410; width: 20px; height: 20px; border: 1px solid white; display: inline-block;">
 					</div>
