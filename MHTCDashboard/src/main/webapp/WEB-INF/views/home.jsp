@@ -80,7 +80,6 @@
 		<script src="js/metric.js"></script>
 		<script src="js/chart.js"></script>
 		<script src="js/appstate.js"></script>
-		
 		<title>MATTERS</title>
 
 	</head>
@@ -246,7 +245,7 @@
 						<!-- Left side of the pagination header. -->
 						<div class="pagination-header-left">
 						
-							<a id="toggle-sidebar" data-toggle="popover" data-content="Click to collapse menus"> 
+							<a id="toggle-sidebar" data-toggle="popover" data-content="Click to collapse/expand menus" > 
 								<i class="fa fa-caret-left fa-2x"></i>
 							</a>
 						</div>
@@ -260,7 +259,7 @@
 							<li class="graph-tab" id="heatmap-tab">
 								<a id= "popHeapMap" href="#heatmaptab" data-toggle="tab" data-content="Heat Map" onclick="as.visualizationDeployer(as.visualizations.HEATMAP);">
 									<i></i>
-								</a>
+								</a>s
 							</li>
 							<li class="graph-tab" id="line-tab">
 								<a id= "popLineChart" href="#line" data-toggle="tab" data-content="Line Chart" onclick="as.visualizationDeployer(as.visualizations.LINE);">

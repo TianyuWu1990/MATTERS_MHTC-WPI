@@ -62,6 +62,8 @@ $(document).ready(function() {
 			cm.setPopoverNonMetrics(this.id+"#popHeapMap", "bottom")
 			cm.setPopoverNonMetrics(this.id+"#popLineChart", "bottom")
 			cm.setPopoverNonMetrics(this.id+"#popBarGraph", "bottom")
+		
+			
 			
 			}
 		});
@@ -95,6 +97,7 @@ loadFunction = function() {
 		
  
  		if ($(window).width() > 510){
+ 		
 			mobileMode = false;
 			var sidebarOpen = $("#sidebar-left").hasClass("open");
 
@@ -107,6 +110,7 @@ loadFunction = function() {
 			$("#stateSelectionCol").attr("style", "width: 200px;");
 
 			if (sidebarOpen) {
+				
 				$(icon).removeClass("fa-caret-right");
 				$(icon).addClass("fa-caret-left");
 			} else {
@@ -166,13 +170,18 @@ loadFunction = function() {
 	
 	
 
-	// Initializes button that toggles the sidebar
-
-	$("#toggle-sidebar").click(function() {
+	// Initializes button that toggles the sidebar	
+	
+		$("#toggle-sidebar").click(function() {
 
 		var icon = $(this).find("i")[0];
+		
 
 		if ($("#sidebar-left").hasClass("open")) {
+			
+		$("#toggle-sidebar").attr("data-content", "Click to expand menus");
+			
+			
 			$("#sidebar-left").animate({
 				marginLeft : -$("#sidebar-left").width()
 			}, 300);
@@ -188,6 +197,8 @@ loadFunction = function() {
 			$(icon).removeClass("fa-caret-left");
 			$(icon).addClass("fa-caret-right");
 		} else {
+			
+			$("#toggle-sidebar").attr("data-content", "Click to collapse menus");
 			$("#sidebar-left").animate({
 				marginLeft : 0
 			}, 300);
